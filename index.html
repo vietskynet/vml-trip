@@ -1484,6 +1484,7 @@ function netStart(){NET.started=true;const nm=cleanName($('#nameIn').value.trim(
 function netAfterNewGame(){P.uid=NET.uid;Object.values(NET.chars).forEach(c=>{if(c.online&&!S.chars.includes(c))S.chars.push(c)});
  const st=NET.me&&NET.me.state,did=NET.day?NET.day.id:0;
  if(st&&st.dayId===did){P.money=st.money;P.energy=st.energy;Object.assign(P.cd,st.cd||{});if(st.peeNext!=null)P.peeNext=st.peeNext;if(st.pooNext!=null)P.pooNext=st.pooNext;P.accCount=st.acc||0;if(st.ate!=null)P.ateMeal=st.ate;if(st.x){P.x=st.x;P.y=st.y}P.fainted=!!st.fainted;P.bonusId=st.bonusId||0;P.giftIds=Object.values(st.giftIds||{})}
+ else if(st&&typeof st.money==='number')P.money=st.money;
  if(NET.day)S.time=Math.max(0,(serverNow()-NET.day.start)/1000);while(S.time>=S.mealAt+CFG.MEAL_LEN){S.mealAt+=CFG.MEAL_AT;S.mealId++}
  applyBeds()}
 function netPostStart(){applyBonus();applyGifts();saveState();if(P.fainted){P.fainted=false;faint()}else if(NET.day&&S.time>=CFG.DAY)endDay()}
