@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VML Trip trên Netlify và Supabase</title>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: single reading column; each phase is a block, each step a numbered row. */
+:root{--bg:#f6f4ee;--fg:#14203f;--muted:#5a6684;--card:#ffffff;--line:#dcd6c6;--accent:#e2475a;--sea:#14868a;--sun:#b07a08;--code:#0f1a3a;
+ --f-display:"Bungee","Arial Black",sans-serif;--f-body:"Be Vietnam Pro",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1430;--fg:#eef3ff;--muted:#a9b6d6;--card:#13204a;--line:#2c3f74;--accent:#ff7b86;--sea:#3fd0c8;--sun:#ffc23a;--code:#050b20;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1430;--fg:#eef3ff;--muted:#a9b6d6;--card:#13204a;--line:#2c3f74;--accent:#ff7b86;--sea:#3fd0c8;--sun:#ffc23a;--code:#050b20;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;padding:32px max(16px,env(safe-area-inset-right)) 64px max(16px,env(safe-area-inset-left))}
+main{max-width:760px;margin:0 auto}
+h1{font-family:var(--f-display);font-weight:normal;font-size:clamp(24px,5vw,36px);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:normal;font-size:19px;margin:40px 0 4px;color:var(--sea);text-wrap:balance}
+h3{font-size:16px;margin:18px 0 0}
+.lead{color:var(--muted);margin:0 0 20px}
+.time{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sun);margin-bottom:6px}
+ol.steps{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-direction:column;gap:10px}
+ol.steps>li{background:var(--card);border:2px solid var(--line);padding:12px 14px 12px 60px;position:relative}
+ol.steps>li::before{content:attr(data-n);position:absolute;left:12px;top:12px;width:36px;height:32px;background:var(--fg);color:var(--bg);font-family:var(--f-display);font-size:12px;display:flex;align-items:center;justify-content:center}
+code,kbd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:var(--code);color:#ffd27a;padding:1px 6px;border-radius:3px;word-break:break-word}
+pre{background:var(--code);color:#ffd27a;padding:10px 12px;overflow-x:auto;font-size:14px;margin:8px 0 0}
+.files{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:14px 0}
+.files div{background:var(--card);border:2px solid var(--line);padding:10px 12px;min-width:0}
+.files b{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--accent)}
+.check{border-left:4px solid var(--sea);background:var(--card);padding:10px 14px;margin:14px 0}
+.warn{border-left:4px solid var(--accent);background:var(--card);padding:10px 14px;margin:14px 0}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;background:var(--card);border:2px solid var(--line)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+a{color:var(--sea)}
+</style>
+</head>
+<body>
+<main>
+<h1>VML Company Trip trên Netlify và Supabase</h1>
+<p class="lead">Khoảng 30 phút, miễn phí. <b>Supabase</b> lưu dữ liệu (nhân vật, giường, deal, thách đấu), <b>Netlify</b> đưa trang game lên mạng. Làm lần lượt từ A đến F.</p>
+
+<h2>Gói này có gì</h2>
+<div class="files">
+ <div><b>index.html</b><br>Game. Tự nhận biết online hay offline.</div>
+ <div><b>config.js</b><br>Dán địa chỉ và khoá Supabase. Chỉnh tiền khởi đầu, độ dài ngày.</div>
+ <div><b>supabase-shim.js</b><br>Lớp kết nối game với Supabase. Không cần sửa.</div>
+ <div><b>admin.html</b><br>Mở ngày mới, kết thúc ngày, xem người chơi.</div>
+ <div><b>supabase-setup.sql</b><br>Tạo bảng, hàm và luật bảo mật. Chạy một lần.</div>
+</div>
+<div class="check">Chưa điền <code>config.js</code> thì game vẫn chạy offline với 16 nhân viên giả lập. Bạn có thể đưa lên Netlify trước để xem thử, rồi bật Supabase sau.</div>
+
+<h2>A. Chuẩn bị</h2>
+<span class="time">3 phút</span>
+<ol class="steps">
+ <li data-n="A1">Tạo tài khoản <a href="https://github.com/signup">GitHub</a>. Đăng nhập Supabase và Netlify bằng GitHub là nhanh nhất, và nhờ đó Claude cập nhật game được (phần F).</li>
+ <li data-n="A2">Giải nén gói <code>vml-trip-netlify.zip</code>. Bạn sẽ có thư mục <code>vml-trip-netlify</code> với 5 file ở trên.</li>
+</ol>
+
+<h2>B. Tạo database Supabase</h2>
+<span class="time">10 phút</span>
+<ol class="steps">
+ <li data-n="B1">Vào <a href="https://supabase.com/dashboard">supabase.com/dashboard</a> → đăng nhập bằng GitHub → <b>New project</b>. Tên: <code>vml-trip</code>. <b>Database Password</b>: bấm <b>Generate</b> và lưu lại. <b>Region</b>: <b>Southeast Asia (Singapore)</b>. Bấm <b>Create new project</b> và chờ khoảng 2 phút.</li>
+ <li data-n="B2">Menu trái <b>Authentication</b> → <b>Sign In / Providers</b> → bật <b>Allow anonymous sign-ins</b> → <b>Save changes</b>. Người chơi không cần email hay mật khẩu, máy của họ được nhớ tự động.</li>
+ <li data-n="B3">Vẫn trong <b>Authentication</b> → <b>Rate Limits</b> → tìm dòng giới hạn cho <b>anonymous users</b> (đăng nhập ẩn danh), đổi từ 30 thành <code>300</code> → <b>Save</b>.</li>
+ <li data-n="B4">Menu trái <b>SQL Editor</b> → <b>New query</b> → mở file <code>supabase-setup.sql</code>, copy toàn bộ và dán vào → bấm <b>Run</b>. Thấy <b>Success. No rows returned</b> là xong.</li>
+ <li data-n="B5">Bấm <b>Connect</b> ở thanh trên cùng, hoặc vào <b>Project Settings → API Keys</b>. Copy <b>Project URL</b> (dạng <code>https://abcd1234.supabase.co</code>) và khoá <b>anon public</b> (một chuỗi rất dài).</li>
+ <li data-n="B6">Mở <code>config.js</code> bằng trình soạn văn bản (Mac: TextEdit → <b>Format → Make Plain Text</b>; Windows: Notepad). Dán Project URL vào <code>url</code> và khoá anon vào <code>anonKey</code>, giữ nguyên dấu ngoặc kép. Lưu file.</li>
+</ol>
+<div class="warn">Bước B3 rất quan trọng. Mặc định Supabase chỉ cho <b>30 lượt đăng nhập ẩn danh mỗi giờ trên mỗi địa chỉ IP</b>. Cả công ty dùng chung WiFi văn phòng sẽ bị chặn từ người thứ 31.</div>
+<div class="warn">Không bao giờ dán khoá <b>service_role</b> (hoặc <b>secret</b>) vào <code>config.js</code>. Chỉ dùng khoá <b>anon public</b>.</div>
+
+<h2>C. Đưa game lên Netlify</h2>
+<span class="time">5–10 phút</span>
+<h3>Cách 1: Kéo thả (nhanh nhất)</h3>
+<ol class="steps">
+ <li data-n="C1">Vào <a href="https://app.netlify.com">app.netlify.com</a> và đăng nhập bằng GitHub. Phải đăng nhập trước; trang đưa lên khi chưa đăng nhập sẽ tự xoá sau khoảng 1 giờ.</li>
+ <li data-n="C2">Bấm <b>Add new site</b> (hoặc <b>Add new project</b>) → <b>Deploy manually</b> → kéo thả cả <b>thư mục</b> <code>vml-trip-netlify</code> vào ô tải lên.</li>
+ <li data-n="C3">Netlify cho bạn một địa chỉ ngẫu nhiên. Vào <b>Site configuration → Change site name</b>, đặt tên như <code>vml-trip-2026</code> để có link <code>https://vml-trip-2026.netlify.app</code>.</li>
+ <li data-n="C4">Mỗi lần sửa file, vào tab <b>Deploys</b> và kéo thả lại cả thư mục.</li>
+</ol>
+<h3>Cách 2: Qua GitHub (để Claude cập nhật tự động)</h3>
+<ol class="steps">
+ <li data-n="C5">Vào <a href="https://github.com/new">github.com/new</a> → tên <code>vml-trip</code> → <b>Public</b> → <b>Create repository</b> → <b>uploading an existing file</b> → kéo thả 5 file → <b>Commit changes</b>.</li>
+ <li data-n="C6">Netlify → <b>Add new site → Import an existing project</b> → <b>GitHub</b> → chọn repo <code>vml-trip</code>. Để trống <b>Build command</b>, <b>Publish directory</b> ghi <code>.</code> → <b>Deploy</b>.</li>
+ <li data-n="C7">Từ giờ mỗi lần file trên GitHub thay đổi, Netlify tự đưa bản mới lên sau khoảng 1 phút.</li>
+</ol>
+<div class="check">Mở link game. Dòng dưới nút <b>VÀO RESORT</b> ghi <b>"Bản online · người chơi thật"</b> là đã kết nối Supabase thành công.</div>
+
+<h2>D. Cấp quyền admin cho bạn</h2>
+<span class="time">3 phút</span>
+<ol class="steps">
+ <li data-n="D1">Mở <code>https://TEN-SITE.netlify.app/admin.html</code> → bấm <b>SAO CHÉP</b> để copy <b>Mã của bạn</b>.</li>
+ <li data-n="D2">Supabase → <b>SQL Editor → New query</b> → dán dòng dưới, thay mã của bạn vào → <b>Run</b>.
+  <pre>insert into public.admins(uid) values ('DAN-MA-CUA-BAN') on conflict do nothing;</pre></li>
+ <li data-n="D3">Tải lại <code>admin.html</code>. Khi thấy <b>"Bạn là admin"</b>, bấm <b>BẮT ĐẦU NGÀY MỚI</b>. Đồng hồ game của mọi người bắt đầu từ 08:00.</li>
+</ol>
+<div class="check">Mở admin.html và game trên cùng một trình duyệt thì mã admin cũng là nhân vật của bạn. Muốn chơi bằng nhân vật khác, dùng trình duyệt khác hoặc cửa sổ ẩn danh.</div>
+
+<h2>E. Vận hành trong ngày trip</h2>
+<ol class="steps">
+ <li data-n="E1">Gửi link cho nhân viên. Mỗi máy tạo nhân vật một lần. Lần sau mở lại, game nhận ra họ và hiện <b>"Chào mừng trở lại"</b>.</li>
+ <li data-n="E2">Muốn làm lại nhân vật: nút <b>NV</b> góc phải → <b>TẠO NHÂN VẬT MỚI</b> → bấm lần nữa để xác nhận.</li>
+ <li data-n="E3">Mỗi đợt chơi, admin bấm <b>BẮT ĐẦU NGÀY MỚI</b>: làm trống giường, đưa ví về mức khởi đầu, đồng hồ về 08:00.</li>
+ <li data-n="E4">Đổi luật trong <code>config.js</code> rồi đưa lên lại: <code>startMoney</code> (đang 9.000.000 để test, chơi thật nên để <code>0</code>), <code>dayMinutes</code>.</li>
+</ol>
+
+<h2>F. Kết nối Claude để cập nhật nhanh</h2>
+<ol class="steps">
+ <li data-n="F1">Làm theo <b>Cách 2</b> ở phần C để game nằm trên GitHub.</li>
+ <li data-n="F2">Trên claude.ai, kết nối GitHub và cho phép truy cập repo <code>vml-trip</code>. Rồi nhắn Claude: <i>"Repo của tôi là TEN-GITHUB/vml-trip"</i>. Claude sửa code, đẩy lên GitHub, Netlify tự cập nhật trang.</li>
+</ol>
+
+<h2>Chat và mã cheat</h2>
+<p>Trong game nhấn <kbd>C</kbd> để chat. Gõ mã vào khung chat (không phân biệt hoa thường), mã cheat không hiện cho người khác:</p>
+<div class="tbl"><table>
+ <tr><th>Mã</th><th>Tác dụng</th></tr>
+ <tr><td><code>VMLGIAU</code></td><td>Cộng 5.000.000₫ vào ví</td></tr>
+ <tr><td><code>VMLKHOE</code></td><td>Năng lượng đầy 100%</td></tr>
+ <tr><td><code>VMLSANG</code></td><td>Nhân vật toả sáng 3 phút, ai cũng thấy. Gõ lần nữa để tắt</td></tr>
+</table></div>
+
+<h2>Giới hạn và xử lý sự cố</h2>
+<div class="tbl"><table>
+ <tr><th>Vấn đề</th><th>Cách xử lý</th></tr>
+ <tr><td>Supabase miễn phí <b>tạm dừng project sau 7 ngày không ai dùng</b></td><td>Vào dashboard, bấm <b>Restore project</b> trước buổi chơi khoảng 5 phút.</td></tr>
+ <tr><td>Dung lượng truyền tải miễn phí <b>5 GB/tháng</b></td><td>Một buổi 20 phút với 100 người dùng ước tính 0,5–1,5 GB. Chơi nhiều buổi trong tháng thì nâng gói Pro, hoặc thêm <code>pollMs: 2500</code> vào phần <code>supabase</code> trong <code>config.js</code> để giảm một nửa.</td></tr>
+ <tr><td>Nhân vật người khác di chuyển hơi giật</td><td>Bình thường. Mỗi máy cập nhật vị trí người khác khoảng 1,5 giây một lần để không vượt giới hạn miễn phí.</td></tr>
+ <tr><td>Game ghi "đang chạy bản offline"</td><td>Kiểm tra <code>config.js</code> (sai URL, thiếu ngoặc kép, dán nhầm khoá) và bước B2 (bật anonymous sign-ins).</td></tr>
+ <tr><td>Nhiều người báo không vào được cùng lúc</td><td>Kiểm tra bước B3 (giới hạn đăng nhập ẩn danh).</td></tr>
+ <tr><td>admin.html báo "Chưa phải admin"</td><td>Chạy lại lệnh ở bước D2, kiểm tra mã dán đúng và nằm trong dấu nháy đơn.</td></tr>
+ <tr><td>Sửa file rồi mà web chưa đổi</td><td>Chờ 1 phút, tải lại trang bằng <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> (Mac: <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>).</td></tr>
+</table></div>
+</main>
+</body>
+</html>

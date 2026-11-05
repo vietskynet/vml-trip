@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VML Trip Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#081230;--panel:#12204a;--panel2:#1c3170;--text:#f4f8ff;--muted:#a9bde0;--sun:#ffc23a;--coral:#ff5f6d;--sea:#2fd0c8;--leaf:#6fd36a;--line:#2c4b8c;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--text);font-family:"VT323","Courier New",monospace;font-size:21px;padding:24px max(16px,env(safe-area-inset-left)) 40px}
+main{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1{font-family:"Bungee","Arial Black",sans-serif;font-weight:normal;color:var(--sun);font-size:clamp(20px,4vw,30px);margin:0;text-shadow:3px 3px 0 #000}
+h2{font-family:"Bungee","Arial Black",sans-serif;font-weight:normal;color:var(--sea);font-size:14px;margin:0 0 10px;letter-spacing:1px}
+.card{background:var(--panel);border:4px solid #000;box-shadow:0 0 0 3px var(--line);padding:14px 16px}
+p{margin:0 0 10px;color:var(--muted);line-height:1.15}
+b{color:#fff;font-weight:normal}
+code{background:#000;color:var(--sun);padding:2px 6px;word-break:break-all}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{font-family:"Bungee","Arial Black",sans-serif;font-size:13px;background:var(--coral);color:#fff;border:3px solid #000;box-shadow:4px 4px 0 #000;padding:11px 16px;cursor:pointer}
+button.ok{background:#2f9a5a}button.ghost{background:var(--panel2)}
+button[disabled]{opacity:.5;cursor:not-allowed}
+button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.big{font-size:34px;color:var(--sun);font-variant-numeric:tabular-nums}
+.stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.stat div{background:var(--ink);border:3px solid var(--line);padding:6px 10px}
+.stat small{display:block;font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted)}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:4px 8px;border-bottom:1px dashed var(--line);white-space:nowrap}
+th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted)}
+.on{color:var(--leaf)}.off{color:var(--muted)}
+#msg{min-height:24px;color:var(--leaf)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="supabase-shim.js"></script>
+<script src="config.js"></script>
+</head>
+<body>
+<main>
+  <h1>VML TRIP · BẢNG ADMIN</h1>
+  <div class="card">
+    <h2>MÃ CỦA BẠN</h2>
+    <p>Mã này dùng để cấp quyền admin trong Supabase (bước D của hướng dẫn).</p>
+    <div class="row"><code id="uid">đang kết nối…</code><button class="ghost" id="copy">SAO CHÉP</button></div>
+    <p style="margin-top:10px" id="role"></p>
+  </div>
+  <div class="card">
+    <h2>NGÀY CHƠI</h2>
+    <div class="stat">
+      <div><small>TRẠNG THÁI</small><span class="big" id="dState">—</span></div>
+      <div><small>GIỜ TRONG GAME</small><span class="big" id="dClock">—</span></div>
+      <div><small>ĐANG ONLINE</small><span class="big" id="dOnline">0</span></div>
+      <div><small>GIƯỜNG ĐÃ BOOK</small><span class="big" id="dBeds">0</span></div>
+    </div>
+    <p style="margin-top:12px">Bắt đầu ngày mới sẽ đặt đồng hồ về 08:00, làm trống toàn bộ giường và trả tiền mọi người về mức khởi đầu.</p>
+    <div class="row"><button class="ok" id="start" disabled>BẮT ĐẦU NGÀY MỚI</button><button class="ghost" id="end" disabled>KẾT THÚC NGÀY NGAY</button></div>
+    <p id="msg"></p>
+  </div>
+  <div class="card">
+    <h2>NGƯỜI CHƠI HÔM NAY</h2>
+    <div class="tbl"><table><thead><tr><th>TÊN</th><th>VÍ</th><th>NĂNG LƯỢNG</th><th>TRẠNG THÁI</th></tr></thead><tbody id="list"></tbody></table></div>
+  </div>
+  <div class="card">
+    <h2>VÙNG NGUY HIỂM</h2>
+    <p>Xoá toàn bộ người chơi, giường và dữ liệu thi đấu. Người chơi sẽ phải tạo nhân vật lại.</p>
+    <button id="wipe" disabled>XOÁ TOÀN BỘ DỮ LIỆU</button>
+  </div>
+</main>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const VC=window.VML_CONFIG;const DAY=((VC&&VC.game&&VC.game.dayMinutes)||20)*60;
+const VND=n=>String(Math.round(n||0)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+'₫';
+if(VC&&VC.backend==='supabase'&&window.supabase&&window.VMLSupabaseShim&&VC.supabase&&!/DAN_|YOUR/i.test(VC.supabase.url+' '+VC.supabase.anonKey)){window.firebase=window.VMLSupabaseShim(VC.supabase);VC.firebase={apiKey:'supabase'}}
+if(!window.firebase||!VC||!VC.firebase||/DAN_/.test(VC.firebase.apiKey)){$('#uid').textContent='Chưa cấu hình database trong config.js';return}
+firebase.initializeApp(VC.firebase);const db=firebase.database(),TS=firebase.database.ServerValue.TIMESTAMP;let off=0,day=null,players={},pos={},beds={},admin=false;
+const msg=t=>{$('#msg').textContent=t};
+firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously().catch(e=>{$('#uid').textContent='Lỗi đăng nhập: '+e.message});return}
+ $('#uid').textContent=u.uid;
+ db.ref('admins/'+u.uid).on('value',s=>{admin=s.val()===true;$('#role').innerHTML=admin?'<b class="on">Bạn là admin.</b> Có thể điều khiển ngày chơi.':'Chưa phải admin. Chạy lệnh SQL ở bước D2 của hướng dẫn với mã trên, rồi tải lại trang.';['#start','#end','#wipe'].forEach(id=>$(id).disabled=!admin)});
+ db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
+ db.ref('day').on('value',s=>{day=s.val()});
+ db.ref('players').on('value',s=>{players=s.val()||{};render()});
+ db.ref('pos').on('value',s=>{pos=s.val()||{};render()});
+ db.ref('beds').on('value',s=>{beds=s.val()||{};render()});
+});
+function clock(){if(!day)return'—';const t=(Date.now()+off-day.start)/1000;if(t>=DAY)return'20:00';const m=Math.floor(8*60+Math.max(0,t)/DAY*720);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+function render(){const t=day?(Date.now()+off-day.start)/1000:0;$('#dState').textContent=!day?'CHƯA MỞ':t>=DAY?'ĐÃ HẾT':'ĐANG CHƠI';$('#dClock').textContent=clock();$('#dOnline').textContent=Object.keys(pos).length;
+ let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(u=>Object.values(u||{}).forEach(x=>{if(x)n++})));$('#dBeds').textContent=n;
+ const did=day?day.id:0;const rows=Object.entries(players).filter(([u,p])=>p&&p.state&&p.state.dayId===did).sort((a,b)=>(b[1].state.money||0)-(a[1].state.money||0));
+ $('#list').innerHTML=rows.map(([u,p])=>`<tr><td>${esc(p.name||'?')}</td><td>${VND(p.state.money)}</td><td>${Math.round(p.state.energy||0)}%</td><td class="${pos[u]?'on':'off'}">${p.state.fainted?'Đã xỉu':pos[u]?'Online':'Offline'}</td></tr>`).join('')||'<tr><td colspan="4">Chưa có ai chơi trong ngày này.</td></tr>'}
+setInterval(render,1000);
+$('#copy').onclick=()=>{navigator.clipboard.writeText($('#uid').textContent).then(()=>msg('Đã sao chép mã.'),()=>msg('Hãy bôi đen mã và sao chép thủ công.'))};
+$('#start').onclick=()=>{db.ref().update({day:{id:Date.now(),start:TS},beds:null,offers:null,invites:null,duels:null}).then(()=>msg('Đã bắt đầu ngày mới lúc '+new Date().toLocaleTimeString('vi-VN')+'.')).catch(e=>msg('Lỗi: '+e.message))};
+$('#end').onclick=()=>{if(!day){msg('Chưa có ngày nào đang chạy.');return}db.ref('day/start').set(Date.now()+off-DAY*1000-1000).then(()=>msg('Đã kết thúc ngày.')).catch(e=>msg('Lỗi: '+e.message))};
+const wipe=$('#wipe');wipe.onclick=()=>{if(!wipe.dataset.armed){wipe.dataset.armed='1';wipe.textContent='BẤM LẦN NỮA ĐỂ XOÁ';setTimeout(()=>{delete wipe.dataset.armed;wipe.textContent='XOÁ TOÀN BỘ DỮ LIỆU'},4000);return}
+ db.ref().update({players:null,pos:null,beds:null,offers:null,invites:null,duels:null,day:null}).then(()=>msg('Đã xoá toàn bộ dữ liệu.')).catch(e=>msg('Lỗi: '+e.message))};
+})();
+</script>
+</body>
+</html>
