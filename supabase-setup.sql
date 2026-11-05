@@ -194,3 +194,6 @@ grant execute on function public.rt_write(jsonb), public.rt_cas(text, jsonb, jso
 
 -- 9. Cấp quyền admin: bỏ dấu -- ở dòng dưới, dán mã của bạn (lấy ở admin.html) rồi chạy lại
 -- insert into public.admins(uid) values ('DAN-MA-CUA-BAN-VAO-DAY') on conflict do nothing;
+
+-- 10. Báo cho Supabase nạp lại danh sách hàm ngay
+notify pgrst, 'reload schema';
