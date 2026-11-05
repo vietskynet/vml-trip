@@ -280,7 +280,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
     <h2>LUẬT CHƠI NHANH</h2>
     <div class="qr">
       <div><b>MỤC TIÊU</b>Kiếm tiền, giành giường đẹp trước <strong>20:00</strong>.</div>
-      <div><b>KIẾM TIỀN</b>3 khu game, mỗi khu <strong>chờ 3 phút</strong> giữa 2 lượt. <strong>Sàn Thách Đấu</strong>: 1 vs 1, cược tối đa 500.000₫.</div>
+      <div><b>KIẾM TIỀN</b>3 khu game, mỗi khu <strong>chờ 30 giây</strong> giữa 2 lượt. <strong>Sàn Thách Đấu</strong>: 1 vs 1, cược tối đa 500.000₫.</div>
       <div><b>CHỖ NGỦ</b>Villa <strong>5.000.000₫</strong> · KS <strong>2.000.000₫</strong> · Lều <strong>miễn phí</strong>. Mỗi chỗ 2 giường. Chỗ đầy thì deal mua lại.</div>
       <div><b>NĂNG LƯỢNG</b>Không ăn thì <strong>20 phút</strong> về 0, xỉu và bị loại. <strong>17:00 ăn tập thể miễn phí</strong> ở bàn dài, ngoài giờ mua ở quầy.</div>
       <div><b>VỆ SINH</b>Tiểu mỗi <strong>10 phút</strong>, ị mỗi <strong>20 phút</strong>. Có <strong>30 giây</strong> tìm toilet. Lều dùng WC công cộng, <strong>15 giây/lượt</strong>.</div>
@@ -327,7 +327,7 @@ const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),P2=(x,y)=>({x,y});
 const VND=n=>(n<0?'-':'')+String(Math.abs(Math.round(n))).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+'₫';
 const round50k=n=>Math.round(n/50000)*50000;
 /* All timings are in real seconds. A day lasts 20 minutes (08:00 → 20:00). */
-const CFG={BOTS:16,JOIN_GAP:4,DAY:1200,COOLDOWN:180,GAME_LEN:30,GAME_EN:4,WC_MAX:15,NEED_CD:30,ACC_TIME:300,TEST_MONEY:9000000,
+const CFG={BOTS:16,JOIN_GAP:4,DAY:1200,COOLDOWN:30,GAME_LEN:30,GAME_EN:4,WC_MAX:15,NEED_CD:30,ACC_TIME:300,TEST_MONEY:9000000,
  DRAIN:100/1200,REGEN:{villa:3,room:2.2,tent:1.4},PEE:600,POO:1200,MEAL_AT:900,MEAL_LEN:120,BET_MAX:500000,
  PRICE:{villa:5000000,room:2000000,tent:0},COUNT:{villa:5,room:10,tent:10},BEDS:2};
 const FOOD=[{id:'dua',name:'Nước dừa tươi',price:40000,en:15,note:'Mát lạnh, nhưng sẽ mắc tiểu sớm hơn'},{id:'banhmi',name:'Bánh mì kẹp',price:60000,en:25,note:'Ăn nhanh, no vừa'},{id:'com',name:'Cơm gà Hội An',price:120000,en:50,note:'No lâu'},{id:'haisan',name:'Set hải sản Maldives',price:300000,en:100,note:'Hồi đầy năng lượng'}];
@@ -1045,7 +1045,7 @@ function endGame(){const q=G;q.done=true;q.endT=2.4;q.earn=Math.max(0,Math.round
 function burst(q,x,y,col,n=8){for(let i=0;i<n;i++)q.parts.push({x,y,vx:rnd(-60,60),vy:rnd(-90,-20),t:rnd(.4,.8),col})}
 function addScore(q,v,x,y){q.score+=v;q.fl.push({x,y,v,t:.9});burst(q,x,y,v>0?'#ffd23f':'#ff5f6d',v>0?10:6);v>0?beep(880,.05):beep(150,.15,'sawtooth')}
 function updGame(dt){const q=G;q.anim+=dt;q.parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=200*dt;p.t-=dt});q.parts=q.parts.filter(p=>p.t>0);q.fl.forEach(f=>{f.t-=dt;f.y-=22*dt});q.fl=q.fl.filter(f=>f.t>0);if(q.sw>0)q.sw-=dt;
- if(q.done){q.endT-=dt;if(q.endT<=0){mode='world';toast('+'+VND(q.earn)+' từ '+q.z.name+'. Chờ 3 phút để chơi lại khu này.');G=null}return}
+ if(q.done){q.endT-=dt;if(q.endT<=0){mode='world';toast('+'+VND(q.earn)+' từ '+q.z.name+'. Chờ 30 giây để chơi lại khu này.');G=null}return}
  if(q.intro>0){q.intro-=dt;return}
  q.t-=dt;if(q.t<=0){q.t=0;endGame();return}const el=CFG.GAME_LEN-q.t;q.sp-=dt;
  if(q.id==='coco'){const mv=((keys.right?1:0)-(keys.left?1:0))*230*dt;q.bx+=mv;if(q.tx!=null&&!mv)q.bx+=Math.sign(q.tx-q.bx)*Math.min(Math.abs(q.tx-q.bx),320*dt);q.bx=clamp(q.bx,30,450);
