@@ -58,6 +58,12 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted)}
     <p id="msg"></p>
   </div>
   <div class="card">
+    <h2>TẶNG TIỀN</h2>
+    <p>Cộng tiền vào ví của tất cả người chơi đã có nhân vật tính tới lúc bấm. Người đang offline sẽ nhận khi quay lại. Người tạo nhân vật sau đó không được nhận. Mỗi ngày chỉ có hiệu lực 1 lần tặng mới nhất.</p>
+    <div class="row"><input id="bonusAmt" type="number" min="0" step="100000" value="9000000" style="font:inherit;font-size:22px;padding:6px 10px;background:#000;color:#fff;border:3px solid var(--line);width:200px" aria-label="Số tiền tặng"><button class="ok" id="bonus" disabled>TẶNG CHO MỌI NGƯỜI</button></div>
+    <p id="bonusMsg" style="margin-top:10px"></p>
+  </div>
+  <div class="card">
     <h2>NGƯỜI CHƠI HÔM NAY</h2>
     <div class="tbl"><table><thead><tr><th>TÊN</th><th>VÍ</th><th>NĂNG LƯỢNG</th><th>TRẠNG THÁI</th></tr></thead><tbody id="list"></tbody></table></div>
   </div>
@@ -78,7 +84,7 @@ firebase.initializeApp(VC.firebase);const db=firebase.database(),TS=firebase.dat
 const msg=t=>{$('#msg').textContent=t};
 firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously().catch(e=>{$('#uid').textContent='Lỗi đăng nhập: '+e.message});return}
  $('#uid').textContent=u.uid;
- db.ref('admins/'+u.uid).on('value',s=>{admin=s.val()===true;$('#role').innerHTML=admin?'<b class="on">Bạn là admin.</b> Có thể điều khiển ngày chơi.':'Chưa phải admin. Chạy lệnh SQL ở bước D2 của hướng dẫn với mã trên, rồi tải lại trang.';['#start','#end','#wipe'].forEach(id=>$(id).disabled=!admin)});
+ db.ref('admins/'+u.uid).on('value',s=>{admin=s.val()===true;$('#role').innerHTML=admin?'<b class="on">Bạn là admin.</b> Có thể điều khiển ngày chơi.':'Chưa phải admin. Chạy lệnh SQL ở bước D2 của hướng dẫn với mã trên, rồi tải lại trang.';['#start','#end','#wipe','#bonus'].forEach(id=>$(id).disabled=!admin)});
  db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
  db.ref('day').on('value',s=>{day=s.val()});
  db.ref('players').on('value',s=>{players=s.val()||{};render()});
@@ -94,6 +100,8 @@ setInterval(render,1000);
 $('#copy').onclick=()=>{navigator.clipboard.writeText($('#uid').textContent).then(()=>msg('Đã sao chép mã.'),()=>msg('Hãy bôi đen mã và sao chép thủ công.'))};
 $('#start').onclick=()=>{db.ref().update({day:{id:Date.now(),start:TS},beds:null,offers:null,invites:null,duels:null}).then(()=>msg('Đã bắt đầu ngày mới lúc '+new Date().toLocaleTimeString('vi-VN')+'.')).catch(e=>msg('Lỗi: '+e.message))};
 $('#end').onclick=()=>{if(!day){msg('Chưa có ngày nào đang chạy.');return}db.ref('day/start').set(Date.now()+off-DAY*1000-1000).then(()=>msg('Đã kết thúc ngày.')).catch(e=>msg('Lỗi: '+e.message))};
+$('#bonus').onclick=()=>{const a=Math.round(+$('#bonusAmt').value||0);if(!day){$('#bonusMsg').textContent='Hãy bắt đầu ngày mới trước.';return}if(a<=0){$('#bonusMsg').textContent='Nhập số tiền lớn hơn 0.';return}
+ db.ref('day/bonus').set({id:Date.now(),amount:a,ts:TS}).then(()=>{$('#bonusMsg').textContent='Đã tặng '+VND(a)+' cho mọi người lúc '+new Date().toLocaleTimeString('vi-VN')+'. Ví sẽ cộng trong vài giây.'}).catch(e=>{$('#bonusMsg').textContent='Lỗi: '+e.message})};
 const wipe=$('#wipe');wipe.onclick=()=>{if(!wipe.dataset.armed){wipe.dataset.armed='1';wipe.textContent='BẤM LẦN NỮA ĐỂ XOÁ';setTimeout(()=>{delete wipe.dataset.armed;wipe.textContent='XOÁ TOÀN BỘ DỮ LIỆU'},4000);return}
  db.ref().update({players:null,pos:null,beds:null,offers:null,invites:null,duels:null,day:null}).then(()=>msg('Đã xoá toàn bộ dữ liệu.')).catch(e=>msg('Lỗi: '+e.message))};
 })();

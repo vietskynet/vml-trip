@@ -1420,7 +1420,7 @@ async function netInit(){try{
  NET.db.ref('.info/serverTimeOffset').on('value',s=>{NET.offset=s.val()||0});
  NET.me=(await NET.db.ref('players/'+NET.uid).get()).val();if(NET.me&&NET.me.name)NET.me.name=cleanName(NET.me.name);
  NET.day=(await NET.db.ref('day').get()).val();
- NET.db.ref('day').on('value',s=>{const v=s.val(),prev=NET.day;NET.day=v;if(NET.started&&v&&(!prev||prev.id!==v.id))netNewDay()});
+ NET.db.ref('day').on('value',s=>{const v=s.val(),prev=NET.day;NET.day=v;if(NET.started&&v&&(!prev||prev.id!==v.id))netNewDay();applyBonus()});
  const pl=NET.db.ref('players');pl.on('child_added',onPlayer);pl.on('child_changed',onPlayer);pl.on('child_removed',s=>{delete NET.players[s.key]});
  NET.db.ref('beds').on('value',s=>{NET.beds=s.val()||{};applyBeds();if(S&&!$('#shopOv').hidden)renderShop()});
  const pr=NET.db.ref('pos');pr.on('child_added',s=>onPos(s.key,s.val(),true));pr.on('child_changed',s=>onPos(s.key,s.val(),false));pr.on('child_removed',s=>onPosGone(s.key));
@@ -1428,7 +1428,7 @@ async function netInit(){try{
  NET.db.ref('invites/'+NET.uid).on('child_added',onInvite);
  NET.db.ref('.info/connected').on('value',s=>{if(s.val()&&NET.started){NET.db.ref('pos/'+NET.uid).onDisconnect().remove();NET.lastPos=''}});
  NET.on=true;setTimeout(()=>{NET.ready=true},3000);return true}catch(e){console.warn('Không kết nối được máy chủ:',e);NET.err=(e&&e.message)||String(e);NET.on=false;return false}}
-function onPlayer(s){const v=s.val();if(!v)return;v.name=cleanName(v.name);NET.players[s.key]=v;const c=NET.chars[s.key];if(c){const lk=JSON.stringify(v.look||{});if(c.lookKey!==lk||c.name!==v.name){c.name=v.name;c.lookKey=lk;c.look=lookFromCR(normLook(v.look));c.fr=makeFrames(c.look)}}}
+function onPlayer(s){const v=s.val();if(!v)return;v.name=cleanName(v.name);NET.players[s.key]=v;if(s.key===NET.uid)setTimeout(applyBonus,0);const c=NET.chars[s.key];if(c){const lk=JSON.stringify(v.look||{});if(c.lookKey!==lk||c.name!==v.name){c.name=v.name;c.lookKey=lk;c.look=lookFromCR(normLook(v.look));c.fr=makeFrames(c.look)}}}
 function mkRemote(uid){const pd=NET.players[uid]||{};const c=mkChar(cleanName(pd.name),lookFromCR(normLook(pd.look)),{remote:true,uid,hidden:true,online:false,tx:880,ty:700,state:'remote',energy:100});c.lookKey=JSON.stringify(pd.look||{});return c}
 function charFor(uid){if(uid===NET.uid)return P;return NET.chars[uid]||(NET.chars[uid]=mkRemote(uid))}
 function onPos(uid,v,added){if(uid===NET.uid||!v)return;const c=charFor(uid);
@@ -1439,7 +1439,7 @@ function onPosGone(uid){const c=NET.chars[uid];if(!c)return;c.online=false;c.hid
 function updRemote(c,dt){c.anim+=dt;if(c.bubbleT>0)c.bubbleT-=dt;const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);if(d>240){c.x=c.tx;c.y=c.ty}else if(d>1){const st=Math.max(70,d*2.2)*dt;if(st>=d){c.x=c.tx;c.y=c.ty}else{c.x+=dx/d*st;c.y+=dy/d*st}c.moving=true;c.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up')}else c.moving=!!c.netMoving}
 function sendPos(){if(!NET.started||!P)return;const v={x:Math.round(P.x),y:Math.round(P.y),d:P.dir,m:P.moving?1:0,h:(P.hidden||mode==='room'||mode==='cabin')?1:0,s:mode,n:P.need?(P.need.type==='poo'?2:1):0,c:P.need?Math.ceil(P.need.cd):0,a:P.accident>0?(P.accType==='poo'?2:1):0,g:P.shine>0?1:0};
  if(P.bubbleT>0&&P.bubble){v.b=P.bubble;v.bi=P.sayId||0}const key=JSON.stringify(v);if(key!==NET.lastPos){NET.lastPos=key;NET.db.ref('pos/'+NET.uid).set(v)}}
-function saveState(){if(!NET.on||!NET.started||!P)return;const st={dayId:NET.day?NET.day.id:0,money:Math.round(P.money),energy:Math.round(P.energy*10)/10,cd:P.cd,peeNext:Math.round(P.peeNext),pooNext:Math.round(P.pooNext),acc:P.accCount,ate:P.ateMeal,x:Math.round(P.x),y:Math.round(P.y),fainted:!!P.fainted,ts:TS()};
+function saveState(){if(!NET.on||!NET.started||!P)return;const st={dayId:NET.day?NET.day.id:0,money:Math.round(P.money),energy:Math.round(P.energy*10)/10,cd:P.cd,peeNext:Math.round(P.peeNext),pooNext:Math.round(P.pooNext),acc:P.accCount,ate:P.ateMeal,x:Math.round(P.x),y:Math.round(P.y),fainted:!!P.fainted,bonusId:P.bonusId||0,ts:TS()};
  NET.db.ref('players/'+NET.uid+'/state').set(st);if(NET.me)NET.me.state=st}
 function applyBeds(){if(!S||!NET.on)return;const B=NET.beds||{};[P,...Object.values(NET.chars)].forEach(c=>{c.lodge=null});
  ['villa','room','tent'].forEach(t=>{LIST(t).forEach((r,i)=>{const bi=B[t]&&B[t][i];for(let k=0;k<CFG.BEDS;k++){const u=bi&&bi[k];const c=u?charFor(u):null;r[k]=c;if(c){const pref=c===P&&P.lodgePref&&P.lodgePref.type===t&&P.lodgePref.i===i;if(!c.lodge||pref)c.lodge={type:t,i}}}})});
@@ -1483,10 +1483,11 @@ function netStart(){NET.started=true;const nm=cleanName($('#nameIn').value.trim(
  NET.db.ref('players/'+NET.uid).update(up);NET.me=Object.assign(NET.me||{},up);NET.db.ref('pos/'+NET.uid).onDisconnect().remove();NET.lastPos=''}
 function netAfterNewGame(){P.uid=NET.uid;Object.values(NET.chars).forEach(c=>{if(c.online&&!S.chars.includes(c))S.chars.push(c)});
  const st=NET.me&&NET.me.state,did=NET.day?NET.day.id:0;
- if(st&&st.dayId===did){P.money=st.money;P.energy=st.energy;Object.assign(P.cd,st.cd||{});if(st.peeNext!=null)P.peeNext=st.peeNext;if(st.pooNext!=null)P.pooNext=st.pooNext;P.accCount=st.acc||0;if(st.ate!=null)P.ateMeal=st.ate;if(st.x){P.x=st.x;P.y=st.y}P.fainted=!!st.fainted}
+ if(st&&st.dayId===did){P.money=st.money;P.energy=st.energy;Object.assign(P.cd,st.cd||{});if(st.peeNext!=null)P.peeNext=st.peeNext;if(st.pooNext!=null)P.pooNext=st.pooNext;P.accCount=st.acc||0;if(st.ate!=null)P.ateMeal=st.ate;if(st.x){P.x=st.x;P.y=st.y}P.fainted=!!st.fainted;P.bonusId=st.bonusId||0}
  if(NET.day)S.time=Math.max(0,(serverNow()-NET.day.start)/1000);while(S.time>=S.mealAt+CFG.MEAL_LEN){S.mealAt+=CFG.MEAL_AT;S.mealId++}
  applyBeds()}
-function netPostStart(){saveState();if(P.fainted){P.fainted=false;faint()}else if(NET.day&&S.time>=CFG.DAY)endDay()}
+function netPostStart(){applyBonus();saveState();if(P.fainted){P.fainted=false;faint()}else if(NET.day&&S.time>=CFG.DAY)endDay()}
+function applyBonus(){const bn=NET.day&&NET.day.bonus;if(!bn||!bn.id||!NET.started||!P||!S||S.ended)return;if(P.bonusId===bn.id)return;const pp=NET.players[NET.uid],cr=pp&&typeof pp.created==='number'?pp.created:(NET.me&&typeof NET.me.created==='number'?NET.me.created:null);if(cr==null||typeof bn.ts!=='number')return;P.bonusId=bn.id;if(cr>bn.ts){saveState();return}P.money+=bn.amount||0;coin();toast('Admin vừa tặng bạn '+VND(bn.amount)+'!',false,6000);sysLog('Admin tặng mọi người '+VND(bn.amount));saveState()}
 function netNewDay(){if(NET.me)NET.me.state=null;$('#endOv').hidden=true;$('#againBtn').disabled=false;$('#againBtn').textContent='CHƠI NGÀY MỚI';if(ROOM)exitRoom();CAB=null;D=null;G=null;newGame();updUI();toast('NGÀY MỚI BẮT ĐẦU! Mọi giường đã được làm trống.',true,6000);sysLog('Ngày mới bắt đầu');saveState()}
 function netTick(dt){if(!NET.started)return;NET.posT-=dt;if(NET.posT<=0){NET.posT=.25;sendPos()}NET.saveT-=dt;if(NET.saveT<=0){NET.saveT=10;saveState()}
  const w=NET.waitDuel;if(w){w.t-=dt;if(w.t<=0){NET.waitDuel=null;const sr=NET.db.ref('duels/'+w.id+'/status');sr.off();sr.set('expired');toast(w.opp.name+' không phản hồi lời thách đấu.');if(!$('#arenaOv').hidden)renderArena()}}
