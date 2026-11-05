@@ -6,8 +6,8 @@
 window.VML_CONFIG = {
   backend: "supabase",
   supabase: {
-    url: "https://DAN_PROJECT_ID.supabase.co",
-    anonKey: "DAN_ANON_KEY_VAO_DAY"
+    url: "https://xahypshxbykmkywhevnm.supabase.co",
+    anonKey: "sb_publishable_bYhLqaYnFyFJH7C8_goR6g_d6GY4wXu"
   },
   game: {
     startMoney: 9000000, // Tiền khởi đầu mỗi ngày. Chơi thật thì đổi thành 0
