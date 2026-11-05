@@ -10,7 +10,7 @@ window.VML_CONFIG = {
     anonKey: "sb_publishable_bYhLqaYnFyFJH7C8_goR6g_d6GY4wXu"
   },
   game: {
-    startMoney: 9000000, // Tiền khởi đầu mỗi ngày. Chơi thật thì đổi thành 0
+    startMoney: 500000,  // Tiền khởi đầu mỗi ngày cho mọi người chơi
     dayMinutes: 20,      // Một ngày trong game dài bao nhiêu phút (08:00 → 20:00)
     bots: 0,             // Số nhân viên giả lập khi chạy online (nên để 0)
     testBots: 16         // Số nhân viên giả lập khi chạy offline để test
