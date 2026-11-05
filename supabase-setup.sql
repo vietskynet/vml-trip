@@ -195,6 +195,67 @@ revoke all on function public.rt_fixts(jsonb), public.rt_jset(jsonb, text[], jso
 grant execute on function public.rt_write(jsonb), public.rt_cas(text, jsonb, jsonb), public.rt_sync(bigint),
   public.pos_set(jsonb), public.pos_leave(), public.is_admin(), public.now_ms() to authenticated;
 
+-- 8b. Mã đồng bộ: lấy lại nhân vật trên máy khác ---------------------------
+create table if not exists public.sync_codes (
+  code text primary key,
+  uid  uuid not null unique
+);
+alter table public.sync_codes enable row level security;
+
+create or replace function public.rt_code() returns text
+language plpgsql security definer set search_path = public as $$
+declare c text;
+begin
+  if auth.uid() is null then raise exception 'Chưa đăng nhập'; end if;
+  select s.code into c from public.sync_codes s where s.uid = auth.uid();
+  if c is not null then return c; end if;
+  loop
+    c := upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 10));
+    begin
+      insert into public.sync_codes(code, uid) values (c, auth.uid());
+      return c;
+    exception when unique_violation then
+      select s.code into c from public.sync_codes s where s.uid = auth.uid();
+      if c is not null then return c; end if;
+    end;
+  end loop;
+end $$;
+
+create or replace function public.rt_claim(code text) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare o uuid; n uuid := auth.uid(); t bigint := public.now_ms(); pv jsonb;
+        c text := upper(regexp_replace(coalesce(code, ''), '[^0-9A-Za-z]', '', 'g'));
+begin
+  if n is null then raise exception 'Chưa đăng nhập'; end if;
+  perform pg_sleep(0.3);                                    -- làm chậm việc dò mã
+  select s.uid into o from public.sync_codes s where s.code = c;
+  if o is null then return jsonb_build_object('ok', false, 'msg', 'Mã không đúng. Kiểm tra lại nhé.'); end if;
+  if o = n then return jsonb_build_object('ok', true, 'same', true); end if;
+  perform pg_advisory_xact_lock(hashtext('rt_claim'));
+  select val into pv from public.rtdb where path = 'players/' || o;
+  if pv is null then return jsonb_build_object('ok', false, 'msg', 'Nhân vật của mã này không còn.'); end if;
+  -- trả giường của nhân vật tạm trên máy này, rồi chuyển mọi thứ từ mã cũ sang máy này
+  update public.rtdb set val = replace(val::text, '"' || n::text || '"', 'null')::jsonb, upd = t
+    where path like 'beds/%' and val is not null and val::text like '%' || n::text || '%';
+  update public.rtdb set val = replace(val::text, o::text, n::text)::jsonb, upd = t
+    where (path like 'beds/%' or path like 'duels/%') and val is not null and val::text like '%' || o::text || '%';
+  insert into public.rtdb(path, val, upd) values ('players/' || n, pv, t)
+    on conflict (path) do update set val = excluded.val, upd = excluded.upd;
+  update public.rtdb set val = null, upd = t where path = 'players/' || o;
+  insert into public.rtdb(path, val, upd)
+    select 'gifts/' || n, val, t from public.rtdb where path = 'gifts/' || o and val is not null
+    on conflict (path) do update set val = coalesce(public.rtdb.val, '{}'::jsonb) || excluded.val, upd = excluded.upd;
+  update public.rtdb set val = null, upd = t where path = 'gifts/' || o;
+  delete from public.pos where uid = o;
+  delete from public.sync_codes where uid = n;
+  update public.sync_codes set uid = n where sync_codes.code = c;
+  if exists (select 1 from public.admins where uid = o) then insert into public.admins(uid) values (n) on conflict do nothing; end if;
+  return jsonb_build_object('ok', true);
+end $$;
+
+revoke all on function public.rt_code(), public.rt_claim(text) from public, anon;
+grant execute on function public.rt_code(), public.rt_claim(text) to authenticated;
+
 -- 9. Cấp quyền admin: bỏ dấu -- ở dòng dưới, dán mã của bạn (lấy ở admin.html) rồi chạy lại
 -- insert into public.admins(uid) values ('DAN-MA-CUA-BAN-VAO-DAY') on conflict do nothing;
 

@@ -239,6 +239,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
       </div>
     </div>
     <div class="row"><button class="btn" id="startBtn" disabled>ĐANG DỰNG RESORT…</button><button class="btn ghost" id="newCharBtn" hidden>TẠO NHÂN VẬT MỚI</button><span style="color:var(--muted)" id="modeNote"></span></div>
+    <div class="row" id="syncRow" hidden style="margin:10px 0 4px"><span style="color:var(--muted)">Đã có nhân vật ở máy khác?</span><input id="codeIn" maxlength="14" placeholder="Nhập mã đồng bộ" aria-label="Mã đồng bộ" autocomplete="off" style="flex:0 1 200px;text-transform:uppercase"><button class="btn ghost sm" id="codeGo">LẤY LẠI NHÂN VẬT</button></div>
+    <p id="codeMsg" style="margin:0 0 6px;font-size:17px;color:var(--leaf)"></p>
     <p id="profLine" style="margin:0;font-size:17px"></p>
   </div>
 </div>
@@ -346,6 +348,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
   <div class="card">
     <h2>NHÂN VẬT CỦA BẠN</h2>
     <p id="acctInfo"></p>
+    <div class="row" style="margin-bottom:12px"><input id="renameIn" maxlength="12" placeholder="Tên mới" aria-label="Tên mới"><button class="btn ok sm" id="renameGo">ĐỔI TÊN</button></div>
+    <div id="syncBox" style="margin-bottom:12px"></div>
     <div class="row"><button class="btn ghost" id="acctNew">TẠO NHÂN VẬT MỚI</button><button class="btn ghost" data-close="acctOv">ĐÓNG</button></div>
   </div>
 </div>
@@ -1567,7 +1571,7 @@ async function netInit(){try{
  NET.day=(await NET.db.ref('day').get()).val();
  NET.db.ref('day').on('value',s=>{NET.day=s.val();applyBonus();applyGifts()});
  NET.db.ref('gifts/'+NET.uid).on('value',s=>{NET.gifts=s.val()||{};applyGifts()});
- const pl=NET.db.ref('players');pl.on('child_added',onPlayer);pl.on('child_changed',onPlayer);pl.on('child_removed',s=>{delete NET.players[s.key]});
+ const pl=NET.db.ref('players');pl.on('child_added',onPlayer);pl.on('child_changed',onPlayer);pl.on('child_removed',s=>{delete NET.players[s.key];if(s.key===NET.uid&&NET.started&&!NET.moved)netMoved()});
  NET.db.ref('beds').on('value',s=>{NET.beds=s.val()||{};applyBeds();if(S&&!$('#shopOv').hidden)renderShop()});
  const pr=NET.db.ref('pos');pr.on('child_added',s=>onPos(s.key,s.val(),true));pr.on('child_changed',s=>onPos(s.key,s.val(),false));pr.on('child_removed',s=>onPosGone(s.key));
  NET.db.ref('offers/'+NET.uid).on('child_added',s=>{const o=s.val();if(o&&o.status==='pending')NET.offerQ.push(Object.assign({id:s.key},o))});
@@ -1583,9 +1587,10 @@ function onPos(uid,v,added){if(uid===NET.uid||!v)return;const c=charFor(uid);
  if(v.b&&v.bi!==c.sayId){c.sayId=v.bi;const txt=String(v.b).replace(/[<>]/g,'').slice(0,60);if(!added||NET.ready){c.bubble=txt;c.bubbleT=8;chatLog(c.name,txt)}}}
 function onPosGone(uid){const c=NET.chars[uid];if(!c)return;c.online=false;c.hidden=true;if(S){const i=S.chars.indexOf(c);if(i>=0)S.chars.splice(i,1)}}
 function updRemote(c,dt){c.anim+=dt;if(c.bubbleT>0)c.bubbleT-=dt;const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy);if(d>240){c.x=c.tx;c.y=c.ty}else if(d>1){const st=Math.max(70,d*2.2)*dt;if(st>=d){c.x=c.tx;c.y=c.ty}else{c.x+=dx/d*st;c.y+=dy/d*st}c.moving=true;c.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up')}else c.moving=!!c.netMoving}
-function sendPos(){if(!NET.started||!P)return;const v={x:Math.round(P.x),y:Math.round(P.y),d:P.dir,m:P.moving?1:0,h:(P.hidden||mode==='room'||mode==='cabin')?1:0,s:mode,n:P.need?(P.need.type==='poo'?2:1):0,c:P.need?Math.ceil(P.need.cd):0,a:P.accident>0?(P.accType==='poo'?2:1):0,g:P.shine>0?1:0};
+function sendPos(){if(!NET.started||!P||NET.moved)return;const v={x:Math.round(P.x),y:Math.round(P.y),d:P.dir,m:P.moving?1:0,h:(P.hidden||mode==='room'||mode==='cabin')?1:0,s:mode,n:P.need?(P.need.type==='poo'?2:1):0,c:P.need?Math.ceil(P.need.cd):0,a:P.accident>0?(P.accType==='poo'?2:1):0,g:P.shine>0?1:0};
  if(P.bubbleT>0&&P.bubble){v.b=P.bubble;v.bi=P.sayId||0}const key=JSON.stringify(v);if(key!==NET.lastPos){NET.lastPos=key;NET.db.ref('pos/'+NET.uid).set(v)}}
-function saveState(){if(!NET.on||!NET.started||!P)return;const st={dayId:'loop',pets:petList(P),money:Math.round(P.money),energy:Math.round(P.energy*10)/10,cd:P.cd,peeNext:Math.round(P.peeNext),pooNext:Math.round(P.pooNext),acc:P.accCount,ate:P.ateMeal,x:Math.round(P.x),y:Math.round(P.y),fainted:!!P.fainted,bonusId:P.bonusId||0,giftIds:(P.giftIds||[]).slice(-50),giftAt:P.giftAt||0,ts:TS()};
+function netMoved(){NET.moved=true;if(S){S.ended=true;stopAll()}$('#endTitle').textContent='NHÂN VẬT ĐÃ CHUYỂN SANG MÁY KHÁC';$('#endText').textContent='Ai đó vừa dùng mã đồng bộ của bạn để chơi tiếp nhân vật này trên máy khác. Tải lại trang để tạo nhân vật mới, hoặc nhập lại mã đồng bộ để lấy nhân vật về máy này.';$('#endStats').innerHTML='';clearInterval(rescueTimer);const bt=$('#againBtn');bt.disabled=false;bt.textContent='TẢI LẠI TRANG';$('#endOv').hidden=false}
+function saveState(){if(!NET.on||!NET.started||!P||NET.moved)return;const st={dayId:'loop',pets:petList(P),money:Math.round(P.money),energy:Math.round(P.energy*10)/10,cd:P.cd,peeNext:Math.round(P.peeNext),pooNext:Math.round(P.pooNext),acc:P.accCount,ate:P.ateMeal,x:Math.round(P.x),y:Math.round(P.y),fainted:!!P.fainted,bonusId:P.bonusId||0,giftIds:(P.giftIds||[]).slice(-50),giftAt:P.giftAt||0,ts:TS()};
  NET.db.ref('players/'+NET.uid+'/state').set(st);if(NET.me)NET.me.state=st}
 function applyBeds(){if(!S||!NET.on)return;const B=NET.beds||{};[P,...Object.values(NET.chars)].forEach(c=>{c.lodge=null});
  ['villa','room','tent'].forEach(t=>{LIST(t).forEach((r,i)=>{const bi=B[t]&&B[t][i];for(let k=0;k<CFG.BEDS;k++){const u=bi&&bi[k];const c=u?charFor(u):null;r[k]=c;if(c){const pref=c===P&&P.lodgePref&&P.lodgePref.type===t&&P.lodgePref.i===i;if(!c.lodge||pref)c.lodge={type:t,i}}}})});
@@ -1663,7 +1668,20 @@ $('#payGo').onclick=()=>{const t=payCands().find(c=>c.uid===payTo),a=payVal;if(!
  paying=true;$('#payGo').disabled=true;$('#payMsg').textContent='Đang chuyển…';
  NET.db.ref('gifts/'+t.uid+'/t'+Date.now()+Math.floor(Math.random()*1000)).set({amount:a,ts:TS(),from:NET.uid,fromName:P.name}).then(()=>{P.money-=a;coin();saveState();paying=false;$('#payMsg').textContent='Đã chuyển '+VND(a)+' cho '+t.name+'.';sysLog('Bạn chuyển '+VND(a)+' cho '+t.name);renderPay()})
  .catch(e=>{paying=false;$('#payMsg').textContent=/quyền/i.test(e&&e.message||'')?'Máy chủ chưa bật chuyển tiền (admin cần chạy lại file SQL mới).':'Lỗi: '+(e&&e.message||e);renderPay()})};
-$('#bAcct').onclick=()=>{const pf=loadProfile();$('#acctInfo').innerHTML='Tên: <b>'+esc(P?P.name:'')+'</b><br>Chế độ: <b>'+(NET.on?'Online':'Offline (lưu trên trình duyệt này)')+'</b>'+(NET.on?'<br>Mã người chơi: <b>'+NET.uid.slice(0,8)+'</b> · được nhớ bằng cookie trên máy này':'')+'<br>'+esc(profileLine(pf))+'<br>Tạo nhân vật mới sẽ xoá nhân vật hiện tại và trả lại giường đang giữ.';$('#acctOv').hidden=false;keys={}};
+const SB=()=>window.firebase&&window.firebase.__supabase;
+$('#bAcct').onclick=()=>{const pf=loadProfile();$('#acctInfo').innerHTML='Tên: <b>'+esc(P?P.name:'')+'</b><br>Chế độ: <b>'+(NET.on?'Online':'Offline (lưu trên trình duyệt này)')+'</b>'+(NET.on?'<br>Mã người chơi: <b>'+NET.uid.slice(0,8)+'</b> · được nhớ bằng cookie trên máy này':'')+'<br>'+esc(profileLine(pf))+'<br>Tạo nhân vật mới sẽ xoá nhân vật hiện tại và trả lại giường đang giữ.';
+ $('#renameIn').value=P?P.name:'';
+ $('#syncBox').innerHTML=NET.on&&SB()?'<b style="color:var(--sun)">MÃ ĐỒNG BỘ</b><br><span style="color:var(--muted)">Về nhà hoặc sang máy khác, nhập mã này ở màn hình tạo nhân vật để chơi tiếp đúng nhân vật này (tiền, giường, thú cưng). Giữ bí mật, ai có mã là lấy được nhân vật.</span><div class="row" style="margin-top:8px"><button class="btn ghost sm" id="codeShow">HIỆN MÃ</button><b id="codeVal" class="price" style="font-size:28px;letter-spacing:2px"></b><button class="btn ghost sm" id="codeCopy" hidden>SAO CHÉP</button></div>':'<span style="color:var(--muted)">Mã đồng bộ chỉ có ở bản online.</span>';
+ const cs=$('#codeShow');if(cs)cs.onclick=async()=>{cs.disabled=true;cs.textContent='ĐANG LẤY…';try{const {data,error}=await SB().rpc('rt_code');if(error)throw error;const c=String(data);$('#codeVal').textContent=c.slice(0,5)+'-'+c.slice(5);cs.hidden=true;$('#codeCopy').hidden=false;$('#codeCopy').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(c.slice(0,5)+'-'+c.slice(5)).then(()=>toast('Đã sao chép mã đồng bộ.'),()=>{})}}catch(e){cs.disabled=false;cs.textContent='HIỆN MÃ';$('#codeVal').textContent=/rt_code|schema|function/i.test(e.message||'')?'Máy chủ chưa bật mã đồng bộ (admin cần chạy SQL mới).':'Lỗi: '+(e.message||e)}};
+ $('#acctOv').hidden=false;keys={}};
+$('#renameGo').onclick=()=>{if(!P)return;const nm=cleanName($('#renameIn').value.trim().slice(0,12));if(!$('#renameIn').value.trim()){toast('Nhập tên mới trước đã.');return}if(nm===P.name){toast('Tên mới giống tên cũ.');return}const old=P.name;P.name=nm;S.newest=S.newest===old?nm:S.newest;
+ try{localStorage.setItem('vmlTripName',nm)}catch(e){}$('#nameIn').value=nm;if(NET.on&&NET.started){NET.db.ref('players/'+NET.uid).update({name:nm});if(NET.me)NET.me.name=nm;sysLog('Bạn đổi tên từ '+old+' thành '+nm)}
+ $('#acctInfo b').textContent=nm;coin();toast('Đã đổi tên thành '+nm+'.')};
+$('#renameIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#renameGo').click()}});
+$('#codeGo').onclick=async()=>{const raw=$('#codeIn').value.replace(/[^0-9a-z]/gi,'').toUpperCase();const msg=t=>{$('#codeMsg').textContent=t};if(raw.length<6){msg('Mã đồng bộ gồm 10 ký tự, ví dụ A1B2C-3D4E5.');return}if(!NET.on||!SB()){msg('Cần kết nối máy chủ để dùng mã đồng bộ.');return}
+ const bt=$('#codeGo');bt.disabled=true;msg('Đang tìm nhân vật…');try{const {data,error}=await SB().rpc('rt_claim',{code:raw});if(error)throw error;if(!data||!data.ok){msg((data&&data.msg)||'Mã không đúng.');bt.disabled=false;return}
+  if(data.same){msg('Đây đã là nhân vật trên máy này rồi.');bt.disabled=false;return}msg('Đã lấy lại nhân vật! Đang tải lại…');try{localStorage.removeItem('vmlTripName')}catch(e){}setTimeout(()=>location.reload(),800)}
+ catch(e){bt.disabled=false;msg(/rt_claim|schema|function/i.test(e.message||'')?'Máy chủ chưa bật mã đồng bộ (admin cần chạy SQL mới).':'Lỗi: '+(e.message||e))}};
 
 
 /* ================= pets ================= */
@@ -1755,7 +1773,7 @@ function renderCreator(){$('#sel').innerHTML=CROWS.map((r,i)=>{const o=r.opts[CR
  myLook=lookFromCR();pvFrames=makeFrames(myLook);$('#pvName').textContent=($('#nameIn').value.trim()||'BẠN').toUpperCase()}
 function crChange(r,d){const row=CROWS[r];CR[row.k]=(CR[row.k]+d+row.opts.length)%row.opts.length;if(row.k==='gender')CR.hs=CR.gender===1?3:0;crRow=r;renderCreator();beep(660+r*40,.04)}
 $('#sel').addEventListener('click',e=>{const a=e.target.closest('.ar');if(a){crChange(+a.dataset.r,+a.dataset.d);return}const row=e.target.closest('.srow');if(row){crRow=+row.dataset.r;renderCreator()}});
-function creatorKey(e){if(e.target.tagName==='INPUT'){if(e.key==='Enter'&&!$('#startBtn').disabled)$('#startBtn').click();if(e.key!=='ArrowUp'&&e.key!=='ArrowDown')return;e.target.blur()}
+function creatorKey(e){if(e.target.id==='codeIn'){if(e.key==='Enter'){e.preventDefault();$('#codeGo').click()}return}if(e.target.tagName==='INPUT'){if(e.key==='Enter'&&!$('#startBtn').disabled)$('#startBtn').click();if(e.key!=='ArrowUp'&&e.key!=='ArrowDown')return;e.target.blur()}
  if(e.key==='ArrowUp'){crRow=(crRow+CROWS.length-1)%CROWS.length;renderCreator();e.preventDefault()}
  else if(e.key==='ArrowDown'){crRow=(crRow+1)%CROWS.length;renderCreator();e.preventDefault()}
  else if(e.key==='ArrowLeft'){crChange(crRow,-1);e.preventDefault()}
@@ -1769,7 +1787,7 @@ try{const n=localStorage.getItem('vmlTripName');if(n)$('#nameIn').value=n;const 
 $('#bMusic').classList.toggle('off',!MUS.on);
 $('#startBtn').onclick=()=>{try{localStorage.setItem('vmlTripName',$('#nameIn').value.trim());localStorage.setItem('vmlTripLook',JSON.stringify(CR))}catch(e){}try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume()}catch(e){}
  myLook=lookFromCR();$('#startOv').hidden=true;if(NET.on)netStart();newGame();updUI();startMusic();let seen=false;try{seen=localStorage.getItem('vmlTripRules')==='1';localStorage.setItem('vmlTripRules','1')}catch(e){}$('#helpOv').hidden=seen;toast('Chào '+P.name+'! Ví hiện có '+VND(P.money)+'. Nhấn C để chat.',false,4500);if(NET.on)netPostStart()};
-$('#againBtn').onclick=()=>revive();
+$('#againBtn').onclick=()=>{if(NET.moved){location.reload();return}revive()};
 
 if(location.hash==='#debug')window.__vml={get G(){return G},ghostScare,haunted,get ROOM(){return ROOM},PETS,mapShot(sc=1){const sv=[VW,VH],px=P.x,py=P.y;VW=MW;VH=MH;cv.width=MW;cv.height=MH;P.x=MW/2;P.y=MH/2;cam.x=0;cam.y=0;renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=px;P.y=py;resize();return u},get S(){return S},get P(){return P},get D(){return D},get mode(){return mode},NET,startDuel,enterRoom,openArena,buy,startGame,DUELS,handleChat};
 resize();renderCreator();$('#profLine').textContent=profileLine(loadProfile());
@@ -1778,7 +1796,7 @@ $('#modeNote').textContent='Bản offline · bạn + '+CFG.BOTS+' nhân viên gi
 fontsReady.then(()=>new Promise(r=>setTimeout(r,30))).then(async()=>{buildGrid();buildWorld();renderCreator();
  if(ONLINE_READY){$('#startBtn').textContent='ĐANG KẾT NỐI…';$('#modeNote').textContent='Đang kết nối máy chủ…';const ok=await netInit();
   if(ok){$('#modeNote').textContent='Bản online · người chơi thật · ví khởi đầu '+VND(CFG.TEST_MONEY);
-   if(NET.me&&NET.me.name){$('#startTitle').textContent='CHÀO MỪNG TRỞ LẠI, '+NET.me.name.toUpperCase();$('#nameIn').value=NET.me.name;if(NET.me.look){const L=normLook(NET.me.look);Object.assign(CR,L)}renderCreator();$('#newCharBtn').hidden=false}}
+   if(NET.me&&NET.me.name){$('#startTitle').textContent='CHÀO MỪNG TRỞ LẠI, '+NET.me.name.toUpperCase();$('#nameIn').value=NET.me.name;if(NET.me.look){const L=normLook(NET.me.look);Object.assign(CR,L)}renderCreator();$('#newCharBtn').hidden=false}if(SB())$('#syncRow').hidden=false}
   else $('#modeNote').textContent='Không kết nối được máy chủ, đang chạy bản offline. Chi tiết: '+(NET.err||'không rõ')}
  newGame();running=false;P.x=880;P.y=560;$('#startBtn').disabled=false;$('#startBtn').textContent='VÀO RESORT';requestAnimationFrame(loop)});
 })();
