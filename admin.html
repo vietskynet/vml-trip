@@ -6,6 +6,11 @@
 <title>VML Trip Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=VT323&display=swap" rel="stylesheet">
 <style>
+#list tr{cursor:pointer}#list tr:hover td{background:var(--panel2)}#list tr.sel td{background:#3a2f0a}
+.gift{background:var(--ink);border:3px solid var(--sun);padding:12px 14px;margin-top:12px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chips button{font-family:"VT323",monospace;font-size:19px;background:var(--panel2);box-shadow:none;padding:4px 10px}
+.gift input{font:inherit;font-size:22px;padding:6px 10px;background:#000;color:#fff;border:3px solid var(--line);width:200px}
 :root{--ink:#081230;--panel:#12204a;--panel2:#1c3170;--text:#f4f8ff;--muted:#a9bde0;--sun:#ffc23a;--coral:#ff5f6d;--sea:#2fd0c8;--leaf:#6fd36a;--line:#2c4b8c;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--text);font-family:"VT323","Courier New",monospace;font-size:21px;padding:24px max(16px,env(safe-area-inset-left)) 40px}
@@ -65,7 +70,14 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted)}
   </div>
   <div class="card">
     <h2>NGƯỜI CHƠI HÔM NAY</h2>
+    <p>Bấm vào một người chơi để tặng tiền riêng cho người đó.</p>
     <div class="tbl"><table><thead><tr><th>TÊN</th><th>VÍ</th><th>NĂNG LƯỢNG</th><th>TRẠNG THÁI</th></tr></thead><tbody id="list"></tbody></table></div>
+    <div class="gift" id="giftBox" hidden>
+      <h2 id="giftTitle">TẶNG TIỀN</h2>
+      <div class="chips"><button data-v="500000">500.000₫</button><button data-v="1000000">1.000.000₫</button><button data-v="5000000">5.000.000₫</button><button data-v="9000000">9.000.000₫</button></div>
+      <div class="row"><input id="giftAmt" type="number" min="0" step="100000" value="1000000" aria-label="Số tiền tặng"><button class="ok" id="giftGo">TẶNG</button><button class="ghost" id="giftClose">ĐÓNG</button></div>
+      <p id="giftMsg" style="margin:10px 0 0"></p>
+    </div>
   </div>
   <div class="card">
     <h2>VÙNG NGUY HIỂM</h2>
@@ -80,7 +92,7 @@ const VC=window.VML_CONFIG;const DAY=((VC&&VC.game&&VC.game.dayMinutes)||20)*60;
 const VND=n=>String(Math.round(n||0)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+'₫';
 if(VC&&VC.backend==='supabase'&&window.supabase&&window.VMLSupabaseShim&&VC.supabase&&!/DAN_|YOUR/i.test(VC.supabase.url+' '+VC.supabase.anonKey)){window.firebase=window.VMLSupabaseShim(VC.supabase);VC.firebase={apiKey:'supabase'}}
 if(!window.firebase||!VC||!VC.firebase||/DAN_/.test(VC.firebase.apiKey)){$('#uid').textContent='Chưa cấu hình database trong config.js';return}
-firebase.initializeApp(VC.firebase);const db=firebase.database(),TS=firebase.database.ServerValue.TIMESTAMP;let off=0,day=null,players={},pos={},beds={},admin=false;
+firebase.initializeApp(VC.firebase);const db=firebase.database(),TS=firebase.database.ServerValue.TIMESTAMP;let giftTo=null,off=0,day=null,players={},pos={},beds={},admin=false;
 const msg=t=>{$('#msg').textContent=t};
 firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously().catch(e=>{$('#uid').textContent='Lỗi đăng nhập: '+e.message});return}
  $('#uid').textContent=u.uid;
@@ -95,13 +107,18 @@ function clock(){if(!day)return'—';const t=(Date.now()+off-day.start)/1000;if(
 function render(){const t=day?(Date.now()+off-day.start)/1000:0;$('#dState').textContent=!day?'CHƯA MỞ':t>=DAY?'ĐÃ HẾT':'ĐANG CHƠI';$('#dClock').textContent=clock();$('#dOnline').textContent=Object.keys(pos).length;
  let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(u=>Object.values(u||{}).forEach(x=>{if(x)n++})));$('#dBeds').textContent=n;
  const did=day?day.id:0;const rows=Object.entries(players).filter(([u,p])=>p&&p.state&&p.state.dayId===did).sort((a,b)=>(b[1].state.money||0)-(a[1].state.money||0));
- $('#list').innerHTML=rows.map(([u,p])=>`<tr><td>${esc(p.name||'?')}</td><td>${VND(p.state.money)}</td><td>${Math.round(p.state.energy||0)}%</td><td class="${pos[u]?'on':'off'}">${p.state.fainted?'Đã xỉu':pos[u]?'Online':'Offline'}</td></tr>`).join('')||'<tr><td colspan="4">Chưa có ai chơi trong ngày này.</td></tr>'}
+ $('#list').innerHTML=rows.map(([u,p])=>`<tr data-u="${u}" class="${u===giftTo?'sel':''}"><td>${esc(p.name||'?')}</td><td>${VND(p.state.money)}</td><td>${Math.round(p.state.energy||0)}%</td><td class="${pos[u]?'on':'off'}">${p.state.fainted?'Đã xỉu':pos[u]?'Online':'Offline'}</td></tr>`).join('')||'<tr><td colspan="4">Chưa có ai chơi trong ngày này.</td></tr>'}
 setInterval(render,1000);
 $('#copy').onclick=()=>{navigator.clipboard.writeText($('#uid').textContent).then(()=>msg('Đã sao chép mã.'),()=>msg('Hãy bôi đen mã và sao chép thủ công.'))};
 $('#start').onclick=()=>{db.ref().update({day:{id:Date.now(),start:TS},beds:null,offers:null,invites:null,duels:null}).then(()=>msg('Đã bắt đầu ngày mới lúc '+new Date().toLocaleTimeString('vi-VN')+'.')).catch(e=>msg('Lỗi: '+e.message))};
 $('#end').onclick=()=>{if(!day){msg('Chưa có ngày nào đang chạy.');return}db.ref('day/start').set(Date.now()+off-DAY*1000-1000).then(()=>msg('Đã kết thúc ngày.')).catch(e=>msg('Lỗi: '+e.message))};
 $('#bonus').onclick=()=>{const a=Math.round(+$('#bonusAmt').value||0);if(!day){$('#bonusMsg').textContent='Hãy bắt đầu ngày mới trước.';return}if(a<=0){$('#bonusMsg').textContent='Nhập số tiền lớn hơn 0.';return}
  db.ref('day/bonus').set({id:Date.now(),amount:a,ts:TS}).then(()=>{$('#bonusMsg').textContent='Đã tặng '+VND(a)+' cho mọi người lúc '+new Date().toLocaleTimeString('vi-VN')+'. Ví sẽ cộng trong vài giây.'}).catch(e=>{$('#bonusMsg').textContent='Lỗi: '+e.message})};
+$('#list').addEventListener('click',e=>{const tr=e.target.closest('tr[data-u]');if(!tr)return;if(!admin){msg('Bạn cần là admin để tặng tiền.');return}giftTo=tr.dataset.u;const p=players[giftTo]||{};$('#giftTitle').textContent='TẶNG TIỀN CHO '+String(p.name||'?').toUpperCase();$('#giftMsg').textContent='Ví hiện tại: '+VND(p.state&&p.state.money);$('#giftBox').hidden=false;render();$('#giftAmt').focus()});
+document.querySelectorAll('#giftBox .chips button').forEach(b=>b.onclick=()=>{$('#giftAmt').value=b.dataset.v});
+$('#giftClose').onclick=()=>{giftTo=null;$('#giftBox').hidden=true;render()};
+$('#giftGo').onclick=()=>{const a=Math.round(+$('#giftAmt').value||0),u=giftTo,p=players[u]||{};if(!u)return;if(!day){$('#giftMsg').textContent='Hãy bắt đầu ngày mới trước.';return}if(a<=0){$('#giftMsg').textContent='Nhập số tiền lớn hơn 0.';return}
+ db.ref('day/gifts/'+u+'/g'+Date.now()).set({amount:a,ts:TS}).then(()=>{$('#giftMsg').textContent='Đã tặng '+VND(a)+' cho '+(p.name||'?')+'. '+(pos[u]?'Ví sẽ cộng trong vài giây.':'Người này đang offline, sẽ nhận khi quay lại.')}).catch(e=>{$('#giftMsg').textContent='Lỗi: '+e.message})};
 const wipe=$('#wipe');wipe.onclick=()=>{if(!wipe.dataset.armed){wipe.dataset.armed='1';wipe.textContent='BẤM LẦN NỮA ĐỂ XOÁ';setTimeout(()=>{delete wipe.dataset.armed;wipe.textContent='XOÁ TOÀN BỘ DỮ LIỆU'},4000);return}
  db.ref().update({players:null,pos:null,beds:null,offers:null,invites:null,duels:null,day:null}).then(()=>msg('Đã xoá toàn bộ dữ liệu.')).catch(e=>msg('Lỗi: '+e.message))};
 })();
