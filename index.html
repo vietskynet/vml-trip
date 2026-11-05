@@ -1427,7 +1427,7 @@ async function netInit(){try{
  NET.db.ref('offers/'+NET.uid).on('child_added',s=>{const o=s.val();if(o&&o.status==='pending')NET.offerQ.push(Object.assign({id:s.key},o))});
  NET.db.ref('invites/'+NET.uid).on('child_added',onInvite);
  NET.db.ref('.info/connected').on('value',s=>{if(s.val()&&NET.started){NET.db.ref('pos/'+NET.uid).onDisconnect().remove();NET.lastPos=''}});
- NET.on=true;setTimeout(()=>{NET.ready=true},3000);return true}catch(e){console.warn('Không kết nối được Firebase:',e);NET.on=false;return false}}
+ NET.on=true;setTimeout(()=>{NET.ready=true},3000);return true}catch(e){console.warn('Không kết nối được máy chủ:',e);NET.err=(e&&e.message)||String(e);NET.on=false;return false}}
 function onPlayer(s){const v=s.val();if(!v)return;v.name=cleanName(v.name);NET.players[s.key]=v;const c=NET.chars[s.key];if(c){const lk=JSON.stringify(v.look||{});if(c.lookKey!==lk||c.name!==v.name){c.name=v.name;c.lookKey=lk;c.look=lookFromCR(normLook(v.look));c.fr=makeFrames(c.look)}}}
 function mkRemote(uid){const pd=NET.players[uid]||{};const c=mkChar(cleanName(pd.name),lookFromCR(normLook(pd.look)),{remote:true,uid,hidden:true,online:false,tx:880,ty:700,state:'remote',energy:100});c.lookKey=JSON.stringify(pd.look||{});return c}
 function charFor(uid){if(uid===NET.uid)return P;return NET.chars[uid]||(NET.chars[uid]=mkRemote(uid))}
@@ -1540,7 +1540,7 @@ fontsReady.then(()=>new Promise(r=>setTimeout(r,30))).then(async()=>{buildGrid()
  if(ONLINE_READY){$('#startBtn').textContent='ĐANG KẾT NỐI…';$('#modeNote').textContent='Đang kết nối máy chủ…';const ok=await netInit();
   if(ok){$('#modeNote').textContent='Bản online · người chơi thật · ví khởi đầu '+VND(CFG.TEST_MONEY);
    if(NET.me&&NET.me.name){$('#startTitle').textContent='CHÀO MỪNG TRỞ LẠI, '+NET.me.name.toUpperCase();$('#nameIn').value=NET.me.name;if(NET.me.look){const L=normLook(NET.me.look);Object.assign(CR,L)}renderCreator();$('#newCharBtn').hidden=false}}
-  else $('#modeNote').textContent='Không kết nối được máy chủ, đang chạy bản offline.'}
+  else $('#modeNote').textContent='Không kết nối được máy chủ, đang chạy bản offline. Chi tiết: '+(NET.err||'không rõ')}
  newGame();running=false;P.x=880;P.y=560;$('#startBtn').disabled=false;$('#startBtn').textContent='VÀO RESORT';requestAnimationFrame(loop)});
 })();
 </script>

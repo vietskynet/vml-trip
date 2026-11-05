@@ -9,7 +9,7 @@
 window.VMLSupabaseShim=function(cfg){
   const sb=window.supabase.createClient(cfg.url,cfg.anonKey,{auth:{persistSession:true,autoRefreshToken:true,storageKey:'vml-trip-auth'}});
   const POLL=cfg.pollMs||1500;
-  const root={};const L=[];let since=0,offset=0,uid=null,timer=null,kickT=null,syncing=false,again=false;
+  const root={};const L=[];let since=0,offset=0,uid=null,timer=null,kickT=null,syncing=false,again=false,lastErr='';
   let readyRes;const ready=new Promise(r=>{readyRes=r});
   const parts=p=>String(p||'').split('/').filter(Boolean);
   const clone=v=>v==null?null:JSON.parse(JSON.stringify(v));
@@ -36,7 +36,7 @@ window.VMLSupabaseShim=function(cfg){
       (data.docs||[]).forEach(d=>setAt(d.p,d.v));
       root.pos=data.pos||{};root.admins=data.admin?{[uid]:true}:{};
       since=data.now;notify();readyRes(true)}
-    catch(e){console.warn('Đồng bộ Supabase lỗi:',e.message||e)}
+    catch(e){lastErr=(e&&(e.message||e.msg||e.code))||String(e);console.warn('Đồng bộ Supabase lỗi:',lastErr)}
     finally{syncing=false;if(again){again=false;kick(50)}}}
   const kick=ms=>{clearTimeout(kickT);kickT=setTimeout(sync,ms)};
   function start(){if(timer)return;sync();timer=setInterval(sync,POLL)}
@@ -54,7 +54,7 @@ window.VMLSupabaseShim=function(cfg){
         setAt(p,v);notify();return write([{p,v:v==null?null:v}])},
       update(o){const ops=[];for(const k in o){const q=p?p+'/'+k:k;setAt(q,o[k]);ops.push({p:q,v:o[k]==null?null:o[k]})}notify();return write(ops)},
       remove(){return r.set(null)},
-      get(){return Promise.race([ready,new Promise((_,rej)=>setTimeout(()=>rej(new Error('Không kết nối được Supabase')),12000))]).then(()=>snap(p,getAt(p)))},
+      get(){return Promise.race([ready,new Promise((_,rej)=>setTimeout(()=>rej(new Error(lastErr?'Lỗi đồng bộ: '+lastErr:'Hết thời gian chờ máy chủ')),12000))]).then(()=>snap(p,getAt(p)))},
       on(ev,cb){if(p==='.info/serverTimeOffset'){ready.then(()=>cb(snap(p,offset)));return cb}
         if(p==='.info/connected'){ready.then(()=>cb(snap(p,true)));return cb}
         const l={p,ev,cb};if(ev!=='value')l.prev={};L.push(l);ready.then(()=>fire(l));return cb},
@@ -68,7 +68,7 @@ window.VMLSupabaseShim=function(cfg){
   const authCbs=[];
   const auth={
     onAuthStateChanged(cb){authCbs.push(cb);sb.auth.getSession().then(({data})=>{const u=data&&data.session&&data.session.user;if(u){uid=u.id;start()}cb(u?{uid:u.id}:null)});return()=>{const i=authCbs.indexOf(cb);if(i>=0)authCbs.splice(i,1)}},
-    signInAnonymously(){return sb.auth.signInAnonymously().then(({data,error})=>{if(error)throw error;uid=data.user.id;start();authCbs.slice().forEach(cb=>cb({uid}))})},
+    signInAnonymously(){return sb.auth.signInAnonymously().then(({data,error})=>{if(error)throw new Error('Đăng nhập ẩn danh lỗi: '+(error.message||error.code));uid=data.user.id;start();authCbs.slice().forEach(cb=>cb({uid}))})},
     signOut(){return sb.rpc('pos_leave').then(()=>sb.auth.signOut()).then(()=>{uid=null})}};
   const database=Object.assign(()=>({ref}),{ServerValue:{TIMESTAMP:{'.sv':'timestamp'}}});
   return{initializeApp(){},auth:()=>auth,database,__supabase:sb};
