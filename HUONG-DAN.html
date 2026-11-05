@@ -46,7 +46,7 @@ a{color:var(--sea)}
  <div><b>index.html</b><br>Game. Tự nhận biết online hay offline.</div>
  <div><b>config.js</b><br>Dán địa chỉ và khoá Supabase. Chỉnh tiền khởi đầu, độ dài ngày.</div>
  <div><b>supabase-shim.js</b><br>Lớp kết nối game với Supabase. Không cần sửa.</div>
- <div><b>admin.html</b><br>Mở ngày mới, kết thúc ngày, xem người chơi.</div>
+ <div><b>admin.html</b><br>Xem người chơi, tặng tiền, làm trống giường.</div>
  <div><b>supabase-setup.sql</b><br>Tạo bảng, hàm và luật bảo mật. Chạy một lần.</div>
 </div>
 <div class="check">Chưa điền <code>config.js</code> thì game vẫn chạy offline với 16 nhân viên giả lập. Bạn có thể đưa lên Netlify trước để xem thử, rồi bật Supabase sau.</div>
@@ -94,7 +94,7 @@ a{color:var(--sea)}
  <li data-n="D1">Mở <code>https://TEN-SITE.netlify.app/admin.html</code> → bấm <b>SAO CHÉP</b> để copy <b>Mã của bạn</b>.</li>
  <li data-n="D2">Supabase → <b>SQL Editor → New query</b> → dán dòng dưới, thay mã của bạn vào → <b>Run</b>.
   <pre>insert into public.admins(uid) values ('DAN-MA-CUA-BAN') on conflict do nothing;</pre></li>
- <li data-n="D3">Tải lại <code>admin.html</code>. Khi thấy <b>"Bạn là admin"</b>, bấm <b>BẮT ĐẦU NGÀY MỚI</b>. Đồng hồ game của mọi người bắt đầu từ 08:00.</li>
+ <li data-n="D3">Tải lại <code>admin.html</code>. Khi thấy <b>"Bạn là admin"</b>, là xong. Ngày và đêm trong game tự chạy liên tục, không cần mở ngày.</li>
 </ol>
 <div class="check">Mở admin.html và game trên cùng một trình duyệt thì mã admin cũng là nhân vật của bạn. Muốn chơi bằng nhân vật khác, dùng trình duyệt khác hoặc cửa sổ ẩn danh.</div>
 
@@ -102,8 +102,8 @@ a{color:var(--sea)}
 <ol class="steps">
  <li data-n="E1">Gửi link cho nhân viên. Mỗi máy tạo nhân vật một lần. Lần sau mở lại, game nhận ra họ và hiện <b>"Chào mừng trở lại"</b>.</li>
  <li data-n="E2">Muốn làm lại nhân vật: nút <b>NV</b> góc phải → <b>TẠO NHÂN VẬT MỚI</b> → bấm lần nữa để xác nhận.</li>
- <li data-n="E3">Mỗi đợt chơi, admin bấm <b>BẮT ĐẦU NGÀY MỚI</b>: làm trống giường, đồng hồ về 08:00. Ví tiền mọi người được giữ nguyên.</li>
- <li data-n="E4">Đổi luật trong <code>config.js</code> rồi đưa lên lại: <code>startMoney</code> (tiền cho người chơi mới, đang 500.000), <code>dayMinutes</code>.</li>
+ <li data-n="E3">Game chạy liên tục ngày nối đêm. Khi muốn chia lại chỗ ngủ, admin bấm <b>LÀM TRỐNG TOÀN BỘ GIƯỜNG</b> (ví tiền giữ nguyên).</li>
+ <li data-n="E4">Đổi luật trong <code>config.js</code> rồi đưa lên lại: <code>startMoney</code> (tiền cho người chơi mới, đang 500.000), <code>dayMinutes</code> (độ dài một vòng ngày + đêm, tính bằng phút).</li>
 </ol>
 
 <h2>F. Kết nối Claude để cập nhật nhanh</h2>
@@ -125,7 +125,7 @@ a{color:var(--sea)}
 <div class="tbl"><table>
  <tr><th>Vấn đề</th><th>Cách xử lý</th></tr>
  <tr><td>Supabase miễn phí <b>tạm dừng project sau 7 ngày không ai dùng</b></td><td>Vào dashboard, bấm <b>Restore project</b> trước buổi chơi khoảng 5 phút.</td></tr>
- <tr><td>Dung lượng truyền tải miễn phí <b>5 GB/tháng</b></td><td>Một buổi 60 phút với 100 người dùng ước tính 1,5–4,5 GB. Chơi nhiều buổi trong tháng thì nâng gói Pro, hoặc thêm <code>pollMs: 2500</code> vào phần <code>supabase</code> trong <code>config.js</code> để giảm một nửa.</td></tr>
+ <tr><td>Dung lượng truyền tải miễn phí <b>5 GB/tháng</b></td><td>Một giờ chơi với 100 người dùng ước tính 1,5–4,5 GB. Chơi nhiều buổi trong tháng thì nâng gói Pro, hoặc thêm <code>pollMs: 2500</code> vào phần <code>supabase</code> trong <code>config.js</code> để giảm một nửa.</td></tr>
  <tr><td>Nhân vật người khác di chuyển hơi giật</td><td>Bình thường. Mỗi máy cập nhật vị trí người khác khoảng 1,5 giây một lần để không vượt giới hạn miễn phí.</td></tr>
  <tr><td>Game ghi "đang chạy bản offline"</td><td>Kiểm tra <code>config.js</code> (sai URL, thiếu ngoặc kép, dán nhầm khoá) và bước B2 (bật anonymous sign-ins).</td></tr>
  <tr><td>Nhiều người báo không vào được cùng lúc</td><td>Kiểm tra bước B3 (giới hạn đăng nhập ẩn danh).</td></tr>

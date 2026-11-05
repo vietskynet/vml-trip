@@ -51,15 +51,15 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted)}
     <p style="margin-top:10px" id="role"></p>
   </div>
   <div class="card">
-    <h2>NGÀY CHƠI</h2>
+    <h2>RESORT</h2>
     <div class="stat">
       <div><small>TRẠNG THÁI</small><span class="big" id="dState">—</span></div>
       <div><small>GIỜ TRONG GAME</small><span class="big" id="dClock">—</span></div>
       <div><small>ĐANG ONLINE</small><span class="big" id="dOnline">0</span></div>
       <div><small>GIƯỜNG ĐÃ BOOK</small><span class="big" id="dBeds">0</span></div>
     </div>
-    <p style="margin-top:12px">Bắt đầu ngày mới sẽ đặt đồng hồ về 08:00, làm trống toàn bộ giường. Ví tiền của mọi người được giữ nguyên.</p>
-    <div class="row"><button class="ok" id="start" disabled>BẮT ĐẦU NGÀY MỚI</button><button class="ghost" id="end" disabled>KẾT THÚC NGÀY NGAY</button></div>
+    <p style="margin-top:12px">Ngày và đêm chạy liên tục, không cần mở ngày. Một vòng 24 giờ trong game dài bằng <code>dayMinutes</code> trong config.js. Khi cần chia lại chỗ ngủ, bấm nút dưới để làm trống toàn bộ giường (ví tiền giữ nguyên).</p>
+    <div class="row"><button class="ghost" id="start" disabled>LÀM TRỐNG TOÀN BỘ GIƯỜNG</button></div>
     <p id="msg"></p>
   </div>
   <div class="card">
@@ -88,7 +88,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted)}
 <script>
 (()=>{
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const VC=window.VML_CONFIG;const DAY=((VC&&VC.game&&VC.game.dayMinutes)||20)*60;
+const VC=window.VML_CONFIG;const DAY=((VC&&VC.game&&VC.game.dayMinutes)||60)*60,EPOCH=Date.UTC(2026,10,1,1,0,0);
 const VND=n=>String(Math.round(n||0)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+'₫';
 if(VC&&VC.backend==='supabase'&&window.supabase&&window.VMLSupabaseShim&&VC.supabase&&!/DAN_|YOUR/i.test(VC.supabase.url+' '+VC.supabase.anonKey)){window.firebase=window.VMLSupabaseShim(VC.supabase);VC.firebase={apiKey:'supabase'}}
 if(!window.firebase||!VC||!VC.firebase||/DAN_/.test(VC.firebase.apiKey)){$('#uid').textContent='Chưa cấu hình database trong config.js';return}
@@ -96,23 +96,22 @@ firebase.initializeApp(VC.firebase);const db=firebase.database(),TS=firebase.dat
 const msg=t=>{$('#msg').textContent=t};
 firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously().catch(e=>{$('#uid').textContent='Lỗi đăng nhập: '+e.message});return}
  $('#uid').textContent=u.uid;
- db.ref('admins/'+u.uid).on('value',s=>{admin=s.val()===true;$('#role').innerHTML=admin?'<b class="on">Bạn là admin.</b> Có thể điều khiển ngày chơi.':'Chưa phải admin. Chạy lệnh SQL ở bước D2 của hướng dẫn với mã trên, rồi tải lại trang.';['#start','#end','#wipe','#bonus'].forEach(id=>$(id).disabled=!admin)});
+ db.ref('admins/'+u.uid).on('value',s=>{admin=s.val()===true;$('#role').innerHTML=admin?'<b class="on">Bạn là admin.</b> Có thể quản lý resort.':'Chưa phải admin. Chạy lệnh SQL ở bước D2 của hướng dẫn với mã trên, rồi tải lại trang.';['#start','#wipe','#bonus'].forEach(id=>$(id).disabled=!admin)});
  db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
  db.ref('day').on('value',s=>{day=s.val()});
  db.ref('players').on('value',s=>{players=s.val()||{};render()});
  db.ref('pos').on('value',s=>{pos=s.val()||{};render()});
  db.ref('beds').on('value',s=>{beds=s.val()||{};render()});
 });
-function clock(){if(!day)return'—';const t=(Date.now()+off-day.start)/1000;if(t>=DAY)return'20:00';const m=Math.floor(8*60+Math.max(0,t)/DAY*720);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
-function render(){const t=day?(Date.now()+off-day.start)/1000:0;$('#dState').textContent=!day?'CHƯA MỞ':t>=DAY?'ĐÃ HẾT':'ĐANG CHƠI';$('#dClock').textContent=clock();$('#dOnline').textContent=Object.keys(pos).length;
+function clock(){const t=(Date.now()+off-EPOCH)/1000,h=((8+24*t/DAY)%24+24)%24,m=Math.floor(h*60);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+function render(){const t=day?(Date.now()+off-day.start)/1000:0;{const h=+clock().slice(0,2);$('#dState').textContent=h>=6&&h<18?'BAN NGÀY':'BAN ĐÊM'}$('#dClock').textContent=clock();$('#dOnline').textContent=Object.keys(pos).length;
  let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(u=>Object.values(u||{}).forEach(x=>{if(x)n++})));$('#dBeds').textContent=n;
  const did=day?day.id:0;const rows=Object.entries(players).filter(([u,p])=>p&&p.state).sort((a,b)=>(b[1].state.money||0)-(a[1].state.money||0));
  $('#list').innerHTML=rows.map(([u,p])=>`<tr data-u="${u}" class="${u===giftTo?'sel':''}"><td>${esc(p.name||'?')}</td><td>${VND(p.state.money)}</td><td>${Math.round(p.state.energy||0)}%</td><td class="${pos[u]?'on':'off'}">${pos[u]?'Online':p.state.dayId!==did?'Chưa vào hôm nay':p.state.fainted?'Đã xỉu':'Offline'}</td></tr>`).join('')||'<tr><td colspan="4">Chưa có người chơi nào.</td></tr>'}
 setInterval(render,1000);
 $('#copy').onclick=()=>{navigator.clipboard.writeText($('#uid').textContent).then(()=>msg('Đã sao chép mã.'),()=>msg('Hãy bôi đen mã và sao chép thủ công.'))};
-$('#start').onclick=()=>{db.ref().update({day:{id:Date.now(),start:TS},beds:null,offers:null,invites:null,duels:null}).then(()=>msg('Đã bắt đầu ngày mới lúc '+new Date().toLocaleTimeString('vi-VN')+'.')).catch(e=>msg('Lỗi: '+e.message))};
-$('#end').onclick=()=>{if(!day){msg('Chưa có ngày nào đang chạy.');return}db.ref('day/start').set(Date.now()+off-DAY*1000-1000).then(()=>msg('Đã kết thúc ngày.')).catch(e=>msg('Lỗi: '+e.message))};
-$('#bonus').onclick=()=>{const a=Math.round(+$('#bonusAmt').value||0);if(!day){$('#bonusMsg').textContent='Hãy bắt đầu ngày mới trước.';return}if(a<=0){$('#bonusMsg').textContent='Nhập số tiền lớn hơn 0.';return}
+$('#start').onclick=()=>{const bt=$('#start');if(!bt.dataset.armed){bt.dataset.armed='1';bt.textContent='BẤM LẦN NỮA ĐỂ LÀM TRỐNG';setTimeout(()=>{delete bt.dataset.armed;bt.textContent='LÀM TRỐNG TOÀN BỘ GIƯỜNG'},4000);return}delete bt.dataset.armed;bt.textContent='LÀM TRỐNG TOÀN BỘ GIƯỜNG';db.ref().update({beds:null,offers:null,invites:null,duels:null}).then(()=>msg('Đã làm trống toàn bộ giường lúc '+new Date().toLocaleTimeString('vi-VN')+'.')).catch(e=>msg('Lỗi: '+e.message))};
+$('#bonus').onclick=()=>{const a=Math.round(+$('#bonusAmt').value||0);if(a<=0){$('#bonusMsg').textContent='Nhập số tiền lớn hơn 0.';return}
  db.ref('day/bonus').set({id:Date.now(),amount:a,ts:TS}).then(()=>{$('#bonusMsg').textContent='Đã tặng '+VND(a)+' cho mọi người lúc '+new Date().toLocaleTimeString('vi-VN')+'. Ví sẽ cộng trong vài giây.'}).catch(e=>{$('#bonusMsg').textContent='Lỗi: '+e.message})};
 $('#list').addEventListener('click',e=>{const tr=e.target.closest('tr[data-u]');if(!tr)return;if(!admin){msg('Bạn cần là admin để tặng tiền.');return}giftTo=tr.dataset.u;const p=players[giftTo]||{};$('#giftTitle').textContent='TẶNG TIỀN CHO '+String(p.name||'?').toUpperCase();$('#giftMsg').textContent='Ví hiện tại: '+VND(p.state&&p.state.money);$('#giftBox').hidden=false;render();$('#giftAmt').focus()});
 document.querySelectorAll('#giftBox .chips button').forEach(b=>b.onclick=()=>{$('#giftAmt').value=b.dataset.v});
