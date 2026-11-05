@@ -170,6 +170,24 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
 #chatForm button{font-family:var(--f-display);font-size:11px;background:var(--panel2);color:#fff;border:3px solid #000;padding:0 10px;cursor:pointer}
 @media (pointer:coarse){#chat{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 176px)}}
 @media (max-width:700px){#chat{width:calc(100% - 24px)}#chatLog{display:none}}
+#chatFab{display:none}
+@media (pointer:coarse){
+ #chatFab{display:flex;position:absolute;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 104px);width:54px;height:54px;border-radius:50%;background:rgba(28,49,112,.9);border:3px solid #000;box-shadow:3px 3px 0 rgba(0,0,0,.5);z-index:6;align-items:center;justify-content:center;color:#fff;padding:0;touch-action:manipulation}
+ #chatFab[hidden]{display:none}
+ #chatFab svg{width:28px;height:28px}
+ #chatDot{position:absolute;top:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:var(--coral);border:2px solid #000}
+ #chatDot[hidden]{display:none}
+ #chat{display:none;top:calc(var(--top) + 124px);bottom:auto!important;left:12px;width:calc(100% - 24px)!important}
+ body.chatOpen #chat{display:flex}
+ body.chatOpen #chatLog{display:flex!important}
+ #chatLog div{white-space:normal}
+}
+@media (max-width:760px){
+ .hud.tr{top:calc(var(--top) + 70px);gap:5px;flex-wrap:nowrap}
+ .hud.tr .ib{font-size:10px;padding:0 7px;min-width:0}
+ .hud.tr .pill{padding:2px 7px}.hud.tr .pill small{font-size:11px;max-width:96px;overflow:hidden;text-overflow:ellipsis}.hud.tr .pill b{font-size:22px}.hud.tr{gap:4px}.hud.tr .ib{padding:0 6px}
+ #need{top:calc(var(--top) + 126px);padding:6px 10px;gap:8px;width:max-content}#need b{font-size:15px}#need span{font-size:16px;white-space:nowrap}#need .cd{font-size:22px;min-width:40px}#toasts{top:calc(var(--top) + 196px)}
+}
 @media (prefers-reduced-motion:reduce){#need.urgent,.en.crit{animation:none}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
@@ -202,6 +220,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
   </div>
   <div id="need" hidden><b id="needTitle">MẮC TIỂU</b><span id="needHint"></span><span class="cd" id="needCd">30</span></div>
   <div id="toasts"></div>
+  <button id="chatFab" aria-label="Mở chat" hidden><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#fff" d="M2 2h12v1h1v7h-1v1H7l-3 3v-3H2v-1H1V3h1z"/><path fill="#1c3170" d="M4 5h8v1H4zM4 8h6v1H4z"/></svg><i id="chatDot" hidden></i></button>
   <div id="chat"><div id="chatLog" aria-live="polite"></div><form id="chatForm" autocomplete="off"><input id="chatIn" maxlength="60" placeholder="Nhấn C để chat…" aria-label="Chat trong resort"><button type="submit">GỬI</button></form></div>
   <div id="prompt" hidden></div>
   <div id="roomBar" hidden>
@@ -1476,7 +1495,7 @@ function updUI(){$('#hMoney').textContent=VND(P.money);$('#hClock').textContent=
  else if(P.accident>0&&!inMini()){nb.hidden=false;nb.classList.remove('urgent');nb.classList.add('smell');$('#needTitle').textContent='ĐANG BỐC MÙI';$('#needHint').textContent='Ruồi bu, không được vào lều & khách sạn';$('#needCd').textContent=mmss(P.accident)}
  else nb.hidden=true;
  const pr=$('#prompt');if(mode==='world'&&!modalOpen()&&P.busy<=0){const it=nearInteract();if(it){pr.hidden=false;pr.innerHTML=(it.k==='info'?'':'<kbd>E</kbd>')+it.label}else pr.hidden=true}else pr.hidden=true;
- updStatus();$('#chat').hidden=mode!=='world';
+ updStatus();$('#chat').hidden=mode!=='world';$('#chatFab').hidden=mode!=='world';if(mode!=='world'&&document.body.classList.contains('chatOpen'))document.body.classList.remove('chatOpen');
  if(!$('#shopOv').hidden&&!document.activeElement.matches('#offerIn'))renderShop();if(!$('#foodOv').hidden)renderFood();if(!$('#petOv').hidden)renderPet();if(!$('#arenaOv').hidden&&!document.activeElement.matches('#betIn')){if(NET.on)renderArena();else $('#arenaMoney').textContent=VND(P.money)}}
 function stopAll(){running=false;if(NET.on)saveState();if(NET.invite)inviteAnswer(false);if(ROOM)exitRoom();if(CAB){if(!CAB.private)exitCabin(CAB.k);CAB=null;P.hidden=false}if(D){D.opp.state='idle';D=null}mode='world';G=null;['shopOv','rankOv','helpOv','foodOv','dealOv','arenaOv','petOv','payOv'].forEach(id=>$('#'+id).hidden=true);$('#roomBar').hidden=true;$('#need').hidden=true}
 let rescueT=0,rescueTimer=null;
@@ -1546,12 +1565,14 @@ $('#aBtn').addEventListener('pointerdown',e=>{e.preventDefault();act()});
 
 /* ================= CHAT & CHEATS ================= */
 const CHEATS={VMLGIAU:()=>{P.money+=5000000;coin();sysLog('Cheat: +5.000.000₫ vào ví.')},VMLKHOE:()=>{P.energy=100;coin();sysLog('Cheat: năng lượng đầy 100%.')},VMLSANG:()=>{P.shine=P.shine>0?0:180;bell();sysLog(P.shine>0?'Cheat: nhân vật toả sáng 3 phút!':'Đã tắt hiệu ứng toả sáng.')}};
-function chatLog(name,text,cls){const d=document.createElement('div');d.className=cls||'';d.textContent=(name?name+': ':'')+text;const box=$('#chatLog');box.appendChild(d);while(box.children.length>5)box.firstChild.remove();setTimeout(()=>d.remove(),20000)}
+function chatLog(name,text,cls){if(name&&cls!=='me'&&!document.body.classList.contains('chatOpen'))$('#chatDot').hidden=false;const d=document.createElement('div');d.className=cls||'';d.textContent=(name?name+': ':'')+text;const box=$('#chatLog');box.appendChild(d);while(box.children.length>5)box.firstChild.remove();setTimeout(()=>d.remove(),20000)}
 const sysLog=t=>chatLog('',t,'sys');
 function handleChat(raw){const text=String(raw||'').replace(/[<>]/g,'').trim().slice(0,60);if(!text||!P)return;const code=text.replace(/\s+/g,'').toUpperCase();
  if(CHEATS[code]){CHEATS[code]();saveState();return}
  P.bubble=text;P.bubbleT=8;P.sayId=(P.sayId||0)+1;chatLog(P.name,text,'me');beep(900,.03)}
-$('#chatForm').addEventListener('submit',e=>{e.preventDefault();handleChat($('#chatIn').value);$('#chatIn').value='';$('#chatIn').blur()});
+$('#chatForm').addEventListener('submit',e=>{e.preventDefault();handleChat($('#chatIn').value);$('#chatIn').value='';$('#chatIn').blur();document.body.classList.remove('chatOpen')});
+$('#chatFab').addEventListener('click',()=>{const op=document.body.classList.toggle('chatOpen');$('#chatDot').hidden=true;keys={};if(op)setTimeout(()=>$('#chatIn').focus(),30);else $('#chatIn').blur()});
+$('#chatIn').addEventListener('blur',()=>{setTimeout(()=>{if(document.activeElement!==$('#chatIn'))document.body.classList.remove('chatOpen')},250)});
 $('#chatIn').addEventListener('keydown',e=>{if(e.key==='Escape'){$('#chatIn').value='';$('#chatIn').blur()}e.stopPropagation()});
 function drawShine(t,cx,cy,vis){const list=S.chars.filter(c=>!c.hidden&&(c.shine>0)&&vis(c.x,c.y,120));if(!list.length)return;
  ctx.globalCompositeOperation='lighter';list.forEach(c=>{const x=Math.round(c.x-cx),y=Math.round(c.y-cy-14),p=.75+Math.sin(t*6)*.25,r=Math.round(46+Math.sin(t*4)*6);ctx.globalAlpha=.9*p;ctx.drawImage(GLOW,x-r,y-r,r*2,r*2);ctx.globalAlpha=.5;ctx.drawImage(GLOW,x-r*2,y-r*2,r*4,r*4);ctx.globalAlpha=1;
