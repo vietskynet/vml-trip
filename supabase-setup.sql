@@ -101,6 +101,9 @@ begin
   end if;
   if s[1] = 'invites' then return n >= 3; end if;          -- gửi lời thách đấu
   if s[1] = 'duels' then return docv is null or docv ->> 'a' = u or docv ->> 'b' = u; end if;
+  if s[1] = 'gifts' then                                   -- chuyển tiền cho người khác (chỉ thêm, không sửa/xoá)
+    return n = 3 and s[2] <> u and cur is null and nv is not null and nv ->> 'from' = u and (nv ->> 'amount')::numeric > 0;
+  end if;
   return false;
 end $$;
 

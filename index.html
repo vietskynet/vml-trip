@@ -181,6 +181,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
   <div class="hud tr">
     <div class="pill"><small id="hLodge">Chưa có chỗ ngủ</small><b id="hClock">08:00</b></div>
     <button class="ib" id="bRank" aria-label="Bảng xếp hạng">BXH</button>
+    <button class="ib" id="bPay" aria-label="Chuyển tiền cho người khác" hidden>CHUYỂN</button>
     <button class="ib" id="bHelp">LUẬT</button>
     <button class="ib" id="bMusic" aria-label="Bật tắt nhạc">NHẠC</button>
     <button class="ib" id="bAcct" aria-label="Nhân vật của bạn">NV</button>
@@ -280,7 +281,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
     <h2>LUẬT CHƠI NHANH</h2>
     <div class="qr">
       <div><b>MỤC TIÊU</b>Kiếm tiền, giành giường đẹp trước <strong>20:00</strong>.</div>
-      <div><b>KIẾM TIỀN</b>3 khu game, mỗi khu <strong>chờ 30 giây</strong> giữa 2 lượt. <strong>Sàn Thách Đấu</strong>: 1 vs 1, cược tối đa 500.000₫.</div>
+      <div><b>KIẾM TIỀN</b>3 khu game, mỗi khu <strong>chờ 30 giây</strong> giữa 2 lượt. <strong>Sàn Thách Đấu</strong>: 1 vs 1, cược tối đa 500.000₫. Nút <strong>CHUYỂN</strong> để chuyển tiền cho đồng nghiệp.</div>
       <div><b>CHỖ NGỦ</b>Villa <strong>5.000.000₫</strong> · KS <strong>2.000.000₫</strong> · Lều <strong>miễn phí</strong>. Mỗi chỗ 2 giường. Chỗ đầy thì deal mua lại.</div>
       <div><b>NĂNG LƯỢNG</b>Không ăn thì <strong>20 phút</strong> về 0, xỉu và bị loại. <strong>17:00 ăn tập thể miễn phí</strong> ở bàn dài, ngoài giờ mua ở quầy.</div>
       <div><b>VỆ SINH</b>Tiểu mỗi <strong>10 phút</strong>, ị mỗi <strong>20 phút</strong>. Có <strong>30 giây</strong> tìm toilet. Lều dùng WC công cộng, <strong>15 giây/lượt</strong>.</div>
@@ -298,6 +299,17 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
     <h2>CÓ NGƯỜI THÁCH ĐẤU BẠN!</h2>
     <p id="inviteText"></p>
     <div class="row"><button class="btn ok" id="inviteYes">NHẬN KÈO</button><button class="btn ghost" id="inviteNo">TỪ CHỐI</button><span class="price" id="inviteCd">18s</span></div>
+  </div>
+</div>
+
+<div class="modal" id="payOv" hidden>
+  <div class="card">
+    <h2>CHUYỂN TIỀN</h2>
+    <p style="margin:0 0 6px">Chọn người nhận. Tiền trừ khỏi ví bạn và cộng vào ví họ ngay, người đang offline sẽ nhận khi quay lại.</p>
+    <div class="offer" id="payTo"></div>
+    <div class="offer" id="payAmt"></div>
+    <p id="payMsg" style="min-height:22px;margin:4px 0 8px;color:var(--muted)"></p>
+    <div class="row"><button class="btn ok" id="payGo" disabled>CHUYỂN</button><button class="btn ghost" data-close="payOv">ĐÓNG</button><span style="color:var(--muted)">Ví: <span class="price" id="payMoney">0₫</span></span></div>
   </div>
 </div>
 
@@ -1257,7 +1269,7 @@ function renderWorld(t){
 }
 
 /* ================= UI: shop & deal ================= */
-const modalOpen=()=>['shopOv','startOv','endOv','rankOv','helpOv','foodOv','dealOv','arenaOv','inviteOv','acctOv'].some(id=>!$('#'+id).hidden);
+const modalOpen=()=>['shopOv','startOv','endOv','rankOv','helpOv','foodOv','dealOv','arenaOv','inviteOv','acctOv','payOv'].some(id=>!$('#'+id).hidden);
 let shopType='villa',shopSel=-1,dealTarget=null,dealOffer=0;
 function openShop(type){shopType=type;shopSel=-1;dealTarget=null;renderShop();$('#shopOv').hidden=false;keys={}}
 function renderShop(){const R=REC[shopType],arr=LIST(shopType),pr=CFG.PRICE[shopType];$('#shopTitle').textContent=R.name;$('#shopMoney').textContent=VND(P.money);
@@ -1364,7 +1376,7 @@ const CRABK={KeyQ:0,KeyW:1,KeyE:2,KeyA:3,KeyS:4,KeyD:5,KeyZ:6,KeyX:7,KeyC:8,Nump
 addEventListener('keydown',e=>{
  if(!$('#startOv').hidden){creatorKey(e);return}
  if(e.target.tagName==='INPUT')return;
- if(e.key==='Escape'){for(const id of ['shopOv','rankOv','helpOv','foodOv','arenaOv','acctOv'])if(!$('#'+id).hidden){$('#'+id).hidden=true;return}if(mode==='room'){exitRoom();return}if(mode==='game'&&G&&!G.done&&G.intro<=0){G.t=0;endGame()}else if(mode==='game'&&G&&G.intro>0){mode='world';G=null}return}
+ if(e.key==='Escape'){for(const id of ['shopOv','rankOv','helpOv','foodOv','arenaOv','acctOv','payOv'])if(!$('#'+id).hidden){$('#'+id).hidden=true;return}if(mode==='room'){exitRoom();return}if(mode==='game'&&G&&!G.done&&G.intro<=0){G.t=0;endGame()}else if(mode==='game'&&G&&G.intro>0){mode='world';G=null}return}
  if(modalOpen())return;
  if(mode==='room'){if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();if(!e.repeat)toggleSleep()}else if(e.code==='KeyT')roomToilet();return}
  if(mode==='duel'){e.preventDefault();if(e.repeat)return;const dg=D&&D.g;if(dg&&dg.id==='rps'&&/^(Digit|Numpad)[123]$/.test(e.code)){duelPick(+e.code.slice(-1)-1);return}if(dg&&dg.id==='memory'&&e.key.startsWith('Arrow')){duelPick(ARR.indexOf(e.key.slice(5).toLowerCase()));return}if(e.code==='KeyE'||e.code==='Space'||e.code==='Enter')duelPress();return}
@@ -1489,10 +1501,11 @@ function netAfterNewGame(){P.uid=NET.uid;Object.values(NET.chars).forEach(c=>{if
  else P.giftAt=serverNow();
  if(NET.day)S.time=Math.max(0,(serverNow()-NET.day.start)/1000);while(S.time>=S.mealAt+CFG.MEAL_LEN){S.mealAt+=CFG.MEAL_AT;S.mealId++}
  applyBeds()}
-function netPostStart(){applyBonus();applyGifts();saveState();if(P.fainted){P.fainted=false;faint()}else if(NET.day&&S.time>=CFG.DAY)endDay()}
+function netPostStart(){$('#bPay').hidden=false;applyBonus();applyGifts();saveState();if(P.fainted){P.fainted=false;faint()}else if(NET.day&&S.time>=CFG.DAY)endDay()}
 function applyBonus(){const bn=NET.day&&NET.day.bonus;if(!bn||!bn.id||!NET.started||!P||!S||S.ended)return;if(P.bonusId===bn.id)return;const pp=NET.players[NET.uid],cr=pp&&typeof pp.created==='number'?pp.created:(NET.me&&typeof NET.me.created==='number'?NET.me.created:null);if(cr==null||typeof bn.ts!=='number')return;P.bonusId=bn.id;if(cr>bn.ts){saveState();return}P.money+=bn.amount||0;coin();toast('Admin vừa tặng bạn '+VND(bn.amount)+'!',false,6000);sysLog('Admin tặng mọi người '+VND(bn.amount));saveState()}
 function applyGifts(){const all=NET.day&&NET.day.gifts,g=all&&all[NET.uid];if(!NET.started||!P||!S)return;P.giftIds=P.giftIds||[];let got=0;
- const mine=NET.gifts||{};let top=P.giftAt||0;for(const id in mine){const x=mine[id]||{},t=+x.ts||0,a=+x.amount||0;if(t>(P.giftAt||0)&&a>0){P.money+=a;got+=a}if(t>top)top=t}P.giftAt=top;
+ const mine=NET.gifts||{};let top=P.giftAt||0;const from={};for(const id in mine){const x=mine[id]||{},t=+x.ts||0,a=+x.amount||0;if(t>(P.giftAt||0)&&a>0){P.money+=a;if(x.from){const nm=String(x.fromName||'Ai đó').slice(0,12);from[nm]=(from[nm]||0)+a}else got+=a}if(t>top)top=t}P.giftAt=top;
+ for(const nm in from){coin();toast(nm+' vừa chuyển cho bạn '+VND(from[nm])+'!',false,6000);sysLog(nm+' chuyển cho bạn '+VND(from[nm]))}if(Object.keys(from).length&&!got)saveState();
  if(g)
  for(const id in g){if(P.giftIds.includes(id))continue;P.giftIds.push(id);const a=+(g[id]&&g[id].amount)||0;if(a>0){P.money+=a;got+=a}}
  if(got){coin();setTimeout(coin,200);toast('Admin vừa tặng riêng bạn '+VND(got)+'!',false,6000);sysLog('Bạn nhận quà '+VND(got)+' từ admin')}saveState()}
@@ -1505,6 +1518,20 @@ async function resetPlayer(){try{if(NET.on){const jobs=[];if(S)['villa','room','
  document.cookie='vml_pid=; max-age=0; path=/';try{['vmlTripName','vmlTripLook','vmlTripProfile','vmlTripRules'].forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()}
 function twoStep(btn,label){btn.onclick=()=>{if(btn.dataset.armed){resetPlayer();return}btn.dataset.armed='1';btn.textContent='BẤM LẦN NỮA ĐỂ XOÁ VÀ TẠO MỚI';setTimeout(()=>{delete btn.dataset.armed;btn.textContent=label},4000)}}
 twoStep($('#acctNew'),'TẠO NHÂN VẬT MỚI');twoStep($('#newCharBtn'),'TẠO NHÂN VẬT MỚI');
+let payTo=null,payVal=100000,paying=false;
+function payCands(){return Object.entries(NET.players||{}).filter(([u,p])=>u!==NET.uid&&p&&p.name).map(([u,p])=>({uid:u,name:p.name,on:!!(NET.chars[u]&&NET.chars[u].online)})).sort((a,b)=>(b.on-a.on)||String(a.name).localeCompare(b.name))}
+function renderPay(){const cs=payCands();$('#payMoney').textContent=VND(P.money);
+ $('#payTo').innerHTML=cs.length?cs.map(c=>`<button class="chip${c.uid===payTo?' on':''}" data-to="${c.uid}">${c.on?'● ':''}${esc(c.name)}</button>`).join(''):'<span style="color:var(--muted)">Chưa có người chơi nào khác.</span>';
+ $('#payAmt').innerHTML=[100000,200000,500000,1000000].map(v=>`<button class="chip${v===payVal?' on':''}" data-v="${v}" ${v>P.money?'disabled':''}>${VND(v)}</button>`).join('')+`<input id="payIn" type="number" min="10000" step="10000" value="${payVal}" aria-label="Số tiền chuyển">`;
+ const t=cs.find(c=>c.uid===payTo);$('#payGo').disabled=paying||!t||payVal<=0||payVal>P.money;$('#payGo').textContent=t?'CHUYỂN '+VND(payVal)+' CHO '+String(t.name).toUpperCase():'CHUYỂN'}
+$('#bPay').onclick=()=>{if(!S||!NET.on)return;$('#payMsg').textContent='';renderPay();$('#payOv').hidden=false;keys={}};
+$('#payTo').addEventListener('click',e=>{const b=e.target.closest('[data-to]');if(!b)return;payTo=b.dataset.to;renderPay()});
+$('#payAmt').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b||b.disabled)return;payVal=+b.dataset.v;renderPay()});
+$('#payAmt').addEventListener('input',e=>{if(e.target.id!=='payIn')return;payVal=Math.max(0,Math.round(+e.target.value||0));const t=payCands().find(c=>c.uid===payTo);$('#payGo').disabled=paying||!t||payVal<=0||payVal>P.money;$('#payGo').textContent=t?'CHUYỂN '+VND(payVal)+' CHO '+String(t.name).toUpperCase():'CHUYỂN'});
+$('#payGo').onclick=()=>{const t=payCands().find(c=>c.uid===payTo),a=payVal;if(!t||paying)return;if(a<=0||a>P.money){$('#payMsg').textContent='Số tiền không hợp lệ hoặc ví không đủ.';return}
+ paying=true;$('#payGo').disabled=true;$('#payMsg').textContent='Đang chuyển…';
+ NET.db.ref('gifts/'+t.uid+'/t'+Date.now()+Math.floor(Math.random()*1000)).set({amount:a,ts:TS(),from:NET.uid,fromName:P.name}).then(()=>{P.money-=a;coin();saveState();paying=false;$('#payMsg').textContent='Đã chuyển '+VND(a)+' cho '+t.name+'.';sysLog('Bạn chuyển '+VND(a)+' cho '+t.name);renderPay()})
+ .catch(e=>{paying=false;$('#payMsg').textContent=/quyền/i.test(e&&e.message||'')?'Máy chủ chưa bật chuyển tiền (admin cần chạy lại file SQL mới).':'Lỗi: '+(e&&e.message||e);renderPay()})};
 $('#bAcct').onclick=()=>{const pf=loadProfile();$('#acctInfo').innerHTML='Tên: <b>'+esc(P?P.name:'')+'</b><br>Chế độ: <b>'+(NET.on?'Online':'Offline (lưu trên trình duyệt này)')+'</b>'+(NET.on?'<br>Mã người chơi: <b>'+NET.uid.slice(0,8)+'</b> · được nhớ bằng cookie trên máy này':'')+'<br>'+esc(profileLine(pf))+'<br>Tạo nhân vật mới sẽ xoá nhân vật hiện tại và trả lại giường đang giữ.';$('#acctOv').hidden=false;keys={}};
 
 /* ================= character creator ================= */
