@@ -70,7 +70,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
 
  <div id="app" hidden>
   <div class="top"><h1>VML TRIP · QUẢN TRỊ</h1><div class="row"><span class="who">Admin: <b id="whoName">—</b></span><button class="ghost sm" id="logout">ĐĂNG XUẤT</button></div></div>
-  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">GIÁ CẢ</button><button data-t="ev">SỰ KIỆN</button><button data-t="sys">HỆ THỐNG</button></nav>
+  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">GIÁ CẢ</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ev">SỰ KIỆN</button><button data-t="sys">HỆ THỐNG</button></nav>
 
   <section data-p="ov" class="card">
    <h2>TỔNG QUAN RESORT</h2>
@@ -90,12 +90,17 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
   <section data-p="pl" class="card" hidden>
    <h2>NGƯỜI CHƠI</h2>
    <div class="row" style="margin-bottom:8px"><input id="q" placeholder="Tìm theo tên…" aria-label="Tìm người chơi" style="flex:1 1 220px"><span class="who" id="plCount"></span></div>
-   <div class="tbl"><table><thead><tr><th data-s="name">TÊN</th><th data-s="money">VÍ ▾</th><th data-s="beds">GIƯỜNG</th><th data-s="pets">THÚ CƯNG</th><th data-s="en">NĂNG LƯỢNG</th><th data-s="on">TRẠNG THÁI</th></tr></thead><tbody id="plist"></tbody></table></div>
+   <div class="tbl"><table><thead><tr><th data-s="name">TÊN</th><th data-s="user">USERNAME</th><th data-s="money">VÍ ▾</th><th data-s="beds">GIƯỜNG</th><th data-s="pets">THÚ CƯNG</th><th data-s="en">NĂNG LƯỢNG</th><th data-s="on">TRẠNG THÁI</th></tr></thead><tbody id="plist"></tbody></table></div>
    <div class="side" id="pSide" hidden>
     <h2 id="pTitle">NGƯỜI CHƠI</h2><p id="pInfo"></p>
     <div class="chips"><button data-v="500000">500.000₫</button><button data-v="1000000">1.000.000₫</button><button data-v="5000000">5.000.000₫</button><button data-v="9000000">9.000.000₫</button></div>
     <div class="row"><input id="gAmt" type="number" min="0" step="100000" value="1000000" aria-label="Số tiền tặng"><button class="ok" id="gGo">TẶNG TIỀN</button><button class="ghost" id="pClose">ĐÓNG</button></div>
     <p class="msg" id="gMsg"></p>
+    <h2 style="margin-top:12px">TÀI KHOẢN</h2>
+    <p id="pAcc"></p>
+    <div class="row"><input id="npw" type="text" maxlength="64" placeholder="Mật khẩu mới (từ 6 ký tự)" aria-label="Mật khẩu mới" autocomplete="off"><button class="ok" id="npwGo">ĐỔI MẬT KHẨU</button></div>
+    <p class="msg" id="npwMsg"></p>
+    <div class="row" style="margin-top:6px"><button class="ghost" id="pLog">XEM LỊCH SỬ TIỀN</button></div>
    </div>
   </section>
 
@@ -108,6 +113,15 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    <h2 style="margin-top:14px">KHÁC</h2><div class="pgrid" id="prOther"></div>
    <div class="row" style="margin-top:14px"><button class="ok" id="prSave">LƯU GIÁ</button><button class="ghost" id="prReset">KHÔI PHỤC MẶC ĐỊNH</button><button class="ghost" id="prX">x1.5 TẤT CẢ</button><button class="ghost" id="prH">x0.5 TẤT CẢ</button></div>
    <p class="msg" id="prMsg"></p>
+  </section>
+
+  <section data-p="lg" class="card" hidden>
+   <h2>LỊCH SỬ TIỀN VÀO / RA</h2>
+   <p>Mỗi dòng là một lần số dư của người chơi thay đổi, kèm lý do ghi theo thông báo trong game. Dữ liệu do máy người chơi gửi lên, giữ tối đa 1.500 dòng gần nhất mỗi người và đi theo tài khoản khi đổi máy. Giao dịch từ trước ngày bật tính năng này không có.</p>
+   <div class="row" style="margin-bottom:8px"><select id="lgUser" aria-label="Chọn người chơi" style="flex:1 1 260px"></select><input id="lgQ" placeholder="Lọc theo lý do…" aria-label="Lọc theo lý do" style="flex:1 1 180px"><select id="lgDir" aria-label="Loại"><option value="all">Tất cả</option><option value="in">Chỉ tiền vào</option><option value="out">Chỉ tiền ra</option></select><button class="ghost" id="lgGo">TẢI LẠI</button></div>
+   <p id="lgSum" style="margin:6px 0"></p>
+   <div class="tbl"><table><thead><tr><th>THỜI GIAN</th><th>VÀO</th><th>RA</th><th>SỐ DƯ</th><th>LÝ DO</th></tr></thead><tbody id="lgBody"></tbody></table></div>
+   <p class="msg" id="lgMsg"></p>
   </section>
 
   <section data-p="ev" hidden>
@@ -160,7 +174,7 @@ const say=(id,t,err)=>{const e=$(id);e.textContent=t;e.classList.toggle('err',!!
 if(VC&&VC.backend==='supabase'&&window.supabase&&window.VMLSupabaseShim&&VC.supabase&&!/DAN_|YOUR/i.test(VC.supabase.url+' '+VC.supabase.anonKey)){window.firebase=window.VMLSupabaseShim(VC.supabase);VC.firebase={apiKey:'supabase'}}
 if(!window.firebase||!VC||!VC.firebase||/DAN_/.test(VC.firebase.apiKey)){say('#lmsg','Chưa cấu hình database trong config.js',1);return}
 firebase.initializeApp(VC.firebase);const db=firebase.database(),TS=firebase.database.ServerValue.TIMESTAMP,SB=()=>firebase.__supabase;
-let uid=null,off=0,admin=false,players={},pos={},beds={},market={},event={},config={},sel=null,sortK='money',sortD=-1,started=false;
+let accs={},lgRows=[],uid=null,off=0,admin=false,players={},pos={},beds={},market={},event={},config={},sel=null,sortK='money',sortD=-1,started=false;
 const SKEY='vmlAdminUser';
 function showApp(on){$('#loginBox').hidden=on;$('#app').hidden=!on;if(on)$('#whoName').textContent=sessionStorage.getItem(SKEY)||'admin'}
 firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously().catch(e=>say('#lmsg','Lỗi kết nối: '+e.message,1));return}
@@ -182,7 +196,7 @@ $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=
 $('#logout').onclick=async()=>{try{await SB().rpc('admin_logout')}catch(e){}sessionStorage.removeItem(SKEY);showApp(false);say('#lmsg','Đã đăng xuất.')};
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(b)tab(b.dataset.t)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)tab(b.dataset.go)});
-function tab(t){$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices()}
+function tab(t){if(t==='lg'){lgFill();setTimeout(lgLoad,0)}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices()}
 const now=()=>Date.now()+off;
 function clock(){const NF=(VC&&VC.game&&VC.game.nightMinutes!=null)?Math.min(.9,Math.max(.05,VC.game.nightMinutes/((VC.game.dayMinutes)||60))):.25,A=(1-NF)*11/14,t=(now()-EPOCH)/1000,p=((t/DAY)%1+1)%1,o=p<A?11*p/A:p<A+NF?11+10*(p-A)/NF:21+3*(p-A-NF)/(1-A-NF),h=(8+o)%24,m=Math.floor(h*60);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function bedsOf(u){let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(un=>Object.values(un||{}).forEach(x=>{if(x===u)n++})));return n}
@@ -197,17 +211,36 @@ function renderOv(){$('#sClock').textContent=clock();{const h=+clock().slice(0,2
   ms.innerHTML=`<p><b>${esc(mi.name)}</b> · ${mi.state==='live'?'đang hoành hành, còn '+Math.floor(rem/60)+':'+String(Math.floor(rem%60)).padStart(2,'0'):mi.state==='dead'?'đã bị hạ gục':'đã bỏ chạy'} · thưởng ${VND(mi.m.reward)}</p><div class="hp"><i style="width:${Math.round(100*left/mi.m.hp)}%"></i></div><p>Máu ${left}/${mi.m.hp}${tops?' · Đánh nhiều nhất: '+tops:''}</p>`}}
 setInterval(()=>{if(!$('#app').hidden)renderOv()},1000);
 function renderPl(){if($('#app').hidden)return;const q=$('#q').value.trim().toLowerCase();
- let rows=Object.entries(players).filter(([u,p])=>p&&p.state&&p.name!=null&&(!q||String(p.name||'').toLowerCase().includes(q))).map(([u,p])=>({u,p,name:String(p.name||'?'),money:+p.state.money||0,beds:bedsOf(u),pets:petsOf(p),en:Math.round(p.state.energy||0),on:pos[u]?1:0}));
+ let rows=Object.entries(players).filter(([u,p])=>p&&p.state&&p.name!=null&&(!q||String(p.name||'').toLowerCase().includes(q)||String(accs[u]||'').includes(q))).map(([u,p])=>({u,p,name:String(p.name||'?'),user:accs[u]||'',money:+p.state.money||0,beds:bedsOf(u),pets:petsOf(p),en:Math.round(p.state.energy||0),on:pos[u]?1:0}));
  rows.sort((a,b)=>(typeof a[sortK]==='string'?a[sortK].localeCompare(b[sortK]):a[sortK]-b[sortK])*sortD);$('#plCount').textContent=rows.length+' người';
- $('#plist').innerHTML=rows.map(r=>`<tr data-u="${r.u}" class="${r.u===sel?'sel':''}"><td>${esc(r.name)}</td><td>${VND(r.money)}</td><td>${r.beds}</td><td>${r.pets}</td><td>${r.en}%</td><td class="${r.on?'on':'off'}">${r.on?'Online':r.p.state.fainted?'Đã xỉu':'Offline'}</td></tr>`).join('')||'<tr><td colspan="6">Chưa có người chơi.</td></tr>'}
+ $('#plist').innerHTML=rows.map(r=>`<tr data-u="${r.u}" class="${r.u===sel?'sel':''}"><td>${esc(r.name)}</td><td>${r.user?esc(r.user):'<small>chưa có</small>'}</td><td>${VND(r.money)}</td><td>${r.beds}</td><td>${r.pets}</td><td>${r.en}%</td><td class="${r.on?'on':'off'}">${r.on?'Online':r.p.state.fainted?'Đã xỉu':'Offline'}</td></tr>`).join('')||'<tr><td colspan="7">Chưa có người chơi.</td></tr>'}
 setInterval(renderPl,3000);$('#q').addEventListener('input',renderPl);
 $$('th[data-s]').forEach(th=>th.onclick=()=>{const k=th.dataset.s;if(sortK===k)sortD*=-1;else{sortK=k;sortD=k==='name'?1:-1}$$('th[data-s]').forEach(t=>t.textContent=t.textContent.replace(/ [▾▴]$/,''));th.textContent+=sortD<0?' ▾':' ▴';renderPl()});
 $('#plist').addEventListener('click',e=>{const tr=e.target.closest('tr[data-u]');if(!tr)return;sel=tr.dataset.u;const p=players[sel]||{};$('#pTitle').textContent=(p.name||'?').toUpperCase();
- $('#pInfo').innerHTML=`Ví <b>${VND(p.state&&p.state.money)}</b> · ${bedsOf(sel)} giường · ${petsOf(p)} thú cưng · ${pos[sel]?'<span class="on">đang online</span>':'offline'}<br><small>Mã: ${sel.slice(0,8)}</small>`;$('#pSide').hidden=false;say('#gMsg','');renderPl()});
+ $('#pInfo').innerHTML=`Ví <b>${VND(p.state&&p.state.money)}</b> · ${bedsOf(sel)} giường · ${petsOf(p)} thú cưng · ${pos[sel]?'<span class="on">đang online</span>':'offline'}<br><small>Mã: ${sel.slice(0,8)}</small>`;$('#pAcc').innerHTML=accs[sel]?'Username: <b>'+esc(accs[sel])+'</b>':'Chưa có tài khoản (người chơi chưa tạo username).';$('#npw').value='';say('#npwMsg','');$('#pSide').hidden=false;say('#gMsg','');renderPl()});
 $$('#pSide .chips button').forEach(b=>b.onclick=()=>{$('#gAmt').value=b.dataset.v});
 $('#pClose').onclick=()=>{sel=null;$('#pSide').hidden=true;renderPl()};
 $('#gGo').onclick=()=>{const a=Math.round(+$('#gAmt').value||0),u=sel,p=players[u]||{};if(!u)return;if(a<=0){say('#gMsg','Nhập số tiền lớn hơn 0.',1);return}
  db.ref('gifts/'+u+'/g'+Date.now()).set({amount:a,ts:TS}).then(()=>say('#gMsg','Đã tặng '+VND(a)+' cho '+(p.name||'?')+'.')).catch(e=>say('#gMsg','Lỗi: '+e.message,1))};
+
+/* tài khoản + lịch sử tiền */
+async function loadAccs(){try{const {data,error}=await SB().rpc('admin_accounts_list');if(error)throw error;accs={};(data||[]).forEach(a=>{accs[a.uid]=a.user});renderPl();lgFill(true)}catch(e){}}
+setInterval(()=>{if(!$('#app').hidden)loadAccs()},20000);
+const lgLoaded=setInterval(()=>{if(admin&&!$('#app').hidden){clearInterval(lgLoaded);loadAccs()}},800);
+$('#npwGo').onclick=async()=>{const u=sel,pw=$('#npw').value;if(!u)return;if(!accs[u]){say('#npwMsg','Người chơi này chưa có tài khoản.',1);return}if(pw.length<6){say('#npwMsg','Mật khẩu mới tối thiểu 6 ký tự.',1);return}
+ try{const {data,error}=await SB().rpc('admin_set_password',{target:u,newp:pw});if(error)throw error;if(!data||!data.ok){say('#npwMsg',(data&&data.msg)||'Không đổi được.',1);return}say('#npwMsg','Đã đổi mật khẩu cho '+data.user+'. Gửi mật khẩu mới cho người chơi qua kênh riêng.');$('#npw').value=''}
+ catch(e){say('#npwMsg',/admin_set_password|schema|function/i.test(e.message||'')?'Máy chủ chưa bật tính năng này (chạy supabase-update-admin-log.sql).':'Lỗi: '+(e.message||e),1)}};
+$('#pLog').onclick=()=>{if(!sel)return;tab('lg');$('#lgUser').value=sel;lgLoad()};
+function lgFill(keep){const cur=$('#lgUser').value;const L=Object.entries(players).filter(([u,p])=>p&&p.name!=null).map(([u,p])=>({u,t:(p.name||'?')+(accs[u]?'  ·  @'+accs[u]:'')})).sort((a,b)=>a.t.localeCompare(b.t));
+ $('#lgUser').innerHTML=L.map(o=>`<option value="${o.u}">${esc(o.t)}</option>`).join('');if(cur&&L.some(o=>o.u===cur))$('#lgUser').value=cur}
+async function lgLoad(){const u=$('#lgUser').value;if(!u)return;say('#lgMsg','Đang tải…');
+ try{const {data,error}=await SB().rpc('admin_mlog',{target:u,lim:1500});if(error)throw error;lgRows=data||[];say('#lgMsg','');lgRender()}
+ catch(e){say('#lgMsg',/admin_mlog|schema|function/i.test(e.message||'')?'Máy chủ chưa bật tính năng này (chạy supabase-update-admin-log.sql).':'Lỗi: '+(e.message||e),1)}}
+function lgRender(){const q=$('#lgQ').value.trim().toLowerCase(),dir=$('#lgDir').value;let ti=0,to=0;
+ const rows=lgRows.filter(r=>(dir==='all'||(dir==='in'?r.d>0:r.d<0))&&(!q||String(r.r||'').toLowerCase().includes(q)));rows.forEach(r=>{if(r.d>0)ti+=r.d;else to-=r.d});
+ $('#lgSum').innerHTML=`${rows.length} dòng · Tổng vào <b class="on">${VND(ti)}</b> · Tổng ra <b style="color:var(--coral,#ff7a6a)">${VND(to)}</b> · Chênh lệch <b>${VND(ti-to)}</b>`;
+ $('#lgBody').innerHTML=rows.map(r=>{const d=new Date(+r.t),ts=d.toLocaleDateString('vi-VN')+' '+d.toLocaleTimeString('vi-VN');return`<tr><td>${ts}</td><td class="${r.d>0?'on':''}">${r.d>0?'+'+VND(r.d):''}</td><td>${r.d<0?'−'+VND(-r.d):''}</td><td>${VND(r.b)}</td><td>${esc(r.r||'')}</td></tr>`}).join('')||'<tr><td colspan="5">Chưa có giao dịch nào được ghi.</td></tr>'}
+$('#lgUser').onchange=lgLoad;$('#lgGo').onclick=lgLoad;$('#lgQ').addEventListener('input',lgRender);$('#lgDir').onchange=lgRender;
 /* prices */
 let prDirty=false;
 const cur=()=>(config&&config.prices)||{};
@@ -217,7 +250,7 @@ function renderPrices(){const c=cur();
  $('#prHouse').innerHTML=HOUSES.map(([k,n,d])=>prItem('house.'+k,n,d,getP(c.house,k))).join('')+['Tháp Quạ Đen','Tháp Trăng Máu','Tháp Pha Lê Đen','Tháp Rồng Ngủ','Tháp Tối Thượng'].map((n,i)=>prItem('castle.'+i,'Lâu đài · '+n,(i+1)*20000000,getP(c.castle,i),'mỗi người')).join('')+[['cflag','Cờ phép thuật',5000000],['cdragon','Rồng đen canh tháp',15000000],['cmoon','Trăng máu bay',10000000],['cfire','Pháo hoa ma thuật',8000000],['ccrystal','Quả cầu tiên tri',8000000],['cgarg','Tượng quỷ gargoyle',6000000],['cportal','Cổng dịch chuyển ma thuật',20000000]].map(([id,n,d])=>prItem('cdeco.'+id,'Trang trí tháp · '+n,d,getP(c.cdeco,id))).join('')+prItem('cplate','Bảng tên liên minh',2000000,getP(c,'cplate'));
  $('#prPets').innerHTML=CAT.pets.map(([n,d],i)=>prItem('pets.'+i,n,d,getP(c.pets,i))).join('');
  $('#prDeco').innerHTML=CAT.deco.map(([id,n,d,sl])=>prItem('deco.'+id,n,d,getP(c.deco,id),sl==='g'?'sân':sl==='top'?'mái':'cửa')).join('')+prItem('plate','Bảng tên chủ nhà',200000,getP(c,'plate'));
- $('#prOther').innerHTML=prItem('cheat','Phí mỗi lần dùng mã',50000,getP(c,'cheat'))+[['poop','Việc vặt · Dọn phân',300000],['roach','Việc vặt · Đập gián ngoài hành tinh',100000],['elder','Việc vặt · Đưa cụ già về nhà',100000],['wMin','Ví rơi · tối thiểu',100000],['wMax','Ví rơi · tối đa',1000000]].map(([k,n,d])=>prItem('jobs.'+k,n,d,getP(c.jobs,k))).join('')+prItem('float','Thuê phao bơi (2 phút)',100000,getP(c,'float'))+prItem('bath.pee','Tắm khi dính nước tiểu',200000,getP(c.bath,'pee'))+prItem('bath.poo','Tắm khi dính phân',400000,getP(c.bath,'poo'))+prItem('lotto','Giá 1 tờ vé số',100000,getP(c,'lotto'))+[["s01", "Dạ Hội Ánh Trăng", 8000000], ["s02", "Dạ Hội Hồng Phấn", 6000000], ["s03", "Tuxedo Hoàng Kim", 7000000], ["s04", "Vest Nhung Đỏ Dạ Tiệc", 5000000], ["s05", "Hoàng Tử Bạch Mã", 60000000], ["s06", "Lọ Lem Xe Bí Ngô", 70000000], ["s07", "Nữ Hoàng Băng Giá", 40000000], ["s08", "Vua Mặt Trời", 80000000], ["s09", "Hoàng Hậu Ruby", 35000000], ["s10", "Hiệp Sĩ Cưỡi Rồng", 90000000], ["s11", "Phi Hành Gia Hồng", 12000000], ["s12", "Người Ngoài Hành Tinh", 50000000], ["s13", "Thiên Hà Lấp Lánh", 25000000], ["s14", "Robot Cầu Vồng", 15000000], ["s15", "Áo Dài Cung Đình", 18000000], ["s16", "Hoàng Bào Long Phụng", 85000000], ["s17", "Kiếm Khách Giang Hồ", 14000000], ["s18", "Tiên Nữ Hạ Phàm", 55000000], ["s19", "Tề Thiên Cân Đẩu Vân", 45000000], ["s20", "Phù Thuỷ Tím Mộng Mơ", 30000000], ["s21", "Pháp Sư Bóng Đêm", 38000000], ["s22", "Phù Thuỷ Kẹo Ngọt", 20000000], ["s23", "Pháp Sư Rồng Lửa", 42000000], ["s24", "Công Chúa Tình Yêu", 65000000], ["s25", "Thần Tình Yêu Cupid", 28000000], ["s26", "Công Chúa Thiên Nga", 75000000], ["s27", "Hoạ Sĩ Sáng Tạo", 9000000], ["s28", "Nhà Thiết Kế Neon", 16000000], ["s29", "Thảm Bay Ba Tư", 48000000], ["s30", "Thiên Sứ Cầu Vồng", 100000000]].map(([id,n,d])=>prItem('skins.'+id,'Thời trang · '+n,d,getP(c.skins,id))).join('');prDirty=false}
+ $('#prOther').innerHTML=prItem('cheat','Phí mỗi lần dùng mã',50000,getP(c,'cheat'))+[['poop','Việc vặt · Dọn phân',300000],['roach','Việc vặt · Đập gián ngoài hành tinh',100000],['elder','Việc vặt · Đưa cụ già về nhà',100000],['but','Ông Bụt hoá trang (20% cụ già) · tiền ban',1111111],['wMin','Ví rơi · tối thiểu',100000],['wMax','Ví rơi · tối đa',1000000]].map(([k,n,d])=>prItem('jobs.'+k,n,d,getP(c.jobs,k))).join('')+prItem('float','Thuê phao bơi (2 phút)',100000,getP(c,'float'))+prItem('bath.pee','Tắm khi dính nước tiểu',200000,getP(c.bath,'pee'))+prItem('bath.poo','Tắm khi dính phân',400000,getP(c.bath,'poo'))+prItem('lotto','Giá 1 tờ vé số',100000,getP(c,'lotto'))+[["s01", "Dạ Hội Ánh Trăng", 8000000], ["s02", "Dạ Hội Hồng Phấn", 6000000], ["s03", "Tuxedo Hoàng Kim", 7000000], ["s04", "Vest Nhung Đỏ Dạ Tiệc", 5000000], ["s05", "Hoàng Tử Bạch Mã", 60000000], ["s06", "Lọ Lem Xe Bí Ngô", 70000000], ["s07", "Nữ Hoàng Băng Giá", 40000000], ["s08", "Vua Mặt Trời", 80000000], ["s09", "Hoàng Hậu Ruby", 35000000], ["s10", "Hiệp Sĩ Cưỡi Rồng", 90000000], ["s11", "Phi Hành Gia Hồng", 12000000], ["s12", "Người Ngoài Hành Tinh", 50000000], ["s13", "Thiên Hà Lấp Lánh", 25000000], ["s14", "Robot Cầu Vồng", 15000000], ["s15", "Áo Dài Cung Đình", 18000000], ["s16", "Hoàng Bào Long Phụng", 85000000], ["s17", "Kiếm Khách Giang Hồ", 14000000], ["s18", "Tiên Nữ Hạ Phàm", 55000000], ["s19", "Tề Thiên Cân Đẩu Vân", 45000000], ["s20", "Phù Thuỷ Tím Mộng Mơ", 30000000], ["s21", "Pháp Sư Bóng Đêm", 38000000], ["s22", "Phù Thuỷ Kẹo Ngọt", 20000000], ["s23", "Pháp Sư Rồng Lửa", 42000000], ["s24", "Công Chúa Tình Yêu", 65000000], ["s25", "Thần Tình Yêu Cupid", 28000000], ["s26", "Công Chúa Thiên Nga", 75000000], ["s27", "Hoạ Sĩ Sáng Tạo", 9000000], ["s28", "Nhà Thiết Kế Neon", 16000000], ["s29", "Thảm Bay Ba Tư", 48000000], ["s30", "Thiên Sứ Cầu Vồng", 100000000]].map(([id,n,d])=>prItem('skins.'+id,'Thời trang · '+n,d,getP(c.skins,id))).join('');prDirty=false}
 document.addEventListener('input',e=>{const i=e.target.closest('.pitem input');if(!i)return;prDirty=true;i.parentElement.classList.toggle('chg',+i.value!==+i.dataset.def)});
 function collect(){const o={house:{},pets:{},deco:{},jobs:{},bath:{},castle:{},cdeco:{},skins:{}};let bad=false;$$('.pitem input').forEach(i=>{const v=Math.round(+i.value);if(!Number.isFinite(v)||v<0){bad=true;return}const [a,b]=i.dataset.k.split('.');if(b==null)o[a]=v;else o[a][b]=v});return bad?null:o}
 $('#prSave').onclick=()=>{const o=collect();if(!o){say('#prMsg','Có ô giá không hợp lệ.',1);return}db.ref('config/prices').set(o).then(()=>{prDirty=false;say('#prMsg','Đã lưu giá lúc '+new Date().toLocaleTimeString('vi-VN')+'. Game sẽ cập nhật trong vài giây.')}).catch(e=>say('#prMsg','Lỗi: '+e.message,1))};
