@@ -189,7 +189,7 @@ function bedsOf(u){let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{})
 function petsOf(p){const v=p.pets!=null?p.pets:p.pet;return Array.isArray(v)?v.length:v&&typeof v==='object'?Object.keys(v).length:typeof v==='number'?1:0}
 function monInfo(){const m=event.monster;if(!m||!m.id)return null;let hits=0;for(const u in players){const h=players[u]&&players[u].mh;if(h&&h.id===m.id)hits+=+h.n||0}const t=(now()-m.start)/1000,name=(MONS.find(x=>x[0]===m.kind)||['','?'])[1];return{m,hits,t,name,state:hits>=m.hp?'dead':t>m.dur?'gone':'live'}}
 function renderOv(){$('#sClock').textContent=clock();{const h=+clock().slice(0,2);$('#sDay').textContent=h>=6&&h<19?'NGÀY':'ĐÊM'}$('#sOn').textContent=Object.keys(pos).length;
- const ps=Object.values(players).filter(p=>p&&p.state);$('#sPl').textContent=ps.length;let nb=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(un=>Object.values(un||{}).forEach(x=>{if(x)nb++})));$('#sBeds').textContent=nb+'/50';
+ const ps=Object.values(players).filter(p=>p&&p.state&&p.name!=null);$('#sPl').textContent=ps.length;let nb=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(un=>Object.values(un||{}).forEach(x=>{if(x)nb++})));$('#sBeds').textContent=nb+'/50';
  $('#sMoney').textContent=VND(ps.reduce((a,p)=>a+(+p.state.money||0),0));$('#sMk').textContent=Object.values(market).reduce((a,o)=>a+Object.keys(o||{}).length,0);
  const mi=monInfo();$('#sMon').textContent=!mi?'Không có':mi.state==='live'?Math.max(0,mi.m.hp-mi.hits)+'/'+mi.m.hp+' máu':mi.state==='dead'?'Đã hạ':'Đã bỏ chạy';
  const ms=$('#mStatus');if(!mi){ms.innerHTML='<p>Hiện không có quái vật.</p>'}else{const left=Math.max(0,mi.m.hp-mi.hits),rem=Math.max(0,mi.m.dur-mi.t);
@@ -197,7 +197,7 @@ function renderOv(){$('#sClock').textContent=clock();{const h=+clock().slice(0,2
   ms.innerHTML=`<p><b>${esc(mi.name)}</b> · ${mi.state==='live'?'đang hoành hành, còn '+Math.floor(rem/60)+':'+String(Math.floor(rem%60)).padStart(2,'0'):mi.state==='dead'?'đã bị hạ gục':'đã bỏ chạy'} · thưởng ${VND(mi.m.reward)}</p><div class="hp"><i style="width:${Math.round(100*left/mi.m.hp)}%"></i></div><p>Máu ${left}/${mi.m.hp}${tops?' · Đánh nhiều nhất: '+tops:''}</p>`}}
 setInterval(()=>{if(!$('#app').hidden)renderOv()},1000);
 function renderPl(){if($('#app').hidden)return;const q=$('#q').value.trim().toLowerCase();
- let rows=Object.entries(players).filter(([u,p])=>p&&p.state&&(!q||String(p.name||'').toLowerCase().includes(q))).map(([u,p])=>({u,p,name:String(p.name||'?'),money:+p.state.money||0,beds:bedsOf(u),pets:petsOf(p),en:Math.round(p.state.energy||0),on:pos[u]?1:0}));
+ let rows=Object.entries(players).filter(([u,p])=>p&&p.state&&p.name!=null&&(!q||String(p.name||'').toLowerCase().includes(q))).map(([u,p])=>({u,p,name:String(p.name||'?'),money:+p.state.money||0,beds:bedsOf(u),pets:petsOf(p),en:Math.round(p.state.energy||0),on:pos[u]?1:0}));
  rows.sort((a,b)=>(typeof a[sortK]==='string'?a[sortK].localeCompare(b[sortK]):a[sortK]-b[sortK])*sortD);$('#plCount').textContent=rows.length+' người';
  $('#plist').innerHTML=rows.map(r=>`<tr data-u="${r.u}" class="${r.u===sel?'sel':''}"><td>${esc(r.name)}</td><td>${VND(r.money)}</td><td>${r.beds}</td><td>${r.pets}</td><td>${r.en}%</td><td class="${r.on?'on':'off'}">${r.on?'Online':r.p.state.fainted?'Đã xỉu':'Offline'}</td></tr>`).join('')||'<tr><td colspan="6">Chưa có người chơi.</td></tr>'}
 setInterval(renderPl,3000);$('#q').addEventListener('input',renderPl);
