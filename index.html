@@ -262,10 +262,12 @@ body.m-room .pad{display:none!important}
 @keyframes capShake{50%{transform:translate(2px,-1px) rotate(-1deg)}}
 #lottoEgg{width:240px;height:220px;image-rendering:pixelated;border:3px solid #000;background:#14204a}
 @media (max-height:700px){#lottoEgg{width:180px;height:165px}}
-#castleOv .card.castle{background:linear-gradient(180deg,#3a1848,#2a1238);box-shadow:inset 0 0 0 3px #ff7ab8,6px 6px 0 rgba(0,0,0,.5)}#castleOv h2{color:#fff0fa;font-size:clamp(26px,7vw,40px);text-align:center;letter-spacing:1px;text-shadow:3px 3px 0 #c83a7c,0 0 18px rgba(255,122,184,.6);margin-bottom:8px}
+#cintroOv .card.castle,#castleOv .card.castle{background:linear-gradient(180deg,#3a1848,#2a1238);box-shadow:inset 0 0 0 3px #ff7ab8,6px 6px 0 rgba(0,0,0,.5)}#cintroOv h2,#castleOv h2{color:#fff0fa;font-size:clamp(26px,7vw,40px);text-align:center;letter-spacing:1px;text-shadow:3px 3px 0 #c83a7c,0 0 18px rgba(255,122,184,.6);margin-bottom:8px}
 .ctow{border-color:#c84d8e!important;background:rgba(255,122,184,.08)!important}.ctow.mine{box-shadow:inset 0 0 0 2px var(--sun)}.cslots{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}.cslot{font-size:14px;padding:1px 7px;border:2px solid #000;background:#2a1f3d;color:var(--muted)}.cslot.on{background:#c84d8e;color:#fff}
 .btn.warn{color:#ff9a9a}
 @media (max-width:520px){#castleInfo{font-size:14px;line-height:1.25}#castleOv .erow .row{flex-wrap:wrap}}
+#cintroBody{max-height:min(62vh,620px);overflow-y:auto;padding-right:4px}.cis{border:3px solid #c84d8e;background:rgba(255,122,184,.08);padding:6px 10px;margin-bottom:8px}.cis h3{font-family:var(--f-display);font-weight:normal;color:#ffd96a;font-size:14px;margin:2px 0 6px}.cis p,.cis li{font-size:17px;line-height:1.25;margin:0 0 4px}.cis ol,.cis ul{margin:0;padding-left:22px}
+.ctab{width:100%;border-collapse:collapse;font-size:16px;margin-bottom:6px}.ctab th{text-align:left;color:#ffb0e0;font-weight:normal;border-bottom:2px solid #c84d8e;padding:2px 4px}.ctab td{padding:3px 4px;border-bottom:1px solid rgba(255,122,184,.25)}.cis.warnbox{border-color:#ffd96a}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script src="supabase-shim.js"></script>
@@ -416,7 +418,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-o</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-p</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -431,6 +433,13 @@ body.m-room .pad{display:none!important}
 
 <div id="ghostOv" hidden aria-hidden="true"><canvas id="ghostCv" width="240" height="260"></canvas></div>
 
+<div class="modal" id="cintroOv" hidden>
+  <div class="card wide castle">
+    <h2>LÂU ĐÀI TÌNH BÁO</h2>
+    <div id="cintroBody"></div>
+    <div class="row" style="margin-top:10px"><button class="btn ok" id="cintroGo">XEM 5 THÁP &amp; ĐẶT CHỖ</button><button class="btn ghost" data-close="cintroOv">ĐÓNG</button></div>
+  </div>
+</div>
 <div class="modal" id="castleOv" hidden>
   <div class="card wide castle">
     <h2>LÂU ĐÀI TÌNH BÁO</h2>
@@ -587,7 +596,7 @@ const TORCHES=[[140,752],[460,752],[1020,752],[1300,752],[1620,752],[850,480],[9
 /* ---- Lâu Đài Tình Báo: hình vẽ (tím hồng, huyền bí) ---- */
 const CSH=170,CB=1790+CSH,CCX=880,FENCE_Y=1238+CSH,CGATE=P2(CCX,CB+16);
 const CTW=[{dx:-250,w:26,h:230,sp:62},{dx:250,w:26,h:265,sp:66},{dx:-140,w:30,h:310,sp:74},{dx:140,w:30,h:350,sp:80},{dx:0,w:38,h:400,sp:96}];
-const CW=640,COY=520,COX=320;
+const CW=640,COY=520,COX=320,CIB=P2(1004,FENCE_Y-26);
 function castleWin(g,x,y,w,h,c){rr(g,x-1,y-1,w+2,h+2,'#7a3a8a');for(let k=0;k<h;k++){const hw=k<w/2?Math.round(Math.sqrt(Math.max(0,(w/2)*(w/2)-(w/2-k)*(w/2-k)))):w/2;rr(g,x+w/2-hw,y+k,hw*2,1,c)}rr(g,x+Math.floor(w/2),y+2,1,h-2,'rgba(160,80,140,.5)')}
 function heartP(g,x,y,s,c){ellP(g,x-s,y,s,s,c);ellP(g,x+s,y,s,s,c);for(let k=0;k<=s*2;k++)rr(g,x-2*s+k,y+k,Math.max(1,4*s-2*k),1,c)}
 function makeCastle(){const [c,g]=mk(CW,COY+4),O=COY,X=COX;
@@ -612,6 +621,8 @@ function makeCastle(){const [c,g]=mk(CW,COY+4),O=COY,X=COX;
  outline(c,[60,20,70]);
  for(const [ox2,oy2] of [[2,3],[-1,0],[1,0],[0,-1],[0,1]])ptext(g,'LÂU ĐÀI TÌNH BÁO',X+ox2,RY+33+oy2,30,'#7a1a5a','center',DFONT,null);ptext(g,'LÂU ĐÀI TÌNH BÁO',X,RY+33,30,'#fffaf0','center',DFONT,null);
  return{c,ox:COX,oy:COY}}
+function makeCastleBoard(){const [c,g]=mk(76,78),by=74;rr(g,10,40,4,by-40,'#8a4a6a');rr(g,62,40,4,by-40,'#8a4a6a');rr(g,2,6,72,46,'#ff7ab8');rr(g,5,9,66,40,'#3a1848');rr(g,2,6,72,3,'#ffd96a');rr(g,2,49,72,3,'#c83a7c');heartP(g,38,4,3,'#ffd96a');
+ ptext(g,'LÂU ĐÀI',38,20,9,'#ffd96a','center',FONT,null);ptext(g,'TÌNH BÁO',38,31,9,'#fff0fa','center',FONT,null);for(let k=0;k<3;k++)rr(g,12,36+k*4,52-k*10,1,'#c99bff');outline(c,[60,20,70]);return{c,ox:38,oy:by}}
 function makeCastleGate(){const [c,g]=mk(190,124),by=120;for(const x of [12,164]){rr(g,x,30,14,by-30,'#d9a8dc');for(let y=30;y<by;y+=8)rr(g,x,y,14,1,'#c494d0');rr(g,x-3,26,20,6,'#e8c0ea');ellP(g,x+7,20,6,6,'#ff9ad5');ellP(g,x+7,20,3,3,'#fff0fa')}
  for(let k=0;k<=40;k++){const a=Math.PI*k/40;rr(g,Math.round(95-Math.cos(a)*76),Math.round(44-Math.sin(a)*26),3,3,'#c99bff')}
  rr(g,14,2,162,34,'#ff6fae');rr(g,14,2,162,3,'#ffa8d2');rr(g,14,33,162,3,'#c83a7c');
@@ -632,7 +643,7 @@ const DEAD_TREES=[[150,1530],[330,1690],[210,1890],[1460,1570],[1620,1770],[1380
 const blocks=[];const addBlock=(x0,y0,x1,y1)=>blocks.push({x0,y0,x1,y1});
 [...ZONES,FOODS,ARENA,PETZ].forEach(z=>addBlock(z.bx-50,z.by-26,z.bx+50,z.by));
 Object.values(REC).forEach(r=>{if(r.type!=='room')addBlock(r.x-48,r.y-30,r.x+48,r.y)});
-addBlock(760,930,980,996);addBlock(CCX-292,CB-150,CCX+292,CB-2);addBlock(0,FENCE_Y-6,842,FENCE_Y+2);addBlock(914,FENCE_Y-6,MW,FENCE_Y+2);addBlock(797,FENCE_Y-12,815,FENCE_Y+4);addBlock(945,FENCE_Y-12,963,FENCE_Y+4);DEAD_TREES.forEach(([x,y])=>addBlock(x-4,y-4,x+6,y+2));addBlock(BATH.x0+2,930,BATH.x1-2,BATH.base);addBlock(HOTEL.x+6,900,HOTEL.x+652,HOTEL.base);
+addBlock(760,930,980,996);addBlock(CCX-292,CB-150,CCX+292,CB-2);addBlock(0,FENCE_Y-6,842,FENCE_Y+2);addBlock(914,FENCE_Y-6,MW,FENCE_Y+2);addBlock(797,FENCE_Y-12,815,FENCE_Y+4);addBlock(CIB.x-34,CIB.y-4,CIB.x+34,CIB.y+2);addBlock(945,FENCE_Y-12,963,FENCE_Y+4);DEAD_TREES.forEach(([x,y])=>addBlock(x-4,y-4,x+6,y+2));addBlock(BATH.x0+2,930,BATH.x1-2,BATH.base);addBlock(HOTEL.x+6,900,HOTEL.x+652,HOTEL.base);
 addBlock(TABLE.x0,TABLE.y0-2,TABLE.x1,TABLE.y1+2);
 TENTS.forEach(t=>addBlock(t.x-32,t.y-26,t.x+32,t.y+2));
 PALMS.forEach(([x,y])=>addBlock(x-5,y-5,x+5,y+2));
@@ -965,7 +976,7 @@ function buildWorld(){
  TENTS.forEach((t,k)=>{groundShadow(t.x+6,t.y,30,5);addProp(makeTent(TCOL[k%6]),t.x,t.y,{tent:k})});
  [...ZONES,FOODS,ARENA,PETZ].forEach(z=>{b.fillStyle='rgba(30,40,70,.2)';b.fillRect(z.bx-52,z.by-2,108,8);addProp(makeBooth(z),z.bx,z.by,{zone:z});LIGHTS.push({x:z.bx,y:z.by-40,r:90})});
  [REC.villa,REC.tent].forEach(r=>{b.fillStyle='rgba(30,40,70,.2)';b.fillRect(r.x-52,r.y-2,108,8);addProp(makeHut(r.type,r.name),r.x,r.y);LIGHTS.push({x:r.x,y:r.y-40,r:90})});
- addProp(makeWC(),760,996);castleGround();addProp(makeCastle(),CCX,CB);addProp(makeCastleGate(),880,FENCE_Y+4);DEAD_TREES.forEach(([x,y],k)=>addProp(makeDeadTree(k+3),x,y));[[CCX-120,CB-60],[CCX+120,CB-60],[CCX,CB-200]].forEach(([x,y])=>LIGHTS.push({x,y,r:120}));addProp(makeBath(),BATH.x0-2,BATH.base);LIGHTS.push({x:690,y:960,r:80});LIGHTS.push({x:870,y:960,r:110});
+ addProp(makeWC(),760,996);castleGround();addProp(makeCastle(),CCX,CB);addProp(makeCastleGate(),880,FENCE_Y+4);addProp(makeCastleBoard(),CIB.x,CIB.y);DEAD_TREES.forEach(([x,y],k)=>addProp(makeDeadTree(k+3),x,y));[[CCX-120,CB-60],[CCX+120,CB-60],[CCX,CB-200]].forEach(([x,y])=>LIGHTS.push({x,y,r:120}));addProp(makeBath(),BATH.x0-2,BATH.base);LIGHTS.push({x:690,y:960,r:80});LIGHTS.push({x:870,y:960,r:110});
  addProp(makeGate(),880,650);LIGHTS.push({x:880,y:600,r:80});
  addProp(makeHotel(),HOTEL.x,HOTEL.base);
  for(const fy of [64,116])for(let i=0;i<10;i++){const wx=(i<5?24+i*54:388+(i-5)*54);LIGHTS.push({x:HOTEL.x+wx+15,y:HOTEL.base-220+fy+15,r:40})}
@@ -1169,6 +1180,7 @@ function nearInteract(){const C=[],add=(pt,r,o)=>{const d=dist(P,pt);if(d<r)C.pu
  {const j=jobNear();if(j)C.push([-50,{k:'job',j,label:jobLabel(j)}])}
  {const v=vendNear();if(v)C.push([-40,{k:'lotto',v,label:'Mua vé số của '+v.name+' · '+VND(LOTTO_PRICE)+' / tờ'}])}
  add(PETZ.pt,40,{k:'pet',label:'Quầy Thú Cưng · 19 bé đi theo bạn'});
+ add(P2(CIB.x,CIB.y+14),30,{k:'cintro',label:'Bảng giới thiệu Lâu Đài Tình Báo · câu chuyện & cách mua phòng'});
  {const me=myCastle();add(CGATE,32,{k:'castle',label:me&&me.done?'Vào '+CASTLE_N[me.t]+' · Lâu Đài Tình Báo':'Lâu Đài Tình Báo · xem 5 tháp & đặt chỗ'})}
  add(FLOATZ.pt,34,{k:'float',label:floatOf(P)?'Đang thuê '+FLOAT_BY[floatOf(P)].n+' · còn '+mmss(P.flo.until-S.time):'Thuê phao kỳ quái · '+VND(FLOAT_PRICE)+' / 2 phút'});
  if(!inPool(P.x,P.y)&&P.x>POOL.x0-16&&P.x<POOL.x1+16&&P.y>POOL.y0-14&&P.y<POOL.y1+12)C.push([30,{k:'info',label:'Hồ bơi · cứ đi xuống nước là bơi'}]);
@@ -1200,6 +1212,7 @@ function act(){if(!running||S.ended||modalOpen())return;
  else if(it.k==='monster')hitMonster();
  else if(it.k==='job')jobAct(it.j);
  else if(it.k==='lotto')openLotto(it.v);
+ else if(it.k==='cintro')openCastleIntro();
  else if(it.k==='castle'){const me=myCastle();if(me&&me.done)enterCastle(me.t);else openCastle()}
  else if(it.k==='meal')playerMeal();
  else if(it.k==='enter'){P.lodge={type:it.u.type,i:it.u.i};P.lodgePref=P.lodge;enterRoom()}
@@ -1879,6 +1892,15 @@ async function castleCancel(t){const me=myCastle();if(!me||me.t!==t||me.done)ret
 async function castleVote(t,on){const me=myCastle();if(!me||me.t!==t||!me.done)return;
  if(NET.on){CST.busy=true;renderCastle();const d=await castleRpc('rt_castle_leave',{tw:t,vote:on});CST.busy=false;if(d&&d.ok)toast(d.evicted?'Đủ 2 phiếu. Cả liên minh rời lâu đài, mất toàn bộ tiền.':on?'Đã bỏ phiếu thoát ('+d.votes+'/3). Cần 2 phiếu thì cả nhóm phải rời và mất tiền.':'Đã rút phiếu thoát.',false,5000);else if(d)toast(d.msg||'Không được.',false,4000);renderCastle();return}
  const T=S.castle[t];T.lv[me.k]=on?1:0;if(on){T.lvT=S.time+rnd(6,10);toast('Đã bỏ phiếu thoát (1/3). Nếu thêm 1 người nữa đồng ý, cả nhóm phải rời và mất tiền.',false,5000)}else toast('Đã rút phiếu thoát.');renderCastle()}
+
+function openCastleIntro(){const tw=[0,1,2,3,4].map(i=>`<tr><td><b>${CASTLE_N[i]}</b></td><td>${['Thấp nhất','Tầng 2','Tầng 3','Tầng 4','Cao nhất'][i]}</td><td class="price">${VND(CASTLE_PRICE[i])}</td></tr>`).join('');
+ $('#cintroBody').innerHTML=`<div class="cis"><h3>CÂU CHUYỆN</h3><p>Ngày xưa, vào một đêm trăng hồng, những người sáng tạo giỏi nhất VML bí mật dựng nên một lâu đài ở cuối resort. Ở đó họ cất giữ những ý tưởng chưa từng kể với ai, nên người ta gọi nó là <b>Lâu Đài Tình Báo</b>. Phép thuật của lâu đài chỉ mở cửa cho <b>3 người tin tưởng nhau</b>. Nếu niềm tin rạn vỡ, phép thuật tan biến cùng mọi kho báu bên trong.</p></div>
+ <div class="cis"><h3>5 THÁP · GIÁ MỖI NGƯỜI</h3><table class="ctab"><tr><th>Tháp</th><th>Độ cao</th><th>Giá / người</th></tr>${tw}</table><p>Mỗi tháp có 3 giường cho 3 người. Tháp càng cao, view càng đẹp (tháp cao nhìn xuống cả biển mây).</p></div>
+ <div class="cis"><h3>CÁCH MUA PHÒNG</h3><ol><li>Đi tới cổng lâu đài (hoặc bấm vào lâu đài), chọn một tháp còn trống và bấm <b>ĐẶT CHỖ</b>.</li><li>Tiền được <b>giữ lại</b> chứ chưa mất. Chưa đủ người thì bấm <b>HUỶ ĐẶT</b> để lấy lại.</li><li>Rủ thêm 2 người cùng đặt vào <b>đúng tháp đó</b>. Đủ 3 người là mua thành công.</li><li>Cả 3 thành một <b>liên minh</b> và cùng sở hữu tháp.</li></ol></div>
+ <div class="cis"><h3>QUYỀN LỢI CHỦ LÂU ĐÀI</h3><ul><li><b>Vương miện vàng</b> trên đầu mỗi khi ra ngoài, ai cũng thấy.</li><li>Phòng sang trọng, ngủ hồi năng lượng <b>nhanh nhất game</b>.</li><li><b>Người hầu</b> định kỳ mang đồ ăn tới, cộng thêm năng lượng.</li><li>Toilet riêng, view đỉnh cao.</li><li>Mua <b>đồ trang trí cao cấp</b> cho tháp: rồng, trăng máu, cổng dịch chuyển, bảng tên liên minh…</li></ul></div>
+ <div class="cis warnbox"><h3>LUẬT CẦN BIẾT</h3><ul><li>Chỗ trong lâu đài tính là <b>1 giường</b> trong giới hạn ${BED_MAX} giường. Đủ ${BED_MAX} rồi thì bán hoặc <b>trả giường</b> (mục Tài sản) trước.</li><li>Mỗi người chỉ có <b>1 chỗ</b> trong lâu đài.</li><li>Nếu <b>2 thành viên bỏ phiếu thoát</b>, cả liên minh phải rời lâu đài và <b>mất toàn bộ tiền</b> cùng đồ trang trí. Hãy chọn đồng đội thật kỹ!</li><li>Đang bốc mùi thì quản gia không cho vào. Đi tắm trước đã.</li></ul></div>`;
+ $('#cintroOv').hidden=false;keys={}}
+$('#cintroGo').onclick=()=>{$('#cintroOv').hidden=true;openCastle()};
 function openCastle(){CST.tab='list';CST.deco=null;CST.key='';renderCastle();$('#castleOv').hidden=false;keys={}}
 function canCDeco(t){const me=myCastle();return !!(me&&me.done&&me.t===t)}
 function renderCastle(){$('#castleMoney').textContent=VND(P.money);const me=myCastle(),B=$('#castleBody');let h='';const nearGate=dist(P,CGATE)<70;
@@ -2253,6 +2275,7 @@ function renderWorld(t){
   else if(c===P)label(c.name,x,y-34-lf,'#ffd23f');
   else if(dist(c,P)<90||c.state==='duel'||c.remote)label(c.name,x,y-34-lf,c.remote?'#bfe9ff':'#fff')});
  ZONES.forEach(z=>{if(!vis(z.bx,z.by,80))return;const x=Math.round(z.bx-cx),y=Math.round(z.by-108-cy),w=P.cd[z.id]-S.time;if(w>0)label('CHỜ '+mmss(w),x,y,'#ffd23f');else label('SẴN SÀNG',x,y+Math.round(Math.sin(t*5)*2),'#6fd36a')});
+ if(vis(CIB.x,CIB.y,80))label('ĐỌC TRƯỚC KHI MUA',Math.round(CIB.x-cx),Math.round(CIB.y-84-cy+Math.sin(t*4)*2),'#ffd96a','rgba(120,30,110,.9)');
  if(vis(FLOATZ.bx,FLOATZ.by,80))label('THUÊ PHAO · '+kfmt(FLOAT_PRICE)+'/2 PHÚT',Math.round(FLOATZ.bx-cx),Math.round(FLOATZ.by-62-cy),'#bfe9ff');
  if(vis(ARENA.bx,ARENA.by,80))label('1 VS 1 · CƯỢC ≤ 500K',Math.round(ARENA.bx-cx),Math.round(ARENA.by-108-cy),'#ffd23f');
  if(vis(FOODS.bx,FOODS.by,80))label(mealOn()?'ĂN TẬP THỂ MIỄN PHÍ!':'BÁN ĐỒ ĂN',Math.round(FOODS.bx-cx),Math.round(FOODS.by-108-cy+(mealOn()?Math.sin(t*6)*2:0)),mealOn()?'#ffd23f':'#fff');
@@ -2275,7 +2298,7 @@ function renderWorld(t){
 }
 
 /* ================= UI: shop & deal ================= */
-const modalOpen=()=>['shopOv','startOv','endOv','rankOv','helpOv','foodOv','dealOv','arenaOv','inviteOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv'].some(id=>!$('#'+id).hidden);
+const modalOpen=()=>['shopOv','startOv','endOv','rankOv','helpOv','foodOv','dealOv','arenaOv','inviteOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv'].some(id=>!$('#'+id).hidden);
 let shopType='villa',shopSel=-1,dealTarget=null,dealOffer=0;
 function openShop(type){shopType=type;shopSel=-1;dealTarget=null;renderShop();$('#shopOv').hidden=false;keys={}}
 function renderShop(){const R=REC[shopType],arr=LIST(shopType),pr=CFG.PRICE[shopType];$('#shopTitle').textContent=R.name;$('#shopMoney').textContent=VND(P.money);
@@ -2344,7 +2367,7 @@ function updUI(){$('#hMoney').textContent=VND(P.money);HUDB=hudBottom();document
  const pr=$('#prompt');if(mode==='world'&&!modalOpen()&&P.busy<=0){const it=nearInteract();if(it){pr.hidden=false;const dk=(it.k==='enter'||it.k==='toilet')&&it.u?it.u.type+':'+it.u.i:'';const key=it.label+dk;if(pr.dataset.k!==key){pr.dataset.k=key;pr.innerHTML=(it.k==='info'?'':'<kbd>E</kbd>')+esc(it.label)+(dk?'<button class="pdeco" data-du="'+dk+'">TRANG TRÍ (T)</button>':'');pr.classList.toggle('act',!!dk)}}else{pr.hidden=true;pr.dataset.k=''}}else pr.hidden=true;
  updStatus();$('#chat').hidden=mode!=='world';$('#chatFab').hidden=mode!=='world';if(mode!=='world'&&document.body.classList.contains('chatOpen'))document.body.classList.remove('chatOpen');
  if(!$('#shopOv').hidden&&!document.activeElement.matches('#offerIn'))renderShop();if(!$('#foodOv').hidden)renderFood();if(!$('#petOv').hidden)renderPet();if(!$('#estOv').hidden&&EST.tab!=='deco'&&!document.activeElement.closest('#estOv input')){const k=P.money+'|'+ownBeds(P).length+'|'+allListings().length;if(k!==EST.k){EST.k=k;renderEst()}}if(!$('#arenaOv').hidden&&!document.activeElement.matches('#betIn')){if(NET.on)renderArena();else $('#arenaMoney').textContent=VND(P.money)}}
-function stopAll(){$('#houseMenu').hidden=true;running=false;if(NET.on)saveState();if(NET.invite)inviteAnswer(false);if(ROOM)exitRoom();if(CAB){if(CAB.bath){S.baths&&(S.baths[CAB.k]=null);P.hidden=false}else if(!CAB.private)exitCabin(CAB.k);CAB=null;P.hidden=false}if(D){D.opp.state='idle';D=null}mode='world';G=null;['shopOv','rankOv','helpOv','foodOv','dealOv','arenaOv','petOv','payOv','estOv','floatOv','lottoOv','castleOv'].forEach(id=>$('#'+id).hidden=true);$('#roomBar').hidden=true;$('#need').hidden=true}
+function stopAll(){$('#houseMenu').hidden=true;running=false;if(NET.on)saveState();if(NET.invite)inviteAnswer(false);if(ROOM)exitRoom();if(CAB){if(CAB.bath){S.baths&&(S.baths[CAB.k]=null);P.hidden=false}else if(!CAB.private)exitCabin(CAB.k);CAB=null;P.hidden=false}if(D){D.opp.state='idle';D=null}mode='world';G=null;['shopOv','rankOv','helpOv','foodOv','dealOv','arenaOv','petOv','payOv','estOv','floatOv','lottoOv','castleOv','cintroOv'].forEach(id=>$('#'+id).hidden=true);$('#roomBar').hidden=true;$('#need').hidden=true}
 let rescueT=0,rescueTimer=null;
 function faint(again){if(S.ended)return;S.ended=true;P.fainted=true;stopAll();const pf=again?loadProfile():saveProfile('faint');
  const fee=again?0:Math.min(500000,Math.round(P.money*.1/1000)*1000);P.money=Math.max(0,P.money-fee);P.feeLast=fee;if(NET.on)saveState();
@@ -2379,7 +2402,7 @@ addEventListener('keydown',e=>{
  if(!$('#startOv').hidden){creatorKey(e);return}
  if(e.target.tagName==='INPUT')return;
  if(e.key==='Escape'&&!$('#houseMenu').hidden){$('#houseMenu').hidden=true;return}
- if(e.key==='Escape'){for(const id of ['shopOv','rankOv','helpOv','foodOv','arenaOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv'])if(!$('#'+id).hidden){$('#'+id).hidden=true;return}if(mode==='room'){exitRoom();return}if(mode==='game'&&G&&!G.done&&G.intro<=0){G.t=0;endGame()}else if(mode==='game'&&G&&G.intro>0){mode='world';G=null}return}
+ if(e.key==='Escape'){for(const id of ['shopOv','rankOv','helpOv','foodOv','arenaOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv'])if(!$('#'+id).hidden){$('#'+id).hidden=true;return}if(mode==='room'){exitRoom();return}if(mode==='game'&&G&&!G.done&&G.intro<=0){G.t=0;endGame()}else if(mode==='game'&&G&&G.intro>0){mode='world';G=null}return}
  if(modalOpen())return;
  if(mode==='room'){if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();if(!e.repeat)toggleSleep()}else if(e.code==='KeyT')roomToilet();return}
  if(mode==='duel'){e.preventDefault();if(e.repeat)return;const dg=D&&D.g;if(dg&&dg.id==='rps'&&/^(Digit|Numpad)[123]$/.test(e.code)){duelPick(+e.code.slice(-1)-1);return}if(dg&&dg.id==='memory'&&e.key.startsWith('Arrow')){duelPick(ARR.indexOf(e.key.slice(5).toLowerCase()));return}if(e.code==='KeyE'||e.code==='Space'||e.code==='Enter')duelPress();return}
@@ -2400,6 +2423,7 @@ cv.addEventListener('pointerdown',e=>{if(!running||!S||S.ended||mode==='room')re
  if(P.busy>0)return;
  const w=P2(p.x+cam.x,p.y+cam.y);let target=w,auto=false;$('#houseMenu').hidden=true;
  {const m=curMon();if(m&&monState(m)==='live'){const mp=monPos(m);if(Math.abs(w.x-mp.x)<42&&w.y<mp.y+10&&w.y>mp.y-90){if(dist(P,mp)<54){hitMonster();return}const path=findPath(P.x,P.y,mp.x,mp.y+14);if(path){P.path=path;P.autoAct=false}return}}}
+ if(inR({x0:CIB.x-38,x1:CIB.x+38,y0:CIB.y-74,y1:CIB.y+4},w.x,w.y)){if(dist(P,CIB)<60){openCastleIntro();return}const pa=findPath(P.x,P.y,CIB.x,CIB.y+14);if(pa){P.path=pa;P.autoAct=true}return}
  if(inR({x0:CCX-300,x1:CCX+300,y0:CB-520,y1:CB},w.x,w.y)){if(dist(P,CGATE)<40){act();return}openCastle();return}
  {const v=vendClick(w);if(v){if(dist(P,v)<40){openLotto(v);return}const path=findPath(P.x,P.y,v.x,v.y+4);if(path){P.path=path;P.autoAct=true}return}}
  {const j=jobClick(w);if(j){if(dist(P,j)<(j.k==='roach'?40:j.k==='elder'?34:30)){jobAct(j);return}const path=findPath(P.x,P.y,j.x,j.y+4);if(path){P.path=path;P.autoAct=true}return}}
@@ -2674,7 +2698,7 @@ $('#startBtn').onclick=()=>{try{localStorage.setItem('vmlTripName',$('#nameIn').
  myLook=lookFromCR();$('#startOv').hidden=true;if(NET.on)netStart();newGame();updUI();startMusic();let seen=false;try{seen=localStorage.getItem('vmlTripRules')==='1';localStorage.setItem('vmlTripRules','1')}catch(e){}$('#helpOv').hidden=seen;toast('Chào '+P.name+'! Ví hiện có '+VND(P.money)+'. Nhấn C để chat.',false,4500);if(NET.on)netPostStart()};
 $('#againBtn').onclick=()=>{if(NET.moved){location.reload();return}revive()};
 
-if(location.hash==='#debug')window.__vml={snap(x,y,w,h){const P0={x:P.x,y:P.y};VW=w;VH=h;cv.width=w;cv.height=h;ctx.imageSmoothingEnabled=false;P.x=x+w/2;P.y=y+h/2;cam.x=clamp(P.x-VW/2,Math.min(0,(MW-VW)/2),Math.max(0,MW-VW));cam.y=clamp(P.y-VH/2,Math.min(0,(MH-VH)/2),Math.max(0,MH-VH));renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=P0.x;P.y=P0.y;resize();return u},get CST(){return CST},ctw,myCastle,bedsUsed,castleReserve,castleCancel,castleVote,openCastle,enterCastle,returnBeds,CGATE,get CB(){return CB},CTW,hasCrown,get VEND(){return VEND},openLotto,buyLotto,vendWin,get LT(){return LT},butOn,startBath,get BATH_DOORS(){return BATH_DOORS},get CAB(){return CAB},accident:c=>accident(c),rentFloat,openFloat,floatOf,ROOM_WIN,buyDeco,setDeco,openDeco,decoAnchor,get FLOATZ(){return FLOATZ},get ROOMFIT(){return ROOMFIT},get cam(){return cam},get SCALE(){return SCALE},get JOBS(){return S&&S.jobs},jobSpawn,jobAct,get JOB_PAY(){return JOB_PAY},get MFX(){return MFX},get G(){return G},curMon,monPos,monState,monHits,applyConfig,PETS_REF:()=>PETS,DECO,get CHEAT_FEE(){return CHEAT_FEE},marketTick,openEst,allListings,ownBeds,decoOf,get EST(){return EST},get GUIDE(){return GUIDE},guideInit,showTip,ghostScare,haunted,get ROOM(){return ROOM},PETS,mapShot(sc=1){const sv=[VW,VH],px=P.x,py=P.y;VW=MW;VH=MH;cv.width=MW;cv.height=MH;P.x=MW/2;P.y=MH/2;cam.x=0;cam.y=0;renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=px;P.y=py;resize();return u},get S(){return S},get P(){return P},get D(){return D},get mode(){return mode},NET,startDuel,enterRoom,openArena,buy,startGame,DUELS,handleChat};
+if(location.hash==='#debug')window.__vml={openCastleIntro,CIB,snap(x,y,w,h){const P0={x:P.x,y:P.y};VW=w;VH=h;cv.width=w;cv.height=h;ctx.imageSmoothingEnabled=false;P.x=x+w/2;P.y=y+h/2;cam.x=clamp(P.x-VW/2,Math.min(0,(MW-VW)/2),Math.max(0,MW-VW));cam.y=clamp(P.y-VH/2,Math.min(0,(MH-VH)/2),Math.max(0,MH-VH));renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=P0.x;P.y=P0.y;resize();return u},get CST(){return CST},ctw,myCastle,bedsUsed,castleReserve,castleCancel,castleVote,openCastle,enterCastle,returnBeds,CGATE,get CB(){return CB},CTW,hasCrown,get VEND(){return VEND},openLotto,buyLotto,vendWin,get LT(){return LT},butOn,startBath,get BATH_DOORS(){return BATH_DOORS},get CAB(){return CAB},accident:c=>accident(c),rentFloat,openFloat,floatOf,ROOM_WIN,buyDeco,setDeco,openDeco,decoAnchor,get FLOATZ(){return FLOATZ},get ROOMFIT(){return ROOMFIT},get cam(){return cam},get SCALE(){return SCALE},get JOBS(){return S&&S.jobs},jobSpawn,jobAct,get JOB_PAY(){return JOB_PAY},get MFX(){return MFX},get G(){return G},curMon,monPos,monState,monHits,applyConfig,PETS_REF:()=>PETS,DECO,get CHEAT_FEE(){return CHEAT_FEE},marketTick,openEst,allListings,ownBeds,decoOf,get EST(){return EST},get GUIDE(){return GUIDE},guideInit,showTip,ghostScare,haunted,get ROOM(){return ROOM},PETS,mapShot(sc=1){const sv=[VW,VH],px=P.x,py=P.y;VW=MW;VH=MH;cv.width=MW;cv.height=MH;P.x=MW/2;P.y=MH/2;cam.x=0;cam.y=0;renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=px;P.y=py;resize();return u},get S(){return S},get P(){return P},get D(){return D},get mode(){return mode},NET,startDuel,enterRoom,openArena,buy,startGame,DUELS,handleChat};
 resize();renderCreator();$('#profLine').textContent=profileLine(loadProfile());
 const fontsReady=Promise.race([Promise.all([document.fonts.load('16px VT323'),document.fonts.load('16px Bungee')]),new Promise(r=>setTimeout(r,3000))]);
 $('#modeNote').textContent='Bản offline · bạn + '+CFG.BOTS+' nhân viên giả lập · ví test '+VND(CFG.TEST_MONEY);
