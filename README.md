@@ -3,7 +3,7 @@
 - `index.html`: game (tự nhận biết online/offline)
 - `config.js`: Project URL + khoá anon của Supabase, cài đặt game
 - `supabase-shim.js`: lớp kết nối game với Supabase
-- `admin.html`: xem người chơi, tặng tiền, làm trống giường
+- `admin.html`: trang quản trị có đăng nhập (Tổng quan · Người chơi · Giá cả · Sự kiện quái vật · Hệ thống). Tạo tài khoản: `select public.admin_create('admin','mật-khẩu');` trong Supabase SQL Editor
 - `supabase-setup.sql`: chạy một lần trong Supabase SQL Editor
 - `HUONG-DAN.html`: hướng dẫn từng bước
 

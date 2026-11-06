@@ -310,8 +310,82 @@ end $$;
 revoke all on function public.rt_code(), public.rt_claim(text) from public, anon;
 grant execute on function public.rt_code(), public.rt_claim(text) to authenticated;
 
--- 9. Cấp quyền admin: bỏ dấu -- ở dòng dưới, dán mã của bạn (lấy ở admin.html) rồi chạy lại
--- insert into public.admins(uid) values ('DAN-MA-CUA-BAN-VAO-DAY') on conflict do nothing;
+-- 8d. Tài khoản admin (username + mật khẩu) ----------------------------------
+alter table public.admins add column if not exists username text;
+create table if not exists public.admin_accounts (
+  username text primary key,
+  salt     text not null,
+  hash     text not null,
+  created  timestamptz not null default now()
+);
+alter table public.admin_accounts enable row level security;
+
+create or replace function public.admin_hash(p text, salt text) returns text
+language plpgsql immutable as $$
+declare h text := salt || coalesce(p, ''); i int;
+begin
+  for i in 1..5000 loop h := encode(sha256(convert_to(h || salt, 'UTF8')), 'hex'); end loop;
+  return h;
+end $$;
+
+-- Chỉ chạy được trong SQL Editor: tạo hoặc đặt lại mật khẩu một tài khoản admin
+create or replace function public.admin_create(u_name text, p_word text) returns text
+language plpgsql security definer set search_path = public as $$
+declare s text := replace(gen_random_uuid()::text, '-', ''); u text := lower(trim(u_name));
+begin
+  if length(u) < 3 or length(coalesce(p_word, '')) < 6 then raise exception 'Username tối thiểu 3 ký tự, mật khẩu tối thiểu 6 ký tự'; end if;
+  insert into public.admin_accounts(username, salt, hash) values (u, s, public.admin_hash(p_word, s))
+    on conflict (username) do update set salt = excluded.salt, hash = excluded.hash;
+  delete from public.admins where admins.username = u;
+  return 'Đã tạo tài khoản admin: ' || u;
+end $$;
+
+create or replace function public.admin_login(u_name text, p_word text) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare a public.admin_accounts; u text := lower(trim(u_name));
+begin
+  if auth.uid() is null then raise exception 'Chưa đăng nhập'; end if;
+  perform pg_sleep(0.6);
+  select * into a from public.admin_accounts where admin_accounts.username = u;
+  if not found or public.admin_hash(p_word, a.salt) <> a.hash then return jsonb_build_object('ok', false, 'msg', 'Sai username hoặc mật khẩu.'); end if;
+  insert into public.admins(uid, username) values (auth.uid(), u) on conflict (uid) do update set username = excluded.username;
+  return jsonb_build_object('ok', true, 'user', u);
+end $$;
+
+create or replace function public.admin_logout() returns boolean
+language sql security definer set search_path = public as $$
+  delete from public.admins where uid = auth.uid() returning true
+$$;
+
+create or replace function public.admin_whoami() returns text
+language sql stable security definer set search_path = public as $$
+  select username from public.admins where uid = auth.uid()
+$$;
+
+create or replace function public.admin_passwd(oldp text, newp text) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare u text; a public.admin_accounts; s text := replace(gen_random_uuid()::text, '-', '');
+begin
+  select admins.username into u from public.admins where uid = auth.uid();
+  if u is null then return jsonb_build_object('ok', false, 'msg', 'Bạn chưa đăng nhập admin.'); end if;
+  perform pg_sleep(0.4);
+  select * into a from public.admin_accounts where admin_accounts.username = u;
+  if not found or public.admin_hash(oldp, a.salt) <> a.hash then return jsonb_build_object('ok', false, 'msg', 'Mật khẩu cũ không đúng.'); end if;
+  if length(coalesce(newp, '')) < 6 then return jsonb_build_object('ok', false, 'msg', 'Mật khẩu mới tối thiểu 6 ký tự.'); end if;
+  update public.admin_accounts set salt = s, hash = public.admin_hash(newp, s) where admin_accounts.username = u;
+  delete from public.admins where admins.username = u and uid <> auth.uid();
+  return jsonb_build_object('ok', true);
+end $$;
+
+-- Gỡ các mã admin cũ không có mật khẩu
+delete from public.admins where username is null;
+
+revoke all on function public.admin_hash(text, text), public.admin_create(text, text) from public, anon, authenticated;
+revoke all on function public.admin_login(text, text), public.admin_logout(), public.admin_whoami(), public.admin_passwd(text, text) from public, anon;
+grant execute on function public.admin_login(text, text), public.admin_logout(), public.admin_whoami(), public.admin_passwd(text, text) to authenticated;
+
+-- 9. Tạo tài khoản admin: sửa username / mật khẩu ở dòng dưới, bỏ dấu -- rồi chạy
+-- select public.admin_create('admin', 'MAT-KHAU-CUA-BAN');
 
 -- 10. Báo cho Supabase nạp lại danh sách hàm ngay
 notify pgrst, 'reload schema';
