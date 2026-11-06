@@ -117,6 +117,10 @@ begin
   end if;
   if s[1] = 'invites' then return n >= 3; end if;
   if s[1] = 'duels' then return docv is null or docv ->> 'a' = u or docv ->> 'b' = u; end if;
+  if s[1] = 'tb' then                                      -- Team Building: trưởng nhóm ghi phòng của mình, thành viên chỉ ghi dòng của mình
+    if s[2] = u then return true; end if;
+    return n = 4 and s[3] in ('m', 'res') and s[4] = u;
+  end if;
   if s[1] = 'gifts' then
     return n = 3 and s[2] <> u and cur is null and nv is not null and nv ->> 'from' = u and (nv ->> 'amount')::numeric > 0;
   end if;
