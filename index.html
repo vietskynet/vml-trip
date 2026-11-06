@@ -411,7 +411,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-j</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-k</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -1686,7 +1686,7 @@ function drawMonArrow(t,cx,cy){const m=curMon();if(!m||monState(m)!=='live'||mod
 
 /* ================= người bán vé số ================= */
 var LOTTO_PRICE=100000;
-const LOTTO_PRIZES=[[500000,60],[1000000,25],[2000000,10],[5000000,4],[10000000,1]];
+const LOTTO_PRIZES=[[500000,56],[1000000,25],[2000000,10],[5000000,4],[10000000,5]];
 const VEND_NAMES=['Bé Út','Cô Tư','Anh Tèo'],VEND_ASK=['Chị ơi mua dùm em vé số!','Anh ơi mua dùm em tờ vé số!','Mua giúp em một tờ đi chị ơi!','Vé số đây, mua dùm em lấy hên!'];
 let VEND=null,VCONF=[],LT={pick:0,busy:false,res:null,v:null};
 function vendInit(){VEND={list:VEND_NAMES.map((n,i)=>{const p=wanderPt();return{id:i,name:n,x:p.x,y:p.y,dir:1,walk:0,path:[],st:'wander',t:rnd(2,6),say:0,bub:'',but:0,coat:['#8a6a4a','#6a7a8a','#7a5a6a'][i]}}),next:S.time+rnd(25,50)}}
