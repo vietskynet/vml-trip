@@ -122,7 +122,8 @@ begin
   end if;
   if s[1] = 'market' then return s[2] = u; end if;          -- chỉ đăng/huỷ tin rao của mình
   if s[1] = 'deco' then                                     -- ai có giường trong căn đó mới được trang trí
-    return n = 4 and s[2] in ('villa', 'tent') and s[4] in ('g1', 'g2', 'top', 'door', 'plate') and public.rt_owns(u, s[2], s[3]);
+    return n = 4 and ((s[2] in ('villa', 'tent') and s[4] in ('g1', 'g2', 'top', 'door', 'plate'))
+                   or (s[2] = 'room' and s[4] in ('bal', 'win', 'plate'))) and public.rt_owns(u, s[2], s[3]);
   end if;
   return false;
 end $$;
