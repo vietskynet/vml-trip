@@ -243,7 +243,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
   <button id="chatFab" aria-label="Mở chat" hidden><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#fff" d="M2 2h12v1h1v7h-1v1H7l-3 3v-3H2v-1H1V3h1z"/><path fill="#1c3170" d="M4 5h8v1H4zM4 8h6v1H4z"/></svg><i id="chatDot" hidden></i></button>
   <div id="guide" hidden role="status" aria-live="polite"><div class="gTop"><b id="gHead"></b><button id="gMin" aria-label="Thu nhỏ hướng dẫn">–</button><button id="gOff" aria-label="Tắt hướng dẫn">✕</button></div><div class="gBody"><p id="gText"></p><div id="gBarW" hidden><div class="gBar"><i id="gBar"></i></div><small id="gBarL"></small></div></div></div>
   <div id="tip" hidden role="status"><b class="tipH">MẸO HAY</b><span id="tipText"></span><div class="row"><button class="btn ok sm" id="tipTry">THỬ NGAY</button><button class="btn ghost sm" id="tipClose">ĐÓNG</button></div></div>
-  <div id="chat"><div id="chatLog" aria-live="polite"></div><form id="chatForm" autocomplete="off"><input id="chatIn" maxlength="60" placeholder="Nhấn C để chat…" aria-label="Chat trong resort"><button type="submit">GỬI</button></form></div>
+  <div id="chat"><div id="chatLog" aria-live="polite"></div><form id="chatForm" autocomplete="off"><input id="chatIn" maxlength="60" placeholder="Nhấn C để chat…" aria-label="Chat trong resort" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="send"><button type="submit">GỬI</button></form></div>
   <div id="prompt" hidden></div>
   <div id="roomBar" hidden>
     <button class="btn ok" id="rbSleep">NGỦ (E)</button>
@@ -349,7 +349,9 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
       <div><b>CÓ MA</b>Một số phòng khách sạn và villa bị ma ám, ban đêm càng nhiều. Ở trong phòng cẩn thận bị hù!</div>
       <div><b>HỒ BƠI</b>Cạnh khách sạn, cứ đi xuống nước là bơi.</div>
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
+      <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort).</div>
     </div>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-b</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -1685,15 +1687,18 @@ $('#aBtn').addEventListener('pointerdown',e=>{e.preventDefault();act()});
 
 
 /* ================= CHAT & CHEATS ================= */
-const CHEATS={VMLGIAU:()=>{P.money+=5000000;coin();sysLog('Cheat: +5.000.000₫ vào ví.')},VMLKHOE:()=>{P.energy=100;coin();sysLog('Cheat: năng lượng đầy 100%.')},VMLSANG:()=>{P.shine=P.shine>0?0:180;bell();sysLog(P.shine>0?'Cheat: nhân vật toả sáng 3 phút!':'Đã tắt hiệu ứng toả sáng.')}};
+const CHEATS={VMLGIAU:()=>{P.money+=5000000;coin();sysLog('Cheat: +5.000.000₫ vào ví.');toast('Cheat: +5.000.000₫ vào ví!',false,2600)},VMLKHOE:()=>{P.energy=100;coin();sysLog('Cheat: năng lượng đầy 100%.');toast('Cheat: năng lượng đầy 100%!',false,2600)},VMLSANG:()=>{P.shine=P.shine>0?0:180;bell();sysLog(P.shine>0?'Cheat: nhân vật toả sáng 3 phút!':'Đã tắt hiệu ứng toả sáng.');toast(P.shine>0?'Cheat: toả sáng 3 phút!':'Đã tắt toả sáng.',false,2600)}};
 function chatLog(name,text,cls){if(name&&cls!=='me'&&!document.body.classList.contains('chatOpen'))$('#chatDot').hidden=false;const d=document.createElement('div');d.className=cls||'';d.textContent=(name?name+': ':'')+text;const box=$('#chatLog');box.appendChild(d);while(box.children.length>5)box.firstChild.remove();setTimeout(()=>d.remove(),20000)}
 const sysLog=t=>chatLog('',t,'sys');
-function handleChat(raw){const text=String(raw||'').replace(/[<>]/g,'').trim().slice(0,60);if(!text||!P)return;const code=text.replace(/\s+/g,'').toUpperCase();
+const normCode=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').replace(/[^0-9a-z]/gi,'').toUpperCase();
+function handleChat(raw){const text=String(raw||'').replace(/[<>]/g,'').trim().slice(0,60);if(!text||!P)return;let code=normCode(text);if(!CHEATS[code]&&!FX[code]&&(CHEATS['VML'+code]||FX['VML'+code]))code='VML'+code;
  if(CHEATS[code]){CHEATS[code]();saveState();return}
- if(FX[code]){if(mode!=='world'){sysLog('Mã hiệu ứng chỉ dùng được khi đang dạo resort.');return}startFx(code);return}
+ if(FX[code]){if(mode!=='world'){sysLog('Mã hiệu ứng chỉ dùng được khi đang dạo resort.');toast('Mã hiệu ứng chỉ dùng được khi đang đi ngoài resort.');return}startFx(code);toast('✨ '+FX[code].n+' trong '+FX_LEN+' giây!',false,2600);return}
+ if(/^VML[A-Z]{2,}$/.test(code)&&text.replace(/\s+/g,'').length<=14){sysLog('Mã '+code+' không đúng.');toast('Mã "'+code+'" không đúng. Bấm LUẬT để xem danh sách mã.',false,4000);return}
  P.bubble=text;P.bubbleT=8;P.sayId=(P.sayId||0)+1;chatLog(P.name,text,'me');beep(900,.03)}
 $('#chatForm').addEventListener('submit',e=>{e.preventDefault();handleChat($('#chatIn').value);$('#chatIn').value='';$('#chatIn').blur();document.body.classList.remove('chatOpen')});
 $('#chatFab').addEventListener('click',()=>{const op=document.body.classList.toggle('chatOpen');$('#chatDot').hidden=true;keys={};if(op)setTimeout(()=>$('#chatIn').focus(),30);else $('#chatIn').blur()});
+$('#chatForm button').addEventListener('pointerdown',e=>e.preventDefault());
 $('#chatIn').addEventListener('blur',()=>{setTimeout(()=>{if(document.activeElement!==$('#chatIn'))document.body.classList.remove('chatOpen')},250)});
 $('#chatIn').addEventListener('keydown',e=>{if(e.key==='Escape'){$('#chatIn').value='';$('#chatIn').blur()}e.stopPropagation()});
 function drawShine(t,cx,cy,vis){const list=S.chars.filter(c=>!c.hidden&&(c.shine>0)&&vis(c.x,c.y,120));if(!list.length)return;
