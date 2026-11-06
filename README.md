@@ -8,3 +8,5 @@
 - `HUONG-DAN.html`: hướng dẫn từng bước
 
 Mã cheat trong khung chat (phím C): `VMLGIAU`, `VMLKHOE`, `VMLSANG`.
+
+Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VMLPHAN`, `VMLHAOQUANG`, `VMLXICHLO`, `VMLLUA`, `VMLMUA`, `VMLTANGHINH`, `VMLDISCO`, `VMLPHAOHOA`.
