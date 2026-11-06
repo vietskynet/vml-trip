@@ -201,6 +201,11 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
 #tip .tipH{font-family:var(--f-display);font-weight:normal;font-size:12px;color:var(--sun);letter-spacing:1px}
 #tip #tipText b{color:var(--sun);font-weight:normal}
 @media (pointer:coarse){#tip{top:calc(var(--top) + 124px);bottom:auto;left:50%;right:auto;transform:translateX(-50%)}#tip.in{animation:none}}
+#houseMenu{position:absolute;z-index:7;background:rgba(8,16,44,.95);border:3px solid #000;box-shadow:inset 0 0 0 2px var(--sun),4px 4px 0 rgba(0,0,0,.5);padding:8px;display:flex;flex-direction:column;gap:6px;min-width:150px}
+#houseMenu[hidden]{display:none}#houseMenu b{font-family:var(--f-display);font-weight:normal;font-size:11px;color:var(--sun);text-align:center}
+#prompt.act{pointer-events:auto}#prompt .pdeco{font-family:var(--f-display);font-size:11px;margin-left:10px;background:var(--coral);color:#fff;border:2px solid #000;padding:3px 8px;cursor:pointer;vertical-align:middle}
+#acctMusic{display:none}
+@media (max-width:520px){#bMusic{display:none}#acctMusic{display:inline-block}}
 #chatFab{display:none}
 @media (pointer:coarse){
  #chatFab{display:flex;position:absolute;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 104px);width:54px;height:54px;border-radius:50%;background:rgba(28,49,112,.9);border:3px solid #000;box-shadow:3px 3px 0 rgba(0,0,0,.5);z-index:6;align-items:center;justify-content:center;color:#fff;padding:0;touch-action:manipulation}
@@ -243,6 +248,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
   </div>
   <div class="hud tr">
     <div class="pill lodgepill" id="lodgePill" role="button" tabindex="0" title="Tài sản & chợ nhà"><small id="hLodge">Chưa có chỗ ngủ</small><b id="hClock">08:00</b></div>
+    <button class="ib" id="bEst" aria-label="Tài sản, chợ nhà và trang trí">TÀI SẢN</button>
     <button class="ib" id="bRank" aria-label="Bảng xếp hạng">BXH</button>
     <button class="ib" id="bPay" aria-label="Chuyển tiền cho người khác" hidden>CHUYỂN</button>
     <button class="ib" id="bHelp">LUẬT</button>
@@ -256,6 +262,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
   <div id="tip" hidden role="status"><b class="tipH">MẸO HAY</b><span id="tipText"></span><div class="row"><button class="btn ok sm" id="tipTry">THỬ NGAY</button><button class="btn ghost sm" id="tipClose">ĐÓNG</button></div></div>
   <div id="chat"><div id="chatLog" aria-live="polite"></div><form id="chatForm" autocomplete="off"><input id="chatIn" maxlength="60" placeholder="Nhấn C để chat…" aria-label="Chat trong resort" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="send"><button type="submit">GỬI</button></form></div>
   <div id="prompt" hidden></div>
+  <div id="houseMenu" hidden role="menu"><b id="hmTitle"></b><button class="btn ok sm" id="hmEnter">VÀO NHÀ</button><button class="btn sm" id="hmDeco">TRANG TRÍ</button><button class="btn ghost sm" id="hmEst">TÀI SẢN</button></div>
   <div id="roomBar" hidden>
     <button class="btn ok" id="rbSleep">NGỦ (E)</button>
     <button class="btn ghost" id="rbToilet">TOILET RIÊNG (T)</button>
@@ -414,6 +421,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
     <p id="acctInfo"></p>
     <div class="row" style="margin-bottom:12px"><input id="renameIn" maxlength="12" placeholder="Tên mới" aria-label="Tên mới"><button class="btn ok sm" id="renameGo">ĐỔI TÊN</button></div>
     <div id="syncBox" style="margin-bottom:12px"></div>
+    <div class="row" style="margin-bottom:10px"><button class="btn ghost sm" id="acctMusic">NHẠC: BẬT / TẮT</button></div>
     <div class="row"><button class="btn ghost" id="acctNew">TẠO NHÂN VẬT MỚI</button><button class="btn ghost" data-close="acctOv">ĐÓNG</button></div>
   </div>
 </div>
@@ -1504,6 +1512,14 @@ $('#estBody').addEventListener('click',e=>{const b=e.target.closest('button');if
  else if(d.buyd){const {type,i}=EST.deco;buyDeco(type,i,d.buyd)}
  else if(d.rm){const {type,i}=EST.deco;setDeco(type,i,d.rm,null,0,'Đã gỡ.')}
  else if(b.id==='plateGo'){const {type,i}=EST.deco,tx=String($('#plateIn').value).replace(/[<>&"'`]/g,'').trim().slice(0,18);if(!$('#plateIn').value.trim()){toast('Nhập nội dung bảng tên trước.');return}setDeco(type,i,'plate',{t:tx,by:P.name,ts:Date.now()},PLATE_PRICE,'Đã treo bảng "'+tx+'".')}});
+$('#prompt').addEventListener('click',e=>{const b=e.target.closest('[data-du]');if(!b)return;const [t,i]=b.dataset.du.split(':');openDeco(t,+i)});
+let HM=null,hmTimer=null;
+function showHouseMenu(u,e){HM=u;const m=$('#houseMenu'),g=$('#game').getBoundingClientRect();$('#hmTitle').textContent=lodgeName(u);m.hidden=false;const w=m.offsetWidth,h=m.offsetHeight;
+ m.style.left=Math.round(clamp(e.clientX-g.left-w/2,8,g.width-w-8))+'px';m.style.top=Math.round(clamp(e.clientY-g.top-h-12,8,g.height-h-8))+'px';clearTimeout(hmTimer);hmTimer=setTimeout(()=>{m.hidden=true},8000);beep(700,.04,'triangle',.03)}
+$('#hmEnter').onclick=()=>{$('#houseMenu').hidden=true;if(!HM)return;const d=unitDoor(HM);if(dist(P,d)<10){P.lodge={type:HM.type,i:HM.i};P.lodgePref=P.lodge;act();return}const path=findPath(P.x,P.y,d.x,d.y);if(path){P.path=path;P.autoAct=true}};
+$('#hmDeco').onclick=()=>{if(HM)openDeco(HM.type,HM.i)};
+$('#hmEst').onclick=()=>{$('#houseMenu').hidden=true;openEst('mine')};
+function openDeco(type,i){if(!canDeco(type,i)){toast('Bạn cần có giường ở đây mới trang trí được.');return}EST.tab='deco';EST.deco={type,i};EST.sell=null;$('#houseMenu').hidden=true;$('#estOv').hidden=false;renderEst();keys={}}
 $('#estBody').addEventListener('change',e=>{if(e.target.id==='sellIn'){EST.price=Math.max(50000,round50k(+e.target.value||0));renderEst()}});
 $('#estBody').addEventListener('keydown',e=>{e.stopPropagation()});
 
@@ -1742,6 +1758,8 @@ document.querySelectorAll('[data-close]').forEach(bt=>bt.onclick=()=>{$('#'+bt.d
 document.querySelectorAll('.modal').forEach(md=>md.addEventListener('click',e=>{if(e.target===md&&!['startOv','endOv','dealOv','inviteOv'].includes(md.id))md.hidden=true}));
 $('#bHelp').onclick=()=>{$('#helpOv').hidden=false;keys={}};
 $('#bMusic').onclick=()=>setMusic(!MUS.on);
+$('#acctMusic').onclick=()=>{setMusic(!MUS.on);toast(MUS.on?'Đã bật nhạc.':'Đã tắt nhạc.')};
+$('#bEst').onclick=()=>{if(S&&mode==='world'&&!modalOpen())openEst('mine')};
 $('#bRank').onclick=()=>{if(!S)return;const sorted=rankList();$('#lb').innerHTML=sorted.map((c,i)=>`<li class="${c===P?'me':''}"><span>${i+1}</span><span class="nm"><i class="dot" style="background:${c.look.shirt}"></i>${esc(c===P?c.name+' (bạn)':c.name)}${c.lodge?' · '+lodgeName(c.lodge):''}</span><span>${VND(c.money)}</span></li>`).join('');$('#rankOv').hidden=false;keys={}};
 $('#rbSleep').onclick=toggleSleep;$('#rbToilet').onclick=roomToilet;$('#rbExit').onclick=exitRoom;
 function updStatus(){$('#sPeople').textContent=S.chars.length;$('#sNew').textContent=S.newest;
@@ -1753,10 +1771,10 @@ function updUI(){$('#hMoney').textContent=VND(P.money);$('#hClock').textContent=
  const nb=$('#need');if(P.need&&!inMini()){nb.hidden=false;nb.classList.remove('smell');$('#needTitle').textContent=P.need.type==='poo'?'ĐAU BỤNG!':'MẮC TIỂU!';const tg=needTarget();$('#needHint').textContent=mode==='room'&&privDoor(P)&&!barred(P)?'Bấm T dùng toilet riêng':'Theo mũi tên tới '+tg.name;$('#needCd').textContent=Math.ceil(P.need.cd)+'s';nb.classList.toggle('urgent',P.need.cd<10)}
  else if(P.accident>0&&!inMini()){nb.hidden=false;nb.classList.remove('urgent');nb.classList.add('smell');$('#needTitle').textContent='ĐANG BỐC MÙI';$('#needHint').textContent='Ruồi bu, không được vào bungalow & khách sạn';$('#needCd').textContent=mmss(P.accident)}
  else nb.hidden=true;
- const pr=$('#prompt');if(mode==='world'&&!modalOpen()&&P.busy<=0){const it=nearInteract();if(it){pr.hidden=false;pr.innerHTML=(it.k==='info'?'':'<kbd>E</kbd>')+it.label}else pr.hidden=true}else pr.hidden=true;
+ const pr=$('#prompt');if(mode==='world'&&!modalOpen()&&P.busy<=0){const it=nearInteract();if(it){pr.hidden=false;const dk=(it.k==='enter'||it.k==='toilet')&&it.u&&it.u.type!=='room'?it.u.type+':'+it.u.i:'';const key=it.label+dk;if(pr.dataset.k!==key){pr.dataset.k=key;pr.innerHTML=(it.k==='info'?'':'<kbd>E</kbd>')+esc(it.label)+(dk?'<button class="pdeco" data-du="'+dk+'">TRANG TRÍ (T)</button>':'');pr.classList.toggle('act',!!dk)}}else{pr.hidden=true;pr.dataset.k=''}}else pr.hidden=true;
  updStatus();$('#chat').hidden=mode!=='world';$('#chatFab').hidden=mode!=='world';if(mode!=='world'&&document.body.classList.contains('chatOpen'))document.body.classList.remove('chatOpen');
  if(!$('#shopOv').hidden&&!document.activeElement.matches('#offerIn'))renderShop();if(!$('#foodOv').hidden)renderFood();if(!$('#petOv').hidden)renderPet();if(!$('#estOv').hidden&&EST.tab!=='deco'&&!document.activeElement.closest('#estOv input')){const k=P.money+'|'+ownBeds(P).length+'|'+allListings().length;if(k!==EST.k){EST.k=k;renderEst()}}if(!$('#arenaOv').hidden&&!document.activeElement.matches('#betIn')){if(NET.on)renderArena();else $('#arenaMoney').textContent=VND(P.money)}}
-function stopAll(){running=false;if(NET.on)saveState();if(NET.invite)inviteAnswer(false);if(ROOM)exitRoom();if(CAB){if(!CAB.private)exitCabin(CAB.k);CAB=null;P.hidden=false}if(D){D.opp.state='idle';D=null}mode='world';G=null;['shopOv','rankOv','helpOv','foodOv','dealOv','arenaOv','petOv','payOv','estOv'].forEach(id=>$('#'+id).hidden=true);$('#roomBar').hidden=true;$('#need').hidden=true}
+function stopAll(){$('#houseMenu').hidden=true;running=false;if(NET.on)saveState();if(NET.invite)inviteAnswer(false);if(ROOM)exitRoom();if(CAB){if(!CAB.private)exitCabin(CAB.k);CAB=null;P.hidden=false}if(D){D.opp.state='idle';D=null}mode='world';G=null;['shopOv','rankOv','helpOv','foodOv','dealOv','arenaOv','petOv','payOv','estOv'].forEach(id=>$('#'+id).hidden=true);$('#roomBar').hidden=true;$('#need').hidden=true}
 let rescueT=0,rescueTimer=null;
 function faint(again){if(S.ended)return;S.ended=true;P.fainted=true;stopAll();const pf=again?loadProfile():saveProfile('faint');
  const fee=again?0:Math.min(500000,Math.round(P.money*.1/1000)*1000);P.money=Math.max(0,P.money-fee);P.feeLast=fee;if(NET.on)saveState();
@@ -1790,11 +1808,13 @@ const CRABK={KeyQ:0,KeyW:1,KeyE:2,KeyA:3,KeyS:4,KeyD:5,KeyZ:6,KeyX:7,KeyC:8,Nump
 addEventListener('keydown',e=>{
  if(!$('#startOv').hidden){creatorKey(e);return}
  if(e.target.tagName==='INPUT')return;
+ if(e.key==='Escape'&&!$('#houseMenu').hidden){$('#houseMenu').hidden=true;return}
  if(e.key==='Escape'){for(const id of ['shopOv','rankOv','helpOv','foodOv','arenaOv','acctOv','payOv','petOv','estOv'])if(!$('#'+id).hidden){$('#'+id).hidden=true;return}if(mode==='room'){exitRoom();return}if(mode==='game'&&G&&!G.done&&G.intro<=0){G.t=0;endGame()}else if(mode==='game'&&G&&G.intro>0){mode='world';G=null}return}
  if(modalOpen())return;
  if(mode==='room'){if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();if(!e.repeat)toggleSleep()}else if(e.code==='KeyT')roomToilet();return}
  if(mode==='duel'){e.preventDefault();if(e.repeat)return;const dg=D&&D.g;if(dg&&dg.id==='rps'&&/^(Digit|Numpad)[123]$/.test(e.code)){duelPick(+e.code.slice(-1)-1);return}if(dg&&dg.id==='memory'&&e.key.startsWith('Arrow')){duelPick(ARR.indexOf(e.key.slice(5).toLowerCase()));return}if(e.code==='KeyE'||e.code==='Space'||e.code==='Enter')duelPress();return}
  if(mode==='game'&&G&&G.id==='crab'&&e.code in CRABK&&G.intro<=0){whack(CRABK[e.code]);e.preventDefault();return}
+ if(e.code==='KeyT'&&mode==='world'&&!modalOpen()){const b=$('#prompt [data-du]');if(b){b.click();e.preventDefault();return}}
  if(mode==='game'&&G&&G.id==='bar'&&/^(Digit|Numpad)[1-4]$/.test(e.code)){barAdd(+e.code.slice(-1)-1);e.preventDefault();return}
  if(e.code==='KeyC'&&mode==='world'){e.preventDefault();keys={};$('#chatIn').focus();return}
  if(KM[e.code]){keys[KM[e.code]]=true;e.preventDefault()}
@@ -1808,7 +1828,9 @@ cv.addEventListener('pointerdown',e=>{if(!running||!S||S.ended||mode==='room')re
  if(mode==='duel'&&D){const q=toMg(p,D.fit);const hit=D.btns.find(b2=>q.x>=b2.x&&q.x<=b2.x+b2.w&&q.y>=b2.y&&q.y<=b2.y+b2.h);if(hit)hit.act();else duelPress();return}
  if(mode==='game'&&G){if(G.intro>0){G.intro=0;return}const q=toMg(p,G.fit);if(G.id==='crab'){let bi=-1,bd=40;for(let i=0;i<9;i++){const d=dist(q,holePos(i));if(d<bd){bd=d;bi=i}}G.mx=q.x;G.my=q.y;if(bi>=0)whack(bi)}if(G.id==='coco')G.tx=q.x;if(G.id==='surf')G.ty=q.y;if(G.id==='fish'){G.tx=q.x;if(G.hook.st==='idle')G.dropAfter=true}if(G.id==='bar'){const hit=(G.btns||[]).find(b2=>q.x>=b2.x&&q.x<=b2.x+b2.w&&q.y>=b2.y&&q.y<=b2.y+b2.h);if(hit)barAdd(hit.i)}return}
  if(P.busy>0)return;
- const w=P2(p.x+cam.x,p.y+cam.y);let target=w,auto=false;
+ const w=P2(p.x+cam.x,p.y+cam.y);let target=w,auto=false;$('#houseMenu').hidden=true;
+ {const hu=ownUnits(P).find(u=>u.type==='tent'?inR({x0:TENTS[u.i].x-36,x1:TENTS[u.i].x+36,y0:TENTS[u.i].y-66,y1:TENTS[u.i].y-12},w.x,w.y):u.type==='villa'?inR({x0:VILLA_X[u.i]-64,x1:VILLA_X[u.i]+40,y0:58,y1:196},w.x,w.y):false);
+  if(hu){showHouseMenu({type:hu.type,i:hu.i},e);return}}
  for(const z of [...ZONES,FOODS,ARENA,PETZ])if(dist(w,z.pt)<60||dist(w,P2(z.bx,z.by-40))<60){target=z.pt;auto=true}
  for(const r of Object.values(REC))if(dist(w,r.pt)<40||dist(w,P2(r.x,r.y-40))<50){target=r.pt;auto=true}
  for(const d of WC_DOORS)if(dist(w,d)<26||dist(w,P2(d.x,d.y-30))<26){target=d;auto=true}
