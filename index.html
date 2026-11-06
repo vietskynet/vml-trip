@@ -275,6 +275,14 @@ body.m-room .pad{display:none!important}
 @media (max-width:520px){.fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 #fashTabs .chip{font-size:14px;padding:3px 9px;background:#4a2a5a;color:#ffd0ee;border:2px solid #000;cursor:pointer}#fashTabs .chip.on{background:#ff7ab8;color:#fff}
 @media (max-width:520px){#fashInfo{font-size:14px;line-height:1.25;margin:4px 0}#fashTabs{gap:4px}#fashTabs .chip{font-size:12px;padding:2px 6px}.fgrid{max-height:52vh}.fitem img{width:84px;height:87px}}
+#bankOv .card.bank{background:#ffffff;color:#1a1a1a;box-shadow:inset 0 0 0 3px #ed1c24,6px 6px 0 rgba(0,0,0,.5)}.bhead{display:flex;align-items:center;gap:12px;border-bottom:3px solid #ed1c24;padding-bottom:8px;margin-bottom:6px}.bhead img{width:120px;height:auto}.bhead b{font-family:var(--f-display);font-weight:normal;font-size:clamp(18px,4.5vw,26px);color:#ed1c24;display:block}.bhead small{color:#555;font-size:15px}
+.binfo{color:#333;font-size:16px;line-height:1.25;margin:6px 0}.bterms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.bterm{border:3px solid #1a1a1a;background:#fff;color:#1a1a1a;padding:6px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-family:var(--f-body)}.bterm b{font-family:var(--f-display);font-weight:normal;font-size:13px}.bterm span{font-size:22px;color:#ed1c24}.bterm.on{background:#ed1c24;color:#fff}.bterm.on span{color:#fff}
+#bankAmts .chip{background:#f2f2f2;color:#1a1a1a;border:2px solid #1a1a1a}#bankAmts .chip.on{background:#1a1a1a;color:#fff}#bankAmts input{width:140px;font-size:17px}
+.bcalc{background:#fff4f4;border:2px dashed #ed1c24;padding:6px 8px;font-size:16px;color:#1a1a1a}.bgain{color:#0a8a3a}.bh3{font-family:var(--f-display);font-weight:normal;font-size:13px;color:#ed1c24;margin:12px 0 6px}
+#bankList{max-height:min(34vh,300px);overflow-y:auto}.bsav{display:flex;justify-content:space-between;align-items:center;gap:8px;border:2px solid #ddd;padding:6px 8px;margin-bottom:6px;font-size:16px}.bsav.done{border-color:#0a8a3a;background:#effaf2}.bsav small{color:#555;font-size:14px}.bdue{color:#0a8a3a;font-weight:bold}.bbar{height:5px;background:#eee;margin-top:4px}.bbar i{display:block;height:100%;background:#ed1c24}.bsav.done .bbar i{background:#0a8a3a}#bankOv .muted{color:#777}
+@media (max-width:520px){.bhead img{width:84px}.binfo{font-size:14px}.bterm span{font-size:18px}}
+#bankOv .card.bank p,#bankOv .card.bank{color:#1a1a1a!important}#bankOv .card.bank b{color:#1a1a1a}#bankOv .bhead b{color:#ed1c24}#bankOv .bgain{color:#0a8a3a!important}#bankOv .bdue{color:#0a8a3a}#bankOv .binfo{color:#333!important}#bankOv .bcalc b{color:#c8102e}#bankOv input{background:#fff;color:#1a1a1a;border:2px solid #1a1a1a}#bankOv .muted{color:#777!important}
+#bankOv .card.bank .bhead b{color:#ed1c24}#bankOv .card.bank .bterm.on b{color:#fff}#bankOv .card.bank .bh3{color:#ed1c24}#bankOv .price{color:#c8102e}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script src="supabase-shim.js"></script>
@@ -409,6 +417,7 @@ body.m-room .pad{display:none!important}
       <div><b>MỤC TIÊU</b>Kiếm tiền, giành giường đẹp, nuôi thú cưng. Ngày và đêm <strong>nối tiếp liên tục</strong>, ban ngày khoảng <strong>45 phút</strong>, ban đêm khoảng <strong>15 phút</strong>.</div>
       <div><b>LÂU ĐÀI TÌNH BÁO</b>Khu VIP phía nam resort (qua cổng sắt). 5 tháp, mỗi tháp 3 người, giá 20 → 100 triệu/người. Phải <strong>đủ 3 người cùng đặt</strong> mới mua được và thành <strong>liên minh</strong>. Chủ lâu đài có vương miện, có người hầu mang đồ ăn. 2 người bỏ phiếu thoát thì cả nhóm phải rời và <strong>mất tiền</strong>. Chỗ lâu đài tính là 1 giường trong giới hạn 6 giường.</div>
       <div><b>THỜI TRANG LUNG LINH</b>Shop ở bãi biển phía đông: 30 bộ trang phục unisex (dạ hội, hoàng cung, ngoài hành tinh, cổ trang, phù thuỷ, công chúa, sáng tạo) giá 5–100 triệu. Bộ cao cấp kèm <strong>phương tiện cổ tích</strong> (xe bí ngô, kỳ lân, rồng, thảm bay…). Tối đa <strong>10 bộ</strong>, đổi đồ miễn phí ở <strong>TỦ ĐỒ</strong> (nút NV).</div>
+      <div><b>TECHCOMBANK · SINH LỜI TỰ ĐỘNG</b>Chi nhánh ở khu Lâu Đài Tình Báo. Gửi kỳ hạn 1 ngày (1%), 3 ngày (2%), 5 ngày (3%), 10 ngày (6%). 1 ngày game ≈ 1 giờ thật. Đến hạn có thông báo, phải <strong>tới chi nhánh</strong> để rút. Rút trước hạn chỉ nhận gốc.</div>
       <div><b>KIẾM TIỀN</b>5 khu game (Dừa Rơi, Lướt Sóng, Đập Cua, Câu Cá, Pha Chế), mỗi khu <strong>chờ 30 giây</strong> giữa 2 lượt. <strong>Sàn Thách Đấu</strong>: 1 vs 1, cược tối đa 500.000₫. Nút <strong>CHUYỂN</strong> để chuyển tiền cho đồng nghiệp. <strong>Hồ bơi</strong>: quầy THUÊ PHAO cạnh hồ, 100.000₫ / 2 phút, có phao bơi nhanh hơn. <strong>Việc vặt</strong> hiện ngẫu nhiên trên bản đồ (đồng xu vàng nhấp nháy): dọn phân +300.000₫, đập gián ngoài hành tinh +100.000₫, nhặt ví rơi 100.000–1.000.000₫, đưa cụ già lạc về nhà +100.000₫.</div>
       <div><b>VÉ SỐ</b>3 người bán vé số đi rao quanh resort. Mỗi tờ 100.000₫, chọn 1 số từ 1–49, trùng số mở thưởng (khoảng 2%) là trúng 500.000₫–10.000.000₫. Trúng thì người bán hoá ông Bụt, và ông Bụt cầm bảng <strong>VỪA TRÚNG SỐ</strong> đi theo bạn 10 phút.</div>
       <div><b>CHỖ NGỦ</b>Villa <strong>5.000.000₫</strong> · Bungalow <strong>3.000.000₫</strong> · KS <strong>2.000.000₫</strong> mỗi giường. Mỗi chỗ 2 giường, mỗi người tối đa <strong>6 giường</strong>. Bấm ô giờ/chỗ ngủ ở góc phải để mở <strong>TÀI SẢN</strong>: đăng bán, mua nhà rao bán, trang trí sân nhà.</div>
@@ -426,7 +435,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-s</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-t</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -441,6 +450,19 @@ body.m-room .pad{display:none!important}
 
 <div id="ghostOv" hidden aria-hidden="true"><canvas id="ghostCv" width="240" height="260"></canvas></div>
 
+<div class="modal" id="bankOv" hidden>
+  <div class="card wide bank">
+    <div class="bhead"><img src="techcombank.png" alt="Techcombank"><div><b>SINH LỜI TỰ ĐỘNG</b><small>Chi nhánh khu Lâu Đài Tình Báo</small></div></div>
+    <p class="binfo">Gửi tiền theo kỳ hạn, đến hạn nhận gốc + lãi. Kỳ hạn tối đa 10 ngày, đến hạn sẽ có thông báo và phải <b>tới chi nhánh</b> để rút. Rút trước hạn chỉ nhận lại gốc. Tối đa 5 sổ.</p>
+    <div class="bterms" id="bankTerms"></div>
+    <div class="row" id="bankAmts" style="flex-wrap:wrap;gap:5px;margin:8px 0"></div>
+    <p id="bankCalc" class="bcalc"></p>
+    <div class="row"><button class="btn ok" id="bankGo">GỬI TIẾT KIỆM</button></div>
+    <h3 class="bh3">SỔ TIẾT KIỆM CỦA BẠN</h3>
+    <div id="bankList"></div>
+    <div class="row" style="margin-top:10px"><button class="btn ghost" data-close="bankOv">ĐÓNG</button><span style="color:#666">Ví: <span class="price" id="bankMoney">0₫</span></span></div>
+  </div>
+</div>
 <div class="modal" id="fashOv" hidden>
   <div class="card wide fash">
     <h2>THỜI TRANG LUNG LINH</h2>
@@ -613,6 +635,7 @@ const TORCHES=[[140,752],[460,752],[1020,752],[1300,752],[1620,752],[850,480],[9
 /* ---- Lâu Đài Tình Báo: hình vẽ (tím hồng, huyền bí) ---- */
 const CSH=170,CB=1790+CSH,CCX=880,FENCE_Y=1238+CSH,CGATE=P2(CCX,CB+16);
 const CTW=[{dx:-250,w:26,h:230,sp:62},{dx:250,w:26,h:265,sp:66},{dx:-140,w:30,h:310,sp:74},{dx:140,w:30,h:350,sp:80},{dx:0,w:38,h:400,sp:96}];
+var BANKZ={id:'bank',name:'TECHCOMBANK',bx:360,by:1580};BANKZ.pt=P2(BANKZ.bx,BANKZ.by+18);
 var FASH={x:2240,y:660,bx:2240,by:660,id:'fash',name:'THỜI TRANG LUNG LINH'};FASH.pt=P2(FASH.x,FASH.y+18);
 const CW=640,COY=520,COX=320,CIB=P2(1004,FENCE_Y-26);
 function castleWin(g,x,y,w,h,c){rr(g,x-1,y-1,w+2,h+2,'#7a3a8a');for(let k=0;k<h;k++){const hw=k<w/2?Math.round(Math.sqrt(Math.max(0,(w/2)*(w/2)-(w/2-k)*(w/2-k)))):w/2;rr(g,x+w/2-hw,y+k,hw*2,1,c)}rr(g,x+Math.floor(w/2),y+2,1,h-2,'rgba(160,80,140,.5)')}
@@ -657,11 +680,11 @@ function castleGround(){const B2=b;
   for(const sx of [830,914])for(let y=y0+8;y<y1-10;y+=7){const c2=pick(['#ff9ad5','#ffc0e8','#c99bff','#ffd96a','#ffffff']);rr(B2,sx+h2(sx,y)*14,y,3,3,c2);rr(B2,sx+h2(y,sx)*14+1,y+3,1,2,'#3f8a3a')}
   for(const sx of [700,1060])for(let k=0;k<26;k++){const x=sx+h2(k,sx)*120-60,y=y0+10+h2(sx,k)*(y1-y0-30);rr(B2,x,y,2,2,pick(['#ff9ad5','#ffd96a','#ffffff']));rr(B2,x+1,y+2,1,2,'#3f8a3a')}}
  for(let k=0;k<110;k++){const x=rnd(20,MW-20),y=rnd(1260+CSH,MH-20);if(Math.abs(x-CCX)<300&&y>CB-160&&y<CB+10)continue;const col=pick(['#ff9ad5','#ffc0e8','#c99bff','#fff3b0']);rr(B2,x,y,2,2,col);rr(B2,x+3,y+1,2,2,col);rr(B2,x+1,y-2,2,2,col);rr(B2,x+1,y+2,1,3,'#7ab87a')}}
-const DEAD_TREES=[[150,1530],[330,1690],[210,1890],[1460,1570],[1620,1770],[1380,1930],[420,1470],[1540,1470],[120,1730],[1680,1590],[1900,1670],[2200,1550],[2420,1850],[2060,1970],[2350,1470]];
+const DEAD_TREES=[[150,1530],[210,1890],[1460,1570],[1620,1770],[1380,1930],[1540,1470],[120,1730],[1680,1590],[1900,1670],[2200,1550],[2420,1850],[2060,1970],[2350,1470]];
 const blocks=[];const addBlock=(x0,y0,x1,y1)=>blocks.push({x0,y0,x1,y1});
 [...ZONES,FOODS,ARENA,PETZ].forEach(z=>addBlock(z.bx-50,z.by-26,z.bx+50,z.by));
 Object.values(REC).forEach(r=>{if(r.type!=='room')addBlock(r.x-48,r.y-30,r.x+48,r.y)});
-addBlock(760,930,980,996);addBlock(FASH.x-70,FASH.y-40,FASH.x+70,FASH.y);addBlock(CCX-292,CB-150,CCX+292,CB-2);addBlock(0,FENCE_Y-6,842,FENCE_Y+2);addBlock(914,FENCE_Y-6,MW,FENCE_Y+2);addBlock(797,FENCE_Y-12,815,FENCE_Y+4);addBlock(CIB.x-34,CIB.y-4,CIB.x+34,CIB.y+2);addBlock(945,FENCE_Y-12,963,FENCE_Y+4);DEAD_TREES.forEach(([x,y])=>addBlock(x-4,y-4,x+6,y+2));addBlock(BATH.x0+2,930,BATH.x1-2,BATH.base);addBlock(HOTEL.x+6,900,HOTEL.x+652,HOTEL.base);
+addBlock(760,930,980,996);addBlock(BANKZ.bx-60,BANKZ.by-34,BANKZ.bx+60,BANKZ.by);addBlock(FASH.x-70,FASH.y-40,FASH.x+70,FASH.y);addBlock(CCX-292,CB-150,CCX+292,CB-2);addBlock(0,FENCE_Y-6,842,FENCE_Y+2);addBlock(914,FENCE_Y-6,MW,FENCE_Y+2);addBlock(797,FENCE_Y-12,815,FENCE_Y+4);addBlock(CIB.x-34,CIB.y-4,CIB.x+34,CIB.y+2);addBlock(945,FENCE_Y-12,963,FENCE_Y+4);DEAD_TREES.forEach(([x,y])=>addBlock(x-4,y-4,x+6,y+2));addBlock(BATH.x0+2,930,BATH.x1-2,BATH.base);addBlock(HOTEL.x+6,900,HOTEL.x+652,HOTEL.base);
 addBlock(TABLE.x0,TABLE.y0-2,TABLE.x1,TABLE.y1+2);
 TENTS.forEach(t=>addBlock(t.x-32,t.y-26,t.x+32,t.y+2));
 PALMS.forEach(([x,y])=>addBlock(x-5,y-5,x+5,y+2));
@@ -994,7 +1017,7 @@ function buildWorld(){
  TENTS.forEach((t,k)=>{groundShadow(t.x+6,t.y,30,5);addProp(makeTent(TCOL[k%6]),t.x,t.y,{tent:k})});
  [...ZONES,FOODS,ARENA,PETZ].forEach(z=>{b.fillStyle='rgba(30,40,70,.2)';b.fillRect(z.bx-52,z.by-2,108,8);addProp(makeBooth(z),z.bx,z.by,{zone:z});LIGHTS.push({x:z.bx,y:z.by-40,r:90})});
  [REC.villa,REC.tent].forEach(r=>{b.fillStyle='rgba(30,40,70,.2)';b.fillRect(r.x-52,r.y-2,108,8);addProp(makeHut(r.type,r.name),r.x,r.y);LIGHTS.push({x:r.x,y:r.y-40,r:90})});
- addProp(makeWC(),760,996);addProp(makeBoutique(),FASH.x,FASH.y);LIGHTS.push({x:FASH.x,y:FASH.y-40,r:110});castleGround();addProp(makeCastle(),CCX,CB);addProp(makeCastleGate(),880,FENCE_Y+4);addProp(makeCastleBoard(),CIB.x,CIB.y);DEAD_TREES.forEach(([x,y],k)=>addProp(makeDeadTree(k+3),x,y));[[CCX-120,CB-60],[CCX+120,CB-60],[CCX,CB-200]].forEach(([x,y])=>LIGHTS.push({x,y,r:120}));addProp(makeBath(),BATH.x0-2,BATH.base);LIGHTS.push({x:690,y:960,r:80});LIGHTS.push({x:870,y:960,r:110});
+ addProp(makeWC(),760,996);addProp(makeBoutique(),FASH.x,FASH.y);addProp(makeBankBooth(),BANKZ.bx,BANKZ.by);LIGHTS.push({x:BANKZ.bx,y:BANKZ.by-40,r:110});LIGHTS.push({x:FASH.x,y:FASH.y-40,r:110});castleGround();addProp(makeCastle(),CCX,CB);addProp(makeCastleGate(),880,FENCE_Y+4);addProp(makeCastleBoard(),CIB.x,CIB.y);DEAD_TREES.forEach(([x,y],k)=>addProp(makeDeadTree(k+3),x,y));[[CCX-120,CB-60],[CCX+120,CB-60],[CCX,CB-200]].forEach(([x,y])=>LIGHTS.push({x,y,r:120}));addProp(makeBath(),BATH.x0-2,BATH.base);LIGHTS.push({x:690,y:960,r:80});LIGHTS.push({x:870,y:960,r:110});
  addProp(makeGate(),880,650);LIGHTS.push({x:880,y:600,r:80});
  addProp(makeHotel(),HOTEL.x,HOTEL.base);
  for(const fy of [64,116])for(let i=0;i<10;i++){const wx=(i<5?24+i*54:388+(i-5)*54);LIGHTS.push({x:HOTEL.x+wx+15,y:HOTEL.base-220+fy+15,r:40})}
@@ -1200,6 +1223,7 @@ function nearInteract(){const C=[],add=(pt,r,o)=>{const d=dist(P,pt);if(d<r)C.pu
  add(PETZ.pt,40,{k:'pet',label:'Quầy Thú Cưng · 19 bé đi theo bạn'});
  add(P2(CIB.x,CIB.y+14),30,{k:'cintro',label:'Bảng giới thiệu Lâu Đài Tình Báo · câu chuyện & cách mua phòng'});
  {const ds=myCastles().filter(m=>m.done);add(CGATE,32,{k:'castle',label:ds.length===1?'Vào '+CASTLE_N[ds[0].t]+' · Lâu Đài Tình Báo':ds.length?'Vào Lâu Đài Tình Báo · chọn tháp của bạn':'Lâu Đài Tình Báo · xem 5 tháp & đặt chỗ'})}
+ add(BANKZ.pt,40,{k:'bank',label:'Techcombank · Sinh Lời Tự Động'+(BK.due?' · '+BK.due+' sổ đã đến hạn!':'')});
  add(FASH.pt,40,{k:'fash',label:'Thời Trang Lung Linh · 30 bộ trang phục dạ hội & cổ tích'});
  add(FLOATZ.pt,34,{k:'float',label:floatOf(P)?'Đang thuê '+FLOAT_BY[floatOf(P)].n+' · còn '+mmss(P.flo.until-S.time):'Thuê phao kỳ quái · '+VND(FLOAT_PRICE)+' / 2 phút'});
  if(!inPool(P.x,P.y)&&P.x>POOL.x0-16&&P.x<POOL.x1+16&&P.y>POOL.y0-14&&P.y<POOL.y1+12)C.push([30,{k:'info',label:'Hồ bơi · cứ đi xuống nước là bơi'}]);
@@ -1229,6 +1253,7 @@ function act(){if(!running||S.ended||modalOpen())return;
  else if(it.k==='pet')openPet();
  else if(it.k==='float')openFloat();
  else if(it.k==='fash')openFashion('shop');
+ else if(it.k==='bank')openBank();
  else if(it.k==='monster')hitMonster();
  else if(it.k==='job')jobAct(it.j);
  else if(it.k==='lotto')openLotto(it.v);
@@ -2126,6 +2151,46 @@ function makeBoutique(){const [c,g]=mk(150,128),by=124;rr(g,10,52,130,by-52,'#ff
  for(let x=0;x<150;x+=12){for(let k=0;k<14;k++){const hw=6-Math.abs(k-7)*0;rr(g,x+(k<7?0:0),38+k,12,1,(x/12)%2?'#ff7ab8':'#ffffff')}ellP(g,x+6,52,6,3,(x/12)%2?'#ff7ab8':'#ffffff')}
  rr(g,4,8,142,30,'#ff6fae');rr(g,4,8,142,3,'#ffa8d2');rr(g,4,35,142,3,'#c83a7c');outline(c,[60,20,70]);
  ptext(g,'THỜI TRANG',75,22,12,'#fffaf0','center',DFONT,null);ptext(g,'LUNG LINH',75,34,10,'#ffd96a','center',FONT,null);return{c,ox:75,oy:by}}
+/* ================= TECHCOMBANK · Sinh Lời Tự Động ================= */
+var BANK_RATES={1:1,3:2,5:3,10:6};const BANK_TERMS=[1,3,5,10],BANK_MAX=5,BANK_MIN=500000;
+const BANK_LOGO=new Image();BANK_LOGO.src='techcombank.png';
+const bankNow=()=>Date.now()+((NET.on&&NET.offset)||0);
+const dayMs=()=>CFG.DAY*1000;
+let BK={term:3,amt:5000000,arm:null,chk:0,remind:0};
+function bankList(){let o=null;if(NET.on)o=NET.me&&NET.me.bank;else try{o=JSON.parse(localStorage.getItem('vmlTripBank')||'null')}catch(e){}const L=[];for(const id in (o||{})){const d=o[id];if(d&&+d.a>0&&+d.e>0)L.push({id,a:+d.a,r:+d.r,t:+d.t,s:+d.s,e:+d.e,n:+d.n||0})}return L.sort((x,y)=>x.e-y.e)}
+function bankSave(id,v){if(NET.on){NET.db.ref('players/'+NET.uid+'/bank/'+id).set(v);NET.me=NET.me||{};NET.me.bank=NET.me.bank||{};if(v==null)delete NET.me.bank[id];else NET.me.bank[id]=v;saveState()}
+ else{let o={};try{o=JSON.parse(localStorage.getItem('vmlTripBank')||'{}')||{}}catch(e){}if(v==null)delete o[id];else o[id]=v;try{localStorage.setItem('vmlTripBank',JSON.stringify(o))}catch(e){}}}
+const bankGain=d=>Math.round(d.a*d.r/100/1000)*1000;
+function fmtLeft(ms){if(ms<=0)return'ĐÃ ĐẾN HẠN';const gd=ms/dayMs(),dd=Math.floor(gd),hh=Math.floor((gd-dd)*24),rm=Math.ceil(ms/60000);return'còn '+(dd?dd+' ngày ':'')+hh+' giờ game (≈'+(rm>=60?Math.floor(rm/60)+'h'+String(rm%60).padStart(2,'0')+'p':rm+' phút')+' thật)'}
+function openBank(){BK.arm=null;renderBank();$('#bankOv').hidden=false;keys={}}
+function renderBank(){const L=bankList(),now=bankNow();$('#bankMoney').textContent=VND(P.money);
+ $('#bankTerms').innerHTML=BANK_TERMS.map(d=>`<button class="bterm${BK.term===d?' on':''}" data-bt="${d}"><b>${d} ngày</b><span>${BANK_RATES[d]}%</span></button>`).join('');
+ const amts=[1e6,5e6,10e6,50e6];if(BK.amt>P.money)BK.amt=Math.max(BANK_MIN,Math.floor(P.money/50000)*50000);
+ $('#bankAmts').innerHTML=amts.map(v=>`<button class="chip${BK.amt===v?' on':''}" data-ba="${v}" ${v>P.money?'disabled':''}>${kfmt(v)}</button>`).join('')+`<button class="chip" data-ba="all" ${P.money<BANK_MIN?'disabled':''}>TẤT CẢ</button><input id="bankIn" type="number" min="${BANK_MIN}" step="50000" value="${BK.amt}" aria-label="Số tiền gửi">`;
+ const gain=Math.round(BK.amt*BANK_RATES[BK.term]/100/1000)*1000,can=P.money>=BK.amt&&BK.amt>=BANK_MIN&&L.length<BANK_MAX;
+ $('#bankCalc').innerHTML=`Gửi <b>${VND(BK.amt)}</b> kỳ hạn <b>${BK.term} ngày</b> → nhận <b class="bgain">${VND(BK.amt+gain)}</b> (lãi +${VND(gain)}). Đến hạn sau ${BK.term} ngày game (≈${BK.term} giờ thật).`;
+ $('#bankGo').disabled=!can;$('#bankGo').textContent=L.length>=BANK_MAX?'ĐÃ ĐỦ '+BANK_MAX+' SỔ':P.money<BK.amt?'KHÔNG ĐỦ TIỀN':'GỬI TIẾT KIỆM';
+ $('#bankList').innerHTML=L.length?L.map(d=>{const done=now>=d.e,left=d.e-now,pct=clamp((now-d.s)/(d.e-d.s),0,1);return`<div class="bsav${done?' done':''}"><div><b>${VND(d.a)}</b> · ${d.t} ngày · ${d.r}%<br><small>${done?'<span class="bdue">ĐÃ ĐẾN HẠN · rút ngay '+VND(d.a+bankGain(d))+'</span>':fmtLeft(left)+' · nhận '+VND(d.a+bankGain(d))}</small><div class="bbar"><i style="width:${Math.round(pct*100)}%"></i></div></div>`+
+  (done?`<button class="btn ok sm" data-bw="${d.id}">RÚT ${VND(d.a+bankGain(d))}</button>`:`<button class="btn ghost sm" data-bw="${d.id}">${BK.arm===d.id?'BẤM LẦN NỮA · CHỈ NHẬN GỐC':'RÚT TRƯỚC HẠN'}</button>`)+`</div>`}).join(''):'<p class="muted">Chưa có sổ tiết kiệm nào. Gửi tiền để tiền tự sinh lời!</p>'}
+function bankDeposit(){const L=bankList();if(L.length>=BANK_MAX){toast('Mỗi người tối đa '+BANK_MAX+' sổ tiết kiệm.');return}const a=Math.round(BK.amt/1000)*1000;if(a<BANK_MIN){toast('Gửi tối thiểu '+VND(BANK_MIN)+'.');return}if(P.money<a){toast('Không đủ tiền.');return}
+ const now=bankNow(),id='d'+now,d={a,r:BANK_RATES[BK.term],t:BK.term,s:now,e:now+BK.term*dayMs(),n:0};P.money-=a;coin();bankSave(id,d);toast('Đã gửi '+VND(a)+' kỳ hạn '+BK.term+' ngày, lãi '+d.r+'%. Đến hạn nhớ ghé chi nhánh rút nhé!',false,5000);sysLog('Gửi tiết kiệm Techcombank '+VND(a)+' · '+BK.term+' ngày');renderBank()}
+function bankWithdraw(id){const d=bankList().find(x=>x.id===id);if(!d)return;const done=bankNow()>=d.e;if(!done&&BK.arm!==id){BK.arm=id;renderBank();return}BK.arm=null;const pay=d.a+(done?bankGain(d):0);bankSave(id,null);P.money+=pay;coin();setTimeout(coin,150);
+ toast(done?'Đã rút '+VND(pay)+' (gốc + lãi '+VND(bankGain(d))+'). Cảm ơn quý khách!':'Rút trước hạn: nhận lại gốc '+VND(pay)+', không có lãi.',false,5000);sysLog('Rút tiết kiệm '+VND(pay));renderBank()}
+function bankTick(dt){if(!P||!S)return;BK.chk-=dt;if(BK.chk>0)return;BK.chk=2;const now=bankNow(),L=bankList();let due=0;
+ L.forEach(d=>{if(now>=d.e){due++;if(!d.n){bankSave(d.id,{a:d.a,r:d.r,t:d.t,s:d.s,e:d.e,n:1});toast('Sổ tiết kiệm '+VND(d.a)+' đã ĐẾN HẠN! Ghé chi nhánh Techcombank ở khu Lâu Đài để rút '+VND(d.a+bankGain(d))+'.',false,8000);sysLog('Techcombank: sổ '+VND(d.a)+' đã đến hạn, mời quý khách tới chi nhánh rút tiền.');[880,1175,880].forEach((h,i)=>setTimeout(()=>beep(h,.1,'triangle',.05),i*150))}}});
+ BK.due=due;if(due&&mode==='world'){BK.remind-=2;if(BK.remind<=0){BK.remind=300;if(L.some(d=>d.n))toast('Nhắc nhở: bạn có '+due+' sổ tiết kiệm đã đến hạn, tới chi nhánh Techcombank để rút.',false,5000)}}
+ if(!$('#bankOv').hidden)renderBank()}
+$('#bankTerms').addEventListener('click',e=>{const b2=e.target.closest('[data-bt]');if(!b2)return;BK.term=+b2.dataset.bt;renderBank()});
+$('#bankAmts').addEventListener('click',e=>{const b2=e.target.closest('[data-ba]');if(!b2||b2.disabled)return;BK.amt=b2.dataset.ba==='all'?Math.floor(P.money/1000)*1000:+b2.dataset.ba;renderBank()});
+$('#bankAmts').addEventListener('change',e=>{if(e.target.id==='bankIn'){BK.amt=Math.max(BANK_MIN,Math.round((+e.target.value||0)/50000)*50000);renderBank()}});
+$('#bankAmts').addEventListener('keydown',e=>e.stopPropagation());
+$('#bankGo').onclick=bankDeposit;
+$('#bankList').addEventListener('click',e=>{const b2=e.target.closest('[data-bw]');if(!b2)return;bankWithdraw(b2.dataset.bw)});
+function makeBankBooth(){const [c,g]=mk(130,118),by=114;rr(g,8,40,114,by-40,'#ffffff');rr(g,8,40,114,3,'#ed1c24');for(let x=8;x<122;x+=12)rr(g,x,43,1,by-43,'#f0f0f0');
+ rr(g,20,64,40,50,'#d8e4ee');rr(g,22,66,36,46,'#9fc4e0');rr(g,40,66,1,46,'#d8e4ee');rr(g,72,70,40,30,'#2a2a2a');rr(g,74,72,36,20,'#5ad0ff');for(let k=0;k<3;k++)rr(g,78,75+k*5,22-k*6,2,'#ffffff');rr(g,86,96,12,4,'#ed1c24');rr(g,8,by-4,114,4,'#c8102e');
+ rr(g,2,4,126,36,'#ffffff');rr(g,2,4,126,3,'#ed1c24');rr(g,2,37,126,3,'#ed1c24');outline(c,[60,20,30]);
+ const paint=()=>{try{g.imageSmoothingEnabled=true;g.drawImage(BANK_LOGO,30,6,70,35);g.imageSmoothingEnabled=false}catch(e){}};if(BANK_LOGO.complete&&BANK_LOGO.naturalWidth)paint();else BANK_LOGO.addEventListener('load',paint);
+ return{c,ox:65,oy:by}}
 /* ================= phòng tắm ================= */
 function startBath(k){if(!(P.accident>0)){toast('Bạn đang sạch sẽ, chưa cần tắm.');return}S.baths=S.baths||[null,null];if(S.baths[k]&&S.baths[k]!==P){toast('Phòng T'+(k+1)+' có người, thử phòng còn lại.');return}
  const fee=BATH_FEE[P.accType]||200000,pay=Math.min(fee,Math.max(0,P.money));P.money-=pay;if(pay<fee)toast('Không đủ '+VND(fee)+', nhân viên cho tắm với '+VND(pay)+' còn lại.',false,4000);
@@ -2433,6 +2498,7 @@ function renderWorld(t){
   else if(c===P)label(c.name,x,y-34-lf,'#ffd23f');
   else if(dist(c,P)<90||c.state==='duel'||c.remote)label(c.name,x,y-34-lf,c.remote?'#bfe9ff':'#fff')});
  ZONES.forEach(z=>{if(!vis(z.bx,z.by,80))return;const x=Math.round(z.bx-cx),y=Math.round(z.by-108-cy),w=P.cd[z.id]-S.time;if(w>0)label('CHỜ '+mmss(w),x,y,'#ffd23f');else label('SẴN SÀNG',x,y+Math.round(Math.sin(t*5)*2),'#6fd36a')});
+ if(vis(BANKZ.bx,BANKZ.by,90))label(BK.due&&Math.floor(t*3)%2?'CÓ SỔ ĐẾN HẠN · RÚT NGAY':'SINH LỜI TỰ ĐỘNG · 1-10 NGÀY',Math.round(BANKZ.bx-cx),Math.round(BANKZ.by-124-cy),'#ffffff',BK.due?'rgba(237,28,36,.95)':'rgba(40,40,40,.9)');
  if(vis(FASH.x,FASH.y,90))label('30 BỘ · DẠ HỘI & CỔ TÍCH',Math.round(FASH.x-cx),Math.round(FASH.y-130-cy+Math.sin(t*3)*2),'#ffd96a','rgba(200,60,130,.9)');
  if(vis(CIB.x,CIB.y,80))label('ĐỌC TRƯỚC KHI MUA',Math.round(CIB.x-cx),Math.round(CIB.y-84-cy+Math.sin(t*4)*2),'#ffd96a','rgba(120,30,110,.9)');
  if(vis(FLOATZ.bx,FLOATZ.by,80))label('THUÊ PHAO · '+kfmt(FLOAT_PRICE)+'/2 PHÚT',Math.round(FLOATZ.bx-cx),Math.round(FLOATZ.by-62-cy),'#bfe9ff');
@@ -2460,7 +2526,7 @@ function renderWorld(t){
 }
 
 /* ================= UI: shop & deal ================= */
-const modalOpen=()=>['shopOv','startOv','endOv','rankOv','helpOv','foodOv','dealOv','arenaOv','inviteOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv'].some(id=>!$('#'+id).hidden);
+const modalOpen=()=>['shopOv','startOv','endOv','rankOv','helpOv','foodOv','dealOv','arenaOv','inviteOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv','bankOv'].some(id=>!$('#'+id).hidden);
 let shopType='villa',shopSel=-1,dealTarget=null,dealOffer=0;
 function openShop(type){shopType=type;shopSel=-1;dealTarget=null;renderShop();$('#shopOv').hidden=false;keys={}}
 function renderShop(){const R=REC[shopType],arr=LIST(shopType),pr=CFG.PRICE[shopType];$('#shopTitle').textContent=R.name;$('#shopMoney').textContent=VND(P.money);
@@ -2521,7 +2587,7 @@ function updStatus(){$('#sPeople').textContent=S.chars.length;$('#sNew').textCon
  const units=[...S.villas,...S.rooms,...S.tents],booked=units.filter(r=>r.some(Boolean)).length;$('#sBooked').textContent=booked+'/'+units.length;
  $('#sV').textContent=freeBeds('villa');$('#sR').textContent=freeBeds('room');$('#sT').textContent=freeBeds('tent');
  const ml=$('#sMeal');if(mealOn()){ml.classList.add('on');ml.innerHTML='ĐANG ĂN TẬP THỂ · còn <b>'+mmss(S.mealAt+CFG.MEAL_LEN-S.time)+'</b>'}else{ml.classList.remove('on');ml.innerHTML='Ăn tập thể '+clockAt(S.mealAt)+' · còn <b>'+mmss(S.mealAt-S.time)+'</b>'}}
-function updUI(){$('#hMoney').textContent=VND(P.money);HUDB=hudBottom();document.body.classList.toggle('m-room',mode==='room');{const rb=$('#roomBar');if(mode==='room'&&ROOMFIT&&VH>VW*1.15){rb.style.top=Math.round((ROOMFIT.oy+ROOMFIT.h)*SCALE+10)+'px';rb.style.bottom='auto'}else{rb.style.top='';rb.style.bottom=''}}if(!$('#floatOv').hidden)$('#floatMoney').textContent=VND(P.money);if(!$('#lottoOv').hidden)$('#lottoMoney').textContent=VND(P.money);if(!$('#fashOv').hidden)$('#fashMoney').textContent=VND(P.money);$('#hClock').textContent=clockStr();{const nu=ownUnits(P).length;$('#hLodge').textContent=lodgeName(P.lodge)+(nu>1?' +'+(nu-1)+' nhà':'')}
+function updUI(){$('#hMoney').textContent=VND(P.money);HUDB=hudBottom();document.body.classList.toggle('m-room',mode==='room');{const rb=$('#roomBar');if(mode==='room'&&ROOMFIT&&VH>VW*1.15){rb.style.top=Math.round((ROOMFIT.oy+ROOMFIT.h)*SCALE+10)+'px';rb.style.bottom='auto'}else{rb.style.top='';rb.style.bottom=''}}if(!$('#floatOv').hidden)$('#floatMoney').textContent=VND(P.money);if(!$('#lottoOv').hidden)$('#lottoMoney').textContent=VND(P.money);if(!$('#fashOv').hidden)$('#fashMoney').textContent=VND(P.money);if(!$('#bankOv').hidden)$('#bankMoney').textContent=VND(P.money);$('#hClock').textContent=clockStr();{const nu=ownUnits(P).length;$('#hLodge').textContent=lodgeName(P.lodge)+(nu>1?' +'+(nu-1)+' nhà':'')}
  const en=clamp(P.energy,0,100);$('#hEn').style.width=en+'%';$('#enPill').classList.toggle('low',en<30);$('#enPill').classList.toggle('crit',en<12);
  const nb=$('#need');if(P.need&&!inMini()){nb.hidden=false;nb.classList.remove('smell');$('#needTitle').textContent=P.need.type==='poo'?'ĐAU BỤNG!':'MẮC TIỂU!';const tg=needTarget();$('#needHint').textContent=mode==='room'&&privDoor(P)&&!barred(P)?'Bấm T dùng toilet riêng':'Theo mũi tên tới '+tg.name;$('#needCd').textContent=Math.ceil(P.need.cd)+'s';nb.classList.toggle('urgent',P.need.cd<10)}
  else if(P.accident>0&&!inMini()&&mode!=='cabin'){nb.hidden=false;nb.classList.remove('urgent');nb.classList.add('smell');$('#needTitle').textContent='ĐANG BỐC MÙI';$('#needHint').textContent='Theo mũi tên tới PHÒNG TẮM cạnh WC';$('#needCd').textContent=kfmt(BATH_FEE[P.accType]||200000)}
@@ -2529,7 +2595,7 @@ function updUI(){$('#hMoney').textContent=VND(P.money);HUDB=hudBottom();document
  const pr=$('#prompt');if(mode==='world'&&!modalOpen()&&P.busy<=0){const it=nearInteract();if(it){pr.hidden=false;const dk=(it.k==='enter'||it.k==='toilet')&&it.u?it.u.type+':'+it.u.i:'';const key=it.label+dk;if(pr.dataset.k!==key){pr.dataset.k=key;pr.innerHTML=(it.k==='info'?'':'<kbd>E</kbd>')+esc(it.label)+(dk?'<button class="pdeco" data-du="'+dk+'">TRANG TRÍ (T)</button>':'');pr.classList.toggle('act',!!dk)}}else{pr.hidden=true;pr.dataset.k=''}}else pr.hidden=true;
  updStatus();$('#chat').hidden=mode!=='world';$('#chatFab').hidden=mode!=='world';if(mode!=='world'&&document.body.classList.contains('chatOpen'))document.body.classList.remove('chatOpen');
  if(!$('#shopOv').hidden&&!document.activeElement.matches('#offerIn'))renderShop();if(!$('#foodOv').hidden)renderFood();if(!$('#petOv').hidden)renderPet();if(!$('#estOv').hidden&&EST.tab!=='deco'&&!document.activeElement.closest('#estOv input')){const k=P.money+'|'+ownBeds(P).length+'|'+allListings().length;if(k!==EST.k){EST.k=k;renderEst()}}if(!$('#arenaOv').hidden&&!document.activeElement.matches('#betIn')){if(NET.on)renderArena();else $('#arenaMoney').textContent=VND(P.money)}}
-function stopAll(){$('#houseMenu').hidden=true;running=false;if(NET.on)saveState();if(NET.invite)inviteAnswer(false);if(ROOM)exitRoom();if(CAB){if(CAB.bath){S.baths&&(S.baths[CAB.k]=null);P.hidden=false}else if(!CAB.private)exitCabin(CAB.k);CAB=null;P.hidden=false}if(D){D.opp.state='idle';D=null}mode='world';G=null;['shopOv','rankOv','helpOv','foodOv','dealOv','arenaOv','petOv','payOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv'].forEach(id=>$('#'+id).hidden=true);$('#roomBar').hidden=true;$('#need').hidden=true}
+function stopAll(){$('#houseMenu').hidden=true;running=false;if(NET.on)saveState();if(NET.invite)inviteAnswer(false);if(ROOM)exitRoom();if(CAB){if(CAB.bath){S.baths&&(S.baths[CAB.k]=null);P.hidden=false}else if(!CAB.private)exitCabin(CAB.k);CAB=null;P.hidden=false}if(D){D.opp.state='idle';D=null}mode='world';G=null;['shopOv','rankOv','helpOv','foodOv','dealOv','arenaOv','petOv','payOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv','bankOv'].forEach(id=>$('#'+id).hidden=true);$('#roomBar').hidden=true;$('#need').hidden=true}
 let rescueT=0,rescueTimer=null;
 function faint(again){if(S.ended)return;S.ended=true;P.fainted=true;stopAll();const pf=again?loadProfile():saveProfile('faint');
  const fee=again?0:Math.min(500000,Math.round(P.money*.1/1000)*1000);P.money=Math.max(0,P.money-fee);P.feeLast=fee;if(NET.on)saveState();
@@ -2545,7 +2611,7 @@ function loop(ts){const now=ts/1000;const dt=Math.min(.1,now-(last||now));last=n
   if(S.pending.length){S.joinT-=dt;if(S.joinT<=0){S.joinT=CFG.JOIN_GAP;const c=S.pending.shift();c.x=GATE_PT.x+rnd(-20,20);c.y=GATE_PT.y+rnd(0,16);c.state='idle';c.t=rnd(.5,1.5);S.chars.push(c);S.newest=c.name;toast(c.name+' vừa đến resort.',true,2400)}}
   for(const c of [...S.chars]){if(c.remote)updRemote(c,dt);else if(c!==P)updBot(c,dt);trail(c,dt);updPet(c,dt)}
   updPlayer(dt);if(S.ended){requestAnimationFrame(loop);return}
-  updCabins(dt);updMeal();if(mode==='game'&&G)updGame(dt);if(mode==='cabin')updCabinMode(dt);if(mode==='room'&&ROOM)ghostTick(dt);if(mode==='duel'&&D)updDuel(dt);if(NET.on)netTick(dt);if(P.bubbleT>0)P.bubbleT-=dt;if(P.shine>0)P.shine-=dt;if(P.fxT>0){P.fxT-=dt;if(P.fxT<=0){P.fx=null;NET.lastPos='';sysLog('Hiệu ứng đã hết.')}}updTip(dt);guideTick(dt);marketTick(dt);updMonster(dt);updJobs(dt);moneyWatch(dt);floatTick(dt);updVendors(dt);updButs(dt);castleTick(dt);castleRoomTick(dt);
+  updCabins(dt);updMeal();if(mode==='game'&&G)updGame(dt);if(mode==='cabin')updCabinMode(dt);if(mode==='room'&&ROOM)ghostTick(dt);if(mode==='duel'&&D)updDuel(dt);if(NET.on)netTick(dt);if(P.bubbleT>0)P.bubbleT-=dt;if(P.shine>0)P.shine-=dt;if(P.fxT>0){P.fxT-=dt;if(P.fxT<=0){P.fx=null;NET.lastPos='';sysLog('Hiệu ứng đã hết.')}}updTip(dt);guideTick(dt);marketTick(dt);updMonster(dt);updJobs(dt);moneyWatch(dt);floatTick(dt);updVendors(dt);updButs(dt);castleTick(dt);castleRoomTick(dt);bankTick(dt);
   S.puddles.forEach(p=>p.a+=dt);if(S.puddles.length&&S.puddles[0].a>25)S.puddles=S.puddles.filter(p=>p.a<25);
   if(Math.floor(S.time)!==Math.floor(S.time-dt))S.chars.forEach(a=>{(a.petOs||[]).forEach(po=>{if(po&&PETS[po.i].fx==='scare')S.chars.forEach(n=>{if(n!==a&&n!==P&&!n.remote&&n.bubbleT<=0&&dist(po,n)<44&&Math.random()<.35){n.bubble=pick(['Á! GIÁN!!','Cứu tôi!','Con gì to vậy?!','Đừng lại gần!']);n.bubbleT=1.8}})});if(a.accident>0&&!a.hidden)S.chars.forEach(n=>{if(n!==a&&n!==P&&n.bubbleT<=0&&dist(a,n)<36&&Math.random()<.25){n.bubble=pick(['Eo ôi!','Mùi gì vậy?','Né ra!','Ruồi kìa!']);n.bubbleT=1.6}})});
   if(S.offer){S.offer.t-=dt;if(S.offer.t<=0){if(S.offer.net)netOfferAnswer(false);else closeOffer(S.offer.bot.name+' đợi lâu quá nên thôi không mua.')}}else if(NET.on)netOfferTick();else if(S.time>=S.nextOffer){maybeBotOffer();if(!S.offer)S.nextOffer=S.time+30}
@@ -2564,7 +2630,7 @@ addEventListener('keydown',e=>{
  if(!$('#startOv').hidden){creatorKey(e);return}
  if(e.target.tagName==='INPUT')return;
  if(e.key==='Escape'&&!$('#houseMenu').hidden){$('#houseMenu').hidden=true;return}
- if(e.key==='Escape'){for(const id of ['shopOv','rankOv','helpOv','foodOv','arenaOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv'])if(!$('#'+id).hidden){$('#'+id).hidden=true;return}if(mode==='room'){exitRoom();return}if(mode==='game'&&G&&!G.done&&G.intro<=0){G.t=0;endGame()}else if(mode==='game'&&G&&G.intro>0){mode='world';G=null}return}
+ if(e.key==='Escape'){for(const id of ['shopOv','rankOv','helpOv','foodOv','arenaOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv','bankOv'])if(!$('#'+id).hidden){$('#'+id).hidden=true;return}if(mode==='room'){exitRoom();return}if(mode==='game'&&G&&!G.done&&G.intro<=0){G.t=0;endGame()}else if(mode==='game'&&G&&G.intro>0){mode='world';G=null}return}
  if(modalOpen())return;
  if(mode==='room'){if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();if(!e.repeat)toggleSleep()}else if(e.code==='KeyT')roomToilet();return}
  if(mode==='duel'){e.preventDefault();if(e.repeat)return;const dg=D&&D.g;if(dg&&dg.id==='rps'&&/^(Digit|Numpad)[123]$/.test(e.code)){duelPick(+e.code.slice(-1)-1);return}if(dg&&dg.id==='memory'&&e.key.startsWith('Arrow')){duelPick(ARR.indexOf(e.key.slice(5).toLowerCase()));return}if(e.code==='KeyE'||e.code==='Space'||e.code==='Enter')duelPress();return}
@@ -2591,7 +2657,7 @@ cv.addEventListener('pointerdown',e=>{if(!running||!S||S.ended||mode==='room')re
  {const j=jobClick(w);if(j){if(dist(P,j)<(j.k==='roach'?40:j.k==='elder'?34:30)){jobAct(j);return}const path=findPath(P.x,P.y,j.x,j.y+4);if(path){P.path=path;P.autoAct=true}return}}
  {const hu=ownUnits(P).find(u=>u.type==='tent'?inR({x0:TENTS[u.i].x-36,x1:TENTS[u.i].x+36,y0:TENTS[u.i].y-66,y1:TENTS[u.i].y-12},w.x,w.y):u.type==='villa'?inR({x0:VILLA_X[u.i]-64,x1:VILLA_X[u.i]+40,y0:58,y1:196},w.x,w.y):u.type==='room'?inR({x0:ROOM_WIN(u.i).x-22,x1:ROOM_WIN(u.i).x+22,y0:ROOM_WIN(u.i).y-12,y1:ROOM_WIN(u.i).y+44},w.x,w.y):false);
   if(hu){showHouseMenu({type:hu.type,i:hu.i},e);return}}
- for(const z of [...ZONES,FOODS,ARENA,PETZ,FLOATZ,FASH])if(dist(w,z.pt)<60||dist(w,P2(z.bx,z.by-40))<60){target=z.pt;auto=true}
+ for(const z of [...ZONES,FOODS,ARENA,PETZ,FLOATZ,FASH,BANKZ])if(dist(w,z.pt)<60||dist(w,P2(z.bx,z.by-40))<60){target=z.pt;auto=true}
  for(const r of Object.values(REC))if(dist(w,r.pt)<40||dist(w,P2(r.x,r.y-40))<50){target=r.pt;auto=true}
  for(const d of [...WC_DOORS,...BATH_DOORS])if(dist(w,d)<26||dist(w,P2(d.x,d.y-30))<26){target=d;auto=true}
  if(inR({x0:TABLE.x0-10,x1:TABLE.x1+10,y0:TABLE.y0-20,y1:TABLE.y1+20},w.x,w.y)){let bi=0,bd=1e9;SEATS.forEach((s,i)=>{const d=dist(w,s);if(d<bd){bd=d;bi=i}});target=SEATS[bi];auto=true}
@@ -2860,7 +2926,7 @@ $('#startBtn').onclick=()=>{try{localStorage.setItem('vmlTripName',$('#nameIn').
  myLook=lookFromCR();$('#startOv').hidden=true;if(NET.on)netStart();newGame();updUI();startMusic();let seen=false;try{seen=localStorage.getItem('vmlTripRules')==='1';localStorage.setItem('vmlTripRules','1')}catch(e){}$('#helpOv').hidden=seen;toast('Chào '+P.name+'! Ví hiện có '+VND(P.money)+'. Nhấn C để chat.',false,4500);if(NET.on)netPostStart()};
 $('#againBtn').onclick=()=>{if(NET.moved){location.reload();return}revive()};
 
-if(location.hash==='#debug')window.__vml={openFashion,SKINS_LIST,skinOf,applySkin,get FASH(){return FASH},setHour(h){S.time=timeAtH(h)},openCastleIntro,CIB,snap(x,y,w,h){const P0={x:P.x,y:P.y};VW=w;VH=h;cv.width=w;cv.height=h;ctx.imageSmoothingEnabled=false;P.x=x+w/2;P.y=y+h/2;cam.x=clamp(P.x-VW/2,Math.min(0,(MW-VW)/2),Math.max(0,MW-VW));cam.y=clamp(P.y-VH/2,Math.min(0,(MH-VH)/2),Math.max(0,MH-VH));renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=P0.x;P.y=P0.y;resize();return u},get CST(){return CST},ctw,myCastle,bedsUsed,castleReserve,castleCancel,castleVote,openCastle,enterCastle,returnBeds,CGATE,get CB(){return CB},CTW,hasCrown,get VEND(){return VEND},openLotto,buyLotto,vendWin,get LT(){return LT},butOn,startBath,get BATH_DOORS(){return BATH_DOORS},get CAB(){return CAB},accident:c=>accident(c),rentFloat,openFloat,floatOf,ROOM_WIN,buyDeco,setDeco,openDeco,decoAnchor,get FLOATZ(){return FLOATZ},get ROOMFIT(){return ROOMFIT},get cam(){return cam},get SCALE(){return SCALE},get JOBS(){return S&&S.jobs},jobSpawn,jobAct,get JOB_PAY(){return JOB_PAY},get MFX(){return MFX},get G(){return G},curMon,monPos,monState,monHits,applyConfig,PETS_REF:()=>PETS,DECO,get CHEAT_FEE(){return CHEAT_FEE},marketTick,openEst,allListings,ownBeds,decoOf,get EST(){return EST},get GUIDE(){return GUIDE},guideInit,showTip,ghostScare,haunted,get ROOM(){return ROOM},PETS,mapShot(sc=1){const sv=[VW,VH],px=P.x,py=P.y;VW=MW;VH=MH;cv.width=MW;cv.height=MH;P.x=MW/2;P.y=MH/2;cam.x=0;cam.y=0;renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=px;P.y=py;resize();return u},get S(){return S},get P(){return P},get D(){return D},get mode(){return mode},NET,startDuel,enterRoom,openArena,buy,startGame,DUELS,handleChat};
+if(location.hash==='#debug')window.__vml={openBank,bankList,get BANKZ(){return BANKZ},get BK(){return BK},bankSave,openFashion,SKINS_LIST,skinOf,applySkin,get FASH(){return FASH},setHour(h){S.time=timeAtH(h)},openCastleIntro,CIB,snap(x,y,w,h){const P0={x:P.x,y:P.y};VW=w;VH=h;cv.width=w;cv.height=h;ctx.imageSmoothingEnabled=false;P.x=x+w/2;P.y=y+h/2;cam.x=clamp(P.x-VW/2,Math.min(0,(MW-VW)/2),Math.max(0,MW-VW));cam.y=clamp(P.y-VH/2,Math.min(0,(MH-VH)/2),Math.max(0,MH-VH));renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=P0.x;P.y=P0.y;resize();return u},get CST(){return CST},ctw,myCastle,bedsUsed,castleReserve,castleCancel,castleVote,openCastle,enterCastle,returnBeds,CGATE,get CB(){return CB},CTW,hasCrown,get VEND(){return VEND},openLotto,buyLotto,vendWin,get LT(){return LT},butOn,startBath,get BATH_DOORS(){return BATH_DOORS},get CAB(){return CAB},accident:c=>accident(c),rentFloat,openFloat,floatOf,ROOM_WIN,buyDeco,setDeco,openDeco,decoAnchor,get FLOATZ(){return FLOATZ},get ROOMFIT(){return ROOMFIT},get cam(){return cam},get SCALE(){return SCALE},get JOBS(){return S&&S.jobs},jobSpawn,jobAct,get JOB_PAY(){return JOB_PAY},get MFX(){return MFX},get G(){return G},curMon,monPos,monState,monHits,applyConfig,PETS_REF:()=>PETS,DECO,get CHEAT_FEE(){return CHEAT_FEE},marketTick,openEst,allListings,ownBeds,decoOf,get EST(){return EST},get GUIDE(){return GUIDE},guideInit,showTip,ghostScare,haunted,get ROOM(){return ROOM},PETS,mapShot(sc=1){const sv=[VW,VH],px=P.x,py=P.y;VW=MW;VH=MH;cv.width=MW;cv.height=MH;P.x=MW/2;P.y=MH/2;cam.x=0;cam.y=0;renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=px;P.y=py;resize();return u},get S(){return S},get P(){return P},get D(){return D},get mode(){return mode},NET,startDuel,enterRoom,openArena,buy,startGame,DUELS,handleChat};
 resize();renderCreator();$('#profLine').textContent=profileLine(loadProfile());
 const fontsReady=Promise.race([Promise.all([document.fonts.load('16px VT323'),document.fonts.load('16px Bungee')]),new Promise(r=>setTimeout(r,3000))]);
 $('#modeNote').textContent='Bản offline · bạn + '+CFG.BOTS+' nhân viên giả lập · ví test '+VND(CFG.TEST_MONEY);
