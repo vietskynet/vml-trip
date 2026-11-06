@@ -357,7 +357,7 @@ body.m-room .pad{display:none!important}
       </div>
     </div>
     <div class="row"><button class="btn" id="startBtn" disabled>ĐANG DỰNG RESORT…</button><button class="btn ghost" id="newCharBtn" hidden>TẠO NHÂN VẬT MỚI</button><span style="color:var(--muted)" id="modeNote"></span></div>
-    <div class="row" id="syncRow" hidden style="margin:10px 0 4px"><span style="color:var(--muted)">Đã có nhân vật ở máy khác?</span><input id="codeIn" maxlength="14" placeholder="Nhập mã đồng bộ" aria-label="Mã đồng bộ" autocomplete="off" style="flex:0 1 200px;text-transform:uppercase"><button class="btn ghost sm" id="codeGo">LẤY LẠI NHÂN VẬT</button></div>
+    <div class="row" id="syncRow" hidden style="margin:10px 0 4px"><span style="color:var(--muted)">Đã có nhân vật ở máy khác?</span><input id="codeIn" maxlength="11" placeholder="Nhập mã đồng bộ" aria-label="Mã đồng bộ" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" style="flex:0 1 200px;text-transform:uppercase"><button class="btn ghost sm" id="codeGo">LẤY LẠI NHÂN VẬT</button></div>
     <p id="codeMsg" style="margin:0 0 6px;font-size:17px;color:var(--leaf)"></p>
     <p id="profLine" style="margin:0;font-size:17px"></p>
   </div>
@@ -435,7 +435,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-t</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-u</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -2806,8 +2806,8 @@ $('#payGo').onclick=()=>{const t=payCands().find(c=>c.uid===payTo),a=payVal;if(!
  NET.db.ref('gifts/'+t.uid+'/t'+Date.now()+Math.floor(Math.random()*1000)).set({amount:a,ts:TS(),from:NET.uid,fromName:P.name}).then(()=>{P.money-=a;coin();saveState();paying=false;$('#payMsg').textContent='Đã chuyển '+VND(a)+' cho '+t.name+'.';sysLog('Bạn chuyển '+VND(a)+' cho '+t.name);renderPay()})
  .catch(e=>{paying=false;$('#payMsg').textContent=/quyền/i.test(e&&e.message||'')?'Máy chủ chưa bật chuyển tiền (admin cần chạy lại file SQL mới).':'Lỗi: '+(e&&e.message||e);renderPay()})};
 const SB=()=>window.firebase&&window.firebase.__supabase;
-$('#bAcct').onclick=()=>{const pf=loadProfile();$('#acctInfo').innerHTML='Tên: <b>'+esc(P?P.name:'')+'</b><br>Chế độ: <b>'+(NET.on?'Online':'Offline (lưu trên trình duyệt này)')+'</b>'+(NET.on?'<br>Mã người chơi: <b>'+NET.uid.slice(0,8)+'</b> · được nhớ bằng cookie trên máy này':'')+'<br>'+esc(profileLine(pf))+'<br>Tạo nhân vật mới sẽ xoá nhân vật hiện tại và trả lại giường đang giữ.';
- $('#renameIn').value=P?P.name:'';
+$('#bAcct').onclick=()=>{const pf=loadProfile();$('#acctInfo').innerHTML='Tên: <b>'+esc(P?P.name:'')+'</b><br>Chế độ: <b>'+(NET.on?'Online':'Offline (lưu trên trình duyệt này)')+'</b>'+(NET.on?'<br>Mã đồng bộ: <b id="acctCode" style="letter-spacing:1px">…</b> · dùng để chuyển nhân vật sang máy khác':'')+'<br>'+esc(profileLine(pf))+'<br>Tạo nhân vật mới sẽ xoá nhân vật hiện tại và trả lại giường đang giữ.';
+ $('#renameIn').value=P?P.name:'';if(NET.on&&SB()){SB().rpc('rt_code').then(r=>{const c=r&&r.data?String(r.data).toUpperCase():'';const el=$('#acctCode');if(el)el.textContent=c?c.slice(0,5)+'-'+c.slice(5):'(chưa có)'},()=>{const el=$('#acctCode');if(el)el.textContent='(chưa lấy được)'})}
  $('#syncBox').innerHTML=NET.on&&SB()?'<b style="color:var(--sun)">MÃ ĐỒNG BỘ</b><br><span style="color:var(--muted)">Về nhà hoặc sang máy khác, nhập mã này ở màn hình tạo nhân vật để chơi tiếp đúng nhân vật này (tiền, giường, thú cưng). Giữ bí mật, ai có mã là lấy được nhân vật.</span><div class="row" style="margin-top:8px"><button class="btn ghost sm" id="codeShow">HIỆN MÃ</button><b id="codeVal" class="price" style="font-size:28px;letter-spacing:2px"></b><button class="btn ghost sm" id="codeCopy" hidden>SAO CHÉP</button></div>':'<span style="color:var(--muted)">Mã đồng bộ chỉ có ở bản online.</span>';
  const cs=$('#codeShow');if(cs)cs.onclick=async()=>{cs.disabled=true;cs.textContent='ĐANG LẤY…';try{const {data,error}=await SB().rpc('rt_code');if(error)throw error;const c=String(data);$('#codeVal').textContent=c.slice(0,5)+'-'+c.slice(5);cs.hidden=true;$('#codeCopy').hidden=false;$('#codeCopy').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(c.slice(0,5)+'-'+c.slice(5)).then(()=>toast('Đã sao chép mã đồng bộ.'),()=>{})}}catch(e){cs.disabled=false;cs.textContent='HIỆN MÃ';$('#codeVal').textContent=/rt_code|schema|function/i.test(e.message||'')?'Máy chủ chưa bật mã đồng bộ (admin cần chạy SQL mới).':'Lỗi: '+(e.message||e)}};
  $('#acctOv').hidden=false;keys={}};
@@ -2815,7 +2815,9 @@ $('#renameGo').onclick=()=>{if(!P)return;const nm=cleanName($('#renameIn').value
  try{localStorage.setItem('vmlTripName',nm)}catch(e){}$('#nameIn').value=nm;if(NET.on&&NET.started){NET.db.ref('players/'+NET.uid).update({name:nm});if(NET.me)NET.me.name=nm;sysLog('Bạn đổi tên từ '+old+' thành '+nm)}
  $('#acctInfo b').textContent=nm;coin();toast('Đã đổi tên thành '+nm+'.')};
 $('#renameIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#renameGo').click()}});
-$('#codeGo').onclick=async()=>{const raw=$('#codeIn').value.replace(/[^0-9a-z]/gi,'').toUpperCase();const msg=t=>{$('#codeMsg').textContent=t};if(raw.length<6){msg('Mã đồng bộ gồm 10 ký tự, ví dụ A1B2C-3D4E5.');return}if(!NET.on||!SB()){msg('Cần kết nối máy chủ để dùng mã đồng bộ.');return}
+const normSync=v=>String(v||'').toUpperCase().replace(/[OÒÓ]/g,'0').replace(/[IL]/g,'1').replace(/[^0-9A-F]/g,'');
+$('#codeIn').addEventListener('input',e=>{const r=normSync(e.target.value).slice(0,10),v=r.length>5?r.slice(0,5)+'-'+r.slice(5):r;if(e.target.value!==v)e.target.value=v});
+$('#codeGo').onclick=async()=>{const raw=normSync($('#codeIn').value);const msg=t=>{$('#codeMsg').textContent=t};if(raw.length!==10){msg('Mã đồng bộ gồm 10 ký tự (số 0-9 và chữ A-F), ví dụ A1B2C-3D4E5. Không phân biệt hoa/thường.');return}if(!NET.on||!SB()){msg('Cần kết nối máy chủ để dùng mã đồng bộ.');return}
  const bt=$('#codeGo');bt.disabled=true;msg('Đang tìm nhân vật…');try{const {data,error}=await SB().rpc('rt_claim',{code:raw});if(error)throw error;if(!data||!data.ok){msg((data&&data.msg)||'Mã không đúng.');bt.disabled=false;return}
   if(data.same){msg('Đây đã là nhân vật trên máy này rồi.');bt.disabled=false;return}msg('Đã lấy lại nhân vật! Đang tải lại…');try{localStorage.removeItem('vmlTripName')}catch(e){}setTimeout(()=>location.reload(),800)}
  catch(e){bt.disabled=false;msg(/rt_claim|schema|function/i.test(e.message||'')?'Máy chủ chưa bật mã đồng bộ (admin cần chạy SQL mới).':'Lỗi: '+(e.message||e))}};
