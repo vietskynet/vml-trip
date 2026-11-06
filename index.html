@@ -416,7 +416,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-n</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-o</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -520,7 +520,7 @@ const CFG={NIGHT:.25,BOTS:16,JOIN_GAP:4,DAY:3600,EPOCH:Date.UTC(2026,10,1,1,0,0)
  DRAIN:100/1200,REGEN:{villa:3,room:2.2,tent:2.6,castle:4},PEE:600,POO:1200,MEAL_AT:900,MEAL_LEN:120,BET_MAX:500000,
  PRICE:{villa:5000000,room:2000000,tent:3000000},COUNT:{villa:10,room:20,tent:15},BEDS:2};
 const FOOD=[{id:'dua',name:'Nước dừa tươi',price:40000,en:15,note:'Mát lạnh, nhưng sẽ mắc tiểu sớm hơn'},{id:'banhmi',name:'Bánh mì kẹp',price:60000,en:25,note:'Ăn nhanh, no vừa'},{id:'com',name:'Cơm gà Hội An',price:120000,en:50,note:'No lâu'},{id:'haisan',name:'Set hải sản Maldives',price:300000,en:100,note:'Hồi đầy năng lượng'}];
-const MW=2560,MH=1900;
+const MW=2560,MH=2070;
 const VC=window.VML_CONFIG||null;
 if(VC&&VC.backend==='supabase'&&VC.supabase&&window.supabase&&window.VMLSupabaseShim&&VC.supabase.url&&!/DAN_|YOUR/i.test(VC.supabase.url+' '+VC.supabase.anonKey)){try{window.firebase=window.VMLSupabaseShim(VC.supabase);VC.firebase={apiKey:'supabase'}}catch(e){console.warn(e)}}
 const ONLINE_READY=!!(VC&&VC.firebase&&VC.firebase.apiKey&&!/DAN_|PASTE|YOUR/i.test(VC.firebase.apiKey)&&window.firebase&&window.firebase.database);
@@ -582,10 +582,10 @@ const ROOM_NAMES=['P101','P102','P103','P104','P105','P201','P202','P203','P204'
 const CAMPFIRE=P2(310,1120);
 const PALMS=[[110,520,-.3],[190,470,.25],[380,505,.35],[420,650,-.25],[120,700,.15],[330,720,-.35],[560,480,.3],[720,575,-.25],[1030,470,-.3],[1300,560,.3],[1650,480,-.35],[1705,650,.2],[1600,720,-.15],[30,880,.2],[640,1196,-.3],[1010,1196,.3],[1725,1110,-.25],[1460,1196,.2],[1040,610,.2],[1620,1196,-.2],[40,1150,.25],[1800,520,.2],[2060,470,-.3],[2320,530,.25],[2490,690,-.2],[1820,1110,.3],[2160,1160,-.25],[2460,1060,.2],[2050,640,.15]];
 const UMBRELLAS=[[480,470,'#ff5f6d'],[620,530,'#2fb8e8'],[1110,470,'#ffd23f'],[1360,590,'#b06cff'],[1395,1100,'#ff5f6d'],[1650,1170,'#2fb8e8'],[1950,600,'#ff9ad5'],[2250,620,'#7ad151'],[2400,480,'#ffd23f']];
-const TORCHES=[[140,752],[460,752],[1020,752],[1300,752],[1620,752],[850,480],[910,480],[850,600],[910,600],[745,1000],[1000,1000],[1392,676],[1528,676],[1940,752],[2240,752],[2500,752]];
+const TORCHES=[[140,752],[460,752],[1020,752],[1300,752],[1620,752],[850,480],[910,480],[850,600],[910,600],[745,1000],[1000,1000],[1392,676],[1528,676],[1940,752],[2240,752],[2500,752],[838,1260],[922,1260],[838,1330],[922,1330]];
 
 /* ---- Lâu Đài Tình Báo: hình vẽ (tím hồng, huyền bí) ---- */
-const CB=1790,CCX=880,FENCE_Y=1238,CGATE=P2(CCX,CB+16);
+const CSH=170,CB=1790+CSH,CCX=880,FENCE_Y=1238+CSH,CGATE=P2(CCX,CB+16);
 const CTW=[{dx:-250,w:26,h:230,sp:62},{dx:250,w:26,h:265,sp:66},{dx:-140,w:30,h:310,sp:74},{dx:140,w:30,h:350,sp:80},{dx:0,w:38,h:400,sp:96}];
 const CW=640,COY=520,COX=320;
 function castleWin(g,x,y,w,h,c){rr(g,x-1,y-1,w+2,h+2,'#7a3a8a');for(let k=0;k<h;k++){const hw=k<w/2?Math.round(Math.sqrt(Math.max(0,(w/2)*(w/2)-(w/2-k)*(w/2-k)))):w/2;rr(g,x+w/2-hw,y+k,hw*2,1,c)}rr(g,x+Math.floor(w/2),y+2,1,h-2,'rgba(160,80,140,.5)')}
@@ -623,9 +623,12 @@ function castleGround(){const B2=b;
  for(let x=0;x<MW;x+=12){if(x>=842&&x<=914)continue;rr(B2,x,FENCE_Y-14,2,16,'#7a3a8a');rr(B2,x-1,FENCE_Y-17,4,3,'#ffd96a')}
  for(const yy of [FENCE_Y-10,FENCE_Y-3]){rr(B2,0,yy,842,2,'#8a4a9a');rr(B2,914,yy,MW-914,2,'#8a4a9a')}
  const path=(x0,y0,x1,y1)=>{rr(B2,x0,y0,x1-x0,y1-y0,'#8a6aa0');for(let y=y0;y<y1;y+=10)for(let x=x0+((y/10|0)%2)*6;x<x1;x+=12){rr(B2,x,y,11,9,h2(x,y)>.5?'#a284b8':'#9878b0');rr(B2,x,y,11,1,'#76589a')}};
- path(856,FENCE_Y,904,1330);path(500,1300,1260,1340);path(500,1300,540,1860);path(1220,1300,1260,1860);path(500,1820,1260,1860);path(820,CB,940,1830);
- for(let k=0;k<110;k++){const x=rnd(20,MW-20),y=rnd(1260,MH-20);if(Math.abs(x-CCX)<300&&y>CB-160&&y<CB+10)continue;const col=pick(['#ff9ad5','#ffc0e8','#c99bff','#fff3b0']);rr(B2,x,y,2,2,col);rr(B2,x+3,y+1,2,2,col);rr(B2,x+1,y-2,2,2,col);rr(B2,x+1,y+2,1,3,'#7ab87a')}}
-const DEAD_TREES=[[150,1360],[330,1520],[210,1720],[1460,1400],[1620,1600],[1380,1760],[420,1300],[1540,1300],[120,1560],[1680,1420],[1900,1500],[2200,1380],[2420,1680],[2060,1800],[2350,1300]];
+ path(856,FENCE_Y,904,1330+CSH);path(500,1300+CSH,1260,1340+CSH);path(500,1300+CSH,540,1860+CSH);path(1220,1300+CSH,1260,1860+CSH);path(500,1820+CSH,1260,1860+CSH);path(820,CB,940,1830+CSH);
+ {const y0=1214,y1=FENCE_Y;rr(B2,850,y0,60,y1-y0,'#e8cf96');for(let y=y0;y<y1;y+=12){rr(B2,856,y,48,10,h2(3,y)>.5?'#f2dca8':'#ecd49c');rr(B2,856,y,48,1,'#d8bc80')}rr(B2,850,y0,2,y1-y0,'#c9a46a');rr(B2,908,y0,2,y1-y0,'#c9a46a');
+  for(const sx of [830,914])for(let y=y0+8;y<y1-10;y+=7){const c2=pick(['#ff9ad5','#ffc0e8','#c99bff','#ffd96a','#ffffff']);rr(B2,sx+h2(sx,y)*14,y,3,3,c2);rr(B2,sx+h2(y,sx)*14+1,y+3,1,2,'#3f8a3a')}
+  for(const sx of [700,1060])for(let k=0;k<26;k++){const x=sx+h2(k,sx)*120-60,y=y0+10+h2(sx,k)*(y1-y0-30);rr(B2,x,y,2,2,pick(['#ff9ad5','#ffd96a','#ffffff']));rr(B2,x+1,y+2,1,2,'#3f8a3a')}}
+ for(let k=0;k<110;k++){const x=rnd(20,MW-20),y=rnd(1260+CSH,MH-20);if(Math.abs(x-CCX)<300&&y>CB-160&&y<CB+10)continue;const col=pick(['#ff9ad5','#ffc0e8','#c99bff','#fff3b0']);rr(B2,x,y,2,2,col);rr(B2,x+3,y+1,2,2,col);rr(B2,x+1,y-2,2,2,col);rr(B2,x+1,y+2,1,3,'#7ab87a')}}
+const DEAD_TREES=[[150,1530],[330,1690],[210,1890],[1460,1570],[1620,1770],[1380,1930],[420,1470],[1540,1470],[120,1730],[1680,1590],[1900,1670],[2200,1550],[2420,1850],[2060,1970],[2350,1470]];
 const blocks=[];const addBlock=(x0,y0,x1,y1)=>blocks.push({x0,y0,x1,y1});
 [...ZONES,FOODS,ARENA,PETZ].forEach(z=>addBlock(z.bx-50,z.by-26,z.bx+50,z.by));
 Object.values(REC).forEach(r=>{if(r.type!=='room')addBlock(r.x-48,r.y-30,r.x+48,r.y)});
