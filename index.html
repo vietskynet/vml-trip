@@ -361,7 +361,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
       <div><b>CÓ MA</b>Một số phòng khách sạn và villa bị ma ám, ban đêm càng nhiều. Ở trong phòng cẩn thận bị hù!</div>
       <div><b>HỒ BƠI</b>Cạnh khách sạn, cứ đi xuống nước là bơi.</div>
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
-      <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
+      <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
     <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-c</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
@@ -1311,7 +1311,7 @@ function drawRoomGhost(t,fit){if(!ROOM||!ROOM.seen||!haunted(ROOM))return;if(!GH
 
 
 /* ================= special-effect cheat codes (10s) ================= */
-const FX={VMLTO:{k:'giant',n:'Phóng to gấp 5'},VMLPHAN:{k:'poop',n:'Biến thành đống phân biết đi'},VMLHAOQUANG:{k:'halo',n:'Hào quang thần thánh'},
+const FX={VMLTO:{k:'giant',n:'Phóng to gấp 5'},VMLTIEN:{k:'fairy',n:'Bay lượn cùng bụi tiên, tốc độ x3'},VMLPHAN:{k:'poop',n:'Biến thành đống phân biết đi'},VMLHAOQUANG:{k:'halo',n:'Hào quang thần thánh'},
  VMLXICHLO:{k:'cyclo',n:'Ngồi xích lô dạo resort'},VMLLUA:{k:'fire',n:'Bốc hoả, chạy nhanh x2'},VMLMUA:{k:'rain',n:'Mây đen mưa theo trên đầu'},VMLTANGHINH:{k:'ghost',n:'Tàng hình'},VMLDISCO:{k:'disco',n:'Quẩy disco'},VMLPHAOHOA:{k:'fireworks',n:'Pháo hoa rực trời'}};
 const CHEAT_FEE=50000,FX_KEYS=Object.values(FX).map(f=>f.k).concat(['fairy']),FX_SPEED={fairy:3,cyclo:1.7,fire:2},FX_LEN=10;
 const fxOf=c=>c&&c.fx&&c.fxT>0?c.fx:null;
@@ -1823,7 +1823,7 @@ $('#aBtn').addEventListener('pointerdown',e=>{e.preventDefault();act()});
 
 
 /* ================= CHAT & CHEATS ================= */
-const CHEATS={VMLGIAU:()=>{P.money+=5000000;coin();sysLog('Cheat: +5.000.000₫ vào ví.');toast('Cheat: +5.000.000₫ vào ví! (phí mã −'+VND(CHEAT_FEE)+')',false,2600)},VMLSANG:()=>{P.shine=P.shine>0?0:180;bell();sysLog(P.shine>0?'Cheat: nhân vật toả sáng 3 phút!':'Đã tắt hiệu ứng toả sáng.');toast(P.shine>0?'Cheat: toả sáng 3 phút! (−'+VND(CHEAT_FEE)+')':'Đã tắt toả sáng. (−'+VND(CHEAT_FEE)+')',false,2600)}};
+const CHEATS={VMLSANG:()=>{P.shine=P.shine>0?0:180;bell();sysLog(P.shine>0?'Cheat: nhân vật toả sáng 3 phút!':'Đã tắt hiệu ứng toả sáng.');toast(P.shine>0?'Cheat: toả sáng 3 phút! (−'+VND(CHEAT_FEE)+')':'Đã tắt toả sáng. (−'+VND(CHEAT_FEE)+')',false,2600)}};
 function chatLog(name,text,cls){if(name&&cls!=='me'&&!document.body.classList.contains('chatOpen'))$('#chatDot').hidden=false;const d=document.createElement('div');d.className=cls||'';d.textContent=(name?name+': ':'')+text;const box=$('#chatLog');box.appendChild(d);while(box.children.length>5)box.firstChild.remove();setTimeout(()=>d.remove(),20000)}
 const sysLog=t=>chatLog('',t,'sys');
 const normCode=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').replace(/[^0-9a-z]/gi,'').toUpperCase();

@@ -7,6 +7,6 @@
 - `supabase-setup.sql`: chạy một lần trong Supabase SQL Editor
 - `HUONG-DAN.html`: hướng dẫn từng bước
 
-Mã cheat trong khung chat (phím C): `VMLGIAU`, `VMLSANG`. Mỗi lần dùng mã tốn 50.000₫.
+Mã cheat trong khung chat (phím C): `VMLSANG`. Mỗi lần dùng mã tốn 50.000₫.
 
-Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLPHAN`, `VMLHAOQUANG`, `VMLXICHLO`, `VMLLUA`, `VMLMUA`, `VMLTANGHINH`, `VMLDISCO`, `VMLPHAOHOA`.
+Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VMLPHAN`, `VMLHAOQUANG`, `VMLXICHLO`, `VMLLUA`, `VMLMUA`, `VMLTANGHINH`, `VMLDISCO`, `VMLPHAOHOA`.
