@@ -257,6 +257,11 @@ body.m-room .pad{display:none!important}
 #lottoRes{min-height:34px;margin-bottom:10px;font-size:19px;padding:4px 8px;border:3px solid #000;background:rgba(0,0,0,.25)}#lottoRes .muted{color:var(--muted)}
 #lottoRes .ball{display:inline-block;font-family:var(--f-display);background:#fff;color:#c8102e;border:3px solid #000;border-radius:50%;width:38px;height:38px;line-height:32px;text-align:center;font-weight:normal;margin:0 4px}
 #lottoRes.win{background:#1f6b2a;color:#fff6a0}#lottoRes.lose{background:#4a1a24}
+#lottoStage{display:flex;flex-direction:column;align-items:center;margin:4px 0 10px}#lottoStage[hidden]{display:none}
+#lottoCap{font-family:var(--f-display);color:var(--sun);font-size:clamp(15px,4.6vw,22px);text-align:center;line-height:1.3;text-shadow:3px 3px 0 #000;margin-bottom:6px}#lottoCap.go{animation:capShake .18s steps(2) infinite}
+@keyframes capShake{50%{transform:translate(2px,-1px) rotate(-1deg)}}
+#lottoEgg{width:240px;height:220px;image-rendering:pixelated;border:3px solid #000;background:#14204a}
+@media (max-height:700px){#lottoEgg{width:180px;height:165px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script src="supabase-shim.js"></script>
@@ -406,7 +411,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-i</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-j</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -426,6 +431,7 @@ body.m-room .pad{display:none!important}
     <h2>VÉ SỐ KIẾN THIẾT VML</h2>
     <p id="lottoInfo"></p>
     <div id="lottoGrid"></div>
+    <div id="lottoStage" hidden><div id="lottoCap">TRÌNH ĐỘ KHÔNG BẰNG TRỜI ĐỘ</div><canvas id="lottoEgg" width="120" height="110"></canvas></div>
     <div id="lottoRes"></div>
     <div class="row"><button class="btn ok" id="lottoBuy">MUA</button><button class="btn ghost" id="lottoRnd">CHỌN NGẪU NHIÊN</button><button class="btn ghost" data-close="lottoOv">ĐÓNG</button><span style="color:var(--muted)">Ví: <span class="price" id="lottoMoney">0₫</span></span></div>
   </div>
@@ -1722,19 +1728,39 @@ function drawVendFx(cx,cy){VCONF.forEach(c=>{const x=Math.round(c.x-cx),y=Math.r
 function vendWin(v,amt){v.but=5;v.winner=true;v.st='but';v.path=[];for(let k=0;k<60;k++)VCONF.push({x:v.x,y:v.y-24,vx:rnd(-110,110),vy:rnd(-200,-60),t:rnd(0,.4),k:k%3?'b':'c',r:Math.random()*6});
  [523,659,784,1047,784,1047].forEach((h,i)=>setTimeout(()=>beep(h,.14,'triangle',.05),i*130));
  P.bubble='Trúng vé số '+VND(amt)+'!';P.bubbleT=6;P.sayId=(P.sayId||0)+1;NET.lastPos='';sysLog('Bạn trúng vé số '+VND(amt)+' từ '+v.name+'!')}
-function openLotto(v){LT.v=v;LT.res=null;LT.busy=false;if(!LT.pick)LT.pick=1+Math.floor(Math.random()*49);renderLotto();$('#lottoOv').hidden=false;keys={};if(v)vendSay(v,'Chị chọn số đi, số đẹp lắm!',3)}
+function openLotto(v){LT.v=v;LT.res=null;LT.busy=false;cancelAnimationFrame(EGGRAF);$('#lottoGrid').hidden=false;$('#lottoStage').hidden=true;if(!LT.pick)LT.pick=1+Math.floor(Math.random()*49);renderLotto();$('#lottoOv').hidden=false;keys={};if(v)vendSay(v,'Chị chọn số đi, số đẹp lắm!',3)}
 function renderLotto(){$('#lottoMoney').textContent=VND(P.money);
  $('#lottoInfo').innerHTML=`Mỗi tờ <b>${VND(LOTTO_PRICE)}</b>. Chọn 1 số từ 1 đến 49, trùng số mở thưởng là trúng (cơ hội 1/49, khoảng 2%). Giải khi trúng: `+LOTTO_PRIZES.map(([a,w])=>`<b>${kfmt(a)}</b> (${w}%)`).join(' · ')+'.';
  $('#lottoGrid').innerHTML=Array.from({length:49},(_,i)=>`<button class="ln${LT.pick===i+1?' on':''}" data-n="${i+1}" ${LT.busy?'disabled':''}>${String(i+1).padStart(2,'0')}</button>`).join('');
- $('#lottoBuy').disabled=LT.busy||P.money<LOTTO_PRICE;$('#lottoBuy').textContent=P.money<LOTTO_PRICE?'KHÔNG ĐỦ TIỀN':'MUA VÉ SỐ '+String(LT.pick).padStart(2,'0')+' · '+VND(LOTTO_PRICE);$('#lottoRnd').disabled=LT.busy;
+ $('#lottoBuy').disabled=LT.busy||P.money<LOTTO_PRICE;$('#lottoBuy').textContent=P.money<LOTTO_PRICE?'KHÔNG ĐỦ TIỀN':'MUA VÉ SỐ '+String(LT.pick).padStart(2,'0')+' · '+VND(LOTTO_PRICE);$('#lottoRnd').disabled=LT.busy;$('#lottoRnd').textContent=$('#lottoGrid').hidden?'CHỌN SỐ KHÁC':'CHỌN NGẪU NHIÊN';
  const r=$('#lottoRes');if(!LT.res){r.innerHTML='<span class="muted">Chọn số rồi bấm MUA. Mở thưởng ngay tại chỗ!</span>';r.className=''}}
+
+let EGGRAF=0;
+function drawEgg(g,t,num,win){const W=120,H=110,cx=60,cy=68;g.clearRect(0,0,W,H);g.fillStyle='#14204a';g.fillRect(0,0,W,H);for(let k=0;k<14;k++){const x=(k*37+Math.floor(t*20)*(k%3))%W,y=(k*23)%60;rr(g,x,y,1,1,k%2?'#ffd23f':'#fff')}
+ rr(g,38,98,44,6,'#c8862a');rr(g,42,92,36,7,'#e8a84a');rr(g,42,92,36,1,'#ffd08a');
+ const SHELL='#efe3c4',SH2='#d9c9a2',crackY=cy-4;
+ const egg=(g2,X,Y,rx,ry,hl)=>{ellP(g2,X,Y,rx+1,ry+1,'#3a2a10');ellP(g2,X,Y,rx,ry,SHELL);ellP(g2,X+rx*.25,Y+ry*.3,rx*.6,ry*.5,SH2);if(hl!=null)rr(g2,Math.round(X+hl),Y-ry*.6,3,ry*.7,'#fffaf0');[[-.4,-.4],[.3,-.1],[-.2,.35],[.45,.4],[0,-.7]].forEach(([a,b])=>rr(g2,Math.round(X+a*rx),Math.round(Y+b*ry),2,2,'#b8a07a'))};
+ if(t<2.15){let X=cx,rx=24,hl=-8,rot=0;if(t<1.7){const a=t*22-(t>1.1?(t-1.1)*(t-1.1)*16:0),c=Math.abs(Math.cos(a));rx=Math.round(24*(.45+.55*c));hl=Math.sin(a)*rx*.6;rot=Math.sin(t*10)*.12;X=cx+Math.round(Math.sin(t*7)*3)}else X=cx+Math.round(Math.sin(t*90)*2);
+  g.save();g.translate(X,cy);g.rotate(rot);egg(g,0,0,rx,32,hl);if(t>=1.7){const p=Math.min(1,(t-1.7)/.4);g.fillStyle='#3a2a10';for(let x=-rx;x<-rx+2*rx*p;x+=3){const yy=-4+((x/3|0)%2?-2:2);g.fillRect(Math.round(x),yy,3,1);g.fillRect(Math.round(x)+2,yy-((x/3|0)%2?-1:1),1,2)}}g.restore();
+  if(t<1.7)for(let k=0;k<3;k++){const a=t*6+k*2.1;rr(g,Math.round(cx+Math.cos(a)*34),Math.round(cy+Math.sin(a)*12),2,1,'#9ad8ff')}return}
+ const h=t-2.15,lift=Math.min(46,h*160),s2=Math.min(1,h/.22),bounce=s2<1?s2*1.25:1+Math.max(0,.25-(h-.22)*1.5)*Math.sin((h-.22)*20)*.4;
+ g.save();g.beginPath();g.rect(0,crackY,W,H);g.clip();egg(g,cx,cy,24,32,-8);g.restore();for(let x=-24;x<24;x+=6){rr(g,cx+x,crackY-2,3,3,SHELL);rr(g,cx+x,crackY-3,3,1,'#3a2a10')}
+ const dk=Math.min(1,h/.5);rr(g,cx-6,Math.round(crackY-6*dk),12,8,'#ffd23f');rr(g,cx-4,Math.round(crackY-9*dk),8,4,'#ffd23f');rr(g,cx+5,Math.round(crackY-6*dk),5,2,'#ff8a3d');rr(g,cx+1,Math.round(crackY-7*dk),2,2,'#000');rr(g,cx-7,Math.round(crackY-4*dk),3,4,'#f0be1a');
+ g.save();g.translate(cx-16-lift*.5,crackY-lift);g.rotate(-Math.min(.9,h*3));g.beginPath();g.rect(-40,-40,80,40);g.clip();egg(g,16,4,24,32,-8);g.restore();
+ const by=Math.round(crackY-18-28*Math.min(1,s2)),r=Math.max(1,Math.round(15*bounce));ellP(g,cx,by,r+2,r+2,'#000');ellP(g,cx,by,r+1,r+1,win?'#ffd23f':'#ff5f6d');ellP(g,cx,by,r-2,r-2,'#ffffff');
+ if(s2>.6){g.font='bold '+Math.round(15*Math.min(bounce,1.15))+'px '+DFONT;g.textAlign='center';g.textBaseline='middle';g.fillStyle='#c8102e';g.fillText(String(num).padStart(2,'0'),cx,by+1)}
+ for(let k=0;k<(win?16:8);k++){const a=k/(win?16:8)*6.28+h*2,rr2=22+h*14;rr(g,Math.round(cx+Math.cos(a)*rr2),Math.round(by+Math.sin(a)*rr2*.8),2,2,win?(k%2?'#ffd23f':'#7ad151'):'#ffffff')}}
+function lottoEggPlay(num,win,done){const cv=$('#lottoEgg'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;$('#lottoGrid').hidden=true;$('#lottoStage').hidden=false;const cap=$('#lottoCap');cap.textContent='TRÌNH ĐỘ KHÔNG BẰNG TRỜI ĐỘ';cap.classList.add('go');
+ cancelAnimationFrame(EGGRAF);const t0=performance.now();let lt=-1,cr=false,pop=false;const step=now=>{const t=(now-t0)/1000;drawEgg(g,Math.min(t,3),num,win);
+  if(t<1.7){const k=Math.floor(t*(8+t*6));if(k!==lt){lt=k;beep(240+(k%6)*50,.025,'square',.02)}}else if(!cr){cr=true;beep(140,.12,'sawtooth',.04,-40)}if(t>=2.15&&!pop){pop=true;beep(880,.08,'triangle',.05);setTimeout(()=>beep(1175,.1,'triangle',.05),80)}
+  if(t<2.6)EGGRAF=requestAnimationFrame(step);else{cap.classList.remove('go');done();if(t<3)EGGRAF=requestAnimationFrame(step2)}};const step2=now=>{const t=(now-t0)/1000;drawEgg(g,Math.min(t,4),num,win);if(t<4)EGGRAF=requestAnimationFrame(step2)};EGGRAF=requestAnimationFrame(step)}
 function lottoPrize(){let x=Math.random()*100;for(const [a,w] of LOTTO_PRIZES){if((x-=w)<0)return a}return LOTTO_PRIZES[0][0]}
 function buyLotto(){if(LT.busy)return;if(P.money<LOTTO_PRICE){toast('Không đủ tiền mua vé số.');return}const n=LT.pick;P.money-=LOTTO_PRICE;LT.busy=true;LT.res=null;renderLotto();if(NET.on)saveState();
- const win=1+Math.floor(Math.random()*49),r=$('#lottoRes');r.className='roll';let k=0;const iv=setInterval(()=>{r.innerHTML=`Đang quay… <b class="ball">${String(1+Math.floor(Math.random()*49)).padStart(2,'0')}</b>`;beep(300+(k++%6)*60,.03,'square',.02)},70);
- setTimeout(()=>{clearInterval(iv);LT.busy=false;const ok=win===n;LT.res={n,win,ok};if(ok){const amt=lottoPrize();P.money+=amt;LT.res.amt=amt;coin();r.className='win';r.innerHTML=`Số mở thưởng <b class="ball">${String(win).padStart(2,'0')}</b> · TRÚNG RỒI! <b>+${VND(amt)}</b>`;if(NET.on)saveState();const v=LT.v;setTimeout(()=>{$('#lottoOv').hidden=true;if(v)vendWin(v,amt)},1400)}
-  else{r.className='lose';r.innerHTML=`Số mở thưởng <b class="ball">${String(win).padStart(2,'0')}</b> · Bạn chọn ${String(n).padStart(2,'0')}. ${Math.abs(win-n)===1?'Trật đúng 1 số, tiếc quá!':'Chúc may mắn lần sau!'}`;if(LT.v)vendSay(LT.v,'Cảm ơn anh chị, chúc may mắn lần sau!',3)}renderLotto()},1500)}
+ const win=1+Math.floor(Math.random()*49),r=$('#lottoRes');r.className='roll';r.innerHTML='Bạn chọn <b class="ball">'+String(n).padStart(2,'0')+'</b> · trứng đang quay…';
+ lottoEggPlay(win,win===n,()=>{LT.busy=false;const ok=win===n;LT.res={n,win,ok};if(ok){const amt=lottoPrize();P.money+=amt;LT.res.amt=amt;coin();r.className='win';r.innerHTML=`Số mở thưởng <b class="ball">${String(win).padStart(2,'0')}</b> · TRÚNG RỒI! <b>+${VND(amt)}</b>`;if(NET.on)saveState();const v=LT.v;setTimeout(()=>{$('#lottoOv').hidden=true;if(v)vendWin(v,amt)},2200)}
+  else{r.className='lose';r.innerHTML=`Số mở thưởng <b class="ball">${String(win).padStart(2,'0')}</b> · Bạn chọn ${String(n).padStart(2,'0')}. ${Math.abs(win-n)===1?'Trật đúng 1 số, tiếc quá!':'Chúc may mắn lần sau!'}`;if(LT.v)vendSay(LT.v,'Cảm ơn anh chị, chúc may mắn lần sau!',3)}renderLotto()})}
 $('#lottoGrid').addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(!b||b.disabled)return;LT.pick=+b.dataset.n;renderLotto()});
-$('#lottoRnd').onclick=()=>{if(LT.busy)return;LT.pick=1+Math.floor(Math.random()*49);renderLotto()};
+$('#lottoRnd').onclick=()=>{if(LT.busy)return;if($('#lottoGrid').hidden){$('#lottoGrid').hidden=false;$('#lottoStage').hidden=true;LT.res=null}else LT.pick=1+Math.floor(Math.random()*49);renderLotto()};
 $('#lottoBuy').onclick=buyLotto;
 
 
