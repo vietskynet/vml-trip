@@ -337,7 +337,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
   <div class="card">
     <h2>LUẬT CHƠI NHANH</h2>
     <div class="qr">
-      <div><b>MỤC TIÊU</b>Kiếm tiền, giành giường đẹp, nuôi thú cưng. Ngày và đêm <strong>nối tiếp liên tục</strong>, 1 ngày = <strong>60 phút</strong>.</div>
+      <div><b>MỤC TIÊU</b>Kiếm tiền, giành giường đẹp, nuôi thú cưng. Ngày và đêm <strong>nối tiếp liên tục</strong>, ban ngày khoảng <strong>45 phút</strong>, ban đêm khoảng <strong>15 phút</strong>.</div>
       <div><b>KIẾM TIỀN</b>5 khu game (Dừa Rơi, Lướt Sóng, Đập Cua, Câu Cá, Pha Chế), mỗi khu <strong>chờ 30 giây</strong> giữa 2 lượt. <strong>Sàn Thách Đấu</strong>: 1 vs 1, cược tối đa 500.000₫. Nút <strong>CHUYỂN</strong> để chuyển tiền cho đồng nghiệp.</div>
       <div><b>CHỖ NGỦ</b>Villa <strong>5.000.000₫</strong> · KS <strong>2.000.000₫</strong> · Lều <strong>miễn phí</strong>. Mỗi chỗ 2 giường. Chỗ đầy thì deal mua lại.</div>
       <div><b>NĂNG LƯỢNG</b>Không ăn thì <strong>20 phút</strong> về 0 và xỉu: mất <strong>10% ví</strong> phí cấp cứu, nghỉ 15 giây. Ăn tập thể miễn phí lúc <strong>07:00 · 12:00 · 18:00</strong>, ngoài giờ mua ở quầy.</div>
@@ -413,7 +413,7 @@ const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),P2=(x,y)=>({x,y});
 const VND=n=>(n<0?'-':'')+String(Math.abs(Math.round(n))).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+'₫';
 const round50k=n=>Math.round(n/50000)*50000;
 /* All timings are in real seconds. One full day-night cycle (24 game hours) lasts CFG.DAY seconds and repeats forever. */
-const CFG={BOTS:16,JOIN_GAP:4,DAY:3600,EPOCH:Date.UTC(2026,10,1,1,0,0),MEALS:[7,12,18],RESCUE:15,COOLDOWN:30,GAME_LEN:30,GAME_EN:4,WC_MAX:15,NEED_CD:30,ACC_TIME:300,TEST_MONEY:9000000,
+const CFG={NIGHT:.25,BOTS:16,JOIN_GAP:4,DAY:3600,EPOCH:Date.UTC(2026,10,1,1,0,0),MEALS:[7,12,18],RESCUE:15,COOLDOWN:30,GAME_LEN:30,GAME_EN:4,WC_MAX:15,NEED_CD:30,ACC_TIME:300,TEST_MONEY:9000000,
  DRAIN:100/1200,REGEN:{villa:3,room:2.2,tent:1.4},PEE:600,POO:1200,MEAL_AT:900,MEAL_LEN:120,BET_MAX:500000,
  PRICE:{villa:5000000,room:2000000,tent:0},COUNT:{villa:5,room:10,tent:10},BEDS:2};
 const FOOD=[{id:'dua',name:'Nước dừa tươi',price:40000,en:15,note:'Mát lạnh, nhưng sẽ mắc tiểu sớm hơn'},{id:'banhmi',name:'Bánh mì kẹp',price:60000,en:25,note:'Ăn nhanh, no vừa'},{id:'com',name:'Cơm gà Hội An',price:120000,en:50,note:'No lâu'},{id:'haisan',name:'Set hải sản Maldives',price:300000,en:100,note:'Hồi đầy năng lượng'}];
@@ -421,7 +421,7 @@ const MW=1760,MH=1216;
 const VC=window.VML_CONFIG||null;
 if(VC&&VC.backend==='supabase'&&VC.supabase&&window.supabase&&window.VMLSupabaseShim&&VC.supabase.url&&!/DAN_|YOUR/i.test(VC.supabase.url+' '+VC.supabase.anonKey)){try{window.firebase=window.VMLSupabaseShim(VC.supabase);VC.firebase={apiKey:'supabase'}}catch(e){console.warn(e)}}
 const ONLINE_READY=!!(VC&&VC.firebase&&VC.firebase.apiKey&&!/DAN_|PASTE|YOUR/i.test(VC.firebase.apiKey)&&window.firebase&&window.firebase.database);
-if(VC&&VC.game){if(VC.game.startMoney!=null)CFG.TEST_MONEY=VC.game.startMoney;if(VC.game.dayMinutes)CFG.DAY=Math.round(VC.game.dayMinutes*60);if(!ONLINE_READY&&VC.game.testBots!=null)CFG.BOTS=VC.game.testBots}
+if(VC&&VC.game){if(VC.game.startMoney!=null)CFG.TEST_MONEY=VC.game.startMoney;if(VC.game.dayMinutes)CFG.DAY=Math.round(VC.game.dayMinutes*60);if(VC.game.nightMinutes!=null&&VC.game.dayMinutes)CFG.NIGHT=clamp(VC.game.nightMinutes/VC.game.dayMinutes,.05,.9);if(!ONLINE_READY&&VC.game.testBots!=null)CFG.BOTS=VC.game.testBots}
 if(ONLINE_READY)CFG.BOTS=(VC.game&&VC.game.bots)||0;
 const NET={on:false,db:null,uid:null,me:null,day:null,offset:0,players:{},chars:{},beds:null,offerQ:[],invite:null,waitDuel:null,started:false,ready:false,posT:0,saveT:5,lastPos:''};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -855,10 +855,12 @@ function newGame(){
  cam.x=P.x-VW/2;cam.y=P.y-VH/2}
 
 /* ================= messages ================= */
-const gameH=t=>8+24*t/CFG.DAY,hourAt=t=>((gameH(t)%24)+24)%24,hour=()=>hourAt(S.time);
+/* uneven clock: 19:00→05:00 (night) takes CFG.NIGHT of the cycle, the 14 daytime hours take the rest */
+const clkA=()=>(1-CFG.NIGHT)*11/14,clkF=p=>{const a=clkA(),n=CFG.NIGHT;return p<a?11*p/a:p<a+n?11+10*(p-a)/n:21+3*(p-a-n)/(1-a-n)},clkG=h=>{const a=clkA(),n=CFG.NIGHT;return h<11?a*h/11:h<21?a+n*(h-11)/10:a+n+(1-a-n)*(h-21)/3};
+const gameH=t=>{const k=Math.floor(t/CFG.DAY);return 24*k+8+clkF(t/CFG.DAY-k)},timeAtH=X=>{const o=X-8,k=Math.floor(o/24);return (k+clkG(o-24*k))*CFG.DAY},hourAt=t=>((gameH(t)%24)+24)%24,hour=()=>hourAt(S.time);
 const clockAt=t=>{const m2=Math.floor(hourAt(t)*60);return String(Math.floor(m2/60)).padStart(2,'0')+':'+String(m2%60).padStart(2,'0')};
 const dayPhase=t=>(((t%CFG.DAY)+CFG.DAY)%CFG.DAY)/CFG.DAY;
-function nextMeal(t){const d0=Math.floor(gameH(t)/24)-1;let best=Infinity;for(let d=d0;d<=d0+2;d++)for(const h of CFG.MEALS){const T=(d*24+h-8)*CFG.DAY/24;if(T+CFG.MEAL_LEN>t&&T<best)best=T}return best}
+function nextMeal(t){const d0=Math.floor(gameH(t)/24)-1;let best=Infinity;for(let d=d0;d<=d0+2;d++)for(const h of CFG.MEALS){const T=timeAtH(d*24+h);if(T+CFG.MEAL_LEN>t&&T<best)best=T}return best}
 function setMeal(t){S.mealAt=nextMeal(t);S.mealId=Math.round(S.mealAt);S.mealWarned=S.time>=S.mealAt-60}
 const nowOnline=()=>Math.max(0,(serverNow()-CFG.EPOCH)/1000);
 const clockStr=()=>clockAt(S.time);

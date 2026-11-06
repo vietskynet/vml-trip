@@ -58,7 +58,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted)}
       <div><small>ĐANG ONLINE</small><span class="big" id="dOnline">0</span></div>
       <div><small>GIƯỜNG ĐÃ BOOK</small><span class="big" id="dBeds">0</span></div>
     </div>
-    <p style="margin-top:12px">Ngày và đêm chạy liên tục, không cần mở ngày. Một vòng 24 giờ trong game dài bằng <code>dayMinutes</code> trong config.js. Khi cần chia lại chỗ ngủ, bấm nút dưới để làm trống toàn bộ giường (ví tiền giữ nguyên).</p>
+    <p style="margin-top:12px">Ngày và đêm chạy liên tục, không cần mở ngày. Một vòng 24 giờ trong game dài bằng <code>dayMinutes</code>, trong đó ban đêm (19:00–05:00) dài <code>nightMinutes</code> (config.js). Khi cần chia lại chỗ ngủ, bấm nút dưới để làm trống toàn bộ giường (ví tiền giữ nguyên).</p>
     <div class="row"><button class="ghost" id="start" disabled>LÀM TRỐNG TOÀN BỘ GIƯỜNG</button></div>
     <p id="msg"></p>
   </div>
@@ -103,7 +103,7 @@ firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously(
  db.ref('pos').on('value',s=>{pos=s.val()||{};render()});
  db.ref('beds').on('value',s=>{beds=s.val()||{};render()});
 });
-function clock(){const t=(Date.now()+off-EPOCH)/1000,h=((8+24*t/DAY)%24+24)%24,m=Math.floor(h*60);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+function clock(){const NF=(VC&&VC.game&&VC.game.nightMinutes!=null)?Math.min(.9,Math.max(.05,VC.game.nightMinutes/((VC.game.dayMinutes)||60))):.25,A=(1-NF)*11/14,t=(Date.now()+off-EPOCH)/1000,p=((t/DAY)%1+1)%1,o=p<A?11*p/A:p<A+NF?11+10*(p-A)/NF:21+3*(p-A-NF)/(1-A-NF),h=(8+o)%24,m=Math.floor(h*60);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function render(){const t=day?(Date.now()+off-day.start)/1000:0;{const h=+clock().slice(0,2);$('#dState').textContent=h>=6&&h<18?'BAN NGÀY':'BAN ĐÊM'}$('#dClock').textContent=clock();$('#dOnline').textContent=Object.keys(pos).length;
  let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(u=>Object.values(u||{}).forEach(x=>{if(x)n++})));$('#dBeds').textContent=n;
  const did=day?day.id:0;const rows=Object.entries(players).filter(([u,p])=>p&&p.state).sort((a,b)=>(b[1].state.money||0)-(a[1].state.money||0));

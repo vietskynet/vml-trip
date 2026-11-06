@@ -12,6 +12,7 @@ window.VML_CONFIG = {
   game: {
     startMoney: 500000,  // Tiền khởi đầu cho người chơi mới (qua ngày mới vẫn giữ ví)
     dayMinutes: 60,      // Một vòng ngày + đêm (24 giờ trong game) dài bao nhiêu phút thật
+    nightMinutes: 15,    // Trong đó ban đêm (19:00 → 05:00) dài bao nhiêu phút; còn lại là ban ngày
     bots: 0,             // Số nhân viên giả lập khi chạy online (nên để 0)
     testBots: 16         // Số nhân viên giả lập khi chạy offline để test
   }
