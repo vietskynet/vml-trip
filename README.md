@@ -53,3 +53,11 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
   - **Level 1–5**: mục tiêu = 50 / 60 / 70 / 78 / 85% tổng điểm tối đa. Thưởng mỗi người khi thắng: 750.000 / 1.000.000 / 1.350.000 / 1.800.000 / 2.400.000₫ (Level 1 = 1,5 lần mức thưởng trung bình của một lượt game cá nhân). Thua không mất tiền. Chờ 120 giây giữa 2 lượt.
   - Chơi offline có thể gọi bot cho đủ 5 người để chơi thử.
 - Dữ liệu phòng lưu ở đường dẫn `tb/<uid trưởng nhóm>`. **Cần chạy `supabase-update-team.sql`** trong Supabase (thêm luật ghi cho `tb`), nếu không chức năng online của Team Building sẽ không ghi được.
+
+## Phiên bản z · Năng lượng
+- Hao năng lượng: đứng yên 0,05%/giây (~33 phút), **di chuyển 0,10%/giây** (~17 phút). Mỗi lượt game trừ 6%.
+- **Dưới 30% không chơi được game** (kể cả Team Building). Nhắc liên tục: mỗi 30 giây khi dưới 30%, 20 giây khi dưới 20%, 12 giây khi dưới 10%.
+- **Ngủ miễn phí, hồi đầy:** Bungalow 2 phút · Khách sạn 3 phút · Villa 1 phút · Lâu đài 10 giây. Thanh trên màn hình ngủ hiện thời gian còn lại.
+- Đồ ăn tính theo kcal, ~400₫/kcal: nước dừa 100 kcal 40.000₫ (+5%), bánh mì 250 kcal 100.000₫ (+12%), cơm gà 500 kcal 200.000₫ (+25%), set hải sản 1000 kcal 400.000₫ (+50%). Ăn tập thể miễn phí vẫn giữ.
+- Bot cũng hao nhanh hơn khi đi lại và không đi chơi game khi dưới 30%. "Lều" đổi tên hết thành "Bungalow".
+- Hạnh phúc, nhà và Khu Vườn Tuổi Thơ chưa làm (đang thiết kế).

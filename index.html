@@ -446,7 +446,7 @@ body.m-room .pad{display:none!important}
       <div><b>KIẾM TIỀN</b>5 khu game (Dừa Rơi, Lướt Sóng, Đập Cua, Câu Cá, Pha Chế), mỗi khu <strong>chờ 30 giây</strong> giữa 2 lượt. <strong>Team Building</strong>: gom tối thiểu 5 người, chơi 1 trong 3 trò nhóm (Level 1–5), cả đội đạt mục tiêu thì mỗi người nhận thưởng cao hơn chơi một mình 50%; có thể mời người đang online. Nút <strong>CHUYỂN</strong> để chuyển tiền cho đồng nghiệp. <strong>Hồ bơi</strong>: quầy THUÊ PHAO cạnh hồ, 100.000₫ / 2 phút, có phao bơi nhanh hơn. <strong>Việc vặt</strong> hiện ngẫu nhiên trên bản đồ (đồng xu vàng nhấp nháy): dọn phân +300.000₫, đập gián ngoài hành tinh +100.000₫, nhặt ví rơi 100.000–1.000.000₫, đưa cụ già lạc về nhà +100.000₫.</div>
       <div><b>VÉ SỐ</b>3 người bán vé số đi rao quanh resort. Mỗi tờ 100.000₫, chọn 1 số từ 1–49, trùng số mở thưởng (khoảng 2%) là trúng 500.000₫–10.000.000₫. Trúng thì người bán hoá ông Bụt, và ông Bụt cầm bảng <strong>VỪA TRÚNG SỐ</strong> đi theo bạn 10 phút.</div>
       <div><b>CHỖ NGỦ</b>Villa <strong>5.000.000₫</strong> · Bungalow <strong>3.000.000₫</strong> · KS <strong>2.000.000₫</strong> mỗi giường. Mỗi chỗ 2 giường, mỗi người tối đa <strong>6 giường</strong>. Bấm ô giờ/chỗ ngủ ở góc phải để mở <strong>TÀI SẢN</strong>: đăng bán, mua nhà rao bán, trang trí sân nhà.</div>
-      <div><b>NĂNG LƯỢNG</b>Không ăn thì <strong>20 phút</strong> về 0 và xỉu: mất <strong>10% ví</strong> phí cấp cứu, nghỉ 15 giây. Ăn tập thể miễn phí lúc <strong>07:00 · 12:00 · 18:00</strong>, ngoài giờ mua ở quầy.</div>
+      <div><b>NĂNG LƯỢNG</b>Đứng yên hao hết sau <strong>~33 phút</strong>, <strong>chạy liên tục ~17 phút</strong>, mỗi lượt game trừ 6%. Dưới <strong>30%</strong> không chơi game được. Về 0 thì xỉu: mất <strong>10% ví</strong> phí cấp cứu, nghỉ 15 giây. <strong>Ngủ miễn phí</strong> trong nhà: Bungalow 2 phút, Khách sạn 3 phút, Villa 1 phút, Lâu đài 10 giây để đầy. Đồ ăn: ~400₫ mỗi kcal (cơm gà 500 kcal = 200.000₫ = +25%). Ăn tập thể miễn phí lúc <strong>07:00 · 12:00 · 18:00</strong>, ngoài giờ mua ở quầy.</div>
       <div><b>VỆ SINH</b>Tiểu mỗi <strong>10 phút</strong>, ị mỗi <strong>20 phút</strong>. Có <strong>30 giây</strong> tìm toilet. Chưa có chỗ ngủ thì dùng WC công cộng, <strong>15 giây/lượt</strong>.</div>
       <div><b>KHÔNG KỊP</b>Ruồi bu / dính nước tiểu <strong>cho tới khi đi tắm</strong> (PHÒNG TẮM cạnh WC). Chưa tắm thì <strong>không được vào bungalow và khách sạn</strong>.</div>
       <div><b>PHÒNG TẮM</b>Không kịp đi vệ sinh thì bị ruồi bu / dính nước tiểu cho tới khi <strong>tắm</strong> ở PHÒNG TẮM cạnh WC: 200.000₫ (nước tiểu), 400.000₫ (phân). Chưa tắm thì không được vào bungalow và khách sạn.</div>
@@ -460,7 +460,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-y</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-z</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -590,10 +590,10 @@ const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),P2=(x,y)=>({x,y});
 const VND=n=>(n<0?'-':'')+String(Math.abs(Math.round(n))).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+'₫';
 const round50k=n=>Math.round(n/50000)*50000;
 /* All timings are in real seconds. One full day-night cycle (24 game hours) lasts CFG.DAY seconds and repeats forever. */
-const CFG={NIGHT:.25,BOTS:16,JOIN_GAP:4,DAY:3600,EPOCH:Date.UTC(2026,10,1,1,0,0),MEALS:[7,12,18],RESCUE:15,COOLDOWN:30,GAME_LEN:30,GAME_EN:4,WC_MAX:15,NEED_CD:30,ACC_TIME:300,TEST_MONEY:9000000,
- DRAIN:100/1200,REGEN:{villa:3,room:2.2,tent:2.6,castle:4},PEE:600,POO:1200,MEAL_AT:900,MEAL_LEN:120,BET_MAX:500000,
+const CFG={NIGHT:.25,BOTS:16,JOIN_GAP:4,DAY:3600,EPOCH:Date.UTC(2026,10,1,1,0,0),MEALS:[7,12,18],RESCUE:15,COOLDOWN:30,GAME_LEN:30,GAME_EN:6,WC_MAX:15,NEED_CD:30,ACC_TIME:300,TEST_MONEY:9000000,
+ DRAIN:100/2000,MOVE_DRAIN:100/1000,PLAY_MIN:30,REGEN:{room:100/180,tent:100/120,villa:100/60,castle:10},PEE:600,POO:1200,MEAL_AT:900,MEAL_LEN:120,BET_MAX:500000,
  PRICE:{villa:5000000,room:2000000,tent:3000000},COUNT:{villa:10,room:20,tent:15},BEDS:2};
-const FOOD=[{id:'dua',name:'Nước dừa tươi',price:40000,en:15,note:'Mát lạnh, nhưng sẽ mắc tiểu sớm hơn'},{id:'banhmi',name:'Bánh mì kẹp',price:60000,en:25,note:'Ăn nhanh, no vừa'},{id:'com',name:'Cơm gà Hội An',price:120000,en:50,note:'No lâu'},{id:'haisan',name:'Set hải sản Maldives',price:300000,en:100,note:'Hồi đầy năng lượng'}];
+const FOOD=[{id:'dua',name:'Nước dừa tươi',price:40000,kcal:100,en:5,note:'Mát lạnh, nhưng sẽ mắc tiểu sớm hơn'},{id:'banhmi',name:'Bánh mì kẹp',price:100000,kcal:250,en:12,note:'Ăn nhanh, no vừa'},{id:'com',name:'Cơm gà Hội An',price:200000,kcal:500,en:25,note:'No lâu'},{id:'haisan',name:'Set hải sản Maldives',price:400000,kcal:1000,en:50,note:'Bữa lớn, hồi một nửa năng lượng'}];
 const MW=2560,MH=2070;
 const VC=window.VML_CONFIG||null;
 if(VC&&VC.backend==='supabase'&&VC.supabase&&window.supabase&&window.VMLSupabaseShim&&VC.supabase.url&&!/DAN_|YOUR/i.test(VC.supabase.url+' '+VC.supabase.anonKey)){try{window.firebase=window.VMLSupabaseShim(VC.supabase);VC.firebase={apiKey:'supabase'}}catch(e){console.warn(e)}}
@@ -1183,7 +1183,7 @@ function botThink(n){
  if(Math.random()<.1&&hour()>8&&hour()<18){for(let k=0;k<10;k++){const p=P2(rnd(POOL.x0+12,POOL.x1-12),rnd(POOL.y0+16,POOL.y1-8));if(inPool(p.x,p.y)){goTo(n,p,'swim');return}}}
  if(n.lodge&&n.lodge.type!=='room'&&n.money>=3000000&&Math.random()<.04){const d=decoOf(n.lodge.type,n.lodge.i),ok=DECO.filter(it=>it.p<=n.money*.3&&(it.slot==='g'?(!d.g1||!d.g2):!d[it.slot]));if(ok.length){const it=pick(ok),sl=it.slot==='g'?(!d.g1?'g1':'g2'):it.slot;d[sl]={id:it.id,by:n.name};n.money-=it.p}}
  if(petList(n).length<2&&n.money>=1500000&&Math.random()<.05){goTo(n,PETZ.pt,'pet');return}
- const rd=ZONES.filter(z=>(n.cd[z.id]||0)<=S.time);
+ const rd=n.energy<CFG.PLAY_MIN?[]:ZONES.filter(z=>(n.cd[z.id]||0)<=S.time);
  if(rd.length&&Math.random()<.85){const z=pick(rd);for(let k=0;k<12;k++){const p=P2(z.bx+rnd(-60,60),z.by+rnd(26,70));if(canStand(p.x,p.y)){goTo(n,p,'zone',z);return}}}
  goTo(n,wanderPt(),'wander')}
 function arrive(n){switch(n.goal){
@@ -1202,7 +1202,7 @@ function stepTo(c,p,dt){const dx=p.x-c.x,dy=p.y-c.y,d=Math.hypot(dx,dy),st=c.spe
 function botFaint(n){leaveQ(n);releaseSeat(n);S.cabins.forEach(c=>{if(c.occ===n)c.occ=null});leaveLodge(n);const i=S.chars.indexOf(n);if(i>=0)S.chars.splice(i,1);toast(n.name+' xỉu vì đói, bị loại khỏi trip!',true,4000)}
 function updBot(n,dt){n.anim+=dt;if(n.bubbleT>0)n.bubbleT-=dt;
  if(n.state==='duel'){n.moving=false;return}
- n.energy+=(n.state==='rest'?CFG.REGEN[n.lodge?n.lodge.type:'tent']:-CFG.DRAIN)*dt;if(n.energy>100)n.energy=100;if(n.energy<=0){botFaint(n);return}
+ n.energy+=(n.state==='rest'?CFG.REGEN[n.lodge?n.lodge.type:'tent']:-(n.moving?CFG.MOVE_DRAIN:CFG.DRAIN))*dt;if(n.energy>100)n.energy=100;if(n.energy<=0){botFaint(n);return}
  if(n.state!=='cabin'&&n.state!=='private'){const had=!!n.need;tickNeeds(n,dt);
   if(!had&&n.need){if(n.state==='play'){n.cd[n.gdata.id]=S.time+CFG.COOLDOWN;n.money+=round50k(n.skill*rnd(.3,.6))}if(n.state==='eat'){releaseSeat(n)}if(['idle','play','walk','eat'].includes(n.state)&&!['wc','home'].includes(n.goal)){if(n.goal==='meal')releaseSeat(n);n.state='idle';n.t=0;n.goal=null}}
   if(n.need){n.need.cd-=dt;if(n.need.cd<=0){accident(n);return}}}
@@ -1228,8 +1228,8 @@ function updPlayer(dt){P.anim+=dt;{const sw=inPool(P.x,P.y);if(sw!==!!P.swim){P.
   else P.moving=false}
  else P.moving=false;
  if(inMini())return;
- if(mode==='room'&&ROOM&&ROOM.sleep)P.energy=Math.min(100,P.energy+CFG.REGEN[ROOM.type]*dt);else P.energy-=CFG.DRAIN*dt;
- if(P.energy<20&&!P.warn){P.warn=true;toast('Năng lượng dưới 20%! Ghé Quầy Ăn Uống hoặc về phòng ngủ.',false,4500);beep(440,.15);setTimeout(()=>beep(330,.2),180)}if(P.energy>30)P.warn=false;
+ if(mode==='room'&&ROOM&&ROOM.sleep)P.energy=Math.min(100,P.energy+CFG.REGEN[ROOM.type]*dt);else P.energy-=(P.moving?CFG.MOVE_DRAIN:CFG.DRAIN)*dt;
+ if(P.energy<CFG.PLAY_MIN&&!(mode==='room'&&ROOM&&ROOM.sleep)){P.warnT=(P.warnT||0)-dt;if(P.warnT<=0){P.warnT=P.energy<10?12:P.energy<20?20:30;toast('Năng lượng còn '+Math.round(P.energy)+'%! Dưới '+CFG.PLAY_MIN+'% không chơi game được. Về nhà ngủ (miễn phí) hoặc ăn ở Quầy Ăn Uống.',true,5000);beep(440,.15);setTimeout(()=>beep(330,.2),180)}}else if(P.energy>=CFG.PLAY_MIN)P.warnT=0;
  if(P.energy<=0){P.energy=0;faint();return}
  if(mode!=='cabin'){
   if(!P.need&&!P.preWarn&&Math.min(P.peeNext,P.pooNext)<60){P.preWarn=true;toast(P.pooNext<P.peeNext?'Bụng bắt đầu cồn cào… khoảng 1 phút nữa sẽ phải đi ị.':'Hơi buồn tiểu… khoảng 1 phút nữa phải đi vệ sinh.',false,5000);beep(520,.1)}
@@ -1270,7 +1270,7 @@ function act(){if(!running||S.ended||modalOpen())return;
  if(mode==='game'){if(G&&G.intro>0)G.intro=0;else if(G&&G.id==='fish')fishDrop();return}
  if(P.busy>0)return;
  const it=nearInteract();if(!it)return;
- if(it.k==='zone')startGame(it.z);
+ if(it.k==='zone'){if(P.energy<CFG.PLAY_MIN){toast('Năng lượng chỉ còn '+Math.round(P.energy)+'%. Cần tối thiểu '+CFG.PLAY_MIN+'% mới chơi game được. Hãy ngủ hoặc ăn.',true);return}startGame(it.z)}
  else if(it.k==='wait')toast('Khu '+it.z.name+' cần chờ '+mmss(P.cd[it.z.id]-S.time)+' nữa.');
  else if(it.k==='team')openTeam();
  else if(it.k==='shop')openShop(it.r.type);
@@ -1296,7 +1296,7 @@ function act(){if(!running||S.ended||modalOpen())return;
 function enterRoom(){if(!P.lodge||barred(P))return;mode='room';ROOM={type:P.lodge.type,i:P.lodge.i,sleep:false};P.hidden=true;P.path=[];keys={};$('#roomBar').hidden=false;updRoomBar();beep(523,.08)}
 function exitRoom(){if(!ROOM)return;const d=ROOM.type==='castle'?CGATE:lodgeDoor(P);mode='world';ROOM=null;P.hidden=false;if(d){P.x=d.x;P.y=d.y}$('#roomBar').hidden=true}
 function toggleSleep(){if(!ROOM)return;if(!ROOM.sleep&&P.need){toast('Đang buồn đi vệ sinh, không ngủ được!');return}ROOM.sleep=!ROOM.sleep;updRoomBar();if(ROOM.sleep)toast('Bạn đang ngủ, năng lượng hồi +'+CFG.REGEN[ROOM.type]+'/giây.')}
-function updRoomBar(){$('#rbSleep').textContent=ROOM&&ROOM.sleep?'THỨC DẬY (E)':'NGỦ (E)';const priv=!!ROOM;$('#rbToilet').disabled=!priv;$('#rbToilet').textContent=priv?'TOILET RIÊNG (T)':'LỀU KHÔNG CÓ TOILET'}
+function updRoomBar(){$('#rbSleep').textContent=ROOM&&ROOM.sleep?'THỨC DẬY (E)':'NGỦ (E)';const priv=!!ROOM;$('#rbToilet').disabled=!priv;$('#rbToilet').textContent=priv?'TOILET RIÊNG (T)':'BUNGALOW KHÔNG CÓ TOILET'}
 function roomToilet(){if(!ROOM)return;if(!P.need){toast('Bạn chưa buồn đi vệ sinh.');return}ROOM.sleep=false;$('#roomBar').hidden=true;mode='cabin';CAB={private:true,prog:0,t:0,type:P.need.type,fromRoom:true};beep(523,.1)}
 const phaseOf=()=>{const h=hour();return h>=6.3&&h<16.3?'day':(h>=16.3&&h<18.4)||(h>=5&&h<6.3)?'sunset':'night'};
 const SKY={day:['#2f9fe6','#bfeefc'],sunset:['#5a3f8a','#ffb070'],night:['#060c2a','#1f2d68']},SEA={day:['#1d8fc0','#5fd6d8'],sunset:['#6a3a6a','#ff9a60'],night:['#061230','#1c2c5c']};
@@ -1366,7 +1366,7 @@ function renderRoom(t){if(ROOM.type==='castle'){renderCastleRoom(t);return}const
  if(!ROOM.sleep)m.drawImage(P.fr.down[Math.floor(t*1.5)%2?0:2],220,198,40,64);
  if(ROOM.sleep){m.fillStyle='rgba(4,8,30,.35)';m.fillRect(0,0,480,270)}
  if(ph==='night'||ROOM.sleep){m.globalCompositeOperation='lighter';m.globalAlpha=.5;const L2=R.type==='tent'?[240,34,80]:R.type==='room'?[240,144,70]:[240,180,60];m.drawImage(GLOW,L2[0]-L2[2],L2[1]-L2[2],L2[2]*2,L2[2]*2);m.globalAlpha=1;m.globalCompositeOperation='source-over'}
- rr(m,0,0,480,20,'rgba(8,16,44,.85)');ptext(m,title,8,15,15,'#ffd23f','left');ptext(m,(ROOM.sleep?'Đang ngủ +'+CFG.REGEN[R.type]+'/s · ':'')+'Năng lượng '+Math.round(P.energy)+'%',472,15,15,'#ffffff','right');
+ rr(m,0,0,480,20,'rgba(8,16,44,.85)');ptext(m,title,8,15,15,'#ffd23f','left');ptext(m,(ROOM.sleep?'Đang ngủ · đầy sau '+mmss(Math.max(0,(100-P.energy)/CFG.REGEN[R.type]))+' · ':'')+'Năng lượng '+Math.round(P.energy)+'%',472,15,15,'#ffffff','right');
  if(!mates(P).length)tagM('Bạn đang ở một mình',240,34);
  drawRoomGhost(t,ROOMFIT=fitMg())}
 let ROOMFIT=null;
@@ -1613,8 +1613,8 @@ function guideText(){const m=P.money,PR=CFG.PRICE;
  if(GUIDE.s===1){if(m>=PR.villa)return{h:'BƯỚC 2/2 · ĐẶT CHỖ NGỦ',m:'Đủ tiền thuê <b>Villa</b>! Theo mũi tên tới lễ tân.',t:'Bạn đủ tiền thuê <b>Villa view biển</b> ('+VND(PR.villa)+')! Tới <b>Lễ tân Villa</b> theo mũi tên.'};
   if(m>=PR.room)return{h:'BƯỚC 2/2 · ĐẶT CHỖ NGỦ',m:'Đủ tiền thuê <b>Khách sạn</b>! Theo mũi tên tới lễ tân.',t:'Bạn đủ tiền thuê <b>phòng khách sạn</b> ('+VND(PR.room)+'). Tới <b>Lễ tân Khách sạn</b>, hoặc chơi thêm để lên Villa.',bar:m/PR.villa,bl:'Villa'};
   return{h:'BƯỚC 2/2 · ĐẶT CHỖ NGỦ',m:'Kiếm đủ <b>'+VND(PR.room)+'</b> để thuê phòng khách sạn.',t:'Cần <b>'+VND(PR.room)+'</b> để thuê phòng khách sạn ('+VND(PR.tent)+' Bungalow, '+VND(PR.villa)+' Villa). Chơi thêm game nhé!',bar:m/PR.room,bl:'Khách sạn'}}
- if(GUIDE.s===2){if(m>=PR.room)return{h:'BƯỚC 3/3 · LÊN ĐỜI',m:'Đủ tiền lên <b>'+(m>=PR.villa?'Villa':'Khách sạn')+'</b>! Theo mũi tên tới lễ tân.',t:'Đủ tiền rồi! Tới lễ tân theo mũi tên để chuyển từ lều lên <b>'+(m>=PR.villa?'Villa':'Khách sạn')+'</b>.'};
-  return{h:'BƯỚC 3/3 · LÊN ĐỜI',m:'Kiếm đủ <b>'+VND(PR.room)+'</b> để rời lều lên khách sạn.',t:'Lều thì không có toilet. Kiếm đủ <b>'+VND(PR.room)+'</b> để lên <b>Khách sạn</b>, '+VND(PR.villa)+' để lên <b>Villa</b>.',bar:m/PR.room,bl:'Khách sạn'}}
+ if(GUIDE.s===2){if(m>=PR.room)return{h:'BƯỚC 3/3 · LÊN ĐỜI',m:'Đủ tiền lên <b>'+(m>=PR.villa?'Villa':'Khách sạn')+'</b>! Theo mũi tên tới lễ tân.',t:'Đủ tiền rồi! Tới lễ tân theo mũi tên để chuyển từ bungalow lên <b>'+(m>=PR.villa?'Villa':'Khách sạn')+'</b>.'};
+  return{h:'BƯỚC 3/3 · LÊN ĐỜI',m:'Kiếm đủ <b>'+VND(PR.room)+'</b> để rời bungalow lên khách sạn.',t:'Bungalow thì không có toilet. Kiếm đủ <b>'+VND(PR.room)+'</b> để lên <b>Khách sạn</b>, '+VND(PR.villa)+' để lên <b>Villa</b>.',bar:m/PR.room,bl:'Khách sạn'}}
  return{h:'HOÀN THÀNH!',t:'Bạn đã sẵn sàng. Nhớ ăn ở quầy khi đói, đi WC khi mắc, và thử nuôi thú cưng nhé!'}}
 let guideKey='';
 function renderGuide(){const el=$('#guide');if(!el)return;const show=S&&(GUIDE.on||GUIDE.doneT>0)&&mode==='world'&&!S.ended&&!modalOpen();el.hidden=!show;if(!show)return;
@@ -2029,7 +2029,7 @@ function renderCastleRoom(t){const R=ROOM,w=ctw(R.i),ph=phaseOf();m.clearRect(0,
  if(!R.sleep)m.drawImage(P.fr.down[Math.floor(t*1.5)%2?0:2],140,162,40,64);
  if(R.sleep){m.fillStyle='rgba(4,8,30,.35)';m.fillRect(0,0,480,270)}
  if(ph==='night'||R.sleep){m.globalCompositeOperation='lighter';m.globalAlpha=.4;for(const cx2 of [110,370])m.drawImage(GLOW,cx2-60,-30,120,120);m.globalAlpha=1;m.globalCompositeOperation='source-over'}
- rr(m,0,0,480,20,'rgba(120,30,110,.92)');ptext(m,'LÂU ĐÀI TÌNH BÁO · '+CASTLE_N[R.i].toUpperCase(),8,15,15,'#ffd23f','left');ptext(m,(R.sleep?'Đang ngủ +'+CFG.REGEN.castle+'/s · ':'')+'Năng lượng '+Math.round(P.energy)+'%',472,15,15,'#ffffff','right');
+ rr(m,0,0,480,20,'rgba(120,30,110,.92)');ptext(m,'LÂU ĐÀI TÌNH BÁO · '+CASTLE_N[R.i].toUpperCase(),8,15,15,'#ffd23f','left');ptext(m,(R.sleep?'Đang ngủ · đầy sau '+mmss(Math.max(0,(100-P.energy)/CFG.REGEN.castle))+' · ':'')+'Năng lượng '+Math.round(P.energy)+'%',472,15,15,'#ffffff','right');
  drawRoomGhost(t,ROOMFIT=fitMg())}
 function castleAnchor(t,slot){const T=CTW[t],x=CCX+T.dx;return slot==='top'?{x,y:CB-T.h-10-T.sp-14,b:CB+.6}:slot==='base'?{x:x+(t===4?70:0),y:CB+30,b:CB+30}:{x,y:t===4?CB-276:CB-70,b:CB+.7}}
 function castleList(cx,cy,list){if(Math.abs(CCX-(cx+VW/2))>VW/2+400||CB+80<cy||CB-560>cy+VH)return;list.push({cfx:1,base:CB+.5});
@@ -2399,7 +2399,8 @@ let TB={host:null,lvl:1,bots:0,invAt:{},since:0,done:null},TM=null;
 function tbLobbies(){const a=NET.tbAll||{};return Object.keys(a).map(h=>Object.assign({h},a[h])).filter(d=>d&&d.st==='lobby'&&d.m&&serverNow()-(d.ts||0)<900000)}
 function tbDoc(){return TB.host&&NET.tbAll?NET.tbAll[TB.host]||null:null}
 function tbMembers(){const d=tbDoc();return d&&d.m?Object.keys(d.m):[]}
-function openTeam(){if(P.cd.team>S.time){toast('Team Building cần chờ '+mmss(P.cd.team-S.time)+' nữa.');return}
+function openTeam(){if(P.energy<CFG.PLAY_MIN){toast('Năng lượng chỉ còn '+Math.round(P.energy)+'%. Cần tối thiểu '+CFG.PLAY_MIN+'% mới chơi Team Building được.',true);return}
+ if(P.cd.team>S.time){toast('Team Building cần chờ '+mmss(P.cd.team-S.time)+' nữa.');return}
  if(!NET.on)TB.host=null;renderTeam();$('#tbOv').hidden=false;keys={}}
 function renderTeam(){const el=$('#tbBody');if(!el)return;const dd=NET.on&&TB.host?tbDoc():null,l=dd?(dd.lvl||1):TB.lvl;
  const chips=on=>`<div class="offer">${[1,2,3,4,5].map(v=>`<button class="chip${v===l?' on':''}" data-act="lvl" data-v="${v}" ${on?'':'disabled'}>Level ${v}</button>`).join('')}</div>`;
@@ -2418,7 +2419,7 @@ function renderTeam(){const el=$('#tbBody');if(!el)return;const dd=NET.on&&TB.ho
  el.innerHTML=h}
 function tbCreate(){if(!NET.on||TB.host)return;const u=NET.uid,r=NET.db.ref('tb/'+u),doc={h:u,hn:P.name,lvl:TB.lvl,st:'lobby',ts:TS(),m:{[u]:P.name}};r.set(doc);try{r.onDisconnect().remove()}catch(e){}
  TB.host=u;TB.since=Date.now();NET.tbAll=NET.tbAll||{};NET.tbAll[u]=Object.assign({},doc,{ts:serverNow()});renderTeam()}
-function tbJoin(h){const d=NET.tbAll&&NET.tbAll[h];if(!NET.on||TB.host)return;if(!d||d.st!=='lobby'){toast('Phòng này đã đóng hoặc đã bắt đầu.');renderTeam();return}
+function tbJoin(h){const d=NET.tbAll&&NET.tbAll[h];if(!NET.on||TB.host)return;if(P.energy<CFG.PLAY_MIN){toast('Năng lượng quá thấp để tham gia Team Building.',true);return}if(!d||d.st!=='lobby'){toast('Phòng này đã đóng hoặc đã bắt đầu.');renderTeam();return}
  if(Object.keys(d.m||{}).length>=TB_MAXN){toast('Phòng đã đủ '+TB_MAXN+' người.');return}
  const r=NET.db.ref('tb/'+h+'/m/'+NET.uid);r.set(P.name);try{r.onDisconnect().remove()}catch(e){}
  d.m=d.m||{};d.m[NET.uid]=P.name;TB.host=h;TB.since=Date.now();$('#tbOv').hidden=false;renderTeam()}
@@ -2438,7 +2439,7 @@ function tbSync(){if(!NET.on)return;const d=tbDoc();
  if(TB.host){
   if(!d){if(Date.now()-(TB.since||0)>5000&&!TM){TB.host=null;toast('Phòng Team Building đã giải tán.')}}
   else{if(TM&&d.res)Object.assign(TM.res,d.res);
-   if(!TM&&d.st==='play'&&TB.done!==d.seed&&d.mem&&d.mem[NET.uid]&&mode==='world'&&running&&S&&!S.ended)startTeam({gi:d.gi,lvl:d.lvl||1,seed:d.seed,mem:d.mem,host:TB.host})}}
+   if(!TM&&d.st==='play'&&TB.done!==d.seed&&d.mem&&d.mem[NET.uid]&&mode==='world'&&running&&S&&!S.ended){if(P.energy<CFG.PLAY_MIN){TB.done=d.seed;tbLeave(true);toast('Năng lượng quá thấp, bạn bị loại khỏi lượt Team Building này.',true)}else startTeam({gi:d.gi,lvl:d.lvl||1,seed:d.seed,mem:d.mem,host:TB.host})}}}
  if(!$('#tbOv').hidden)renderTeam()}
 function startTeam(o){mgSprites();P.path=[];$('#tbOv').hidden=true;keys={};const off=Array.isArray(o.mem),me=off?'me':NET.uid;
  const mem=off?o.mem.map((n,i)=>({u:i?'b'+i:'me',n:n.replace(' (bot)',''),bot:i>0})):Object.keys(o.mem).map(u=>({u,n:cleanName(o.mem[u]),bot:false}));
@@ -2644,8 +2645,8 @@ $('#dealHaggle').onclick=()=>{const o=S.offer;if(!o||o.haggled)return;o.haggled=
 /* ================= UI: food, rank, help, status ================= */
 function openFood(){renderFood();$('#foodOv').hidden=false;keys={}}
 function renderFood(){$('#foodMoney').textContent=VND(P.money);$('#foodInfo').innerHTML='Năng lượng hiện tại: <b>'+Math.round(P.energy)+'%</b>. '+(mealOn()?'<b>Đang có ăn tập thể miễn phí</b> ở bàn dài ngay bên cạnh!':'Ăn tập thể miễn phí lúc <b>'+clockAt(S.mealAt)+'</b> ở bàn dài cạnh quầy. Ngoài giờ đó phải mua.');
- $('#foodMenu').innerHTML=FOOD.map((f,i)=>`<button class="food" data-i="${i}" ${P.money<f.price||P.energy>=99.5?'disabled':''}><b>${f.name}</b>${VND(f.price)} · +${f.en} năng lượng<span>${f.note}</span></button>`).join('')}
-$('#foodMenu').addEventListener('click',e=>{const bt=e.target.closest('.food');if(!bt||bt.disabled)return;const f=FOOD[+bt.dataset.i];P.money-=f.price;P.energy=Math.min(100,P.energy+f.en);if(f.id==='dua')P.peeNext=Math.min(P.peeNext,rnd(60,120));coin();toast('Ngon! +'+f.en+' năng lượng.');renderFood()});
+ $('#foodMenu').innerHTML=FOOD.map((f,i)=>`<button class="food" data-i="${i}" ${P.money<f.price||P.energy>=99.5?'disabled':''}><b>${f.name}</b>${VND(f.price)} · ${f.kcal} kcal · +${f.en}% năng lượng<span>${f.note}</span></button>`).join('')}
+$('#foodMenu').addEventListener('click',e=>{const bt=e.target.closest('.food');if(!bt||bt.disabled)return;const f=FOOD[+bt.dataset.i];P.money-=f.price;P.energy=Math.min(100,P.energy+f.en);if(f.id==='dua')P.peeNext=Math.min(P.peeNext,rnd(60,120));coin();toast('Ngon! +'+f.en+'% năng lượng ('+f.kcal+' kcal).');renderFood()});
 document.querySelectorAll('[data-close]').forEach(bt=>bt.onclick=()=>{$('#'+bt.dataset.close).hidden=true});
 document.querySelectorAll('.modal').forEach(md=>md.addEventListener('click',e=>{if(e.target===md&&!['startOv','endOv','dealOv','inviteOv'].includes(md.id))md.hidden=true}));
 $('#bHelp').onclick=()=>{$('#helpOv').hidden=false;keys={}};
