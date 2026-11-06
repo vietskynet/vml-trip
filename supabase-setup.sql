@@ -79,7 +79,22 @@ begin
   end if;
 end $$;
 
--- 3. Luật bảo mật: ai được ghi vào đâu -------------------------------------
+-- 3. Luật bảo mật: ai được ghi vào đâu (tối đa 6 giường, chợ nhà, trang trí) ---
+create or replace function public.rt_bedcount(u text) returns int
+language sql stable security definer set search_path = public as $$
+  select count(*)::int from public.rtdb r,
+    jsonb_each(case when jsonb_typeof(r.val) = 'object' then r.val else '{}'::jsonb end) a,
+    jsonb_each_text(case when jsonb_typeof(a.value) = 'object' then a.value else '{}'::jsonb end) b
+  where r.path like 'beds/%' and b.value = u
+$$;
+
+create or replace function public.rt_owns(u text, typ text, idx text) returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (select 1 from public.rtdb r,
+    jsonb_each_text(case when jsonb_typeof(r.val -> idx) = 'object' then r.val -> idx else '{}'::jsonb end) b
+    where r.path = 'beds/' || typ and b.value = u)
+$$;
+
 create or replace function public.rt_can(path text, cur jsonb, nv jsonb, docv jsonb) returns boolean
 language plpgsql stable security definer set search_path = public as $$
 declare s text[] := string_to_array(trim(both '/' from path), '/'); u text := auth.uid()::text; n int;
@@ -87,25 +102,64 @@ begin
   if auth.uid() is null then return false; end if;
   if public.is_admin() then return true; end if;
   n := coalesce(array_length(s, 1), 0);
-  if n < 2 then return false; end if;                      -- day, cả bộ sưu tập: chỉ admin
-  if s[1] = 'players' then return s[2] = u; end if;        -- chỉ sửa nhân vật của mình
-  if s[1] = 'beds' then                                    -- nhận giường trống / trả hoặc nhường giường của mình
-    return n = 4 and ((cur is null and nv is not null and nv #>> '{}' = u) or (cur is not null and cur #>> '{}' = u));
+  if n < 2 then return false; end if;
+  if s[1] = 'players' then return s[2] = u; end if;
+  if s[1] = 'beds' then                                    -- nhận giường trống (tối đa 6) / trả hoặc nhường giường của mình
+    return n = 4 and ((cur is null and nv is not null and nv #>> '{}' = u and public.rt_bedcount(u) < 6)
+                   or (cur is not null and cur #>> '{}' = u));
   end if;
-  if s[1] = 'offers' then                                  -- deal mua lại giường
+  if s[1] = 'offers' then
     if s[2] = u then return true; end if;
     if n = 2 then return false; end if;
     return (cur is null and nv is not null and nv ->> 'from' = u)
         or (cur is not null and jsonb_typeof(cur) = 'object' and cur ->> 'from' = u)
         or (n > 3 and docv #>> array[s[3], 'from'] = u);
   end if;
-  if s[1] = 'invites' then return n >= 3; end if;          -- gửi lời thách đấu
+  if s[1] = 'invites' then return n >= 3; end if;
   if s[1] = 'duels' then return docv is null or docv ->> 'a' = u or docv ->> 'b' = u; end if;
-  if s[1] = 'gifts' then                                   -- chuyển tiền cho người khác (chỉ thêm, không sửa/xoá)
+  if s[1] = 'gifts' then
     return n = 3 and s[2] <> u and cur is null and nv is not null and nv ->> 'from' = u and (nv ->> 'amount')::numeric > 0;
+  end if;
+  if s[1] = 'market' then return s[2] = u; end if;          -- chỉ đăng/huỷ tin rao của mình
+  if s[1] = 'deco' then                                     -- ai có giường trong căn đó mới được trang trí
+    return n = 4 and s[2] in ('villa', 'tent') and s[4] in ('g1', 'g2', 'top', 'door', 'plate') and public.rt_owns(u, s[2], s[3]);
   end if;
   return false;
 end $$;
+
+-- Mua nhà/giường đang rao: chuyển giường + trả tiền cho người bán trong 1 bước
+create or replace function public.rt_market_buy(seller uuid, lid text) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare b uuid := auth.uid(); t bigint := public.now_ms(); L jsonb; ty text; ix text; k text; ks text[]; bv jsonb; pr bigint; nm text; what text;
+begin
+  if b is null then raise exception 'Chưa đăng nhập'; end if;
+  if b = seller then return jsonb_build_object('ok', false, 'msg', 'Đây là tin rao của bạn.'); end if;
+  perform pg_advisory_xact_lock(hashtext('market/' || seller::text));
+  select r.val -> lid into L from public.rtdb r where r.path = 'market/' || seller::text;
+  if L is null or jsonb_typeof(L) <> 'object' then return jsonb_build_object('ok', false, 'msg', 'Tin rao này không còn.'); end if;
+  ks := case jsonb_typeof(L -> 'ks') when 'array' then array(select jsonb_array_elements_text(L -> 'ks')) when 'object' then array(select value from jsonb_each_text(L -> 'ks')) else string_to_array(L ->> 'ks', ',') end;
+  ty := L ->> 'type'; ix := L ->> 'i'; pr := floor((L ->> 'price')::numeric);
+  if ty not in ('villa', 'room', 'tent') or pr is null or pr <= 0 or coalesce(array_length(ks, 1), 0) not between 1 and 2 or not (ks <@ array['0', '1']) then return jsonb_build_object('ok', false, 'msg', 'Tin rao không hợp lệ.'); end if;
+  perform pg_advisory_xact_lock(hashtext('beds/' || ty));
+  select r.val into bv from public.rtdb r where r.path = 'beds/' || ty;
+  foreach k in array ks loop
+    if coalesce(bv #>> array[ix, k], '') <> seller::text then return jsonb_build_object('ok', false, 'msg', 'Người bán không còn giữ chỗ này.'); end if;
+  end loop;
+  if public.rt_bedcount(b::text) + array_length(ks, 1) > 6 then return jsonb_build_object('ok', false, 'msg', 'Mua xong sẽ quá 6 giường.'); end if;
+  foreach k in array ks loop bv := public.rt_jset(bv, array[ix, k], to_jsonb(b::text)); end loop;
+  update public.rtdb set val = bv, upd = t where path = 'beds/' || ty;
+  update public.rtdb set val = nullif(val - lid, '{}'::jsonb), upd = t where path = 'market/' || seller::text;
+  select coalesce(r.val ->> 'name', 'Ai đó') into nm from public.rtdb r where r.path = 'players/' || b::text;
+  what := case ty when 'villa' then 'Villa V' || (ix::int + 1) when 'tent' then 'Bungalow B' || lpad((ix::int + 1)::text, 2, '0') else 'phòng khách sạn' end;
+  insert into public.rtdb(path, val, upd)
+    values ('gifts/' || seller::text, jsonb_build_object('m' || t, jsonb_build_object('amount', pr, 'ts', t, 'from', b::text, 'fromName', coalesce(nm, 'Ai đó'), 'market', true, 'what', what)), t)
+    on conflict (path) do update set val = coalesce(public.rtdb.val, '{}'::jsonb) || excluded.val, upd = excluded.upd;
+  return jsonb_build_object('ok', true, 'price', pr, 'type', ty, 'i', ix::int);
+end $$;
+
+revoke all on function public.rt_bedcount(text), public.rt_owns(text, text, text), public.rt_market_buy(uuid, text) from public, anon;
+grant execute on function public.rt_market_buy(uuid, text) to authenticated;
+
 
 -- 4. Ghi dữ liệu (nhiều đường dẫn một lần) --------------------------------
 create or replace function public.rt_write(ops jsonb) returns void
