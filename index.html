@@ -170,6 +170,19 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
 #chatForm button{font-family:var(--f-display);font-size:11px;background:var(--panel2);color:#fff;border:3px solid #000;padding:0 10px;cursor:pointer}
 @media (pointer:coarse){#chat{bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 176px)}}
 @media (max-width:700px){#chat{width:calc(100% - 24px)}#chatLog{display:none}}
+#guide{position:absolute;left:max(12px,env(safe-area-inset-left,0px));top:calc(var(--top) + 76px);z-index:4;width:min(300px,calc(100% - 24px));background:rgba(8,16,44,.9);border:3px solid #000;box-shadow:inset 0 0 0 2px #5fd36a,4px 4px 0 rgba(0,0,0,.45);padding:7px 10px 9px;font-size:17px;line-height:1.1}
+#guide[hidden]{display:none}
+#guide .gTop{display:flex;align-items:center;gap:6px}
+#guide .gTop b{flex:1;font-family:var(--f-display);font-weight:normal;font-size:11px;color:#5fd36a;letter-spacing:1px}
+#guide .gTop button{font-family:var(--f-display);font-size:12px;width:26px;height:24px;background:var(--panel2);color:#fff;border:2px solid #000;cursor:pointer;padding:0}
+#guide p{margin:6px 0 0}#guide p b{color:var(--sun);font-weight:normal}
+#guide .gBar{height:8px;background:#000;margin-top:6px;border:2px solid #000}#guide .gBar i{display:block;height:100%;background:linear-gradient(90deg,#5fd36a,#ffd23f)}
+#guide small{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+#guide.min .gBody{display:none}#guide.min{width:auto}
+#guide.ok{box-shadow:inset 0 0 0 2px var(--sun),4px 4px 0 rgba(0,0,0,.45);animation:gPop .4s ease-out}
+@keyframes gPop{0%{transform:scale(1.08)}100%{transform:none}}
+@media (max-width:760px){#guide{top:calc(var(--top) + 120px);width:min(250px,64%);font-size:15px;padding:5px 8px 7px}#toasts{top:calc(var(--top) + 214px)!important}}
+@media (prefers-reduced-motion:reduce){#guide.ok{animation:none}}
 #tip{position:absolute;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(max(16px,env(safe-area-inset-bottom,0px)) + 56px);z-index:6;width:min(320px,calc(100% - 24px));background:rgba(8,16,44,.94);border:3px solid #000;box-shadow:inset 0 0 0 2px var(--sun),4px 4px 0 rgba(0,0,0,.5);padding:10px 12px;display:flex;flex-direction:column;gap:6px;font-size:18px;line-height:1.1}
 #tip[hidden]{display:none}
 #tip.in{animation:tipIn .35s cubic-bezier(.2,1.6,.4,1)}
@@ -228,6 +241,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
   <div id="need" hidden><b id="needTitle">MẮC TIỂU</b><span id="needHint"></span><span class="cd" id="needCd">30</span></div>
   <div id="toasts"></div>
   <button id="chatFab" aria-label="Mở chat" hidden><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#fff" d="M2 2h12v1h1v7h-1v1H7l-3 3v-3H2v-1H1V3h1z"/><path fill="#1c3170" d="M4 5h8v1H4zM4 8h6v1H4z"/></svg><i id="chatDot" hidden></i></button>
+  <div id="guide" hidden role="status" aria-live="polite"><div class="gTop"><b id="gHead"></b><button id="gMin" aria-label="Thu nhỏ hướng dẫn">–</button><button id="gOff" aria-label="Tắt hướng dẫn">✕</button></div><div class="gBody"><p id="gText"></p><div id="gBarW" hidden><div class="gBar"><i id="gBar"></i></div><small id="gBarL"></small></div></div></div>
   <div id="tip" hidden role="status"><b class="tipH">MẸO HAY</b><span id="tipText"></span><div class="row"><button class="btn ok sm" id="tipTry">THỬ NGAY</button><button class="btn ghost sm" id="tipClose">ĐÓNG</button></div></div>
   <div id="chat"><div id="chatLog" aria-live="polite"></div><form id="chatForm" autocomplete="off"><input id="chatIn" maxlength="60" placeholder="Nhấn C để chat…" aria-label="Chat trong resort"><button type="submit">GỬI</button></form></div>
   <div id="prompt" hidden></div>
@@ -834,7 +848,7 @@ function newGame(){
   fish:[...Array(10)].map(()=>({x:rnd(100,1700),y:rnd(250,380),vx:rnd(8,20)*(Math.random()<.5?-1:1),ph:rnd(0,6)})),
   crabs:[...Array(5)].map(()=>{const x=rnd(100,1700);return{x,y:shoreY(x)+rnd(20,50),vx:rnd(10,18)*(Math.random()<.5?-1:1),t:rnd(1,4)}}),
   boat:{x:-80,y:100,vx:46},clouds:[...Array(4)].map(()=>({x:rnd(0,MW),y:rnd(0,MH),r:rnd(60,120)}))};
- P=mkChar(cleanName($('#nameIn').value.trim().slice(0,12)||'Bạn'),myLook,{isPlayer:true,speed:84,peeNext:CFG.PEE*rnd(.8,1),pooNext:CFG.POO*rnd(.65,.85),money:CFG.TEST_MONEY,energy:100,preWarn:false});P.x=880;P.y=712;S.chars.push(P);S.newest=P.name;if(NET.on)netAfterNewGame();setMeal(S.time);
+ P=mkChar(cleanName($('#nameIn').value.trim().slice(0,12)||'Bạn'),myLook,{isPlayer:true,speed:84,peeNext:CFG.PEE*rnd(.8,1),pooNext:CFG.POO*rnd(.65,.85),money:CFG.TEST_MONEY,energy:100,preWarn:false});P.x=880;P.y=712;S.chars.push(P);S.newest=P.name;if(NET.on)netAfterNewGame();setMeal(S.time);setTimeout(guideInit,0);
  for(let i=0;i<CFG.BOTS;i++)S.pending.push(mkChar(BOTNAMES[i%BOTNAMES.length],randLook(),{pets:Math.random()<.35?[Math.random()*14|0]:[]}));
  P.pets=myPets();
  mode='world';G=null;CAB=null;ROOM=null;D=null;running=true;$('#toasts').innerHTML='';$('#roomBar').hidden=true;
@@ -1160,7 +1174,7 @@ function mgBackground(id){if(MGBG[id])return MGBG[id];const [c,g]=mk(id==='surf'
  MGBG[id]=c;return c}
 const holePos=i=>P2(150+(i%3)*90,104+((i/3)|0)*62);
 function startGame(z){mgSprites();mode='game';P.path=[];G={id:z.id,z,t:CFG.GAME_LEN,score:0,intro:2.5,done:false,endT:0,sp:0,items:[],parts:[],fl:[],bx:240,tx:null,py:150,ty:null,lives:3,inv:0,scroll:0,holes:[...Array(9)].map(()=>({k:null,t:0,up:0})),mx:240,my:150,sw:0,anim:0,hook:{st:'idle',x:240,y:74,f:null},bar:{order:[],prog:0,pat:0,patMax:1,cust:0,inT:0,spill:0,pour:0,served:0,happy:0}};if(z.id==='bar')barNew(G);beep(523,.08);setTimeout(()=>beep(784,.12),90)}
-function endGame(){const q=G;q.done=true;q.endT=2.4;q.earn=Math.max(0,Math.round(q.score));P.money+=q.earn;P.energy-=CFG.GAME_EN;P.cd[q.id]=S.time+CFG.COOLDOWN;if(q.earn)coin()}
+function endGame(){const q=G;q.done=true;q.endT=2.4;q.earn=Math.max(0,Math.round(q.score));P.money+=q.earn;P.energy-=CFG.GAME_EN;P.cd[q.id]=S.time+CFG.COOLDOWN;P.guideGame=true;if(q.earn)coin()}
 function burst(q,x,y,col,n=8){for(let i=0;i<n;i++)q.parts.push({x,y,vx:rnd(-60,60),vy:rnd(-90,-20),t:rnd(.4,.8),col})}
 function addScore(q,v,x,y){q.score+=v;q.fl.push({x,y,v,t:.9});burst(q,x,y,v>0?'#ffd23f':'#ff5f6d',v>0?10:6);v>0?beep(880,.05):beep(150,.15,'sawtooth')}
 function updGame(dt){const q=G;q.anim+=dt;q.parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=200*dt;p.t-=dt});q.parts=q.parts.filter(p=>p.t>0);q.fl.forEach(f=>{f.t-=dt;f.y-=22*dt});q.fl=q.fl.filter(f=>f.t>0);if(q.sw>0)q.sw-=dt;
@@ -1311,10 +1325,52 @@ function drawCharNoSwim(c,x,y){const sw=inPool;inPoolSkip=true;drawChar(c,x,y);i
 var inPoolSkip=false;
 /* tips popup */
 let tipT=70,tipCode=null,tipHide=null;
-function updTip(dt){if(!S||mode!=='world'||modalOpen()||S.ended)return;tipT-=dt;if(tipT>0)return;tipT=rnd(150,240);showTip()}
+function updTip(dt){if(!S||mode!=='world'||modalOpen()||S.ended||GUIDE.on)return;tipT-=dt;if(tipT>0)return;tipT=rnd(150,240);showTip()}
 function showTip(){const codes=Object.keys(FX);tipCode=pick(codes);const f=FX[tipCode];$('#tipText').innerHTML='Gõ <b>'+tipCode+'</b> vào khung chat để <b>'+f.n.toLowerCase()+'</b> trong 10 giây!';$('#tip').hidden=false;$('#tip').classList.remove('in');void $('#tip').offsetWidth;$('#tip').classList.add('in');beep(990,.05,'triangle',.03);clearTimeout(tipHide);tipHide=setTimeout(()=>{$('#tip').hidden=true},12000)}
 $('#tipTry').onclick=()=>{$('#tip').hidden=true;if(tipCode&&mode==='world')handleChat(tipCode)};
 $('#tipClose').onclick=()=>{$('#tip').hidden=true};
+
+
+/* ================= new-player guide (non-blocking) ================= */
+let GUIDE={on:false,s:0,min:false,doneT:0,flash:0},guideAcc=0;
+function loadGuide(){try{return JSON.parse(localStorage.getItem('vmlTripGuide')||'null')}catch(e){return null}}
+function saveGuide(){try{localStorage.setItem('vmlTripGuide',JSON.stringify({s:GUIDE.on?GUIDE.s:'done',min:GUIDE.min}))}catch(e){}}
+function guideInit(){const g=loadGuide();GUIDE.on=false;GUIDE.doneT=0;if(g&&(g.s==='done'||g.off)){renderGuide();return}
+ if(!g){const fresh=NET.on?!(NET.me&&NET.me.state):loadProfile().days===0;if(!fresh){try{localStorage.setItem('vmlTripGuide',JSON.stringify({s:'done'}))}catch(e){}renderGuide();return}}
+ GUIDE.on=true;GUIDE.s=g&&typeof g.s==='number'?g.s:0;GUIDE.min=!!(g&&g.min);P.guideGame=false;renderGuide()}
+const readyZone=()=>{const zs=ZONES.filter(z=>(P.cd[z.id]||0)<=S.time);return (zs.length?zs:ZONES).slice().sort((a,b)=>dist(P,a.pt)-dist(P,b.pt))[0]};
+function guideTarget(){if(!GUIDE.on||!S)return null;const m=P.money,PR=CFG.PRICE;
+ if(GUIDE.s===0){const z=readyZone();return{pt:z.pt,name:z.name}}
+ const want=GUIDE.s===1?(m>=PR.villa?'villa':m>=PR.room?'room':null):(m>=PR.villa?'villa':m>=PR.room?'room':null);
+ if(want)return{pt:REC[want].pt,name:want==='villa'?'LỄ TÂN VILLA':'LỄ TÂN KHÁCH SẠN'};
+ const z=readyZone();return{pt:z.pt,name:z.name}}
+function guideText(){const m=P.money,PR=CFG.PRICE;
+ if(GUIDE.s===0)return{h:'BƯỚC 1/3 · KIẾM TIỀN',m:'Theo <b>mũi tên xanh</b> tới khu game, bấm <b>A</b> để chơi kiếm tiền.',t:'Resort có <b>5 khu game</b> kiếm tiền. Đi theo <b>mũi tên xanh</b> tới khu gần nhất, đứng trước quầy rồi nhấn <b>E</b> (hoặc nút <b>A</b>).'};
+ if(GUIDE.s===1){if(m>=PR.villa)return{h:'BƯỚC 2/3 · ĐẶT CHỖ NGỦ',m:'Đủ tiền thuê <b>Villa</b>! Theo mũi tên tới lễ tân.',t:'Bạn đủ tiền thuê <b>Villa view biển</b> ('+VND(PR.villa)+')! Tới <b>Lễ tân Villa</b> theo mũi tên.'};
+  if(m>=PR.room)return{h:'BƯỚC 2/3 · ĐẶT CHỖ NGỦ',m:'Đủ tiền thuê <b>Khách sạn</b>! Theo mũi tên tới lễ tân.',t:'Bạn đủ tiền thuê <b>phòng khách sạn</b> ('+VND(PR.room)+'). Tới <b>Lễ tân Khách sạn</b>, hoặc chơi thêm để lên Villa.',bar:m/PR.villa,bl:'Villa'};
+  return{h:'BƯỚC 2/3 · ĐẶT CHỖ NGỦ',m:'Kiếm đủ <b>'+VND(PR.room)+'</b> thuê khách sạn, hoặc ở <b>lều miễn phí</b>.',t:'Cần <b>'+VND(PR.room)+'</b> để thuê phòng khách sạn. Chơi thêm game nhé! Hết tiền thì <b>Lễ tân Lều</b> cho ở lều miễn phí.',bar:m/PR.room,bl:'Khách sạn'}}
+ if(GUIDE.s===2){if(m>=PR.room)return{h:'BƯỚC 3/3 · LÊN ĐỜI',m:'Đủ tiền lên <b>'+(m>=PR.villa?'Villa':'Khách sạn')+'</b>! Theo mũi tên tới lễ tân.',t:'Đủ tiền rồi! Tới lễ tân theo mũi tên để chuyển từ lều lên <b>'+(m>=PR.villa?'Villa':'Khách sạn')+'</b>.'};
+  return{h:'BƯỚC 3/3 · LÊN ĐỜI',m:'Kiếm đủ <b>'+VND(PR.room)+'</b> để rời lều lên khách sạn.',t:'Lều thì không có toilet. Kiếm đủ <b>'+VND(PR.room)+'</b> để lên <b>Khách sạn</b>, '+VND(PR.villa)+' để lên <b>Villa</b>.',bar:m/PR.room,bl:'Khách sạn'}}
+ return{h:'HOÀN THÀNH!',t:'Bạn đã sẵn sàng. Nhớ ăn ở quầy khi đói, đi WC khi mắc, và thử nuôi thú cưng nhé!'}}
+let guideKey='';
+function renderGuide(){const el=$('#guide');if(!el)return;const show=S&&(GUIDE.on||GUIDE.doneT>0)&&mode==='world'&&!S.ended&&!modalOpen();el.hidden=!show;if(!show)return;
+ const g=GUIDE.doneT>0&&!GUIDE.on?{h:'HOÀN THÀNH!',m:'Sẵn sàng rồi! Nhớ ăn, đi WC và nuôi thú cưng nhé.',t:'Bạn đã sẵn sàng. Nhớ ăn khi đói, đi WC khi mắc, và thử nuôi thú cưng ở Quầy Thú Cưng nhé!'}:guideText();if(g.m&&matchMedia('(max-width:760px)').matches)g.t=g.m;
+ const key=g.h+g.t+(g.bar!=null?Math.round(g.bar*100):'')+GUIDE.min+GUIDE.flash;if(key===guideKey)return;guideKey=key;
+ el.classList.toggle('min',GUIDE.min);el.classList.toggle('ok',GUIDE.flash>0||(!GUIDE.on&&GUIDE.doneT>0));$('#gHead').textContent=GUIDE.flash>0?'XONG! '+g.h:g.h;$('#gText').innerHTML=g.t;
+ $('#gMin').textContent=GUIDE.min?'+':'–';$('#gMin').setAttribute('aria-label',GUIDE.min?'Mở hướng dẫn':'Thu nhỏ hướng dẫn');
+ const hb=g.bar!=null;$('#gBarW').hidden=!hb;if(hb){$('#gBar').style.width=Math.round(clamp(g.bar,0,1)*100)+'%';$('#gBarL').textContent=VND(P.money)+' / '+g.bl}}
+function guideNext(){GUIDE.flash=1.6;coin();setTimeout(()=>beep(1320,.06,'square',.04),120);
+ setTimeout(()=>{GUIDE.flash=0;if(GUIDE.s===0)GUIDE.s=1;else if(GUIDE.s===1)GUIDE.s=P.lodge&&P.lodge.type==='tent'?2:3;else GUIDE.s=3;
+  if(GUIDE.s>=3){GUIDE.on=false;GUIDE.doneT=9;tipT=Math.max(tipT,90)}saveGuide();guideKey='';renderGuide()},1500)}
+function guideTick(dt){if(GUIDE.doneT>0){GUIDE.doneT-=dt;if(GUIDE.doneT<=0)guideKey=''}if(GUIDE.flash>0)GUIDE.flash-=dt;guideAcc+=dt;if(guideAcc<.4)return;guideAcc=0;
+ if(GUIDE.on&&GUIDE.flash<=0){if(GUIDE.s===0&&(P.guideGame||P.lodge))guideNext();else if(GUIDE.s===1&&P.lodge)guideNext();else if(GUIDE.s===2&&P.lodge&&P.lodge.type!=='tent')guideNext()}renderGuide()}
+function drawGuideArrow(t,cx,cy){if(!GUIDE.on||GUIDE.flash>0||P.need||mode!=='world'||P.hidden)return;const tg=guideTarget();if(!tg)return;const dd=dist(P,tg.pt);if(dd<26)return;
+ const px=P.x-cx,py=P.y-cy-14,ang=Math.atan2(tg.pt.y-P.y,tg.pt.x-P.x),r2=26+Math.sin(t*5)*3,ax=px+Math.cos(ang)*r2,ay=py+Math.sin(ang)*r2;
+ ctx.save();ctx.translate(Math.round(ax),Math.round(ay));ctx.rotate(ang);ctx.fillStyle='#000';ctx.beginPath();ctx.moveTo(10,0);ctx.lineTo(-6,-7);ctx.lineTo(-6,7);ctx.closePath();ctx.fill();ctx.fillStyle='#5fd36a';ctx.beginPath();ctx.moveTo(7,0);ctx.lineTo(-4,-5);ctx.lineTo(-4,5);ctx.closePath();ctx.fill();ctx.restore();
+ if(!GUIDE.min||Math.floor(t)%4===0)label(tg.name+' · '+Math.round(dd/8)+'m',Math.round(px+Math.cos(ang)*46),Math.round(py+Math.sin(ang)*46+4),'#ffffff','rgba(30,110,50,.9)');
+ const tx=tg.pt.x-cx,ty=tg.pt.y-cy;if(tx>-20&&tx<VW+20&&ty>-20&&ty<VH+20){const b=Math.round(Math.abs(Math.sin(t*4))*5);ctx.fillStyle='#000';ctx.fillRect(tx-5,ty-46-b,11,9);ctx.fillRect(tx-2,ty-37-b,5,4);ctx.fillStyle='#5fd36a';ctx.fillRect(tx-4,ty-45-b,9,7);ctx.fillRect(tx-1,ty-38-b,3,3)}}
+$('#gMin').onclick=()=>{GUIDE.min=!GUIDE.min;saveGuide();guideKey='';renderGuide()};
+$('#gOff').onclick=()=>{GUIDE.on=false;GUIDE.doneT=0;try{localStorage.setItem('vmlTripGuide',JSON.stringify({s:'done',off:1}))}catch(e){}renderGuide();toast('Đã tắt hướng dẫn. Bấm LUẬT nếu cần xem lại cách chơi.')};
 
 /* ================= duel arena ================= */
 const DUELS=[['rps','KÉO BÚA BAO','Thắng 2 ván trước. Phím 1 Kéo · 2 Búa · 3 Bao, hoặc bấm vào hình'],['draw','CAO BỒI BẮN NHANH','Chờ chữ BẮN! rồi bấm E / Space / chạm thật nhanh. Bấm sớm là thua'],['tug','KÉO CO','Bấm E / Space / chạm liên tục để kéo dây về phía bạn'],['aim','NÉM DỪA TRÚNG ĐÍCH','3 lượt. Bấm E / Space / chạm khi kim vào giữa vạch đỏ'],['memory','NHỚ NHANH','Nhớ dãy 5 mũi tên, rồi nhập lại bằng phím mũi tên hoặc nút bấm']];
@@ -1484,6 +1540,7 @@ function renderWorld(t){
  if(sf>0||nf>0){ctx.globalCompositeOperation='multiply';const gg=Math.round(255-60*sf-170*nf),bb=Math.round(255-130*sf-80*nf),r2=Math.round(255-200*nf);ctx.fillStyle=`rgb(${r2},${clamp(gg,0,255)},${clamp(bb,0,255)})`;ctx.fillRect(0,0,VW,VH);ctx.globalCompositeOperation='lighter';
   const a=Math.max(nf,sf*.3);LIGHTS.forEach(L=>{if(!vis(L.x,L.y,L.r))return;const fl=L.fire||L.torch?(.85+Math.sin(t*13+L.x)*.15):1;ctx.globalAlpha=a*fl*(L.r>60?.55:.7);ctx.drawImage(GLOW,Math.round(L.x-cx-L.r),Math.round(L.y-cy-L.r),L.r*2,L.r*2)});ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over'}
  drawShine(t,cx,cy,vis);
+ drawGuideArrow(t,cx,cy);
  // toilet warning: red edge pulse, guide arrow, big flash
  if(P.need&&mode==='world'&&!P.hidden){const u=P.need.cd,pulse=(Math.sin(t*(u<10?14:7))*.5+.5),a=(u<10?.55:.32)*pulse+.1,th=u<10?10:6;
   ctx.fillStyle=`rgba(255,40,60,${a})`;ctx.fillRect(0,0,VW,th);ctx.fillRect(0,VH-th,VW,th);ctx.fillRect(0,0,th,VH);ctx.fillRect(VW-th,0,th,VH);
@@ -1575,7 +1632,7 @@ function loop(ts){const now=ts/1000;const dt=Math.min(.1,now-(last||now));last=n
   if(S.pending.length){S.joinT-=dt;if(S.joinT<=0){S.joinT=CFG.JOIN_GAP;const c=S.pending.shift();c.x=GATE_PT.x+rnd(-20,20);c.y=GATE_PT.y+rnd(0,16);c.state='idle';c.t=rnd(.5,1.5);S.chars.push(c);S.newest=c.name;toast(c.name+' vừa đến resort.',true,2400)}}
   for(const c of [...S.chars]){if(c.remote)updRemote(c,dt);else if(c!==P)updBot(c,dt);trail(c,dt);updPet(c,dt)}
   updPlayer(dt);if(S.ended){requestAnimationFrame(loop);return}
-  updCabins(dt);updMeal();if(mode==='game'&&G)updGame(dt);if(mode==='cabin')updCabinMode(dt);if(mode==='room'&&ROOM)ghostTick(dt);if(mode==='duel'&&D)updDuel(dt);if(NET.on)netTick(dt);if(P.bubbleT>0)P.bubbleT-=dt;if(P.shine>0)P.shine-=dt;if(P.fxT>0){P.fxT-=dt;if(P.fxT<=0){P.fx=null;NET.lastPos='';sysLog('Hiệu ứng đã hết.')}}updTip(dt);
+  updCabins(dt);updMeal();if(mode==='game'&&G)updGame(dt);if(mode==='cabin')updCabinMode(dt);if(mode==='room'&&ROOM)ghostTick(dt);if(mode==='duel'&&D)updDuel(dt);if(NET.on)netTick(dt);if(P.bubbleT>0)P.bubbleT-=dt;if(P.shine>0)P.shine-=dt;if(P.fxT>0){P.fxT-=dt;if(P.fxT<=0){P.fx=null;NET.lastPos='';sysLog('Hiệu ứng đã hết.')}}updTip(dt);guideTick(dt);
   S.puddles.forEach(p=>p.a+=dt);if(S.puddles.length&&S.puddles[0].a>25)S.puddles=S.puddles.filter(p=>p.a<25);
   if(Math.floor(S.time)!==Math.floor(S.time-dt))S.chars.forEach(a=>{(a.petOs||[]).forEach(po=>{if(po&&PETS[po.i].fx==='scare')S.chars.forEach(n=>{if(n!==a&&n!==P&&!n.remote&&n.bubbleT<=0&&dist(po,n)<44&&Math.random()<.35){n.bubble=pick(['Á! GIÁN!!','Cứu tôi!','Con gì to vậy?!','Đừng lại gần!']);n.bubbleT=1.8}})});if(a.accident>0&&!a.hidden)S.chars.forEach(n=>{if(n!==a&&n!==P&&n.bubbleT<=0&&dist(a,n)<36&&Math.random()<.25){n.bubble=pick(['Eo ôi!','Mùi gì vậy?','Né ra!','Ruồi kìa!']);n.bubbleT=1.6}})});
   if(S.offer){S.offer.t-=dt;if(S.offer.t<=0){if(S.offer.net)netOfferAnswer(false);else closeOffer(S.offer.bot.name+' đợi lâu quá nên thôi không mua.')}}else if(NET.on)netOfferTick();else if(S.time>=S.nextOffer){maybeBotOffer();if(!S.offer)S.nextOffer=S.time+30}
@@ -1873,7 +1930,7 @@ $('#startBtn').onclick=()=>{try{localStorage.setItem('vmlTripName',$('#nameIn').
  myLook=lookFromCR();$('#startOv').hidden=true;if(NET.on)netStart();newGame();updUI();startMusic();let seen=false;try{seen=localStorage.getItem('vmlTripRules')==='1';localStorage.setItem('vmlTripRules','1')}catch(e){}$('#helpOv').hidden=seen;toast('Chào '+P.name+'! Ví hiện có '+VND(P.money)+'. Nhấn C để chat.',false,4500);if(NET.on)netPostStart()};
 $('#againBtn').onclick=()=>{if(NET.moved){location.reload();return}revive()};
 
-if(location.hash==='#debug')window.__vml={get G(){return G},showTip,ghostScare,haunted,get ROOM(){return ROOM},PETS,mapShot(sc=1){const sv=[VW,VH],px=P.x,py=P.y;VW=MW;VH=MH;cv.width=MW;cv.height=MH;P.x=MW/2;P.y=MH/2;cam.x=0;cam.y=0;renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=px;P.y=py;resize();return u},get S(){return S},get P(){return P},get D(){return D},get mode(){return mode},NET,startDuel,enterRoom,openArena,buy,startGame,DUELS,handleChat};
+if(location.hash==='#debug')window.__vml={get G(){return G},get GUIDE(){return GUIDE},guideInit,showTip,ghostScare,haunted,get ROOM(){return ROOM},PETS,mapShot(sc=1){const sv=[VW,VH],px=P.x,py=P.y;VW=MW;VH=MH;cv.width=MW;cv.height=MH;P.x=MW/2;P.y=MH/2;cam.x=0;cam.y=0;renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=px;P.y=py;resize();return u},get S(){return S},get P(){return P},get D(){return D},get mode(){return mode},NET,startDuel,enterRoom,openArena,buy,startGame,DUELS,handleChat};
 resize();renderCreator();$('#profLine').textContent=profileLine(loadProfile());
 const fontsReady=Promise.race([Promise.all([document.fonts.load('16px VT323'),document.fonts.load('16px Bungee')]),new Promise(r=>setTimeout(r,3000))]);
 $('#modeNote').textContent='Bản offline · bạn + '+CFG.BOTS+' nhân viên giả lập · ví test '+VND(CFG.TEST_MONEY);
