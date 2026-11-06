@@ -418,7 +418,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-q</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 06.11.2026-r</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -1181,7 +1181,7 @@ function nearInteract(){const C=[],add=(pt,r,o)=>{const d=dist(P,pt);if(d<r)C.pu
  {const v=vendNear();if(v)C.push([-40,{k:'lotto',v,label:'Mua vé số của '+v.name+' · '+VND(LOTTO_PRICE)+' / tờ'}])}
  add(PETZ.pt,40,{k:'pet',label:'Quầy Thú Cưng · 19 bé đi theo bạn'});
  add(P2(CIB.x,CIB.y+14),30,{k:'cintro',label:'Bảng giới thiệu Lâu Đài Tình Báo · câu chuyện & cách mua phòng'});
- {const me=myCastle();add(CGATE,32,{k:'castle',label:me&&me.done?'Vào '+CASTLE_N[me.t]+' · Lâu Đài Tình Báo':'Lâu Đài Tình Báo · xem 5 tháp & đặt chỗ'})}
+ {const ds=myCastles().filter(m=>m.done);add(CGATE,32,{k:'castle',label:ds.length===1?'Vào '+CASTLE_N[ds[0].t]+' · Lâu Đài Tình Báo':ds.length?'Vào Lâu Đài Tình Báo · chọn tháp của bạn':'Lâu Đài Tình Báo · xem 5 tháp & đặt chỗ'})}
  add(FLOATZ.pt,34,{k:'float',label:floatOf(P)?'Đang thuê '+FLOAT_BY[floatOf(P)].n+' · còn '+mmss(P.flo.until-S.time):'Thuê phao kỳ quái · '+VND(FLOAT_PRICE)+' / 2 phút'});
  if(!inPool(P.x,P.y)&&P.x>POOL.x0-16&&P.x<POOL.x1+16&&P.y>POOL.y0-14&&P.y<POOL.y1+12)C.push([30,{k:'info',label:'Hồ bơi · cứ đi xuống nước là bơi'}]);
  add(FOODS.pt,40,{k:'food',label:'Quầy Ăn Uống · mua đồ ăn hồi năng lượng'});
@@ -1213,7 +1213,7 @@ function act(){if(!running||S.ended||modalOpen())return;
  else if(it.k==='job')jobAct(it.j);
  else if(it.k==='lotto')openLotto(it.v);
  else if(it.k==='cintro')openCastleIntro();
- else if(it.k==='castle'){const me=myCastle();if(me&&me.done)enterCastle(me.t);else openCastle()}
+ else if(it.k==='castle'){const ds=myCastles().filter(m=>m.done);if(CST.goT!=null&&myCastleAt(CST.goT)&&myCastleAt(CST.goT).done)enterCastle(CST.goT);else if(ds.length===1)enterCastle(ds[0].t);else openCastle()}
  else if(it.k==='meal')playerMeal();
  else if(it.k==='enter'){P.lodge={type:it.u.type,i:it.u.i};P.lodgePref=P.lodge;enterRoom()}
  else if(it.k==='toilet'){if(it.u){P.lodge={type:it.u.type,i:it.u.i};P.lodgePref=P.lodge}mode='cabin';CAB={private:true,prog:0,t:0,type:P.need.type};P.hidden=true;P.path=[];beep(523,.1)}
@@ -1672,7 +1672,7 @@ function renderEst(){if($('#estOv').hidden&&!EST.force)return;$('#estMoney').tex
  else if(EST.tab==='market'){const Ls=allListings();h+=`<p>Nhà và giường đang được rao bán. Mua xong là của bạn ngay, tiền chuyển cho người bán. Bạn đang có <b>${nb}/${BED_MAX}</b> giường.</p>`;
   h+=Ls.length?'<div class="elist">'+Ls.map((L,ix)=>{const mine=L.seller===P,over=nb+L.ks.length>BED_MAX;return`<div class="erow"><div><b>${lodgeName(L)}</b> · ${L.ks.length>1?'cả căn (2 giường)':'1 giường'}<br><small>Người bán: ${mine?'Bạn':esc(L.name)} · giá gốc ${VND(CFG.PRICE[L.type]*L.ks.length)}</small></div><span class="price">${VND(L.price)}</span>${mine?'<em>Tin của bạn</em>':`<button class="btn ok sm" data-mb="${ix}" ${EST.busy||P.money<L.price||over?'disabled':''}>${over?'QUÁ 6 GIƯỜNG':P.money<L.price?'THIẾU TIỀN':'MUA'}</button>`}</div>`}).join('')+'</div>':'<p><em>Chưa có ai rao bán.</em></p>';EST._ls=Ls}
  else{const us=ownUnits(P);h+=`<p>Bạn đang sở hữu <b>${nb}/${BED_MAX}</b> giường (tối đa 6 căn khác nhau, hoặc 3 căn trọn 2 giường). <b>Nhà chính</b> là nơi bạn về ngủ và dùng toilet mặc định.</p>`;
-  {const me=myCastle();if(me)h+=`<div class="elist"><div class="erow ctow mine"><div><b>${CASTLE_N[me.t]}</b> <span class="tag">LÂU ĐÀI</span><br><small>${me.done?'Liên minh: '+me.w.s.map(x=>x&&x.name).filter(Boolean).join(', '):'Đang chờ đủ 3 người ('+me.w.s.filter(Boolean).length+'/3)'} · tính 1 giường</small></div><div class="row"><button class="btn sm" data-castle="1">LÂU ĐÀI</button></div></div></div>`}
+  myCastles().forEach(me=>{h+=`<div class="elist"><div class="erow ctow mine"><div><b>${CASTLE_N[me.t]}</b> <span class="tag">LÂU ĐÀI</span><br><small>${me.done?'Liên minh: '+me.w.s.map(x=>x&&x.name).filter(Boolean).join(', '):'Đang chờ đủ 3 người ('+me.w.s.filter(Boolean).length+'/3)'} · tính 1 giường</small></div><div class="row"><button class="btn sm" data-castle="1">LÂU ĐÀI</button></div></div></div>`})
   if(!us.length)h+='<p><em>Chưa có giường nào. Tới lễ tân Villa / Bungalow / Khách sạn để mua, hoặc xem tab CHỢ NHÀ.</em></p>';
   h+='<div class="elist">'+us.map(u=>{const L=myListing(u.type,u.i),home=sameU(P.lodge,u),full=u.ks.length===CFG.BEDS,canD=true,dd=decoOf(u.type,u.i),nd=slotsOf(u.type).filter(sl=>dd[sl]).length;
    let row=`<div class="erow"><div><b>${lodgeName(u)}</b>${home?' <span class="tag">NHÀ CHÍNH</span>':''}<br><small>${full?'Cả căn · 2/2 giường':'1/2 giường'}${canD?' · '+nd+' món trang trí':''}${L?' · đang rao '+VND(L.price):''}</small></div><div class="row">`;
@@ -1869,27 +1869,30 @@ function castleInit(){if(S.castle)return;S.castle=[0,1,2,3,4].map(()=>({s:[null,
  const bots=S.chars.filter(c=>c!==P&&!c.remote);if(bots.length>=4){S.castle[0].s=[bots[0],bots[1],bots[2]];S.castle[0].done=true;S.castle[2].s[0]=bots[3]}}
 function ctw(t){if(NET.on){const d=(NET.castle||{})[t]||{},S2=d.s||{},N=d.n||{},L=d.lv||{};return{s:[0,1,2].map(k=>{const u=S2[k];if(!u)return null;const c=u===NET.uid?P:(NET.chars[u]||null);return{u,c,name:u===NET.uid?P.name:(c&&c.name)||N[k]||'?'}}),done:!!d.done,lv:[0,1,2].map(k=>!!L[k])}}
  castleInit();const T=S.castle[t];return{s:T.s.map(c=>c?{u:null,c,name:c===P?P.name:c.name}:null),done:T.done,lv:T.lv.map(Boolean)}}
-function myCastle(){if(!S||!P)return null;for(let t=0;t<5;t++){const w=ctw(t),k=w.s.findIndex(x=>x&&(x.c===P||(NET.on&&x.u===NET.uid)));if(k>=0)return{t,k,done:w.done,w}}return null}
-const bedsUsed=()=>ownBeds(P).length+(myCastle()?1:0);
+function myCastleAt(t){if(!S||!P)return null;const w=ctw(t),k=w.s.findIndex(x=>x&&(x.c===P||(NET.on&&x.u===NET.uid)));return k>=0?{t,k,done:w.done,w}:null}
+function myCastles(){const r=[];for(let t=0;t<5;t++){const m=myCastleAt(t);if(m)r.push(m)}return r}
+function myCastle(){const r=myCastles();return r.find(m=>m.done)||r[0]||null}
+const bedsUsed=()=>ownBeds(P).length+myCastles().length;
 const hasCrown=c=>CST.crowns.has(c);
 function castleTick(dt){if(!S||!P)return;const cr=new Set();for(let t=0;t<5;t++){const w=ctw(t);if(w.done)w.s.forEach(x=>{if(x&&x.c)cr.add(x.c)})}CST.crowns=cr;
- const me=myCastle(),cur=me?{t:me.t,done:me.done}:null,last=CST.last;
- if(last&&last.done&&(!cur||cur.t!==last.t)){toast('Liên minh '+CASTLE_N[last.t]+' đã giải tán! Cả nhóm phải rời lâu đài và mất toàn bộ tiền đã trả.',false,7000);sysLog('Liên minh '+CASTLE_N[last.t]+' giải tán.');if(ROOM&&ROOM.type==='castle')exitRoom()}
- if(last&&!last.done&&cur&&cur.done&&cur.t===last.t){const ns=me.w.s.map(x=>x&&x.name).filter(Boolean).join(', ');toast('ĐỦ 3 NGƯỜI! Liên minh '+CASTLE_N[cur.t]+' thành lập: '+ns+'. Vương miện đã lên đầu!',false,7000);sysLog('Liên minh '+CASTLE_N[cur.t]+': '+ns);[523,659,784,1047].forEach((h,i)=>setTimeout(()=>beep(h,.15,'triangle',.05),i*140))}
- CST.last=cur;if(!$('#castleOv').hidden&&!CST.busy){const key=JSON.stringify([0,1,2,3,4].map(ctw).map(w=>[w.done,w.s.map(x=>x&&x.name),w.lv]))+P.money;if(key!==CST.key){CST.key=key;renderCastle()}}
+ const cur={};myCastles().forEach(m=>{cur[m.t]=m});const last=CST.last||{};
+ for(const t in last){const L=last[t],C=cur[t];
+ if(L.done&&!C){toast('Liên minh '+CASTLE_N[t]+' đã giải tán! Cả nhóm phải rời tháp và mất toàn bộ tiền đã trả.',false,7000);sysLog('Liên minh '+CASTLE_N[t]+' giải tán.');if(ROOM&&ROOM.type==='castle'&&ROOM.i===+t)exitRoom()}
+ if(!L.done&&C&&C.done){const ns=C.w.s.map(x=>x&&x.name).filter(Boolean).join(', ');toast('ĐỦ 3 NGƯỜI! Liên minh '+CASTLE_N[t]+' thành lập: '+ns+'. Vương miện đã lên đầu!',false,7000);sysLog('Liên minh '+CASTLE_N[t]+': '+ns);[523,659,784,1047].forEach((h,i)=>setTimeout(()=>beep(h,.15,'triangle',.05),i*140))}}
+ CST.last=Object.fromEntries(Object.entries(cur).map(([t,m])=>[t,{done:m.done}]));if(!$('#castleOv').hidden&&!CST.busy){const key=JSON.stringify([0,1,2,3,4].map(ctw).map(w=>[w.done,w.s.map(x=>x&&x.name),w.lv]))+P.money;if(key!==CST.key){CST.key=key;renderCastle()}}
  if(NET.on)return;castleInit();
  S.castle.forEach((T,t)=>{if(T.done){if(T.s.includes(P)&&T.lv.some(Boolean)&&S.time>=T.lvT){const k=T.s.findIndex((c,j)=>c!==P&&!T.lv[j]);if(k>=0){T.lv[k]=1;const nm=T.s[k].name;toast(nm+' cũng bỏ phiếu thoát. Liên minh tan rã!',false,4000)}if(T.lv.filter(Boolean).length>=2)castleEvict(t)}return}
   if(T.s.includes(P)&&S.time>=T.bt){const k=T.s.indexOf(null);const used=new Set(S.castle.flatMap(x=>x.s));const bot=S.chars.find(c=>c!==P&&!c.remote&&!used.has(c));if(k>=0&&bot){T.s[k]=bot;T.bt=S.time+rnd(8,20);toast(bot.name+' vừa đặt chỗ ở '+CASTLE_N[t]+' cùng bạn ('+T.s.filter(Boolean).length+'/3).',false,3500)}if(!T.s.includes(null))T.done=true}})}
 function castleEvict(t){if(NET.on)return;const T=S.castle[t];T.s=[null,null,null];T.done=false;T.lv=[0,0,0];S.deco=S.deco||{};if(S.deco.castle)delete S.deco.castle[t]}
 async function castleRpc(fn,args){const sb=SB();if(!sb){toast('Cần kết nối máy chủ.');return null}try{const {data,error}=await sb.rpc(fn,args);if(error)throw error;return data}catch(e){toast(/castle|schema|function/i.test(e.message||'')?'Máy chủ chưa bật Lâu Đài (admin cần chạy SQL mới).':'Lỗi: '+(e.message||e),false,5000);return null}}
-async function castleReserve(t){const pr=CASTLE_PRICE[t],w=ctw(t);if(myCastle()){toast('Bạn đã có chỗ trong lâu đài rồi.');return}if(bedsUsed()>=BED_MAX){toast('Bạn đã đủ '+BED_MAX+' giường (chỗ lâu đài tính là 1 giường). Bán hoặc trả bớt giường trước.',false,5000);return}
+async function castleReserve(t){const pr=CASTLE_PRICE[t],w=ctw(t);if(myCastleAt(t)){toast('Mỗi người chỉ được 1 chỗ trong '+CASTLE_N[t]+'.');return}if(bedsUsed()>=BED_MAX){toast('Bạn đã đủ '+BED_MAX+' giường (chỗ lâu đài tính là 1 giường). Bán hoặc trả bớt giường trước.',false,5000);return}
  if(P.money<pr){toast('Chưa đủ '+VND(pr)+'.');return}if(w.done||!w.s.includes(null)){toast('Tháp này đã đủ người.');return}
- if(NET.on){CST.busy=true;renderCastle();const d=await castleRpc('rt_castle_reserve',{tw:t});CST.busy=false;if(d&&d.ok){P.money-=pr;coin();toast(d.done?'Bạn là người thứ 3! Liên minh '+CASTLE_N[t]+' thành lập.':'Đã đặt chỗ ở '+CASTLE_N[t]+'. Tiền được giữ lại, chờ đủ 3 người.',false,5000);CST.last={t,done:false};saveState()}else if(d)toast(d.msg||'Không đặt được.',false,4000);renderCastle();return}
- const T=S.castle[t],k=T.s.indexOf(null);T.s[k]=P;T.bt=S.time+rnd(8,18);P.money-=pr;coin();if(!T.s.includes(null))T.done=true;toast('Đã đặt chỗ ở '+CASTLE_N[t]+' ('+T.s.filter(Boolean).length+'/3). Tiền được giữ lại, chờ đủ 3 người.',false,5000);CST.last={t,done:T.done};renderCastle()}
-async function castleCancel(t){const me=myCastle();if(!me||me.t!==t||me.done)return;const pr=CASTLE_PRICE[t];
- if(NET.on){CST.busy=true;renderCastle();const d=await castleRpc('rt_castle_cancel',{tw:t});CST.busy=false;if(d&&d.ok){P.money+=pr;coin();toast('Đã huỷ đặt chỗ, hoàn lại '+VND(pr)+'.');CST.last=null;saveState()}else if(d)toast(d.msg||'Không huỷ được.',false,4000);renderCastle();return}
- S.castle[t].s[me.k]=null;P.money+=pr;coin();CST.last=null;toast('Đã huỷ đặt chỗ, hoàn lại '+VND(pr)+'.');renderCastle()}
-async function castleVote(t,on){const me=myCastle();if(!me||me.t!==t||!me.done)return;
+ if(NET.on){CST.busy=true;renderCastle();const d=await castleRpc('rt_castle_reserve',{tw:t});CST.busy=false;if(d&&d.ok){P.money-=pr;coin();toast(d.done?'Bạn là người thứ 3! Liên minh '+CASTLE_N[t]+' thành lập.':'Đã đặt chỗ ở '+CASTLE_N[t]+'. Tiền được giữ lại, chờ đủ 3 người.',false,5000);CST.last=Object.assign(CST.last||{},{[t]:{done:false}});saveState()}else if(d)toast(d.msg||'Không đặt được.',false,4000);renderCastle();return}
+ const T=S.castle[t],k=T.s.indexOf(null);T.s[k]=P;T.bt=S.time+rnd(8,18);P.money-=pr;coin();if(!T.s.includes(null))T.done=true;toast('Đã đặt chỗ ở '+CASTLE_N[t]+' ('+T.s.filter(Boolean).length+'/3). Tiền được giữ lại, chờ đủ 3 người.',false,5000);CST.last=Object.assign(CST.last||{},{[t]:{done:T.done}});renderCastle()}
+async function castleCancel(t){const me=myCastleAt(t);if(!me||me.done)return;const pr=CASTLE_PRICE[t];
+ if(NET.on){CST.busy=true;renderCastle();const d=await castleRpc('rt_castle_cancel',{tw:t});CST.busy=false;if(d&&d.ok){P.money+=pr;coin();toast('Đã huỷ đặt chỗ, hoàn lại '+VND(pr)+'.');if(CST.last)delete CST.last[t];saveState()}else if(d)toast(d.msg||'Không huỷ được.',false,4000);renderCastle();return}
+ S.castle[t].s[me.k]=null;P.money+=pr;coin();if(CST.last)delete CST.last[t];toast('Đã huỷ đặt chỗ, hoàn lại '+VND(pr)+'.');renderCastle()}
+async function castleVote(t,on){const me=myCastleAt(t);if(!me||!me.done)return;
  if(NET.on){CST.busy=true;renderCastle();const d=await castleRpc('rt_castle_leave',{tw:t,vote:on});CST.busy=false;if(d&&d.ok)toast(d.evicted?'Đủ 2 phiếu. Cả liên minh rời lâu đài, mất toàn bộ tiền.':on?'Đã bỏ phiếu thoát ('+d.votes+'/3). Cần 2 phiếu thì cả nhóm phải rời và mất tiền.':'Đã rút phiếu thoát.',false,5000);else if(d)toast(d.msg||'Không được.',false,4000);renderCastle();return}
  const T=S.castle[t];T.lv[me.k]=on?1:0;if(on){T.lvT=S.time+rnd(6,10);toast('Đã bỏ phiếu thoát (1/3). Nếu thêm 1 người nữa đồng ý, cả nhóm phải rời và mất tiền.',false,5000)}else toast('Đã rút phiếu thoát.');renderCastle()}
 
@@ -1898,35 +1901,35 @@ function openCastleIntro(){const tw=[0,1,2,3,4].map(i=>`<tr><td><b>${CASTLE_N[i]
  <div class="cis"><h3>5 THÁP · GIÁ MỖI NGƯỜI</h3><table class="ctab"><tr><th>Tháp</th><th>Độ cao</th><th>Giá / người</th></tr>${tw}</table><p>Mỗi tháp có 3 giường cho 3 người. Tháp càng cao, view càng đẹp (tháp cao nhìn xuống cả biển mây).</p></div>
  <div class="cis"><h3>CÁCH MUA PHÒNG</h3><ol><li>Đi tới cổng lâu đài (hoặc bấm vào lâu đài), chọn một tháp còn trống và bấm <b>ĐẶT CHỖ</b>.</li><li>Tiền được <b>giữ lại</b> chứ chưa mất. Chưa đủ người thì bấm <b>HUỶ ĐẶT</b> để lấy lại.</li><li>Rủ thêm 2 người cùng đặt vào <b>đúng tháp đó</b>. Đủ 3 người là mua thành công.</li><li>Cả 3 thành một <b>liên minh</b> và cùng sở hữu tháp.</li></ol></div>
  <div class="cis"><h3>QUYỀN LỢI CHỦ LÂU ĐÀI</h3><ul><li><b>Vương miện vàng</b> trên đầu mỗi khi ra ngoài, ai cũng thấy.</li><li>Phòng sang trọng, ngủ hồi năng lượng <b>nhanh nhất game</b>.</li><li><b>Người hầu</b> định kỳ mang đồ ăn tới, cộng thêm năng lượng.</li><li>Toilet riêng, view đỉnh cao.</li><li>Mua <b>đồ trang trí cao cấp</b> cho tháp: rồng, trăng máu, cổng dịch chuyển, bảng tên liên minh…</li></ul></div>
- <div class="cis warnbox"><h3>LUẬT CẦN BIẾT</h3><ul><li>Chỗ trong lâu đài tính là <b>1 giường</b> trong giới hạn ${BED_MAX} giường. Đủ ${BED_MAX} rồi thì bán hoặc <b>trả giường</b> (mục Tài sản) trước.</li><li>Mỗi người chỉ có <b>1 chỗ</b> trong lâu đài.</li><li>Nếu <b>2 thành viên bỏ phiếu thoát</b>, cả liên minh phải rời lâu đài và <b>mất toàn bộ tiền</b> cùng đồ trang trí. Hãy chọn đồng đội thật kỹ!</li><li>Đang bốc mùi thì quản gia không cho vào. Đi tắm trước đã.</li></ul></div>`;
+ <div class="cis warnbox"><h3>LUẬT CẦN BIẾT</h3><ul><li>Chỗ trong lâu đài tính là <b>1 giường</b> trong giới hạn ${BED_MAX} giường. Đủ ${BED_MAX} rồi thì bán hoặc <b>trả giường</b> (mục Tài sản) trước.</li><li>Mỗi người chỉ được <b>1 chỗ trong mỗi tháp</b>. Bạn có thể tham gia nhiều tháp khác nhau (mỗi tháp một liên minh), mỗi chỗ tính 1 giường.</li><li>Nếu <b>2 thành viên bỏ phiếu thoát</b>, cả liên minh phải rời lâu đài và <b>mất toàn bộ tiền</b> cùng đồ trang trí. Hãy chọn đồng đội thật kỹ!</li><li>Đang bốc mùi thì quản gia không cho vào. Đi tắm trước đã.</li></ul></div>`;
  $('#cintroOv').hidden=false;keys={}}
 $('#cintroGo').onclick=()=>{$('#cintroOv').hidden=true;openCastle()};
 function openCastle(){CST.tab='list';CST.deco=null;CST.key='';renderCastle();$('#castleOv').hidden=false;keys={}}
-function canCDeco(t){const me=myCastle();return !!(me&&me.done&&me.t===t)}
-function renderCastle(){$('#castleMoney').textContent=VND(P.money);const me=myCastle(),B=$('#castleBody');let h='';const nearGate=dist(P,CGATE)<70;
+function canCDeco(t){const me=myCastleAt(t);return !!(me&&me.done)}
+function renderCastle(){$('#castleMoney').textContent=VND(P.money);const B=$('#castleBody');let h='';const nearGate=dist(P,CGATE)<70;
  if(CST.tab==='deco'&&CST.deco!=null&&canCDeco(CST.deco)){const t=CST.deco,d=decoOf('castle',t);
   h+=`<p>Trang trí <b>${CASTLE_N[t]}</b>. Đồ thuộc về cả liên minh: <b>đỉnh tháp 1 món</b>, <b>chân tháp 1 món</b>, cộng bảng tên liên minh. Liên minh giải tán thì đồ mất theo.</p><div class="slots">`;
   [['top','Đỉnh tháp'],['base','Chân tháp']].forEach(([sl,lb])=>{const v=d[sl];h+=`<div class="slot"><small>${lb}</small>${v&&CDECO_BY[v.id]?`<b>${CDECO_BY[v.id].n}</b><em>của ${esc(v.by||'?')}</em><button class="btn ghost sm" data-crm="${sl}">GỠ</button>`:'<em>Trống</em>'}</div>`});
   h+='</div><div class="dgrid">'+CDECO.map(it=>{const full=!!d[it.slot];if(!DTH['c_'+it.id])DTH['c_'+it.id]=cdecoThumb(it);return`<button class="pet" data-cbuy="${it.id}" ${full||P.money<it.p?'disabled':''}><img src="${DTH['c_'+it.id]}" alt=""><b>${it.n}</b><span class="price">${VND(it.p)}</span><small>${it.slot==='top'?'Đỉnh tháp':'Chân tháp'}${full?' · đã có đồ':''}</small></button>`}).join('')+'</div>';
   h+=`<div class="row" style="margin-top:10px"><span style="color:var(--muted)">Bảng tên liên minh:</span><input id="cplateIn" maxlength="18" placeholder="vd: Hội Bóng Đêm" value="${esc((d.plate&&d.plate.t)||'')}"><button class="btn ok sm" id="cplateGo" ${P.money<CPLATE_PRICE?'disabled':''}>ĐẶT BẢNG ${VND(CPLATE_PRICE)}</button>${d.plate?'<button class="btn ghost sm" data-crm="plate">GỠ BẢNG</button>':''}</div><div class="row" style="margin-top:8px"><button class="btn ghost sm" data-ctab="list">← DANH SÁCH THÁP</button></div>`;B.innerHTML=h;return}
- $('#castleInfo').innerHTML=`Khu VIP nhất resort. Mỗi tháp ở được <b>3 người</b> và chỉ mua được khi <b>đủ 3 người cùng đặt</b>: bạn đặt 1 chỗ (tiền được giữ lại, huỷ thì hoàn), đủ 3 người là thành <b>liên minh</b>. Chủ lâu đài có <b>vương miện</b> khi ra ngoài. Chỗ lâu đài tính là 1 giường trong giới hạn ${BED_MAX} giường (bạn đang dùng <b>${bedsUsed()}/${BED_MAX}</b>). <b>Cảnh báo:</b> nếu 2 thành viên bỏ phiếu thoát, cả nhóm phải rời và <b>mất toàn bộ tiền</b>.`;
- h+='<div class="elist">';for(let t=4;t>=0;t--){const w=ctw(t),n=w.s.filter(Boolean).length,mine=me&&me.t===t,votes=w.lv.filter(Boolean).length;
+ $('#castleInfo').innerHTML=`Khu VIP nhất resort. Mỗi tháp ở được <b>3 người</b> và chỉ mua được khi <b>đủ 3 người cùng đặt</b>: bạn đặt 1 chỗ (tiền được giữ lại, huỷ thì hoàn), đủ 3 người là thành <b>liên minh</b>. Mỗi người chỉ được <b>1 chỗ trong mỗi tháp</b> (có thể tham gia nhiều tháp khác nhau). Chủ lâu đài có <b>vương miện</b> khi ra ngoài. Mỗi chỗ lâu đài tính là 1 giường trong giới hạn ${BED_MAX} giường (bạn đang dùng <b>${bedsUsed()}/${BED_MAX}</b>). <b>Cảnh báo:</b> nếu 2 thành viên bỏ phiếu thoát, cả nhóm phải rời và <b>mất toàn bộ tiền</b>.`;
+ h+='<div class="elist">';for(let t=4;t>=0;t--){const w=ctw(t),n=w.s.filter(Boolean).length,me=myCastleAt(t),mine=!!me,votes=w.lv.filter(Boolean).length;
   h+=`<div class="erow ctow${mine?' mine':''}"><div><b>${CASTLE_N[t]}</b> <span class="tag">${['THẤP NHẤT','TẦNG 2','TẦNG 3','TẦNG 4','CAO NHẤT'][t]}</span><br><small>${VND(CASTLE_PRICE[t])} / người · ${w.done?'ĐÃ CÓ LIÊN MINH':n?'Đang gom '+n+'/3':'Trống'}${w.done&&votes?' · '+votes+'/3 phiếu thoát':''}</small><div class="cslots">`+w.s.map(x=>`<span class="cslot${x?' on':''}">${x?esc(x.name)+(x.c===P?' (bạn)':''):'Trống'}</span>`).join('')+`</div></div><div class="row">`;
   if(mine&&w.done){h+=`<button class="btn ok sm" data-center="${t}">${nearGate?'VÀO THÁP':'ĐI TỚI CỔNG'}</button><button class="btn sm" data-cdeco="${t}">TRANG TRÍ</button>`;const iv=w.lv[me.k];h+=iv?`<button class="btn ghost sm" data-cvote="0:${t}">RÚT PHIẾU THOÁT</button>`:`<button class="btn ghost sm warn" data-cvote="1:${t}">${CST.vote===t?'BẤM LẦN NỮA: BỎ PHIẾU THOÁT':'BỎ PHIẾU THOÁT'}</button>`}
   else if(mine)h+=`<button class="btn ghost sm" data-ccancel="${t}" ${CST.busy?'disabled':''}>HUỶ ĐẶT (HOÀN ${VND(CASTLE_PRICE[t])})</button>`;
-  else if(!w.done){const dis=CST.busy||!!me||P.money<CASTLE_PRICE[t]||bedsUsed()>=BED_MAX||n>=3;h+=`<button class="btn ok sm" data-cres="${t}" ${dis?'disabled':''}>${me?'BẠN ĐÃ CÓ CHỖ':bedsUsed()>=BED_MAX?'ĐỦ 6 GIƯỜNG':P.money<CASTLE_PRICE[t]?'THIẾU TIỀN':'ĐẶT CHỖ · '+VND(CASTLE_PRICE[t])}</button>`}
+  else if(!w.done){const dis=CST.busy||P.money<CASTLE_PRICE[t]||bedsUsed()>=BED_MAX||n>=3;h+=`<button class="btn ok sm" data-cres="${t}" ${dis?'disabled':''}>${bedsUsed()>=BED_MAX?'ĐỦ 6 GIƯỜNG':P.money<CASTLE_PRICE[t]?'THIẾU TIỀN':'ĐẶT CHỖ · '+VND(CASTLE_PRICE[t])}</button>`}
   h+='</div></div>'}B.innerHTML=h+'</div>'}
 function cdecoThumb(it){const c=document.createElement('canvas');c.width=64;c.height=56;const g=c.getContext('2d');g.imageSmoothingEnabled=false;g.fillStyle='#1a1428';g.fillRect(0,0,64,56);it.d(g,it.slot==='top'?24:32,it.slot==='top'?40:50,1.3);return c.toDataURL()}
 $('#castleBody').addEventListener('click',e=>{const b2=e.target.closest('button');if(!b2||b2.disabled)return;const d=b2.dataset;
  if(d.cres!=null)castleReserve(+d.cres);else if(d.ccancel!=null)castleCancel(+d.ccancel);
  else if(d.cvote){const [on,t]=d.cvote.split(':').map(Number);if(on&&CST.vote!==t){CST.vote=t;renderCastle();return}CST.vote=null;castleVote(t,!!on)}
- else if(d.center!=null){const t=+d.center;if(dist(P,CGATE)<70){$('#castleOv').hidden=true;enterCastle(t)}else{const pa=findPath(P.x,P.y,CGATE.x,CGATE.y);if(pa){P.path=pa;P.autoAct=true}$('#castleOv').hidden=true;toast('Đang đi tới cổng lâu đài...')}}
+ else if(d.center!=null){const t=+d.center;if(dist(P,CGATE)<70){$('#castleOv').hidden=true;enterCastle(t)}else{CST.goT=t;const pa=findPath(P.x,P.y,CGATE.x,CGATE.y);if(pa){P.path=pa;P.autoAct=true}$('#castleOv').hidden=true;toast('Đang đi tới cổng lâu đài...')}}
  else if(d.cdeco!=null){CST.tab='deco';CST.deco=+d.cdeco;renderCastle()}else if(d.ctab){CST.tab='list';renderCastle()}
  else if(d.cbuy){const it=CDECO_BY[d.cbuy],t=CST.deco,dd=decoOf('castle',t);if(dd[it.slot]){toast('Chỗ này đã có đồ, gỡ trước nhé.');return}setDeco('castle',t,it.slot,{id:it.id,by:P.name,ts:Date.now()},it.p,'Đã đặt '+it.n+' lên '+CASTLE_N[t]+'!');setTimeout(renderCastle,300)}
  else if(d.crm){setDeco('castle',CST.deco,d.crm,null,0,'Đã gỡ.');setTimeout(renderCastle,300)}
  else if(b2.id==='cplateGo'){const tx=String($('#cplateIn').value).replace(/[<>&"'`]/g,'').trim().slice(0,18);if(!tx){toast('Nhập tên liên minh trước.');return}setDeco('castle',CST.deco,'plate',{t:tx,by:P.name,ts:Date.now()},CPLATE_PRICE,'Đã treo bảng "'+tx+'".');setTimeout(renderCastle,300)}});
 $('#castleBody').addEventListener('keydown',e=>e.stopPropagation());
-function enterCastle(t){const me=myCastle();if(!me||!me.done||me.t!==t){openCastle();return}if(smelly(P)){toast('Đang bốc mùi, quản gia không cho vào lâu đài. Đi tắm trước đã!',false,4000);return}
+function enterCastle(t){const me=myCastleAt(t);if(!me||!me.done){openCastle();return}CST.goT=null;if(smelly(P)){toast('Đang bốc mùi, quản gia không cho vào lâu đài. Đi tắm trước đã!',false,4000);return}
  mode='room';ROOM={type:'castle',i:t,sleep:false,sv:{st:'off',x:500,t:rnd(6,12)},food:0};P.hidden=true;P.path=[];keys={};$('#roomBar').hidden=false;updRoomBar();[392,523,659].forEach((h,i)=>setTimeout(()=>beep(h,.12,'triangle',.04),i*110));toast('Chào mừng chủ nhân về '+CASTLE_N[t]+'!',false,3000)}
 const SERVE=['Bít tết bò Wagyu','Rượu vang phép thuật','Bánh kem 7 tầng','Tôm hùm nướng bơ tỏi','Trà sữa trân châu hoàng gia'];
 function castleRoomTick(dt){const R=ROOM;if(!R||R.type!=='castle')return;const v=R.sv;if(R.food>0)R.food-=dt;

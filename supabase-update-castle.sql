@@ -1,4 +1,5 @@
 -- Cập nhật 06.11.2026: LÂU ĐÀI TÌNH BÁO (đặt chỗ 3 người, liên minh, thoát nhóm, trang trí tháp)
+-- Bản sửa: mỗi người chỉ 1 chỗ trong MỖI tháp (được tham gia nhiều tháp khác nhau)
 -- Chạy 1 lần trong Supabase > SQL Editor. Chạy lại nhiều lần cũng không sao. Không xoá dữ liệu cũ.
 
 -- 8e. Lâu Đài Tình Báo: đặt chỗ 3 người, liên minh, thoát nhóm ---------------
@@ -36,11 +37,12 @@ begin
   if tw is null or tw < 0 or tw > 4 then return jsonb_build_object('ok', false, 'msg', 'Tháp không hợp lệ.'); end if;
   perform pg_advisory_xact_lock(hashtext('castle'));
   perform pg_advisory_xact_lock(hashtext('castle/' || tw));
-  if public.rt_castle_find(u) is not null then return jsonb_build_object('ok', false, 'msg', 'Bạn đã có chỗ trong lâu đài rồi.'); end if;
   if public.rt_bedcount(u) >= 6 then return jsonb_build_object('ok', false, 'msg', 'Bạn đã đủ 6 giường. Bán hoặc trả bớt giường trước.'); end if;
   select val into dv from public.rtdb where path = 'castle/' || tw;
   dv := coalesce(dv, '{}'::jsonb);
   if dv ->> 'done' is not null then return jsonb_build_object('ok', false, 'msg', 'Tháp này đã có liên minh ở.'); end if;
+  if exists (select 1 from jsonb_each_text(case when jsonb_typeof(dv -> 's') = 'object' then dv -> 's' else '{}'::jsonb end) b where b.value = u) then
+    return jsonb_build_object('ok', false, 'msg', 'Mỗi người chỉ được 1 chỗ trong mỗi tháp.'); end if;
   k := null;
   for i in 0..2 loop
     if coalesce(dv #>> array['s', i::text], '') = '' then k := i; exit; end if;
