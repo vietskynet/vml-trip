@@ -73,6 +73,12 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-x · Tàu hải tặc NPC
+- Khi bạn lái thuyền vừa/lớn, thỉnh thoảng (30–120 giây) có tàu hải tặc xuất hiện, vòng quanh và bắn đạn chậm vào bạn (mỗi 4–6 giây, né được).
+- Thuyền vừa: hải tặc 3 máu, thưởng 250k. Thuyền lớn: 5 máu, thưởng 600k (nhận khi về bến). Thuyền nhỏ được bảo vệ, không gặp hải tặc.
+- Hải tặc tự bỏ đi sau 80 giây. Nếu bạn bị bắn chìm: mất nửa số cá và về bến như bị người khác bắn.
+- Mỗi người chơi gặp hải tặc riêng, không cần đồng bộ hay sửa SQL.
+
 ## Phiên bản 07.11-w · Thuyền sáng tạo, bãi cá động, đại bác
 - 9 thuyền mới: Chiếc Lá Xanh, Vịt Vàng Bơi Bơi, Thuyền Tình Ái; Thuyền Điêu (cướp biển), Thiên Nga Đạp Vịt, Cá Heo Nhảy Múa; Rồng Vàng Hoàng Gia, Đĩa Bay Alien, Cá Voi Phun Nước. Mỗi thuyền có hiệu ứng riêng, vệt sóng, lắc lư.
 - Bãi cá động: 6 chỗ nước sủi bọt, đổi chỗ mỗi 90 giây (mọi người thấy giống nhau), cá búng lên mặt nước. Câu ở đó cá quý nhiều hơn và cắn nhanh hơn.
