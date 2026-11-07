@@ -128,6 +128,9 @@ begin
     if docv is not null and docv ->> 'h' = u then return true; end if;
     return n = 4 and s[3] in ('m', 'c', 'iv') and s[4] = u;
   end if;
+  if s[1] = 'errlog' then                                  -- nhật ký lỗi game: ai cũng được GỬI bản ghi mới của mình (nhỏ, không ghi đè), chỉ admin xem/xoá
+    return n = 2 and cur is null and nv is not null and nv ->> 'u' = u and length(nv::text) < 3000;
+  end if;
   if s[1] = 'gifts' then
     return n = 3 and s[2] <> u and cur is null and nv is not null and nv ->> 'from' = u and (nv ->> 'amount')::numeric > 0;
   end if;
@@ -239,7 +242,8 @@ begin
     'now', t,
     'admin', public.is_admin(),
     'docs', coalesce((select jsonb_agg(jsonb_build_object('p', path, 'v', val)) from public.rtdb
-                      where upd > since and (since > 0 or val is not null)), '[]'::jsonb),
+                      where upd > since and (since > 0 or val is not null)
+                        and (path not like 'errlog/%' or public.is_admin())), '[]'::jsonb),
     'pos',  coalesce((select jsonb_object_agg(uid::text, v) from public.pos where upd > t - 20000), '{}'::jsonb)
   );
 end $$;

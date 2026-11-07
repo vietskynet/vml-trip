@@ -70,7 +70,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
 
  <div id="app" hidden>
   <div class="top"><h1>VML TRIP · QUẢN TRỊ</h1><div class="row"><span class="who">Admin: <b id="whoName">—</b></span><button class="ghost sm" id="logout">ĐĂNG XUẤT</button></div></div>
-  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">GIÁ CẢ</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ev">SỰ KIỆN</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button></nav>
+  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">GIÁ CẢ</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ev">SỰ KIỆN</button><button data-t="err">LỖI GAME</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button></nav>
 
   <section data-p="ov" class="card">
    <h2>TỔNG QUAN RESORT</h2>
@@ -146,6 +146,15 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    </div>
   </section>
 
+  <section data-p="err" hidden>
+   <div class="card">
+    <h2>NHẬT KÝ LỖI GAME</h2>
+    <p style="margin:0 0 8px">Lỗi JavaScript xảy ra trên máy người chơi được tự gửi về (tối đa 8 lỗi khác nhau mỗi phiên). Chế độ thử nghiệm không gửi.</p>
+    <div class="row"><span id="errCount"></span><button class="ghost" id="errClr">XOÁ TẤT CẢ</button></div>
+    <div style="overflow:auto"><table><thead><tr><th>Giờ</th><th>Nhân vật</th><th>Loại</th><th>Lỗi</th><th>Vị trí</th><th>Bản</th><th>Thiết bị</th></tr></thead><tbody id="errList"></tbody></table></div>
+    <p class="msg" id="errMsg"></p>
+   </div>
+  </section>
   <section data-p="tst" hidden>
    <div class="card">
     <h2>NHÂN VẬT THỬ NGHIỆM</h2>
@@ -195,6 +204,7 @@ firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously(
  db.ref('beds').on('value',s=>{beds=s.val()||{}});
  db.ref('market').on('value',s=>{market=s.val()||{}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
+ db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
  db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst()});
 });
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=SB();if(!sb)return;$('#lgo').disabled=true;say('#lmsg','Đang kiểm tra…');
@@ -207,7 +217,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b
 function renderTst(){const sel=$('#tstSel');if(!sel)return;const t=config.tester||null;const rows=Object.entries(players).filter(([u,p])=>p&&p.name!=null).map(([u,p])=>({u,n:String(p.name||'?'),user:accs[u]||''})).sort((a,b)=>a.n.localeCompare(b.n));if(sel.dataset.n!==String(rows.length)||!sel.value){const v=sel.value;sel.innerHTML=rows.map(r=>`<option value="${esc(r.u)}">${esc(r.n)}${r.user?' ('+esc(r.user)+')':''}</option>`).join('');sel.dataset.n=String(rows.length);if(v)sel.value=v}$('#tstCur').textContent=t&&t.u?'Hiện tại: '+(t.name||t.u):'Chưa đặt người thử nghiệm.'}
 $('#tstSave').onclick=()=>{const u=$('#tstSel').value;if(!u){say('#tstMsg','Chưa chọn nhân vật.',1);return}const p=players[u]||{};db.ref('config/tester').set({u,name:String(p.name||'')}).then(()=>say('#tstMsg','Đã đặt. Người này vào lại game sẽ thấy nút THỬ NGHIỆM trong menu.')).catch(e=>say('#tstMsg','Lỗi: '+e.message,1))};
 $('#tstClr').onclick=()=>{db.ref('config/tester').remove().then(()=>say('#tstMsg','Đã gỡ.')).catch(e=>say('#tstMsg','Lỗi: '+e.message,1))};
-function tab(t){if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices()}
+let errs={};
+function renderErr(){const el=$('#errList');if(!el)return;const rows=Object.entries(errs).map(([id,e])=>Object.assign({id},e)).filter(e=>e&&e.m).sort((p,q)=>(q.t||0)-(p.t||0)).slice(0,300);$('#errCount').textContent=rows.length+' lỗi';el.innerHTML=rows.map(e=>`<tr><td>${new Date(e.t||0).toLocaleString('vi-VN')}</td><td>${esc(e.n||'?')}</td><td>${esc(e.k||'')}</td><td><b>${esc(e.m)}</b><details><summary>stack</summary><pre style="white-space:pre-wrap;font-size:11px">${esc(e.s||'')}</pre></details></td><td>${e.x},${e.y} · ${esc(e.md||'')} · ${esc(e.vw||'')}</td><td>${esc(e.v||'')}</td><td><small>${esc((e.ua||'').slice(0,90))}</small></td></tr>`).join('')||'<tr><td colspan="7">Chưa có lỗi nào.</td></tr>'}
+$('#errClr').onclick=()=>{if(!confirm('Xoá toàn bộ nhật ký lỗi?'))return;db.ref('errlog').remove().then(()=>say('#errMsg','Đã xoá.')).catch(e=>say('#errMsg','Lỗi: '+e.message,1))};
+function tab(t){if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices()}
 const now=()=>Date.now()+off;
 function clock(){const NF=(VC&&VC.game&&VC.game.nightMinutes!=null)?Math.min(.9,Math.max(.05,VC.game.nightMinutes/((VC.game.dayMinutes)||60))):.25,A=(1-NF)*11/14,t=(now()-EPOCH)/1000,p=((t/DAY)%1+1)%1,o=p<A?11*p/A:p<A+NF?11+10*(p-A)/NF:21+3*(p-A-NF)/(1-A-NF),h=(8+o)%24,m=Math.floor(h*60);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function bedsOf(u){let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(un=>Object.values(un||{}).forEach(x=>{if(x===u)n++})));return n}

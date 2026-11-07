@@ -73,6 +73,12 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-q · Nhật ký lỗi game cho admin
+
+- Lỗi JavaScript trên máy người chơi (lỗi thường, promise bị từ chối, lỗi vòng lặp game) tự gửi về `errlog/<mã>` (tối đa 8 lỗi khác nhau mỗi phiên, chế độ thử nghiệm không gửi). Mỗi bản ghi: giờ, nhân vật, loại, nội dung, stack, vị trí, chế độ, kích thước màn hình, bản game, thiết bị.
+- Admin: tab **LỖI GAME** xem danh sách, mở stack, nút XOÁ TẤT CẢ.
+- **Cần chạy lại `supabase-setup.sql`** (thêm quyền ghi `errlog`, và chỉ admin mới nhận được dữ liệu này khi đồng bộ).
+
 ## Phiên bản 07.11-m · Tăng giá đất, nhân vật thử nghiệm (sandbox)
 
 - Đất Vườn Liên Minh tăng ×1,5: Thường 45 triệu, Vàng 90 triệu (đã mua giá cũ không đổi).
