@@ -78,6 +78,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
 .pad button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}
 .abtn{width:80px;height:80px;border-radius:50%;background:var(--coral)!important;font-size:22px!important;pointer-events:auto}
 #startOv.auto .card>*:not(h2):not(#autoMsg){display:none!important}#startOv.auto #autoMsg{display:block!important}
+.modal.ann{inset:auto 12px 96px auto;background:transparent;padding:0;width:min(360px,calc(100vw - 24px));z-index:45;pointer-events:none}.modal.ann .card{pointer-events:auto;font-size:15px;max-height:46vh;overflow:auto}
 .modal{position:fixed;inset:0;background:rgba(4,8,24,.78);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
 .card{background:var(--panel);border:4px solid #000;box-shadow:0 0 0 4px var(--sea),10px 10px 0 4px rgba(0,0,0,.6);max-width:780px;width:100%;max-height:calc(100% - 16px);overflow:auto;padding:18px 20px}
 .card h2{font-family:var(--f-display);font-weight:normal;font-size:clamp(17px,3.4vw,26px);color:var(--sun);margin:0 0 6px;line-height:1.2;text-wrap:balance;text-shadow:3px 3px 0 #000}
@@ -489,7 +490,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 07.11.2026-k</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 07.11.2026-l</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -517,7 +518,7 @@ body.m-room .pad{display:none!important}
     <div class="row" style="margin-top:10px"><button class="btn ghost" data-close="bankOv">ĐÓNG</button><span style="color:#666">Ví: <span class="price" id="bankMoney">0₫</span></span></div>
   </div>
 </div>
-<div class="modal" id="annOv" hidden>
+<div class="modal ann" id="annOv" hidden>
   <div class="card">
     <h2 id="annT"></h2>
     <div id="annB" style="line-height:1.1"></div>
@@ -2963,7 +2964,7 @@ function renderWorld(t){
 }
 
 /* ================= UI: shop & deal ================= */
-const modalOpen=()=>['lmsOv','annOv','infoOv','hpOv','shopOv','startOv','endOv','rankOv','helpOv','foodOv','dealOv','tbOv','lmOv','inviteOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv','bankOv','mapOv'].some(id=>!$('#'+id).hidden);
+const modalOpen=()=>['lmsOv','infoOv','hpOv','shopOv','startOv','endOv','rankOv','helpOv','foodOv','dealOv','tbOv','lmOv','inviteOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv','bankOv','mapOv'].some(id=>!$('#'+id).hidden);
 let shopType='villa',shopSel=-1,dealTarget=null,dealOffer=0;
 function openShop(type){shopType=type;shopSel=-1;dealTarget=null;renderShop();$('#shopOv').hidden=false;keys={}}
 function renderShop(){const R=REC[shopType],arr=LIST(shopType),pr=CFG.PRICE[shopType];$('#shopTitle').textContent=R.name;$('#shopMoney').textContent=VND(P.money);
@@ -3024,7 +3025,7 @@ $('#rbSleep').onclick=toggleSleep;$('#rbToilet').onclick=roomToilet;$('#rbExit')
 const ANN=[
  {id:'lm',t:'KHAI TRƯƠNG VƯỜN LIÊN MINH!',b:'<p>Cổng <b>Vườn Liên Minh</b> (phía đông khu VIP, qua hàng rào) đã mở cửa! Mua đất (30tr / 60tr), góp ít nhất <b>3 người</b> trồng chung một cây, đóng góp quỹ để nâng cấp 5 kênh buff: Tiền, May mắn, Tốc độ, Năng lượng, Khổng Lồ.</p><p>Đọc <b>bảng hướng dẫn</b> trước cổng vườn để nghe câu chuyện và cách chơi.</p>',go:()=>P2(GARD.gx,FENCE_Y-30)},
  {id:'cr',t:'XE NGỰA LÂU ĐÀI RA MẮT',b:'<p>Chủ Lâu Đài được dùng <b>xe ngựa đặc biệt</b> đậu ở bãi cát bên trái lâu đài (ngoài hàng rào, bản đồ có nhãn <b>XE NGỰA</b>).</p><p>Tăng tốc <b>+3% đến +10%</b> theo cấp tháp, 2 đến 6 con ngựa. Mỗi ngày dùng <b>10 phút</b>, hết giờ xe tự quay về. Bấm E ở bãi để lên xe.</p>',go:()=>P2(250,1546),own:()=>!!(typeof myCastle==='function'&&myCastle())}];
-function annTick(dt){if(location.hash==='#debug'&&!window.__annOn)return;if(!S||!P||mode!=='world'||!running||modalOpen())return;ANN_T=(window.ANN_T||0)+dt;window.ANN_T=ANN_T;if(ANN_T<4)return;P.an=P.an||[];const a=ANN.find(x=>!P.an.includes(x.id)&&(!x.own||x.own()));if(!a)return;P.an.push(a.id);window.ANN_T=0;$('#annT').textContent=a.t;$('#annB').innerHTML=a.b;ANN_CUR=a;$('#annOv').hidden=false;keys={};if(NET.on)saveState()}
+function annTick(dt){if(location.hash==='#debug'&&!window.__annOn)return;if(!S||!P||mode!=='world'||!running||modalOpen()||!$('#annOv').hidden)return;ANN_T=(window.ANN_T||0)+dt;window.ANN_T=ANN_T;if(ANN_T<4)return;P.an=P.an||[];const a=ANN.find(x=>!P.an.includes(x.id)&&(!x.own||x.own()));if(!a)return;P.an.push(a.id);window.ANN_T=0;$('#annT').textContent=a.t;$('#annB').innerHTML=a.b;ANN_CUR=a;$('#annOv').hidden=false;if(NET.on)saveState()}
 var ANN_CUR=null,ANN_T=0;
 function walkNear(p){const pa=findPath(P.x,P.y,p.x,p.y);if(pa){P.path=pa;P.autoAct=false}}
 $('#annGo').onclick=()=>{$('#annOv').hidden=true;if(ANN_CUR&&mode==='world')walkNear(ANN_CUR.go())};
@@ -3093,7 +3094,7 @@ addEventListener('keydown',e=>{
  if(!$('#startOv').hidden){creatorKey(e);return}
  if(e.target.tagName==='INPUT')return;
  if(e.key==='Escape'&&!$('#houseMenu').hidden){$('#houseMenu').hidden=true;return}
- if(e.key==='Escape'){if(!$('#menuPanel').hidden){window.closeMainMenu();return}for(const id of ['lmsOv','annOv','infoOv','hpOv','shopOv','rankOv','helpOv','foodOv','tbOv','lmOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv','bankOv','mapOv'])if(!$('#'+id).hidden){$('#'+id).hidden=true;return}if(mode==='room'){exitRoom();return}if(mode==='game'&&G&&!G.done&&G.intro<=0){G.t=0;endGame()}else if(mode==='game'&&G&&G.intro>0){mode='world';G=null}return}
+ if(e.key==='Escape'){if(!$('#menuPanel').hidden){window.closeMainMenu();return}for(const id of ['lmsOv','infoOv','hpOv','shopOv','rankOv','helpOv','foodOv','tbOv','lmOv','acctOv','payOv','petOv','estOv','floatOv','lottoOv','castleOv','cintroOv','fashOv','bankOv','mapOv'])if(!$('#'+id).hidden){$('#'+id).hidden=true;return}if(mode==='room'){exitRoom();return}if(mode==='game'&&G&&!G.done&&G.intro<=0){G.t=0;endGame()}else if(mode==='game'&&G&&G.intro>0){mode='world';G=null}return}
  if(modalOpen())return;
  if(mode==='room'){if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();if(!e.repeat)toggleSleep()}else if(e.code==='KeyT')roomToilet();return}
  if(mode==='team'){e.preventDefault();if(e.repeat)return;if(TM&&TM.gi===1&&e.key.startsWith('Arrow')){tmPick(ARR.indexOf(e.key.slice(5).toLowerCase()));return}if(e.code==='KeyE'||e.code==='Space'||e.code==='Enter')tmPress();return}
