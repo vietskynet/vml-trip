@@ -73,6 +73,12 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-k · Dời ngân hàng, cửa xe ngựa, pháo hoa
+
+- Techcombank dời ra giữa quầy Câu Cá và Pha Chế (650,1150).
+- Hàng rào trái lâu đài có **cửa ra bãi xe ngựa** (y 1666 đến 1714), có cột đèn và nhãn.
+- Xe ngựa lâu đài khi chạy có **pháo hoa và confetti** (số quả pháo tăng theo cấp tháp). Chỉ là hiệu ứng vẽ, không cần SQL.
+
 ## Phiên bản 07.11-i/j · Quầy Thông Tin, khai trương Vườn Liên Minh
 
 - **Quầy Thông Tin** cạnh cổng chào (bên trái đường vào): 3 tab PHÒNG TRỐNG (giường/phòng trống theo Villa, Bungalow, Khách Sạn kèm giá), BẮT ĐẦU, CHỈ ĐƯỜNG; nút mở luật đầy đủ.
