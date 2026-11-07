@@ -73,6 +73,10 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 08.11-a · Tăng giá nhà
+- Villa 5tr lên 25tr mỗi giường, Bungalow 3tr lên 10tr. Khách sạn giữ 2tr (phòng khởi đầu cho người mới). Người đã có nhà không bị ảnh hưởng.
+- Nếu admin từng lưu giá riêng trong tab Giá thì giá đó vẫn được ưu tiên, cần bấm khôi phục mặc định.
+
 ## Phiên bản 07.11-y · Mỗi tàu một kiểu hoả lực
 - Thuyền Điêu: Pháo đôi (2 viên song song, 10 lần). Thiên Nga: Trứng nổ (bay vòng cung, nổ lan, 7 lần). Cá Heo: Tia nước (nhanh, tầm gần, 18 lần).
 - Rồng Vàng: Phun lửa (3 luồng hình quạt, 10 lần). Đĩa Bay: Tia laze (rất nhanh, tầm xa, 2 sát thương, 8 lần). Cá Voi: Sóng thần (sóng lớn xuyên thấu, 2 sát thương, 6 lần).
