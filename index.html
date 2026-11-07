@@ -488,7 +488,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 07.11.2026-c</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 07.11.2026-d</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -2483,7 +2483,7 @@ const LM_SEEDS=[
  {id:'the',n:'Thế Giới Thụ',p:20000000,base:{tien:1,may:1,toc:1,nl:1,kl:1},fav:[],bad:'',shape:'world',trunk:'#5a3a7a',leaf:['#5a3aa8','#8a6ad8','#d9c8ff'],note:'Hạt hiếm. Cân bằng cả 5 kênh, không ưa không kỵ'}];
 const LM_SEED_BY={};LM_SEEDS.forEach(k=>LM_SEED_BY[k.id]=k);
 const LM_LAND=[{p:30000000,tax:15000,cap:30,n:'Đất Thường'},{p:60000000,tax:30000,cap:40,n:'Đất Vàng'}];
-const LM_MIN=3,LM_MAXM=8,LM_CHMAX=10,LM_TAXMIN=125000,LM_TAXMAX=625000,LM_TAXDEF=250000,LM_BASE=250000,LM_GROW=1.11;
+const LM_MIN=3,LM_MAXM=8,LM_CHMAX=10,LM_TAXMIN=250000,LM_TAXMAX=1500000,LM_TAXDEF=600000,LM_BASE=700000,LM_JOIN=250000,LM_GROW=1.11;
 const lmTier=n=>{const c=(n-1)%4;return c===1||c===2?1:0};
 const LM={n:null,seed:'dua',arm:null,acc:0,t:0,sT:-99,hpt:0,rt:0,warned:0};
 const LMC={u:{}};
@@ -2524,7 +2524,7 @@ async function lmBuy(n,sid){const me=lmMe(),sd=LM_SEED_BY[sid],T=LM_LAND[lmTier(
  coin();lmSync();toast('Bạn đã mua Lô '+n+' và hạt '+sd.n+'. Hãy rủ đủ '+LM_MIN+' thành viên rồi bấm TRỒNG!',false,5000);sysLog('Mua Lô '+n+' Vườn Liên Minh, hạt '+sd.n+'.');if(NET.on)saveState();renderLm()}
 function lmJoin(n){const d=lmDoc(n),me=lmMe();if(!d||LMC.u[me])return;if(lmMem(d).length>=LM_MAXM){toast('Liên minh đã đủ '+LM_MAXM+' thành viên.',true);return}
  if(Date.now()-(P.lmLeaveAt||0)<12*3600e3){toast('Bạn vừa rời một liên minh, cần chờ 12 giờ.',true);return}
- const fee=d.st==='grow'?LM_BASE*lmPts(d):0;if(P.money<fee){toast('Cần '+VND(fee)+' phí gia nhập (đưa vào quỹ cây).',true);return}
+ const fee=d.st==='grow'?LM_JOIN*lmPts(d):0;if(P.money<fee){toast('Cần '+VND(fee)+' phí gia nhập (đưa vào quỹ cây).',true);return}
  if(fee&&LM.arm!=='join'+n){LM.arm='join'+n;renderLm();return}LM.arm=null;
  P.money-=fee;const c0=(d.c&&d.c[me])||0,o={['m/'+me]:P.name};if(fee)o['c/'+me]=c0+fee;lmUp(n,o);coin();hpAdd('lm',2);toast('Bạn đã gia nhập liên minh của '+cleanName(d.hn)+'.',false,4000);if(NET.on)saveState();renderLm()}
 function lmLeave(n){const d=lmDoc(n),me=lmMe();if(!d||!(d.m&&d.m[me]))return;
@@ -2606,12 +2606,12 @@ function renderLm(){const el=$('#lmBody');if(!el)return;const me=lmMe(),my=LMC.u
    +LM_CH.map(k=>bar(k,d,n)).join('')
    +`<div class="detail"><h3>QUỸ CÂY: ${VND(fund)}</h3><p>Thuế thành viên <b>${VND(tax)}/giờ chơi</b> · Thuế đất <b>${VND(T.tax)}/giờ thực</b>${(+d.db||0)>0?' · <span style="color:#ff6a5f">Gốc Chủ đang nợ '+VND(d.db)+'</span>':''}<br>Thành viên: ${mem.map(u=>'<b>'+esc(cleanName(d.m[u]))+'</b>'+(u===d.h?' (Gốc Chủ)':u===me?' (bạn)':'')+(lead&&u!==d.h?` <button class="chip sm" data-act="kick" data-u="${u}">${LM.arm==='kick'+u?'XÁC NHẬN MỜI RA':'mời ra'}</button> <button class="chip sm" data-act="give" data-u="${u}">${LM.arm==='give'+u?'XÁC NHẬN NHƯỜNG':'nhường chức'}</button>`:'')).join(', ')}</p></div>`;
    if(im&&!lead&&grow&&(P.lmArr||0)>0)h+=`<p style="color:#ff6a5f">Bạn đang nợ thuế ${VND(P.lmArr)}, buff tạm dừng cho đến khi trả đủ.</p>`;
-   if(lead){h+=`<div class="lbl">GỐC CHỦ · THUẾ THÀNH VIÊN</div><div class="offer"><button class="chip" data-act="tax" data-d="-25000" ${tax<=LM_TAXMIN?'disabled':''}>−25k</button><button class="chip on">${VND(tax)} / giờ</button><button class="chip" data-act="tax" data-d="25000" ${tax>=LM_TAXMAX?'disabled':''}>+25k</button></div>`;
+   if(lead){h+=`<div class="lbl">GỐC CHỦ · THUẾ THÀNH VIÊN</div><div class="offer"><button class="chip" data-act="tax" data-d="-50000" ${tax<=LM_TAXMIN?'disabled':''}>−50k</button><button class="chip on">${VND(tax)} / giờ</button><button class="chip" data-act="tax" data-d="50000" ${tax>=LM_TAXMAX?'disabled':''}>+50k</button></div>`;
     if(!grow)h+=`<div class="row"><button class="btn ok" data-act="plant" ${mem.length<LM_MIN?'disabled':''}>${mem.length<LM_MIN?'CẦN THÊM '+(LM_MIN-mem.length)+' NGƯỜI':'TRỒNG CÂY'}</button>${NET.on?'':`<button class="btn" data-act="bot" ${mem.length>=LM_MAXM?'disabled':''}>THÊM BOT</button>`}</div>`;
     else h+=`<div class="lbl">BÓN DINH DƯỠNG (trừ vào quỹ)</div><div class="offer">${LM_CH.map(k=>{const v=(d.pt&&d.pt[k.id])||0,c=lmCost(d,k.id);return`<button class="chip" data-act="feed" data-c="${k.id}" ${v>=LM_CHMAX||t>=cap||fund<c?'disabled':''}>${k.n} · ${VND(c)}${sd.fav.includes(k.id)?' ★':sd.bad===k.id?' ✖':''}</button>`}).join('')}</div>${t>=cap?`<p>${cap>=T.cap?'Cây đã đạt giới hạn của lô đất.':'Cần thêm thành viên để cây lên tiếp.'}</p>`:''}`}
    if(im)h+=`<div class="lbl">GÓP THÊM VÀO QUỸ</div><div class="offer">${[100000,500000,2000000].map(a=>`<button class="chip" data-act="don" data-a="${a}" ${P.money<a?'disabled':''}>+${VND(a)}</button>`).join('')}</div>`;
    h+=`<div class="row">`;
-   if(!im&&!my)h+=`<button class="btn ok" data-act="join" ${mem.length>=LM_MAXM?'disabled':''}>${LM.arm==='join'+n?'XÁC NHẬN VÀO · '+VND(LM_BASE*t):'GIA NHẬP'+(grow?' · phí '+VND(LM_BASE*t):'')}</button>`;
+   if(!im&&!my)h+=`<button class="btn ok" data-act="join" ${mem.length>=LM_MAXM?'disabled':''}>${LM.arm==='join'+n?'XÁC NHẬN VÀO · '+VND(LM_JOIN*t):'GIA NHẬP'+(grow?' · phí '+VND(LM_JOIN*t):'')}</button>`;
    if(im)h+=`<button class="btn" data-act="leave">${LM.arm==='leave'?'XÁC NHẬN RỜI':LM.arm==='disb'?'XÁC NHẬN TRẢ ĐẤT':lead&&mem.length<2?'TRẢ LẠI ĐẤT':'RỜI LIÊN MINH'}</button>`;
    h+=`<button class="btn ghost" data-act="back">DANH SÁCH</button><button class="btn ghost" data-act="close">ĐÓNG</button></div>`}}
  el.innerHTML=h}
