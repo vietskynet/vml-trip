@@ -12,6 +12,15 @@ Mã cheat trong khung chat (phím C): `VMLSANG`. Mỗi lần dùng mã tốn 50.
 Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VMLPHAN`, `VMLHAOQUANG`, `VMLXICHLO`, `VMLLUA`, `VMLMUA`, `VMLTANGHINH`, `VMLDISCO`, `VMLPHAOHOA`.
 
 
+## Phiên bản 08.11-d · Hair Salon Tóc Thề
+- **Salon tóc** đặt cạnh Thời Trang Lung Linh. Mặt tiền tím hồng ánh vàng, cửa kính nhìn thấy người đang ngồi bên trong. Bảng hiệu **"Hair Salon Tóc Thề"** là chữ 3D có độ dày, lắc nhẹ rồi xoay một vòng mỗi 7 giây.
+- **Tối đa 3 người** mỗi lần (3 ghế). Ai vào sau khi đủ 3 người sẽ được báo "Salon đầy". Số ghế đồng bộ qua trường `pos` (`sa`, `sp`), không cần SQL.
+- **Bên trong chi tiết**: 3 gương khung vàng soi hình mình, đèn chùm pha lê, ghế nhung hồng, kệ mỹ phẩm, sàn caro. Mỗi ghế có thợ làm tóc: gội đầu, cắt tạo kiểu, nhuộm (hoặc dưỡng tóc), sấy. Làm xong thợ nhảy mừng, pháo giấy, chữ "CHÚC MỪNG!".
+- **12 kiểu tóc** (6 nam, 6 nữ), giá 1,2tr–10tr, bền 1–10 ngày game (1 ngày game = 60 phút thật), mất 1–3 phút để làm. Nhuộm màu +30% giá kiểu (12 màu, có cầu vồng). **6 phụ kiện lấp lánh** dùng chung nam nữ, giá 600k–2,5tr.
+- Trong lúc ngồi salon, bộ đếm mắc tiểu / đại tiện tạm dừng.
+- Tóc lưu ở `players/<id>/hr` (kiểu, màu, phụ kiện, giờ xong, giờ hết hạn). Thoát game giữa chừng vẫn nhận tóc khi giờ xong đến. Hết hạn thì tóc tự về như cũ.
+- Admin: tab CỬA HÀNG có quầy **Salon tóc** (đổi giá kiểu tóc và phụ kiện, xem lượt mua, lượt nhuộm).
+
 ## Phiên bản 08.11-c · 20 đồ trang trí cao cấp + Cửa hàng admin
 - **20 đồ trang trí cao cấp (★)** cho Villa và Bungalow: giá bungalow 10tr–100tr, **villa gấp đôi** (20tr–200tr). Không đặt được ở phòng khách sạn.
   - Xe & Bay: mô tô nước 20tr, siêu xe 60tr, khinh khí cầu 40tr, trực thăng 100tr.
