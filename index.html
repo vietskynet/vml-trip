@@ -49,6 +49,7 @@ body{font-family:var(--f-body);font-size:20px}
 .hp .bar i{position:absolute;left:0;top:0;bottom:0;background:#ffd23f;width:50%}.hp .bar u{position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:#fff;text-decoration:none}
 .hp{position:relative;cursor:pointer}#hpFx{position:absolute;left:6px;top:100%;margin-top:3px;font-size:13px;color:#ffd23f;opacity:0;pointer-events:none;white-space:nowrap;text-shadow:1px 1px 0 #000}#hpFx.on{opacity:1;transform:translateY(4px);transition:all .25s}#hpFx.neg{color:#ff6a5f}
 .hpbig{font-size:26px;margin:4px 0}.hpbar{height:16px;background:#000;border:3px solid #000;position:relative;margin:4px 0 8px}.hpbar i{position:absolute;left:0;top:0;bottom:0;background:#ffd23f}.hpbar u{position:absolute;top:-3px;bottom:-3px;width:2px;background:#fff}.hpbar s{position:absolute;top:-3px;bottom:-3px;width:3px;background:#2fd0c8}
+.lmhead{margin:2px 0 8px}.lmhead h3{margin:0;font-size:20px;color:#ffd23f}.lmhead span{font-size:12px;color:var(--muted)}.lmkpi{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0}.lmkpi div{background:rgba(255,255,255,.07);border-radius:4px;padding:6px 8px;min-width:0}.lmkpi small{display:block;font-size:9px;color:var(--muted);letter-spacing:.5px}.lmkpi b{font-size:14px;word-break:break-word}.lmwarn{color:#ff9f43;margin:4px 0}.lmnote{font-size:11px;color:var(--muted);margin:4px 0}.lmtbl{margin:4px 0}.lmm{display:flex;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.1)}.lmm .rk{width:20px;text-align:center;color:var(--muted)}.lmm .nm{flex:1;min-width:0}.lmm .am{color:#ffd23f;white-space:nowrap}.bdg{font-style:normal;font-size:9px;padding:1px 5px;border-radius:3px;background:#2d6a4f;margin-left:5px}.bdg.me{background:#3a5fb0}.lminp{width:100%;box-sizing:border-box;padding:7px;background:#0c1330;color:#fff;border:2px solid #2a3a7a;font:inherit}.lmrn{display:flex;gap:6px;margin-bottom:6px}@media(max-width:560px){.lmkpi{grid-template-columns:repeat(2,1fr)}}
 .lmrow{display:flex;align-items:center;gap:8px;margin-top:6px}.lmic{width:16px;text-align:center;font-weight:bold}.lmbar{flex:1;height:8px;background:rgba(255,255,255,.12);border-radius:4px;overflow:hidden}.lmbar i{display:block;height:100%}.lmeff{font-size:11px;color:var(--muted);margin:0 0 2px 24px}.lmgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:6px 0}.lmplot{text-align:left;line-height:1.35}.lmplot.own{border-color:#7ad151}.chip.sm{padding:1px 6px;font-size:10px}
 #hpOv .erow{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.1)}
 .hud.tr{position:absolute}#menuPanel{position:absolute;top:100%;right:0;margin-top:6px;display:flex;flex-direction:column;gap:4px;background:rgba(8,16,44,.95);border:3px solid #000;padding:6px;min-width:150px;box-shadow:4px 4px 0 rgba(0,0,0,.5);z-index:60}#menuPanel[hidden]{display:none}
@@ -488,7 +489,7 @@ body.m-room .pad{display:none!important}
       <div><b>THÚ CƯNG</b>Quầy Thú Cưng trên bãi cỏ có <strong>19 bé</strong> (có cả Rồng 3 Đầu), mỗi người nuôi tối đa <strong>3 bé</strong>, đi theo bạn và ai cũng thấy.</div>
       <div><b>MÃ BÍ MẬT</b>Gõ vào khung chat (phím C hoặc nút chat): <strong>VMLTO · VMLTIEN · VMLPHAN · VMLHAOQUANG · VMLXICHLO · VMLLUA · VMLMUA · VMLTANGHINH · VMLDISCO · VMLPHAOHOA</strong> (hiệu ứng 10 giây, khi đang đi ngoài resort). Mỗi lần dùng mã tốn <strong>50.000₫</strong>.</div>
     </div>
-    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 07.11.2026-e</p>
+    <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Phiên bản 07.11.2026-g</p>
     <div class="row"><button class="btn" data-close="helpOv">ĐÃ HIỂU, CHƠI THÔI</button></div>
   </div>
 </div>
@@ -1485,7 +1486,7 @@ function mgBackground(id){if(MGBG[id])return MGBG[id];const [c,g]=mk(id==='surf'
  MGBG[id]=c;return c}
 const holePos=i=>P2(150+(i%3)*90,104+((i/3)|0)*62);
 function startGame(z){mgSprites();mode='game';P.path=[];G={id:z.id,z,t:CFG.GAME_LEN,score:0,intro:2.5,done:false,endT:0,sp:0,items:[],parts:[],fl:[],bx:240,tx:null,py:150,ty:null,lives:3,inv:0,scroll:0,holes:[...Array(9)].map(()=>({k:null,t:0,up:0})),mx:240,my:150,sw:0,anim:0,hook:{st:'idle',x:240,y:74,f:null},bar:{order:[],prog:0,pat:0,patMax:1,cust:0,inT:0,spill:0,pour:0,served:0,happy:0}};if(z.id==='bar')barNew(G);beep(523,.08);setTimeout(()=>beep(784,.12),90)}
-function endGame(){const q=G;q.done=true;q.endT=2.4;q.earn=Math.max(0,Math.round(q.score*lmBon('tien')));P.money+=q.earn;P.energy-=CFG.GAME_EN;P.cd[q.id]=S.time+CFG.COOLDOWN;P.guideGame=true;if(q.earn)coin()}
+function endGame(){const q=G;q.done=true;q.endT=2.4;q.earn=Math.max(0,Math.round(q.score*lmBon('tien')));q.tax=lmCut(q.earn);q.earn-=q.tax;P.money+=q.earn;if(q.tax)toast('Thuế liên minh −'+VND(q.tax),false,2500);P.energy-=CFG.GAME_EN;P.cd[q.id]=S.time+CFG.COOLDOWN;P.guideGame=true;if(q.earn)coin()}
 function burst(q,x,y,col,n=8){for(let i=0;i<n;i++)q.parts.push({x,y,vx:rnd(-60,60),vy:rnd(-90,-20),t:rnd(.4,.8),col})}
 function addScore(q,v,x,y){q.score+=v;q.fl.push({x,y,v,t:.9});burst(q,x,y,v>0?'#ffd23f':'#ff5f6d',v>0?10:6);v>0?beep(880,.05):beep(150,.15,'sawtooth')}
 function updGame(dt){const q=G;q.anim+=dt;q.parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=200*dt;p.t-=dt});q.parts=q.parts.filter(p=>p.t>0);q.fl.forEach(f=>{f.t-=dt;f.y-=22*dt});q.fl=q.fl.filter(f=>f.t>0);if(q.sw>0)q.sw-=dt;
@@ -2482,26 +2483,37 @@ const LM_SEEDS=[
  {id:'bode',n:'Bồ Đề',p:5000000,base:{nl:2,kl:2},fav:['nl','kl'],bad:'may',shape:'banyan',trunk:'#8a6a4a',leaf:['#3f9a6a','#6fc98a','#c8f0a8'],note:'Cây bền bỉ. Rễ phụ rủ xuống như râu'},
  {id:'the',n:'Thế Giới Thụ',p:20000000,base:{tien:1,may:1,toc:1,nl:1,kl:1},fav:[],bad:'',shape:'world',trunk:'#5a3a7a',leaf:['#5a3aa8','#8a6ad8','#d9c8ff'],note:'Hạt hiếm. Cân bằng cả 5 kênh, không ưa không kỵ'}];
 const LM_SEED_BY={};LM_SEEDS.forEach(k=>LM_SEED_BY[k.id]=k);
-const LM_LAND=[{p:30000000,tax:15000,cap:30,n:'Đất Thường'},{p:60000000,tax:30000,cap:40,n:'Đất Vàng'}];
-const LM_MIN=3,LM_MAXM=10,LM_LVM=8,LM_CHMAX=10,LM_TAXMIN=250000,LM_TAXMAX=1500000,LM_TAXDEF=600000,LM_BASE=700000,LM_JOIN=250000,LM_GROW=1.11;
+const LM_LAND=[{p:30000000,cap:30,n:'Đất Thường'},{p:60000000,cap:40,n:'Đất Vàng'}];
+const LM_MIN=3,LM_MAXM=10,LM_LVM=8,LM_CHMAX=10,LM_BASE=490000,LM_GROW=1.11,LM_JOIN=250000,LM_TX=[.03,.06,.10],LM_TXLV=[0,15,30],LM_DUR0=1800000,LM_DURG=1.12;
+const lmNm=(v,hn)=>{v=String(v||'').replace(/[<>&"']/g,'').replace(/\s+/g,' ').trim().slice(0,18);return v||'Liên Minh '+cleanName(hn).slice(0,10)};
+const lmName=d=>d.nm||'Liên Minh '+cleanName(d.hn).slice(0,10);
 const lmTier=n=>{const c=(n-1)%4;return c===1||c===2?1:0};
-const LM={invAt:{},n:null,seed:'dua',arm:null,acc:0,t:0,sT:-99,hpt:0,rt:0,warned:0};
+const LM={seen:0,invAt:{},n:null,seed:'dua',arm:null,acc:0,t:0,sT:-99,hpt:0,rt:0,warned:0};
 const LMC={u:{}};
 const lmMe=()=>NET.on?NET.uid:'me';
 const LM_ALL=()=>NET.lmAll||(NET.lmAll={});
 const lmDoc=n=>LM_ALL()[n]||null;
 const lmMem=d=>Object.keys((d&&d.m)||{});
-const lmPts=d=>{let s=0;const p=(d&&d.pt)||{};for(const k in p)s+=+p[k]||0;return s};
+const lmUpDone=d=>!!(d&&d.up&&serverNow()>=d.up.te);
+const lmPt=(d,ch)=>(((d.pt||{})[ch])||0)+(lmUpDone(d)&&d.up.c===ch?1:0);
+const lmPts=d=>{let s=0;const p=(d&&d.pt)||{};for(const k in p)s+=+p[k]||0;return s+(lmUpDone(d)?1:0)};
+const lmDur=d=>Math.round(LM_DUR0*Math.pow(LM_DURG,Math.max(0,lmPts(d)-4)));
+const lmDurTxt=ms=>{const m=Math.round(ms/60000);return m<1?'dưới 1 phút':m<90?m+' phút':m<2880?(Math.round(m/6)/10)+' giờ':(Math.round(m/144)/10)+' ngày'};
+const lmMaxRate=t=>{let m=LM_TX[0];LM_TXLV.forEach((lv,i)=>{if(t>=lv)m=LM_TX[i]});return m};
+const lmRate=d=>Math.min(+d.tx||LM_TX[0],lmMaxRate(lmPts(d)));
 const lmFund=d=>{let s=0;const c=(d&&d.c)||{};for(const k in c)s+=+c[k]||0;return Math.floor(s-(+d.sp||0))};
 const lmCap=(d,n)=>Math.min(LM_LAND[lmTier(n)].cap,5*clamp(lmMem(d).length,LM_MIN,LM_LVM));
 const lmDorm=d=>lmMem(d).length<LM_MIN;
-const lmWither=(d,n)=>(+d.db||0)>LM_LAND[lmTier(n)].tax*12;
+
 const lmStage=t=>t<5?0:t<15?1:t<25?2:3;
 const lmStageN=['Mầm','Cây con','Trưởng thành','Cổ thụ'];
-function lmFactor(d,n){const t=lmPts(d),cap=lmCap(d,n);return(t>cap?cap/t:1)*(lmDorm(d)?.5:1)*(lmWither(d,n)?.5:1)}
+function lmFactor(d,n){const t=lmPts(d),cap=lmCap(d,n);return(t>cap?cap/t:1)*(lmDorm(d)?.5:1)}
 function lmCost(d,ch){const k=LM_SEED_BY[d.sd]||{fav:[],bad:''};return Math.round(LM_BASE*Math.pow(LM_GROW,lmPts(d))*(k.fav.includes(ch)?.8:k.bad===ch?1.3:1)/1000)*1000}
-function lmDom(d){let b='tien',v=-1;LM_CH.forEach(k=>{const x=(d.pt&&d.pt[k.id])||0;if(x>v){v=x;b=k.id}});return b}
-function lmB(ch,uid){uid=uid||lmMe();const r=LMC.u[uid];if(!r||r.d.st!=='grow')return 0;if(uid===lmMe()&&P&&(P.lmArr||0)>0)return 0;const v=Math.min(1,(((r.d.pt||{})[ch])||0)/LM_CHMAX);return LM_CH_BY[ch].mx*v*lmFactor(r.d,r.n)}
+function lmDom(d){let b='tien',v=-1;LM_CH.forEach(k=>{const x=lmPt(d,k.id);if(x>v){v=x;b=k.id}});return b}
+function lmB(ch,uid){uid=uid||lmMe();const r=LMC.u[uid];if(!r||r.d.st!=='grow')return 0;const v=Math.min(1,lmPt(r.d,ch)/LM_CHMAX);return LM_CH_BY[ch].mx*v*lmFactor(r.d,r.n)}
+const LMICO={};
+function lmIcon(sid){if(LMICO[sid])return LMICO[sid];const k=LM_SEED_BY[sid]||LM_SEEDS[0],[c,g]=mk(13,13);ellP(g,6,6,6,6,'#2a1a30');ellP(g,6,6,5,5,'#ffd23f');ellP(g,6,6,4,4,'#173a2a');ellP(g,6,5,3,3,k.leaf[1]);rr(g,4,3,2,1,k.leaf[2]);rr(g,6,8,1,3,'#c8a070');rr(g,5,10,3,1,'#c8a070');return LMICO[sid]=c}
+function lmBadge(c,x,y,lf){const u=c===P?lmMe():c.uid,r=u&&LMC.u[u];if(!r)return;const bub=c.bubbleT>0&&c.bubble,lab=c===P||dist(c,P)<90||c.remote;const yy=y-(bub?58:lab?47:32)-lf-(lmScale(c)-1)*30;ctx.drawImage(lmIcon(r.d.sd),Math.round(x-6),Math.round(yy-6))}
 const lmScale=c=>{const u=c===P?lmMe():c.uid;return u&&LMC.u[u]?1+lmB('kl',u):1};
 const lmDrain=()=>(1-lmB('nl'))*(1+lmB('kl')/.25*.1);
 const lmRegen=()=>1+lmB('nl')*(.25/.3);
@@ -2511,13 +2523,13 @@ function lmEffTxt(ch,f){const m=LM_CH_BY[ch].mx*f,p=x=>(Math.round(x*1000)/10).t
  switch(ch){case'tien':return'+'+p(m)+'% thưởng ván game & Team Building';case'may':return'+'+p(m)+'% thưởng nhặt (gián, ông già, Bụt…) & tỉ lệ trúng vé số';case'toc':return'+'+p(m)+'% tốc độ di chuyển';
   case'nl':return'−'+p(m)+'% hao năng lượng khi đứng/đi, hồi khi ngủ nhanh hơn +'+p(m*25/30)+'%';default:return'Nhân vật ×'+(Math.round((1+m)*100)/100)+', +'+p(m/.25*.3)+'% sát thương quái, nhưng hao năng lượng +'+p(m/.25*.1)+'%'}}
 function lmSync(){LMC.u={};const all=LM_ALL();for(const n in all){const d=all[n];if(!d||!d.h)continue;lmMem(d).forEach(u=>{LMC.u[u]={n:+n,d}});if(!LMC.u[d.h]&&d.m)LMC.u[d.h]={n:+n,d}}
- if(P&&!LMC.u[lmMe()]&&P.lmArr)P.lmArr=0;if(!$('#lmOv').hidden)renderLm()}
+ if(!$('#lmOv').hidden)renderLm()}
 function lmSet(o,rel,val){const k=rel.split('/');let t=o;for(let i=0;i<k.length-1;i++){t=t[k[i]]||(t[k[i]]={})}if(val==null)delete t[k[k.length-1]];else t[k[k.length-1]]=val}
 function lmUp(n,obj){const d=lmDoc(n);if(!d)return;for(const r in obj)lmSet(d,r,obj[r]);if(NET.on){try{NET.db.ref('lm/'+n).update(obj)}catch(e){console.warn(e)}}lmSync()}
 function lmDel(n){const all=LM_ALL();delete all[n];if(NET.on){try{NET.db.ref('lm/'+n).remove()}catch(e){}}lmSync()}
 /* ---- hành động ---- */
-async function lmBuy(n,sid){const me=lmMe(),sd=LM_SEED_BY[sid],T=LM_LAND[lmTier(n)];if(!sd||lmDoc(n)||LMC.u[me])return;const cost=T.p+sd.p;if(P.money<cost){toast('Không đủ tiền. Cần '+VND(cost)+' (đất + hạt giống).',true);return}
- const now=serverNow(),doc={h:me,hn:P.name,sd:sid,tax:LM_TAXDEF,op:1,t0:now,tl:now,st:'wait',pt:Object.assign({},sd.base),sp:0,db:0,m:{[me]:P.name}};
+async function lmBuy(n,sid,nm){const me=lmMe(),sd=LM_SEED_BY[sid],T=LM_LAND[lmTier(n)];if(!sd||lmDoc(n)||LMC.u[me])return;const cost=T.p+sd.p;if(P.money<cost){toast('Không đủ tiền. Cần '+VND(cost)+' (đất + hạt giống).',true);return}
+ const now=serverNow(),doc={h:me,hn:P.name,nm:lmNm(nm,P.name),sd:sid,tx:LM_TX[0],op:1,t0:now,st:'wait',pt:Object.assign({},sd.base),sp:0,m:{[me]:P.name}};
  P.money-=cost;
  if(NET.on){let r;try{r=await NET.db.ref('lm/'+n).transaction(c=>c==null?doc:undefined)}catch(e){r=null}if(!r||!r.committed){P.money+=cost;toast('Lô đất vừa có người khác mua hoặc máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}NET.lmAll=NET.lmAll||{};NET.lmAll[n]=doc}
  else LM_ALL()[n]=doc;
@@ -2527,41 +2539,37 @@ function lmJoin(n){const d=lmDoc(n),me=lmMe();if(!d||LMC.u[me])return;if(lmMem(d
  if(!d.op&&!lmInvited(d)){toast('Liên minh này đang đóng đăng ký, cần Gốc Chủ mời.',true);return}
  const fee=d.st==='grow'?LM_JOIN*lmPts(d):0;if(P.money<fee){toast('Cần '+VND(fee)+' phí gia nhập (đưa vào quỹ cây).',true);return}
  if(fee&&LM.arm!=='join'+n){LM.arm='join'+n;renderLm();return}LM.arm=null;
- P.money-=fee;const c0=(d.c&&d.c[me])||0,o={['m/'+me]:P.name,['iv/'+me]:null};if(fee)o['c/'+me]=c0+fee;lmUp(n,o);coin();hpAdd('lm',2);toast('Bạn đã gia nhập liên minh của '+cleanName(d.hn)+'.',false,4000);if(NET.on)saveState();renderLm()}
+ P.money-=fee;const c0=(d.c&&d.c[me])||0,o={['m/'+me]:P.name,['iv/'+me]:null};if(fee)o['c/'+me]=c0+fee;lmUp(n,o);coin();hpAdd('lm',2);toast('Bạn đã gia nhập '+lmName(d)+'.',false,4000);if(NET.on)saveState();renderLm()}
 function lmLeave(n){const d=lmDoc(n),me=lmMe();if(!d||!(d.m&&d.m[me]))return;
  if(d.h===me){if(lmMem(d).length>1){toast('Hãy nhường chức hoặc mời bớt thành viên trước khi rời.',true);return}if(LM.arm!=='disb'){LM.arm='disb';renderLm();return}LM.arm=null;
-  const db=+d.db||0;lmDel(n);P.lmArr=0;toast('Bạn đã trả lại lô đất.'+(db>0?' Nợ thuế đất '+VND(db)+' được xoá.':''),false,4000);LM.n=null;renderLm();return}
- if(LM.arm!=='leave'){LM.arm='leave';renderLm();return}LM.arm=null;lmUp(n,{['m/'+me]:null});P.lmLeaveAt=Date.now();P.lmArr=0;toast('Bạn đã rời liên minh. Thuế đã đóng không được hoàn lại.',false,4000);if(NET.on)saveState();renderLm()}
+  lmDel(n);toast('Bạn đã trả lại lô đất (không hoàn tiền).',false,4000);LM.n=null;renderLm();return}
+ if(LM.arm!=='leave'){LM.arm='leave';renderLm();return}LM.arm=null;lmUp(n,{['m/'+me]:null});P.lmLeaveAt=Date.now();toast('Bạn đã rời liên minh. Thuế đã đóng không được hoàn lại.',false,4000);if(NET.on)saveState();renderLm()}
 function lmKick(n,u){const d=lmDoc(n);if(!d||d.h!==lmMe()||u===d.h)return;if(LM.arm!=='kick'+u){LM.arm='kick'+u;renderLm();return}LM.arm=null;lmUp(n,{['m/'+u]:null});toast('Đã mời '+cleanName(d.m[u]||'')+' rời liên minh.',false,3000)}
 function lmGive(n,u){const d=lmDoc(n);if(!d||d.h!==lmMe()||u===d.h||!(d.m&&d.m[u]))return;if(LM.arm!=='give'+u){LM.arm='give'+u;renderLm();return}LM.arm=null;lmUp(n,{h:u,hn:d.m[u]});toast('Đã nhường chức Gốc Chủ cho '+cleanName(d.m[u])+'.',false,4000)}
 function lmPlant(n){const d=lmDoc(n);if(!d||d.h!==lmMe()||d.st!=='wait')return;if(lmMem(d).length<LM_MIN){toast('Cần tối thiểu '+LM_MIN+' thành viên để trồng.',true);return}lmUp(n,{st:'grow',tg:serverNow()});coin();toast('Cây Liên Minh đã được trồng! Thành viên bắt đầu đóng thuế.',false,5000);sysLog('Trồng Cây Liên Minh ở Lô '+n+'.');renderLm()}
-function lmTax(n,dl){const d=lmDoc(n);if(!d||d.h!==lmMe())return;lmUp(n,{tax:clamp((+d.tax||LM_TAXDEF)+dl,LM_TAXMIN,LM_TAXMAX)});renderLm()}
-function lmFeed(n,ch){const d=lmDoc(n);if(!d||d.h!==lmMe()||d.st!=='grow')return;const cost=lmCost(d,ch);
- if(((d.pt&&d.pt[ch])||0)>=LM_CHMAX){toast('Kênh '+LM_CH_BY[ch].n+' đã đầy '+LM_CHMAX+' điểm.',true);return}
- if(lmPts(d)>=lmCap(d,n)){toast(lmCap(d,n)>=LM_LAND[lmTier(n)].cap?'Cây đã đạt giới hạn của lô đất.':'Cần thêm thành viên để cây lên tiếp.',true);return}
- if(lmFund(d)<cost){toast('Quỹ cây chưa đủ '+VND(cost)+'.',true);return}
- lmUp(n,{sp:(+d.sp||0)+cost,['pt/'+ch]:((d.pt&&d.pt[ch])||0)+1});coin();hpAdd('lm',2);toast('Đã bón dinh dưỡng '+LM_CH_BY[ch].n+' (−'+VND(cost)+' từ quỹ).',false,3000);renderLm()}
+function lmTx(n,v){const d=lmDoc(n);if(!d||d.h!==lmMe()||!LM_TX.includes(v))return;if(v>lmMaxRate(lmPts(d))){toast('Mức thuế này mở từ Lv'+LM_TXLV[LM_TX.indexOf(v)]+'.',true);return}lmUp(n,{tx:v});renderLm()}
+function lmFeed(n,ch){const d=lmDoc(n);if(!d||d.h!==lmMe()||d.st!=='grow')return;
+ if(d.up&&!lmUpDone(d)){toast('Cây đang phát triển, còn '+lmDurTxt(d.up.te-serverNow())+'.',true);return}
+ if(lmUpDone(d))lmFin(n);const e=lmDoc(n),cost=lmCost(e,ch);
+ if(lmPt(e,ch)>=LM_CHMAX){toast('Kênh '+LM_CH_BY[ch].n+' đã đầy '+LM_CHMAX+' điểm.',true);return}
+ if(lmPts(e)>=lmCap(e,n)){toast(lmCap(e,n)>=LM_LAND[lmTier(n)].cap?'Cây đã đạt giới hạn của lô đất.':'Cần thêm thành viên để cây lên tiếp.',true);return}
+ if(lmFund(e)<cost){toast('Quỹ cây chưa đủ '+VND(cost)+'.',true);return}
+ const dur=lmDur(e),now=serverNow();lmUp(n,{sp:(+e.sp||0)+cost,up:{c:ch,ts:now,te:now+dur}});coin();hpAdd('lm',2);toast('Bắt đầu nâng cấp '+LM_CH_BY[ch].n+' (−'+VND(cost)+' từ quỹ). Mất '+lmDurTxt(dur)+'.',false,4500);renderLm()}
+function lmFin(n){const d=lmDoc(n);if(!d||d.h!==lmMe()||!lmUpDone(d))return;const c=d.up.c;lmUp(n,{['pt/'+c]:((d.pt&&d.pt[c])||0)+1,up:null})}
+function lmCut(amt){const r=LMC.u[lmMe()];if(!r||r.d.st!=='grow'||!(amt>0))return 0;const t=Math.floor(amt*lmRate(r.d)/1000)*1000;if(t<=0)return 0;const me=lmMe();lmUp(r.n,{['c/'+me]:((r.d.c&&r.d.c[me])||0)+t});return t}
 function lmDonate(n,amt){const d=lmDoc(n),me=lmMe();if(!d||!(d.m&&d.m[me]))return;if(P.money<amt){toast('Không đủ tiền.',true);return}P.money-=amt;lmUp(n,{['c/'+me]:((d.c&&d.c[me])||0)+amt});coin();hpAdd('lm',2);toast('Đã góp '+VND(amt)+' vào quỹ cây.',false,2500);if(NET.on)saveState();renderLm()}
 const lmInvited=d=>{const t=d.iv&&d.iv[lmMe()];return !!t&&serverNow()-t<86400000};
+function lmRename(n,v){const d=lmDoc(n);if(!d||d.h!==lmMe())return;lmUp(n,{nm:lmNm(v,d.hn)});toast('Đã đổi tên liên minh.',false,2500);renderLm()}
 function lmOpen(n){const d=lmDoc(n);if(!d||d.h!==lmMe())return;lmUp(n,{op:d.op?0:1});renderLm()}
 function lmInvite(n,u){const d=lmDoc(n),c=NET.chars[u];if(!NET.on||!d||d.h!==lmMe()||!c||lmMem(d).length>=LM_MAXM)return;LM.invAt[u]=Date.now();lmUp(n,{['iv/'+u]:serverNow()});NET.db.ref('invites/'+u+'/'+NET.uid+'_'+Date.now()).set({lm:1,n,h:NET.uid,hn:P.name,ts:TS()});toast('Đã gửi lời mời tới '+c.name+' (có hiệu lực 24 giờ).');renderLm()}
 function lmBot(n){const d=lmDoc(n);if(!d||NET.on||lmMem(d).length>=LM_MAXM)return;const id='bot'+(lmMem(d).length),nm=['Hoa','Minh','Lan','Tuấn','Mai','Khoa','Vy'][lmMem(d).length%7]+' (bot)';lmUp(n,{['m/'+id]:nm});renderLm()}
-function lmPay(n,amt){const d=lmDoc(n),me=lmMe();if(!d||!(d.m&&d.m[me]))return;if(P.money<amt){P.lmArr=(P.lmArr||0)+amt;if(Date.now()-LM.warned>120000){LM.warned=Date.now();toast('Không đủ tiền đóng thuế Cây Liên Minh. Buff tạm dừng cho đến khi bạn trả đủ.',true,5000)}return}
- P.money-=amt;lmUp(n,{['c/'+me]:((d.c&&d.c[me])||0)+amt})}
-function lmSettle(n){const d=lmDoc(n);if(!d||d.h!==lmMe())return;const T=LM_LAND[lmTier(n)],now=serverNow(),tl=d.tl||d.t0||now,due=Math.floor(T.tax*(now-tl)/3600000/1000)*1000,debt0=+d.db||0;
- if(due<1000&&!(debt0>0&&P.money>=1000))return;let take=0,short=0,pay=0,rp=0,nd=debt0,ntl=tl;
- if(due>=1000){take=Math.min(Math.max(0,lmFund(d)),due);short=due-take;pay=Math.min(Math.floor(P.money/1000)*1000,short);nd=debt0+short-pay;ntl=tl+due*3600000/T.tax;P.money-=pay}
- if(nd>0&&P.money>=1000){rp=Math.min(nd,Math.floor(P.money/1000)*1000);nd-=rp;P.money-=rp}
- const o={db:nd};if(due>=1000){o.tl=Math.round(ntl);if(take)o.sp=(+d.sp||0)+take;o.lt=(+d.lt||0)+due}lmUp(n,o);
- if(pay+rp>0&&NET.on)saveState();
- if(short-pay>0&&Date.now()-LM.warned>300000){LM.warned=Date.now();toast('Thuế đất Cây Liên Minh chưa đủ tiền trả, bạn đang nợ '+VND(nd)+'. Nợ quá 12 giờ thuế thì cây héo.',true,6000)}}
-function lmTick(dt){if(!P||!S)return;P.speed=84*(1+lmB('toc'));const me=lmMe(),r=LMC.u[me];if(!r)return;const n=r.n,d=lmDoc(n);if(!d)return;
- LM.t+=dt;
- if(!NET.on&&d.st==='grow')lmMem(d).forEach(u=>{if(u.startsWith('bot'))lmSet(d,'c/'+u,((d.c&&d.c[u])||0)+(+d.tax||LM_TAXDEF)/3600*dt)});
- if(d.st==='grow'&&d.h!==me){LM.acc+=(+d.tax||LM_TAXDEF)/3600*dt;if(LM.acc>=2000){const a=Math.floor(LM.acc/1000)*1000;LM.acc-=a;lmPay(n,a)}
-  if((P.lmArr||0)>0&&P.money>=1000){const a=Math.min(P.lmArr,Math.floor(P.money/1000)*1000);P.lmArr-=a;lmPay(n,a);if(P.lmArr<1000)P.lmArr=0}}
- if(d.st==='grow'){LM.hpt+=dt;if(LM.hpt>=1800){LM.hpt=0;hpAdd('lm',1)}}
- if(d.h===me&&LM.t-LM.sT>=20){LM.sT=LM.t;lmSettle(n)}}
+
+
+function lmTick(dt){if(!P||!S)return;P.speed=84*(1+lmB('toc'));const me=lmMe(),r=LMC.u[me];if(!r)return;const n=r.n,d=lmDoc(n);if(!d)return;LM.t+=dt;
+ if(!NET.on&&d.st==='grow')lmMem(d).forEach(u=>{if(u.startsWith('bot'))lmSet(d,'c/'+u,((d.c&&d.c[u])||0)+lmRate(d)*963*dt)});
+ if(d.st==='grow'){LM.hpt+=dt;if(LM.hpt>=1800){LM.hpt=0;hpAdd('lm',1)}
+  if(lmUpDone(d)&&LM.seen!==d.up.te){LM.seen=d.up.te;toast('Cây Liên Minh vừa nâng cấp '+LM_CH_BY[d.up.c].n+'!',false,4500);sysLog('Cây Liên Minh nâng cấp '+LM_CH_BY[d.up.c].n+'.')}}
+ if(d.h===me&&LM.t-LM.sT>=20){LM.sT=LM.t;lmFin(n)}}
 /* ---- hình cây ---- */
 const LMSPR={};
 function lmSpr(sid,stg,dom,wi){const key=sid+stg+dom+(wi?1:0);if(LMSPR[key])return LMSPR[key];
@@ -2585,49 +2593,56 @@ function lmSpr(sid,stg,dom,wi){const key=sid+stg+dom+(wi?1:0);if(LMSPR[key])retu
 function lmList(cx,cy,list){if(Math.abs(GARD.gx-(cx+VW/2))>VW/2+900||GARD.y1+100<cy||FENCE_Y-200>cy+VH)return;GPLOTS.forEach(q=>{if(q.x<cx-100||q.x>cx+VW+100||q.y<cy-130||q.y>cy+VH+100)return;list.push({lmt:q,base:q.y+30})})}
 function drawLmPlot(q,cx,cy){const d=lmDoc(q.n),x=Math.round(q.x-cx),y=Math.round(q.y+30-cy),T=LM_LAND[lmTier(q.n)];
  if(!d){drawPlate(x,y,'LÔ '+q.n+' · '+(T.p/1e6)+'tr',false);return}
- const t=lmPts(d),stg=d.st==='grow'?lmStage(t):0,sp=lmSpr(d.sd,stg,lmDom(d),lmWither(d,q.n));
+ const t=lmPts(d),stg=d.st==='grow'?lmStage(t):0,sp=lmSpr(d.sd,stg,lmDom(d),false);
  ctx.fillStyle='rgba(20,30,60,.25)';ctx.beginPath();ctx.ellipse(x,y,[10,22,34,44][stg],[4,8,11,14][stg],0,0,6.3);ctx.fill();ctx.drawImage(sp.c,x-sp.ox,y-sp.oy);
  drawPlate(x,y+14,d.st==='grow'?'Lv '+t+' · '+lmMem(d).length+'/'+LM_MAXM:'CHƯA TRỒNG '+lmMem(d).length+'/'+LM_MAXM,true)}
 /* ---- giao diện ---- */
 function openLm(n){if(!S||!P)return;LM.n=n==null?(LMC.u[lmMe()]?LMC.u[lmMe()].n:null):n;LM.arm=null;renderLm();$('#lmOv').hidden=false;keys={}}
-function renderLm(){const el=$('#lmBody');if(!el)return;const me=lmMe(),my=LMC.u[me];let h='';
- const bar=(ch,d,n)=>{const v=(d.pt&&d.pt[ch.id])||0,f=Math.min(1,v/LM_CHMAX)*(d.st==='grow'?lmFactor(d,n):0);return`<div class="lmrow"><span class="lmic" style="color:${ch.c}">${ch.ic}</span><b>${ch.n}</b><span class="lmbar"><i style="width:${v*10}%;background:${ch.c}"></i></span><span>${v}/${LM_CHMAX}</span></div><div class="lmeff">${d.st==='grow'?lmEffTxt(ch.id,f):'Chưa trồng, chưa có hiệu ứng'}</div>`};
+function renderLm(){const el=$('#lmBody');if(!el)return;if(document.activeElement&&/^lm(Nm|Rn)$/.test(document.activeElement.id))return;const me=lmMe(),my=LMC.u[me];let h='';
+ const bar=(ch,d,n)=>{const v=lmPt(d,ch.id),f=Math.min(1,v/LM_CHMAX)*(d.st==='grow'?lmFactor(d,n):0);return`<div class="lmrow"><span class="lmic" style="color:${ch.c}">${ch.ic}</span><b>${ch.n}</b><span class="lmbar"><i style="width:${v*10}%;background:${ch.c}"></i></span><span>${v}/${LM_CHMAX}</span></div><div class="lmeff">${d.st==='grow'?lmEffTxt(ch.id,f):'Chưa trồng, chưa có hiệu ứng'}</div>`};
  if(LM.n==null){
-  h=`<p>Mỗi người chỉ ở <b>1 liên minh</b>. Gốc Chủ mua đất + hạt giống, rủ từ <b>${LM_MIN} đến ${LM_MAXM} thành viên</b>. Thành viên đóng thuế theo giờ chơi để nuôi cây; cây lớn đem lại buff cho cả liên minh.</p>`
-   +(my?`<div class="detail"><h3>Liên minh của bạn: Lô ${my.n}</h3><p>${LM_SEED_BY[my.d.sd].n} · ${my.d.st==='grow'?'Lv '+lmPts(my.d):'chưa trồng'} · Gốc Chủ ${esc(cleanName(my.d.hn))}</p><div class="row"><button class="btn ok" data-act="view" data-n="${my.n}">XEM CÂY CỦA TÔI</button></div></div>`:'')
-   +(()=>{if(my)return'';const L=[];for(const n in LM_ALL()){const d=LM_ALL()[n];if(d&&d.iv&&lmInvited(d))L.push([n,d])}return L.length?`<div class="lbl">LỜI MỜI DÀNH CHO BẠN</div><div class="offer">${L.map(([n,d])=>`<button class="chip on" data-act="view" data-n="${n}">Lô ${n} · Gốc Chủ ${esc(cleanName(d.hn))}</button>`).join('')}</div>`:''})()+`<div class="lbl">12 LÔ ĐẤT</div><div class="lmgrid">${GPLOTS.map(q=>{const d=lmDoc(q.n),T=LM_LAND[lmTier(q.n)];return`<button class="chip lmplot${d?' own':''}" data-act="view" data-n="${q.n}"><b>Lô ${q.n}</b> · ${T.n}<br>${d?esc(LM_SEED_BY[d.sd].n)+' · '+(d.st==='grow'?'Lv '+lmPts(d):'chờ trồng')+' · '+lmMem(d).length+'/'+LM_MAXM+' người · '+(d.op?'mở đăng ký':'chỉ mời')+'<br>Gốc Chủ: '+esc(cleanName(d.hn)):'Trống · '+VND(T.p)}</button>`}).join('')}</div><div class="row"><button class="btn ghost" data-act="close">ĐÓNG</button></div>`}
+  h=`<p>Mỗi người chỉ ở <b>1 liên minh</b>. Gốc Chủ mua đất và hạt giống, rủ từ <b>${LM_MIN} đến ${LM_MAXM} thành viên</b>. Thành viên đóng thuế theo % tiền thưởng ván game và Team Building để nuôi cây; cây lớn đem lại buff cho cả liên minh.</p>`
+   +(my?`<div class="detail"><h3>Liên minh của bạn: ${esc(lmName(my.d))}</h3><p>Lô ${my.n} · ${LM_SEED_BY[my.d.sd].n} · ${my.d.st==='grow'?'Lv '+lmPts(my.d):'chưa trồng'} · Gốc Chủ ${esc(cleanName(my.d.hn))}</p><div class="row"><button class="btn ok" data-act="view" data-n="${my.n}">XEM CÂY CỦA TÔI</button></div></div>`:'')
+   +(()=>{if(my)return'';const L=[];for(const n in LM_ALL()){const d=LM_ALL()[n];if(d&&d.iv&&lmInvited(d))L.push([n,d])}return L.length?`<div class="lbl">LỜI MỜI DÀNH CHO BẠN</div><div class="offer">${L.map(([n,d])=>`<button class="chip on" data-act="view" data-n="${n}">${esc(lmName(d))} · Lô ${n}</button>`).join('')}</div>`:''})()
+   +`<div class="lbl">12 LÔ ĐẤT · BẤM ĐỂ XEM</div><div class="lmgrid">${GPLOTS.map(q=>{const d=lmDoc(q.n),T=LM_LAND[lmTier(q.n)];return`<button class="chip lmplot${d?' own':''}" data-act="view" data-n="${q.n}"><b>${d?esc(lmName(d)):'Lô '+q.n+' · trống'}</b><br>${d?'Lô '+q.n+' · '+LM_SEED_BY[d.sd].n+' · '+(d.st==='grow'?'Lv '+lmPts(d):'chờ trồng')+'<br>'+lmMem(d).length+'/'+LM_MAXM+' người · '+(d.op?'mở đăng ký':'chỉ mời'):T.n+' · '+VND(T.p)}</button>`}).join('')}</div><div class="row"><button class="btn ghost" data-act="close">ĐÓNG</button></div>`}
  else{const n=LM.n,d=lmDoc(n),T=LM_LAND[lmTier(n)];
   if(!d){const sd=LM_SEED_BY[LM.seed]||LM_SEEDS[0],cost=T.p+sd.p;
-   h=`<div class="lbl">LÔ ${n} · ${T.n.toUpperCase()}</div><p>Giá đất <span class="price">${VND(T.p)}</span> · thuế đất <b>${VND(T.tax)}/giờ</b> (tính theo giờ thực, quỹ cây trả trước, thiếu thì Gốc Chủ bù) · cây tối đa <b>${T.cap} điểm</b>.</p>`
+   h=`<div class="lbl">LÔ ${n} · ${T.n.toUpperCase()}</div><p>Giá đất <span class="price">${VND(T.p)}</span> (mua một lần, không có thuế đất) · cây tối đa <b>${T.cap} điểm</b>. Quỹ cây chỉ dùng để mua dinh dưỡng nâng cấp.</p>`
    +(my?'<p style="color:#ff9f43">Bạn đã ở trong một liên minh, mỗi người chỉ có một.</p>':'')
+   +`<div class="lbl">TÊN LIÊN MINH</div><input id="lmNm" class="lminp" maxlength="18" placeholder="Liên Minh ${esc(cleanName(P.name).slice(0,10))}" value="${esc(LM.nm||'')}">`
    +`<div class="lbl">CHỌN HẠT GIỐNG</div><div class="offer">${LM_SEEDS.map(s=>`<button class="chip${s.id===sd.id?' on':''}" data-act="seed" data-s="${s.id}">${s.n} · ${VND(s.p)}</button>`).join('')}</div>`
    +`<div class="detail"><h3>${sd.n}</h3><p>${sd.note}.<br>Điểm gốc: ${LM_CH.filter(k=>sd.base[k.id]).map(k=>k.n+' '+sd.base[k.id]).join(', ')}.<br>${sd.fav.length?'Ưa (giá −20%): <b>'+sd.fav.map(f=>LM_CH_BY[f].n).join(', ')+'</b> · Kỵ (giá +30%): <b>'+LM_CH_BY[sd.bad].n+'</b>':'Không ưa, không kỵ kênh nào.'}</p></div>`
    +`<div class="row"><button class="btn ok" data-act="buy" ${my||P.money<cost?'disabled':''}>MUA ĐẤT + HẠT · ${VND(cost)}</button><button class="btn ghost" data-act="back">DANH SÁCH</button></div>`}
-  else{const mem=lmMem(d),lead=d.h===me,im=!!(d.m&&d.m[me]),t=lmPts(d),cap=lmCap(d,n),fund=lmFund(d),sd=LM_SEED_BY[d.sd],grow=d.st==='grow';
-   const tax=+d.tax||LM_TAXDEF;
-   h=`<div class="lbl">LÔ ${n} · ${sd.n.toUpperCase()} · ${grow?lmStageN[lmStage(t)].toUpperCase()+' · LV '+t:'CHƯA TRỒNG'}</div>`
-   +`<p>Gốc Chủ <b>${esc(cleanName(d.hn))}</b> · <b>${mem.length}/${LM_MAXM}</b> thành viên (cần tối thiểu ${LM_MIN}) · level tối đa hiện tại <b>${cap}</b> (mỗi thành viên +5, đạt tối đa ở ${LM_LVM} người; lô này tối đa ${T.cap})${lmDorm(d)?' · <span style="color:#ff9f43">thiếu người, buff còn 50%</span>':''}${grow&&lmWither(d,n)?' · <span style="color:#ff6a5f">CÂY HÉO (Gốc Chủ nợ thuế đất), buff còn 50%</span>':''}</p>`
-   +LM_CH.map(k=>bar(k,d,n)).join('')
-   +`<div class="detail"><h3>QUỸ CÂY: ${VND(fund)}</h3><p>Thuế thành viên <b>${VND(tax)}/giờ chơi</b> · Thuế đất <b>${VND(T.tax)}/giờ thực</b>${(+d.db||0)>0?' · <span style="color:#ff6a5f">Gốc Chủ đang nợ '+VND(d.db)+'</span>':''}<br>Thành viên: ${mem.map(u=>'<b>'+esc(cleanName(d.m[u]))+'</b>'+(u===d.h?' (Gốc Chủ)':u===me?' (bạn)':'')+(lead&&u!==d.h?` <button class="chip sm" data-act="kick" data-u="${u}">${LM.arm==='kick'+u?'XÁC NHẬN MỜI RA':'mời ra'}</button> <button class="chip sm" data-act="give" data-u="${u}">${LM.arm==='give'+u?'XÁC NHẬN NHƯỜNG':'nhường chức'}</button>`:'')).join(', ')}</p></div>`;
-   if(im&&!lead&&grow&&(P.lmArr||0)>0)h+=`<p style="color:#ff6a5f">Bạn đang nợ thuế ${VND(P.lmArr)}, buff tạm dừng cho đến khi trả đủ.</p>`;
+  else{const mem=lmMem(d),lead=d.h===me,im=!!(d.m&&d.m[me]),t=lmPts(d),cap=lmCap(d,n),fund=lmFund(d),sd=LM_SEED_BY[d.sd],grow=d.st==='grow',tx=lmRate(d),pend=!!(d.up&&!lmUpDone(d));
+   const rank=mem.slice().sort((a,b)=>((d.c&&d.c[b])||0)-((d.c&&d.c[a])||0)||(a===d.h?-1:b===d.h?1:0));
+   h=`<div class="lmhead"><h3>${esc(lmName(d))}</h3><span>Lô ${n} · ${sd.n} · ${grow?lmStageN[lmStage(t)]+' · Lv '+t+'/'+cap:'chưa trồng'}</span></div>`
+   +`<div class="lmkpi"><div><small>GỐC CHỦ</small><b>${esc(cleanName(d.hn))}</b></div><div><small>TỔNG QUỸ</small><b class="price">${VND(fund)}</b></div><div><small>THÀNH VIÊN</small><b>${mem.length}/${LM_MAXM}</b></div><div><small>THUẾ THƯỞNG</small><b>${Math.round(tx*100)}%</b></div></div>`
+   +(lmDorm(d)?`<p class="lmwarn">Thiếu người (cần tối thiểu ${LM_MIN}), buff chỉ còn 50%.</p>`:'')
+   +`<div class="lbl">THÔNG SỐ CÂY · giới hạn level hiện tại ${cap} (mỗi thành viên +5 đến ${LM_LVM} người; lô này tối đa ${T.cap})</div>`+LM_CH.map(k=>bar(k,d,n)).join('');
+   if(grow&&pend){const u=d.up,tot=u.te-u.ts,left=Math.max(0,u.te-serverNow());h+=`<div class="detail"><h3>ĐANG NÂNG CẤP: ${LM_CH_BY[u.c].n.toUpperCase()}</h3><p>Còn ${lmDurTxt(left)}. Xong sẽ cộng 1 điểm cho cả liên minh.</p><span class="lmbar" style="display:block"><i style="width:${Math.round((1-left/tot)*100)}%;background:#7ad151"></i></span></div>`}
+   h+=`<div class="lbl">THÀNH VIÊN · XẾP THEO ĐÓNG GÓP</div><div class="lmtbl">${rank.map((u,i)=>`<div class="lmm"><span class="rk">${i+1}</span><span class="nm">${esc(cleanName(d.m[u]))}${u===d.h?'<i class="bdg">GỐC CHỦ</i>':''}${u===me?'<i class="bdg me">BẠN</i>':''}</span><span class="am">${VND((d.c&&d.c[u])||0)}</span>${lead&&u!==d.h?`<button class="chip sm" data-act="kick" data-u="${u}">${LM.arm==='kick'+u?'XÁC NHẬN RA':'mời ra'}</button><button class="chip sm" data-act="give" data-u="${u}">${LM.arm==='give'+u?'XÁC NHẬN':'nhường chức'}</button>`:''}</div>`).join('')}</div><p class="lmnote">Quỹ chỉ dùng để mua dinh dưỡng nâng cấp. Lần nâng cấp kế tiếp tốn thời gian <b>${lmDurTxt(lmDur(d))}</b>. Thuế 3% dưới Lv15, tối đa 6% từ Lv15, 10% từ Lv30.</p>`;
    if(lead){const cand=NET.on?Object.values(NET.chars).filter(c=>c.online&&c.uid&&c.uid!==me&&!mem.includes(c.uid)&&!LMC.u[c.uid]):[];
-    h+=`<div class="lbl">GỐC CHỦ · ĐĂNG KÝ & LỜI MỜI</div><div class="offer"><button class="chip${d.op?' on':''}" data-act="open">${d.op?'ĐANG MỞ ĐĂNG KÝ (ai cũng vào được)':'ĐANG ĐÓNG (chỉ người được mời)'}</button></div>`+(NET.on?(cand.length?`<div class="offer">${cand.map(c=>{const sent=LM.invAt[c.uid]&&Date.now()-LM.invAt[c.uid]<20000;return`<button class="chip" data-act="inv" data-u="${c.uid}" ${sent||mem.length>=LM_MAXM?'disabled':''}>${esc(c.name)}${sent?' · đã mời':''}</button>`}).join('')}</div>`:'<p>Hiện chưa có ai khác đang online chưa vào liên minh để mời.</p>'):'')+`<div class="lbl">GỐC CHỦ · THUẾ THÀNH VIÊN</div><div class="offer"><button class="chip" data-act="tax" data-d="-50000" ${tax<=LM_TAXMIN?'disabled':''}>−50k</button><button class="chip on">${VND(tax)} / giờ</button><button class="chip" data-act="tax" data-d="50000" ${tax>=LM_TAXMAX?'disabled':''}>+50k</button></div>`;
+    h+=`<div class="lbl">GỐC CHỦ · QUẢN LÝ</div><div class="lmrn"><input id="lmRn" class="lminp" maxlength="18" value="${esc(lmName(d))}"><button class="chip" data-act="rn">ĐỔI TÊN</button></div>`
+    +`<div class="offer"><button class="chip${d.op?' on':''}" data-act="open">${d.op?'ĐANG MỞ ĐĂNG KÝ (ai cũng vào được)':'ĐANG ĐÓNG (chỉ người được mời)'}</button></div>`+(NET.on?(cand.length?`<div class="offer">${cand.map(c=>{const sent=LM.invAt[c.uid]&&Date.now()-LM.invAt[c.uid]<20000;return`<button class="chip" data-act="inv" data-u="${c.uid}" ${sent||mem.length>=LM_MAXM?'disabled':''}>mời ${esc(c.name)}${sent?' · đã mời':''}</button>`}).join('')}</div>`:'<p class="lmnote">Hiện chưa có ai khác đang online chưa vào liên minh để mời.</p>'):'')
+    +`<div class="offer">${LM_TX.map((v,i)=>`<button class="chip${tx===v?' on':''}" data-act="tx" data-v="${v}" ${t<LM_TXLV[i]?'disabled':''}>thuế ${Math.round(v*100)}%${LM_TXLV[i]?' (từ Lv'+LM_TXLV[i]+')':''}</button>`).join('')}</div>`;
     if(!grow)h+=`<div class="row"><button class="btn ok" data-act="plant" ${mem.length<LM_MIN?'disabled':''}>${mem.length<LM_MIN?'CẦN THÊM '+(LM_MIN-mem.length)+' NGƯỜI':'TRỒNG CÂY'}</button>${NET.on?'':`<button class="btn" data-act="bot" ${mem.length>=LM_MAXM?'disabled':''}>THÊM BOT</button>`}</div>`;
-    else h+=`<div class="lbl">BÓN DINH DƯỠNG (trừ vào quỹ)</div><div class="offer">${LM_CH.map(k=>{const v=(d.pt&&d.pt[k.id])||0,c=lmCost(d,k.id);return`<button class="chip" data-act="feed" data-c="${k.id}" ${v>=LM_CHMAX||t>=cap||fund<c?'disabled':''}>${k.n} · ${VND(c)}${sd.fav.includes(k.id)?' ★':sd.bad===k.id?' ✖':''}</button>`}).join('')}</div>${t>=cap?`<p>${cap>=T.cap?'Cây đã đạt giới hạn của lô đất.':'Cần thêm thành viên để cây lên tiếp.'}</p>`:''}`}
+    else h+=`<div class="lbl">NÂNG CẤP DINH DƯỠNG (trừ vào quỹ, mỗi lần mất thời gian)</div><div class="offer">${LM_CH.map(k=>{const v=lmPt(d,k.id),c=lmCost(d,k.id);return`<button class="chip" data-act="feed" data-c="${k.id}" ${pend||v>=LM_CHMAX||t>=cap||fund<c?'disabled':''}>${k.n} · ${VND(c)}${sd.fav.includes(k.id)?' ★':sd.bad===k.id?' ✖':''}</button>`}).join('')}</div>${t>=cap?`<p class="lmnote">${cap>=T.cap?'Cây đã đạt giới hạn của lô đất.':'Cần thêm thành viên để cây lên tiếp.'}</p>`:''}`}
    if(im)h+=`<div class="lbl">GÓP THÊM VÀO QUỸ</div><div class="offer">${[100000,500000,2000000].map(a=>`<button class="chip" data-act="don" data-a="${a}" ${P.money<a?'disabled':''}>+${VND(a)}</button>`).join('')}</div>`;
    h+=`<div class="row">`;
-   if(!im&&!my&&!d.op&&!lmInvited(d))h+=`<p style="color:#ff9f43">Liên minh đang đóng đăng ký. Cần Gốc Chủ mời bạn.</p>`;
+   if(!im&&!my&&!d.op&&!lmInvited(d))h+=`<p class="lmwarn">Liên minh đang đóng đăng ký. Cần Gốc Chủ mời bạn.</p>`;
    if(!im&&!my)h+=`<button class="btn ok" data-act="join" ${mem.length>=LM_MAXM||(!d.op&&!lmInvited(d))?'disabled':''}>${LM.arm==='join'+n?'XÁC NHẬN VÀO · '+VND(LM_JOIN*t):'GIA NHẬP'+(grow?' · phí '+VND(LM_JOIN*t):'')}</button>`;
    if(im)h+=`<button class="btn" data-act="leave">${LM.arm==='leave'?'XÁC NHẬN RỜI':LM.arm==='disb'?'XÁC NHẬN TRẢ ĐẤT':lead&&mem.length<2?'TRẢ LẠI ĐẤT':'RỜI LIÊN MINH'}</button>`;
    h+=`<button class="btn ghost" data-act="back">DANH SÁCH</button><button class="btn ghost" data-act="close">ĐÓNG</button></div>`}}
  el.innerHTML=h}
+$('#lmOv').addEventListener('input',e=>{if(e.target.id==='lmNm')LM.nm=e.target.value});
 $('#lmOv').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.disabled)return;const a=b.dataset.act,n=LM.n;
  if(a==='close'){$('#lmOv').hidden=true;return}
  if(a==='view'){LM.n=+b.dataset.n;LM.arm=null;renderLm();return}
  if(a==='back'){LM.n=null;LM.arm=null;renderLm();return}
  if(a==='seed'){LM.seed=b.dataset.s;renderLm();return}
- if(a==='buy')lmBuy(n,LM.seed);else if(a==='join')lmJoin(n);else if(a==='leave')lmLeave(n);else if(a==='kick')lmKick(n,b.dataset.u);else if(a==='give')lmGive(n,b.dataset.u);
- else if(a==='plant')lmPlant(n);else if(a==='tax')lmTax(n,+b.dataset.d);else if(a==='feed')lmFeed(n,b.dataset.c);else if(a==='don')lmDonate(n,+b.dataset.a);else if(a==='bot')lmBot(n);else if(a==='open')lmOpen(n);else if(a==='inv')lmInvite(n,b.dataset.u)});
+ if(a==='rn'){lmRename(n,($('#lmRn')||{}).value);return}
+ if(a==='buy')lmBuy(n,LM.seed,($('#lmNm')||{}).value);else if(a==='join')lmJoin(n);else if(a==='leave')lmLeave(n);else if(a==='kick')lmKick(n,b.dataset.u);else if(a==='give')lmGive(n,b.dataset.u);
+ else if(a==='plant')lmPlant(n);else if(a==='tx')lmTx(n,+b.dataset.v);else if(a==='feed')lmFeed(n,b.dataset.c);else if(a==='don')lmDonate(n,+b.dataset.a);else if(a==='bot')lmBot(n);else if(a==='open')lmOpen(n);else if(a==='inv')lmInvite(n,b.dataset.u)});
 function tbLobbies(){const a=NET.tbAll||{};return Object.keys(a).map(h=>Object.assign({h},a[h])).filter(d=>d&&d.st==='lobby'&&d.m&&serverNow()-(d.ts||0)<900000)}
 function tbDoc(){return TB.host&&NET.tbAll?NET.tbAll[TB.host]||null:null}
 function tbMembers(){const d=tbDoc();return d&&d.m?Object.keys(d.m):[]}
@@ -2692,7 +2707,7 @@ function tmSubmit(s){const d=TM;if(!d||d.phase!=='play')return;d.score=s;d.res[d
  d.phase='wait';d.waitT=45;if(d.host)NET.db.ref('tb/'+d.host+'/res/'+NET.uid).set(s)}
 function tmFinish(){const d=TM;if(!d||d.phase==='result')return;let tot=0;d.mem.forEach(mb=>tot+=+d.res[mb.u]||0);d.total=tot;d.win=tot>=d.target;d.phase='result';d.t=6.5;d.reward=d.win?tbReward(d.lvl):0;
  hpAdd('team',d.win?8:3);
- if(d.win){d.reward=Math.round(d.reward*lmBon('tien'));P.money+=d.reward;coin();setTimeout(coin,180);toast('Team Building thắng! Cả đội đạt '+tot+'/'+d.target+' điểm, bạn nhận '+VND(d.reward)+'.',false,5000);sysLog('Team Building thắng +'+VND(d.reward))}
+ if(d.win){d.reward=Math.round(d.reward*lmBon('tien'));{const tx=lmCut(d.reward);d.reward-=tx;if(tx)toast('Thuế liên minh −'+VND(tx),false,2500)}P.money+=d.reward;coin();setTimeout(coin,180);toast('Team Building thắng! Cả đội đạt '+tot+'/'+d.target+' điểm, bạn nhận '+VND(d.reward)+'.',false,5000);sysLog('Team Building thắng +'+VND(d.reward))}
  else{beep(220,.4,'sawtooth',.05,-80);toast('Team Building: đội đạt '+tot+'/'+d.target+' điểm, chưa đủ. Thử lại nhé!',true,4500)}
  P.cd.team=S.time+TB_CD;P.energy=Math.max(0,P.energy-3);saveState();
  if(d.host&&d.host===NET.uid)setTimeout(()=>{try{NET.db.ref('tb/'+d.host).remove()}catch(e){}},12000)}
@@ -2802,7 +2817,7 @@ function renderWorld(t){
   const lf=fxLift(c)+skinLift(c)+(skinOf(c)&&['tophat','witch','witchpink','wizard','antenna','robot','helmet','crown','icecrown','mucanh','halo'].includes(skinOf(c).head)?9:0)+(hasCrown(c)?6:0);if(fxOf(c)==='ghost'&&c!==P&&!(c.bubbleT>0))return;
   if(c.bubbleT>0&&c.bubble)label(c.bubble,x,y-44-lf,'#1a1020','#ffffff');
   else if(c===P)label(c.name,x,y-34-lf,'#ffd23f');
-  else if(dist(c,P)<90||c.remote)label(c.name,x,y-34-lf,c.remote?'#bfe9ff':'#fff')});
+  else if(dist(c,P)<90||c.remote)label(c.name,x,y-34-lf,c.remote?'#bfe9ff':'#fff');lmBadge(c,x,y,lf)});
  ZONES.forEach(z=>{if(!vis(z.bx,z.by,80))return;const x=Math.round(z.bx-cx),y=Math.round(z.by-108-cy),w=P.cd[z.id]-S.time;if(w>0)label('CHỜ '+mmss(w),x,y,'#ffd23f');else label('SẴN SÀNG',x,y+Math.round(Math.sin(t*5)*2),'#6fd36a')});
  if(vis(BANKZ.bx,BANKZ.by,90))label(BK.due&&Math.floor(t*3)%2?'CÓ SỔ ĐẾN HẠN · RÚT NGAY':'SINH LỜI TỰ ĐỘNG · 1-10 NGÀY',Math.round(BANKZ.bx-cx),Math.round(BANKZ.by-124-cy),'#ffffff',BK.due?'rgba(237,28,36,.95)':'rgba(40,40,40,.9)');
  if(vis(FASH.x,FASH.y,90))label('35 BỘ · DẠ HỘI, CỔ TÍCH & ĐỘC LẠ',Math.round(FASH.x-cx),Math.round(FASH.y-130-cy+Math.sin(t*3)*2),'#ffd96a','rgba(200,60,130,.9)');
@@ -3043,7 +3058,7 @@ function updRemote(c,dt){c.anim+=dt;if(c.bubbleT>0)c.bubbleT-=dt;const dx=c.tx-c
 function sendPos(){if(!NET.started||!P||NET.moved)return;const v={x:Math.round(P.x),y:Math.round(P.y),d:P.dir,m:P.moving?1:0,h:(P.hidden||mode==='room'||mode==='cabin')?1:0,s:mode,n:P.need?(P.need.type==='poo'?2:1):0,c:P.need?Math.ceil(P.need.cd):0,a:P.accident>0?(P.accType==='poo'?2:1):0,g:P.shine>0?1:0};if(fxOf(P))v.f=P.fx;if(floatOf(P))v.fl=floatOf(P);if(butOn(P))v.bt=1;if(goodOn(P))v.gd=1;
  if(P.bubbleT>0&&P.bubble){v.b=P.bubble;v.bi=P.sayId||0}const key=JSON.stringify(v);if(key!==NET.lastPos){NET.lastPos=key;NET.db.ref('pos/'+NET.uid).set(v)}}
 function netMoved(){NET.moved=true;try{NET.db.ref('players/'+NET.uid).set(null)}catch(e){}if(S){S.ended=true;stopAll()}$('#endTitle').textContent='NHÂN VẬT ĐÃ CHUYỂN SANG MÁY KHÁC';$('#endText').textContent='Ai đó vừa dùng mã đồng bộ của bạn để chơi tiếp nhân vật này trên máy khác. Tải lại trang để tạo nhân vật mới, hoặc nhập lại mã đồng bộ để lấy nhân vật về máy này.';$('#endStats').innerHTML='';clearInterval(rescueTimer);const bt=$('#againBtn');bt.disabled=false;bt.textContent='TẢI LẠI TRANG';$('#endOv').hidden=false}
-function saveState(){if(!NET.on||!NET.started||!P||NET.moved)return;const st={monPaid:P.monPaid||0,monDone:P.monDone||0,monSeen:P.monSeen||0,dayId:'loop',pets:petList(P),money:Math.round(P.money),energy:Math.round(P.energy*10)/10,cd:P.cd,peeNext:Math.round(P.peeNext),pooNext:Math.round(P.pooNext),acc:P.accCount,ate:P.ateMeal,x:Math.round(P.x),y:Math.round(P.y),fainted:!!P.fainted,bonusId:P.bonusId||0,giftIds:(P.giftIds||[]).slice(-50),giftAt:P.giftAt||0,hp:P.hp==null?null:hpPack(),la:Math.round(P.lmArr||0),ts:TS()};
+function saveState(){if(!NET.on||!NET.started||!P||NET.moved)return;const st={monPaid:P.monPaid||0,monDone:P.monDone||0,monSeen:P.monSeen||0,dayId:'loop',pets:petList(P),money:Math.round(P.money),energy:Math.round(P.energy*10)/10,cd:P.cd,peeNext:Math.round(P.peeNext),pooNext:Math.round(P.pooNext),acc:P.accCount,ate:P.ateMeal,x:Math.round(P.x),y:Math.round(P.y),fainted:!!P.fainted,bonusId:P.bonusId||0,giftIds:(P.giftIds||[]).slice(-50),giftAt:P.giftAt||0,hp:P.hp==null?null:hpPack(),ts:TS()};
  NET.db.ref('players/'+NET.uid+'/state').set(st);if(NET.me)NET.me.state=st}
 function applyBeds(){if(!S||!NET.on)return;const B=NET.beds||{};[P,...Object.values(NET.chars)].forEach(c=>{c.lodge=null});
  ['villa','room','tent'].forEach(t=>{LIST(t).forEach((r,i)=>{const bi=B[t]&&B[t][i];for(let k=0;k<CFG.BEDS;k++){const u=bi&&bi[k];const c=u?charFor(u):null;r[k]=c;if(c){const pref=c===P&&P.lodgePref&&P.lodgePref.type===t&&P.lodgePref.i===i;if(!c.lodge||pref||(c!==P&&LRANK[t]>LRANK[c.lodge.type]))c.lodge={type:t,i}}}})});
@@ -3080,7 +3095,7 @@ function netStart(){NET.started=true;const nm=cleanName($('#nameIn').value.trim(
  NET.db.ref('players/'+NET.uid).update(up);NET.me=Object.assign(NET.me||{},up);NET.db.ref('pos/'+NET.uid).onDisconnect().remove();NET.lastPos=''}
 function netAfterNewGame(){P.uid=NET.uid;Object.values(NET.chars).forEach(c=>{if(c.online&&!S.chars.includes(c))S.chars.push(c)});
  const st=NET.me&&NET.me.state,did=NET.day?NET.day.id:0;
- if(st&&typeof st.money==='number'){hpLoad(st.hp);P.lmArr=st.la||0;P.monPaid=st.monPaid||0;P.monDone=st.monDone||0;P.monSeen=st.monSeen||0;P.money=st.money;P.energy=st.energy;Object.assign(P.cd,st.cd||{});if(st.peeNext!=null)P.peeNext=st.peeNext;if(st.pooNext!=null)P.pooNext=st.pooNext;P.accCount=st.acc||0;if(st.ate!=null)P.ateMeal=st.ate;if(st.x){P.x=st.x;P.y=st.y}P.fainted=!!st.fainted;P.bonusId=st.bonusId||0;P.giftIds=Object.values(st.giftIds||{});P.giftAt=st.giftAt||0}
+ if(st&&typeof st.money==='number'){hpLoad(st.hp);P.monPaid=st.monPaid||0;P.monDone=st.monDone||0;P.monSeen=st.monSeen||0;P.money=st.money;P.energy=st.energy;Object.assign(P.cd,st.cd||{});if(st.peeNext!=null)P.peeNext=st.peeNext;if(st.pooNext!=null)P.pooNext=st.pooNext;P.accCount=st.acc||0;if(st.ate!=null)P.ateMeal=st.ate;if(st.x){P.x=st.x;P.y=st.y}P.fainted=!!st.fainted;P.bonusId=st.bonusId||0;P.giftIds=Object.values(st.giftIds||{});P.giftAt=st.giftAt||0}
  else P.giftAt=serverNow();
  S.time=nowOnline();
  applyBeds()}
@@ -3307,7 +3322,7 @@ function enterResort(){try{localStorage.setItem('vmlTripName',$('#nameIn').value
  myLook=lookFromCR();$('#startOv').hidden=true;if(NET.on)netStart();newGame();updUI();startMusic();let seen=false;try{seen=localStorage.getItem('vmlTripRules')==='1';localStorage.setItem('vmlTripRules','1')}catch(e){}$('#helpOv').hidden=seen;toast('Chào '+P.name+'! Ví hiện có '+VND(P.money)+'. Nhấn C để chat.',false,4500);if(NET.on)netPostStart()}
 $('#againBtn').onclick=()=>{if(NET.moved){location.reload();return}revive()};
 
-if(location.hash==='#debug')window.__vml={openLm,renderLm,lmBuy,lmJoin,lmBot,lmPlant,lmFeed,lmDonate,lmInvite,lmOpen,lmInvited,lmTick,lmSettle,lmDoc,LMC,LM_ALL,lmB,lmFund,lmPts,lmCap,lmLeave,lmTax,lmKick,lmGive,lmCost,lmSync,LM,lmScale,lmDrain,lmDmg,lmBon,applySkin,get S(){return S},jobSpawn,goodOn,openMap,get MLOG(){return MLOG},mlogFlush,openBank,bankList,get BANKZ(){return BANKZ},get BK(){return BK},bankSave,openFashion,SKINS_LIST,skinOf,applySkin,get FASH(){return FASH},setHour(h){S.time=timeAtH(h)},openCastleIntro,CIB,snap(x,y,w,h){const P0={x:P.x,y:P.y};VW=w;VH=h;cv.width=w;cv.height=h;ctx.imageSmoothingEnabled=false;P.x=x+w/2;P.y=y+h/2;cam.x=clamp(P.x-VW/2,Math.min(0,(MW-VW)/2),Math.max(0,MW-VW));cam.y=clamp(P.y-VH/2,Math.min(0,(MH-VH)/2),Math.max(0,MH-VH));renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=P0.x;P.y=P0.y;resize();return u},get CST(){return CST},ctw,myCastle,bedsUsed,castleReserve,castleCancel,castleVote,openCastle,enterCastle,returnBeds,CGATE,get CB(){return CB},CTW,hasCrown,get VEND(){return VEND},openLotto,buyLotto,vendWin,get LT(){return LT},butOn,startBath,get BATH_DOORS(){return BATH_DOORS},get CAB(){return CAB},accident:c=>accident(c),rentFloat,openFloat,floatOf,ROOM_WIN,buyDeco,setDeco,openDeco,decoAnchor,get FLOATZ(){return FLOATZ},get ROOMFIT(){return ROOMFIT},get cam(){return cam},get SCALE(){return SCALE},get JOBS(){return S&&S.jobs},jobSpawn,jobAct,get JOB_PAY(){return JOB_PAY},get MFX(){return MFX},get G(){return G},curMon,monPos,monState,monHits,applyConfig,PETS_REF:()=>PETS,DECO,get CHEAT_FEE(){return CHEAT_FEE},marketTick,openEst,allListings,ownBeds,decoOf,get EST(){return EST},get GUIDE(){return GUIDE},guideInit,showTip,ghostScare,haunted,get ROOM(){return ROOM},PETS,mapShot(sc=1){const sv=[VW,VH],px=P.x,py=P.y;VW=MW;VH=MH;cv.width=MW;cv.height=MH;P.x=MW/2;P.y=MH/2;cam.x=0;cam.y=0;renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=px;P.y=py;resize();return u},get S(){return S},get P(){return P},get D(){return D},get mode(){return mode},NET,enterRoom,openTeam,tbCreate,tbStart,tbJoin,tbInvite,tbLeave,get TB(){return TB},get TM(){return TM},TB_GAMES,tbTarget,tbReward,hpAdd,hpSub,hpCeil,startTeam,tmSubmit,tmPress,tmPick,renderTeam,buy,startGame,handleChat};
+if(location.hash==='#debug')window.__vml={openLm,renderLm,lmBuy,lmJoin,lmBot,lmPlant,lmFeed,lmDonate,lmRename,lmInvite,lmOpen,lmInvited,lmTick,lmFin,lmCut,lmRate,lmDur,lmPt,lmUpDone,lmTx,lmDoc,LMC,LM_ALL,lmB,lmFund,lmPts,lmCap,lmLeave,lmKick,lmGive,lmCost,lmSync,LM,lmScale,lmDrain,lmDmg,lmBon,applySkin,get S(){return S},jobSpawn,goodOn,openMap,get MLOG(){return MLOG},mlogFlush,openBank,bankList,get BANKZ(){return BANKZ},get BK(){return BK},bankSave,openFashion,SKINS_LIST,skinOf,applySkin,get FASH(){return FASH},setHour(h){S.time=timeAtH(h)},openCastleIntro,CIB,snap(x,y,w,h){const P0={x:P.x,y:P.y};VW=w;VH=h;cv.width=w;cv.height=h;ctx.imageSmoothingEnabled=false;P.x=x+w/2;P.y=y+h/2;cam.x=clamp(P.x-VW/2,Math.min(0,(MW-VW)/2),Math.max(0,MW-VW));cam.y=clamp(P.y-VH/2,Math.min(0,(MH-VH)/2),Math.max(0,MH-VH));renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=P0.x;P.y=P0.y;resize();return u},get CST(){return CST},ctw,myCastle,bedsUsed,castleReserve,castleCancel,castleVote,openCastle,enterCastle,returnBeds,CGATE,get CB(){return CB},CTW,hasCrown,get VEND(){return VEND},openLotto,buyLotto,vendWin,get LT(){return LT},butOn,startBath,get BATH_DOORS(){return BATH_DOORS},get CAB(){return CAB},accident:c=>accident(c),rentFloat,openFloat,floatOf,ROOM_WIN,buyDeco,setDeco,openDeco,decoAnchor,get FLOATZ(){return FLOATZ},get ROOMFIT(){return ROOMFIT},get cam(){return cam},get SCALE(){return SCALE},get JOBS(){return S&&S.jobs},jobSpawn,jobAct,get JOB_PAY(){return JOB_PAY},get MFX(){return MFX},get G(){return G},curMon,monPos,monState,monHits,applyConfig,PETS_REF:()=>PETS,DECO,get CHEAT_FEE(){return CHEAT_FEE},marketTick,openEst,allListings,ownBeds,decoOf,get EST(){return EST},get GUIDE(){return GUIDE},guideInit,showTip,ghostScare,haunted,get ROOM(){return ROOM},PETS,mapShot(sc=1){const sv=[VW,VH],px=P.x,py=P.y;VW=MW;VH=MH;cv.width=MW;cv.height=MH;P.x=MW/2;P.y=MH/2;cam.x=0;cam.y=0;renderWorld(performance.now()/1000);const u=cv.toDataURL();P.x=px;P.y=py;resize();return u},get S(){return S},get P(){return P},get D(){return D},get mode(){return mode},NET,enterRoom,openTeam,tbCreate,tbStart,tbJoin,tbInvite,tbLeave,get TB(){return TB},get TM(){return TM},TB_GAMES,tbTarget,tbReward,hpAdd,hpSub,hpCeil,startTeam,tmSubmit,tmPress,tmPick,renderTeam,buy,startGame,handleChat};
 resize();renderCreator();$('#profLine').textContent=profileLine(loadProfile());
 try{const an=localStorage.getItem('vmlTripName');if(ONLINE_READY&&localStorage.getItem('vmlTripAuto')==='1'&&an){$('#startOv').classList.add('auto');$('#startTitle').textContent='CHÀO MỪNG TRỞ LẠI, '+cleanName(an).toUpperCase();$('#autoMsg').textContent='Đang kết nối máy chủ…'}}catch(e){}
 const fontsReady=Promise.race([Promise.all([document.fonts.load('16px VT323'),document.fonts.load('16px Bungee')]),new Promise(r=>setTimeout(r,3000))]);

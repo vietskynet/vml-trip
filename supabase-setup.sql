@@ -2,6 +2,8 @@
 -- VML COMPANY TRIP · CÀI ĐẶT DATABASE SUPABASE
 -- Dán toàn bộ file này vào Supabase → SQL Editor → New query → Run.
 -- Chạy lại nhiều lần cũng không sao (an toàn khi chạy lặp).
+-- Bản 07.11-g: file này ĐÃ GỒM mọi cập nhật trước đó (tài khoản, admin, lâu đài, trang trí, Team Building, Vườn Liên Minh).
+-- Chỉ cần chạy file này, không cần chạy các file trong thư mục sql-cu/. Không xoá dữ liệu người chơi.
 -- =====================================================================
 
 -- 1. Bảng dữ liệu --------------------------------------------------------
