@@ -73,6 +73,9 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-u · Thu nhỏ quầy thông tin
+- Quầy thông tin ngoài cổng nhỏ hơn khoảng 36%, vùng chắn và nhãn chữ thu theo.
+
 ## Phiên bản 07.11-t · Thú cưng chia theo loài, thêm 31 bé mới
 - Quầy thú cưng có tab: Côn trùng (10), Động vật có vú (10), Chim (11), Cá & thủy sinh (10), Tâm linh (9). Tổng 50 bé, bé mới giá 2tr–50tr.
 - Bán lại thú cưng chỉ nhận 70% giá (lỗ 30%).
