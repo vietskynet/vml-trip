@@ -191,3 +191,8 @@ Khu Vườn Tuổi Thơ đã thành **VƯỜN LIÊN MINH**: cổng mở, đi b�
 
 ## 08.11-e
 - Dời Hair Salon Tóc Thề xuống thấp hơn (y 1140 → 1225) để không che hàng Bungalow phía trên.
+
+## 08.11-f
+- Salon tóc dời xuống ngay dưới Quầy Thú Cưng (x 1500, y 1310), không đè quầy.
+- Thiết kế lại 3 kiểu tóc to và lạ hơn: Pompadour Sóng Thần (m1), Sóng Biển Cuộn Trào (m5), Bob Pha Lê Bất Đối (f3).
+- Thêm 2 kiểu mới: Xù Bông Mây Bão (m7, nam, 5tr) và Dài Lê Thê Quét Đất (f7, nữ, 9tr, tóc dài chạm đất). Mỗi giới giờ có 7 kiểu; admin tab Cửa hàng đã có sẵn 2 kiểu mới.
