@@ -73,6 +73,20 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-i/j · Quầy Thông Tin, khai trương Vườn Liên Minh
+
+- **Quầy Thông Tin** cạnh cổng chào (bên trái đường vào): 3 tab PHÒNG TRỐNG (giường/phòng trống theo Villa, Bungalow, Khách Sạn kèm giá), BẮT ĐẦU, CHỈ ĐƯỜNG; nút mở luật đầy đủ.
+- **Bảng Vườn Liên Minh** trước cổng vườn: kể chuyện và hướng dẫn chi tiết; biển KHAI TRƯƠNG trên cổng.
+- **Thông báo một lần** (lưu trong `state.an`, không cần SQL): khai trương Vườn Liên Minh cho toàn server; xe ngựa chỉ cho chủ Lâu Đài. Có nút tự đi tới vị trí.
+
+## Phiên bản 07.11-h · Xe ngựa Lâu đài
+
+- Bãi xe ngựa nằm ngoài lâu đài (cát bên trái hàng rào), 5 xe theo 5 cấp tháp: Quạ Đen (2 ngựa, +3%), Trăng Máu (3, +5%), Pha Lê Đen (4, +7%), Rồng Ngủ (5, +8,5%), Tối Thượng (6 ngựa kỳ lân cầu vồng, +10%). Độ đẹp ngựa và xe tăng theo cấp.
+- Chỉ thành viên lâu đài (đã sở hữu suất ở tháp) mới lên xe; bấm E ở bãi để lên, E để xuống.
+- Mỗi người dùng tối đa 10 phút/ngày (đổi ngày theo UTC+7), hết giờ xe tự chạy về bãi.
+- Tăng tốc nhân cùng buff Vườn Liên Minh (Tốc độ).
+- Người chơi khác thấy bạn ngồi trên xe (trường `cr` trong vị trí). Không cần cập nhật SQL.
+
 ## Phiên bản 07.11-g · Vườn Liên Minh (luật hiện hành)
 Khu Vườn Tuổi Thơ đã thành **VƯỜN LIÊN MINH**: cổng mở, đi bộ vào được, 12 lô đất, mỗi lô trồng 1 **Cây Liên Minh**. Nút **LIÊN MINH** trong menu chính; đứng gần cổng hoặc từng lô bấm E cũng mở. Bấm vào một cây sẽ thấy bảng thông tin: tên liên minh, Gốc Chủ, tổng quỹ, thành viên, thuế, 5 thông số cây và danh sách thành viên xếp theo đóng góp. Thành viên liên minh có **biểu tượng cây** trên đầu nhân vật.
 - **Đất** (mua một lần, **không có thuế đất**): 6 lô ngoài là Đất Thường 30 triệu (cây tối đa 30 điểm), 6 lô giữa là Đất Vàng 60 triệu (tối đa 40 điểm).
