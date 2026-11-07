@@ -72,3 +72,14 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Hàng rào lâu đài nhỏ lại**, chỉ bao quanh Lâu Đài Tình Báo. Bên phải là **KHU VƯỜN TUỔI THƠ**: 12 lô đất trống (LÔ 1–12), cổng có biển "ĐANG XÂY DỰNG", chưa vào được và chưa giao dịch.
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
+
+## Phiên bản 07.11-b · Vườn Liên Minh (đợt 1)
+Khu Vườn Tuổi Thơ đổi thành **VƯỜN LIÊN MINH**, cổng đã mở, đi bộ vào được. Có 12 lô đất, mỗi lô trồng được 1 **Cây Liên Minh**. Nút **LIÊN MINH** nằm trong menu chính; đứng gần cổng hoặc gần từng lô bấm E cũng mở.
+- **Đất:** 6 lô ngoài là **Đất Thường 30 triệu** (cây tối đa 30 điểm, thuế đất 15.000₫/giờ), 6 lô giữa là **Đất Vàng 60 triệu** (tối đa 40 điểm, 30.000₫/giờ). Thuế đất tính theo giờ thực, kể cả lúc offline; quỹ cây trả trước, thiếu thì tự trừ tiền Gốc Chủ, không đủ thì thành nợ (nợ quá 12 giờ thuế thì cây héo, buff còn 50%).
+- **Hạt giống** (quyết định hình dáng và điểm gốc): Dừa Vàng 8tr (Tiền) · Anh Đào 5tr (May mắn) · Thông Gió 5tr (Tốc độ) · Sồi Chiến 5tr (Khổng Lồ) · Bồ Đề 5tr (Năng lượng) · Thế Giới Thụ 20tr (đều cả 5 kênh). Mỗi hạt có 2 kênh "ưa" (giá bón −20%) và 1 kênh "kỵ" (+30%).
+- **Thành viên:** tối thiểu 3 người mới bấm được TRỒNG, tối đa 8. Level tối đa = 5 × số thành viên (3 người: 15, 8 người: 40, và không vượt giới hạn của lô đất). Thiếu 3 người thì buff còn 50%. Mỗi người chỉ ở 1 liên minh; rời xong chờ 12 giờ. Vào sau khi cây đã trồng phải trả phí 100.000₫ × số điểm cây (bỏ vào quỹ).
+- **Thuế:** Gốc Chủ đặt thuế thành viên 50.000–250.000₫ mỗi giờ chơi (mặc định 100.000₫), tự trừ khi đang online, bỏ vào **Quỹ Cây**. Gốc Chủ không rút được quỹ; quỹ chỉ để trả thuế đất và bón cây. Không đủ tiền đóng thuế thì buff của người đó tạm dừng đến khi trả đủ. Mọi người có thể góp thêm vào quỹ.
+- **Bón dinh dưỡng** (Gốc Chủ, trừ từ quỹ): giá điểm thứ k = 100.000₫ × 1,11^k (nhân 0,8 nếu hạt ưa, 1,3 nếu kỵ). Mỗi kênh tối đa 10 điểm. 5 kênh và hiệu ứng ở 10 điểm: **Tiền** +8% thưởng ván game và Team Building · **May mắn** +30% thưởng nhặt (gián, ông già, Bụt) và tỉ lệ trúng vé số · **Tốc độ** +15% · **Năng lượng** −30% hao khi đứng/đi và hồi khi ngủ nhanh hơn 25% (không giảm phí 6% mỗi ván) · **Khổng Lồ** nhân vật ×1,25, +30% sát thương quái, đổi lại hao năng lượng +10%.
+- Gốc Chủ có thể mời thành viên ra, nhường chức, hoặc trả đất khi chỉ còn một mình. Cây hiển thị trên lô theo 4 giai đoạn (Mầm, Cây con, Trưởng thành, Cổ thụ), màu quả theo kênh nổi trội. Hạnh phúc có thêm nguồn "Cây Liên Minh" (tối đa +4/ngày).
+- **Hoãn:** kỹ năng đặc biệt, mời người online trực tiếp, trang admin cho Vườn Liên Minh.
+- **Cần chạy lại `supabase-update-team.sql`** trong Supabase (thêm luật ghi cho `lm/<lô>`), nếu không các lô sẽ không ghi được khi chơi online.

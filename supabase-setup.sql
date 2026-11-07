@@ -121,6 +121,11 @@ begin
     if s[2] = u then return true; end if;
     return n = 4 and s[3] in ('m', 'res') and s[4] = u;
   end if;
+  if s[1] = 'lm' then                                      -- Vườn Liên Minh: Gốc Chủ ghi cả cây, thành viên chỉ ghi dòng của mình (m = tên, c = tiền đã góp)
+    if n = 2 then return (cur is null and nv is not null and nv ->> 'h' = u) or (docv is not null and docv ->> 'h' = u); end if;
+    if docv is not null and docv ->> 'h' = u then return true; end if;
+    return n = 4 and s[3] in ('m', 'c') and s[4] = u;
+  end if;
   if s[1] = 'gifts' then
     return n = 3 and s[2] <> u and cur is null and nv is not null and nv ->> 'from' = u and (nv ->> 'amount')::numeric > 0;
   end if;
