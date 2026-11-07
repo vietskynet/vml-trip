@@ -61,3 +61,14 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - Đồ ăn tính theo kcal, ~400₫/kcal: nước dừa 100 kcal 40.000₫ (+5%), bánh mì 250 kcal 100.000₫ (+12%), cơm gà 500 kcal 200.000₫ (+25%), set hải sản 1000 kcal 400.000₫ (+50%). Ăn tập thể miễn phí vẫn giữ.
 - Bot cũng hao nhanh hơn khi đi lại và không đi chơi game khi dưới 30%. "Lều" đổi tên hết thành "Bungalow".
 - Hạnh phúc, nhà và Khu Vườn Tuổi Thơ chưa làm (đang thiết kế).
+
+## Phiên bản 07.11-a · Hạnh phúc, Khu Vườn Tuổi Thơ, menu gộp
+- **Chỉ số hạnh phúc** (thanh vàng cạnh năng lượng, bấm để xem chi tiết): thang 0–100%, bắt đầu 50%, tụt 1 điểm mỗi 8 phút online.
+  - Cộng điểm (giới hạn mỗi 24 giờ): ngủ trọn giấc +7 (1 lần) · vệ sinh đúng lúc +2 (3) · ăn đúng bữa +2 (3) · Team Building +8 thắng / +3 thua (2) · dọn phân, diệt gián, giúp cụ già +3 (5) · ông Bụt +5 · chia tiền từ 100.000₫ +2, từ 1.000.000₫ +3 (3 người khác nhau) · vé số +1 (3), trúng +3.
+  - Trừ điểm: tai nạn vệ sinh −6, ngất −8.
+  - Trần theo chỗ ở: chưa có nhà 55 · Bungalow 65 · Khách sạn 75 · Villa 85 · Lâu đài 90.
+  - Chuỗi ngày đều (≥ 4 loại hoạt động mỗi ngày): 3 ngày +5% điểm, 7 ngày +10%. Có điểm tuần và điểm tổng.
+  - **Chưa ảnh hưởng tiền kiếm được.** Lưu cùng trạng thái nhân vật trên server (không cần SQL mới); tính ở máy người chơi.
+- **Hàng rào lâu đài nhỏ lại**, chỉ bao quanh Lâu Đài Tình Báo. Bên phải là **KHU VƯỜN TUỔI THƠ**: 12 lô đất trống (LÔ 1–12), cổng có biển "ĐANG XÂY DỰNG", chưa vào được và chưa giao dịch.
+- **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
+- **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
