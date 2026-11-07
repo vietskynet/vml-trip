@@ -12,6 +12,10 @@ Mã cheat trong khung chat (phím C): `VMLSANG`. Mỗi lần dùng mã tốn 50.
 Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VMLPHAN`, `VMLHAOQUANG`, `VMLXICHLO`, `VMLLUA`, `VMLMUA`, `VMLTANGHINH`, `VMLDISCO`, `VMLPHAOHOA`.
 
 
+## Phiên bản 08.11-b · Tab Kinh tế trong admin
+- Admin có tab **KINH TẾ**: tổng tiền lưu hành, ví trung vị/trung bình/top 10%, chỉ số chênh lệch (Gini), phân bố ví, tỉ lệ người đủ tiền mua từng món, nhà/thú/bộ đồ đã bán, top 10 giàu nhất và nhận xét tự động.
+- Dùng dữ liệu sẵn có, không cần chạy thêm SQL. Lịch sử tổng tiền chỉ ghi lúc trang admin đang mở.
+
 ## Cập nhật 06.11.2026-g
 - Trang trí phòng khách sạn (ban công, cửa sổ, bảng tên), 12 món trang trí mới, quầy thuê phao bơi cạnh hồ (100.000₫ / 2 phút, admin chỉnh giá được).
 - **Cần chạy `sql-cu/supabase-update-hotel-deco.sql (nay đã gộp vào supabase-setup.sql)` một lần** trong Supabase > SQL Editor để bật trang trí phòng khách sạn khi chơi online.

@@ -70,7 +70,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
 
  <div id="app" hidden>
   <div class="top"><h1>VML TRIP · QUẢN TRỊ</h1><div class="row"><span class="who">Admin: <b id="whoName">—</b></span><button class="ghost sm" id="logout">ĐĂNG XUẤT</button></div></div>
-  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">GIÁ CẢ</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ev">SỰ KIỆN</button><button data-t="err">LỖI GAME</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button></nav>
+  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">GIÁ CẢ</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ev">SỰ KIỆN</button><button data-t="eco">KINH TẾ</button><button data-t="err">LỖI GAME</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button></nav>
 
   <section data-p="ov" class="card">
    <h2>TỔNG QUAN RESORT</h2>
@@ -146,6 +146,18 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    </div>
   </section>
 
+  <section data-p="eco" hidden>
+    <div class="card">
+      <h2>KINH TẾ GAME</h2>
+      <p style="color:var(--muted);margin:0 0 8px">Tính từ ví và tài sản của người chơi đang lưu trên máy chủ. Tự cập nhật. Lịch sử tổng tiền chỉ ghi trong lúc trang này mở.</p>
+      <div class="kpis" id="ecoKpi" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px"></div>
+    </div>
+    <div class="card" style="margin-top:12px"><h2>PHÂN BỐ VÍ</h2><div id="ecoDist"></div></div>
+    <div class="card" style="margin-top:12px"><h2>AI MUA ĐƯỢC GÌ</h2><p style="color:var(--muted);margin:0 0 6px">Tỉ lệ người chơi đủ tiền mua ngay (theo giá hiện tại).</p><div id="ecoAfford"></div></div>
+    <div class="card" style="margin-top:12px"><h2>TÀI SẢN ĐÃ SỞ HỮU</h2><div id="ecoAsset"></div></div>
+    <div class="card" style="margin-top:12px"><h2>TOP 10 GIÀU NHẤT</h2><table><thead><tr><th>#</th><th>Tên</th><th>Ví</th><th>Tài sản</th><th>Tổng</th></tr></thead><tbody id="ecoTop"></tbody></table></div>
+    <div class="card" style="margin-top:12px"><h2>NHẬN XÉT TỰ ĐỘNG</h2><ul id="ecoAdvice" style="margin:0;padding-left:20px;line-height:1.5"></ul></div>
+  </section>
   <section data-p="err" hidden>
    <div class="card">
     <h2>NHẬT KÝ LỖI GAME</h2>
@@ -199,7 +211,7 @@ firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously(
  db.ref('admins/'+uid).on('value',s=>{admin=s.val()===true;if(admin&&sessionStorage.getItem(SKEY))showApp(true);else if(!admin)showApp(false)});
  if(started)return;started=true;
  db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
- db.ref('players').on('value',s=>{players=s.val()||{};renderPl()});
+ db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{ecoRender()}catch(e){}});
  db.ref('pos').on('value',s=>{pos=s.val()||{}});
  db.ref('beds').on('value',s=>{beds=s.val()||{}});
  db.ref('market').on('value',s=>{market=s.val()||{}});
@@ -218,6 +230,38 @@ function renderTst(){const sel=$('#tstSel');if(!sel)return;const t=config.tester
 $('#tstSave').onclick=()=>{const u=$('#tstSel').value;if(!u){say('#tstMsg','Chưa chọn nhân vật.',1);return}const p=players[u]||{};db.ref('config/tester').set({u,name:String(p.name||'')}).then(()=>say('#tstMsg','Đã đặt. Người này vào lại game sẽ thấy nút THỬ NGHIỆM trong menu.')).catch(e=>say('#tstMsg','Lỗi: '+e.message,1))};
 $('#tstClr').onclick=()=>{db.ref('config/tester').remove().then(()=>say('#tstMsg','Đã gỡ.')).catch(e=>say('#tstMsg','Lỗi: '+e.message,1))};
 let errs={};
+/* ===== KINH TẾ ===== */
+const ecoHist=[];let ecoLast=0;
+function ecoCalc(){const ps=Object.entries(players).filter(([u,p])=>p&&p.state&&p.name!=null);const pet=i=>{const c=CAT.pets[i];return c?c[1]:0};
+ const hp=Object.assign({},...HOUSES.map(([k,n,d])=>({[k]:getPrice('house.'+k,d)})));
+ const bedTypes={villa:0,tent:0,room:0};const bedOwner={};Object.entries(beds).forEach(([t,tp])=>Object.values(tp||{}).forEach(un=>Object.values(un||{}).forEach(x=>{if(x&&bedTypes[t]!=null){bedTypes[t]++;(bedOwner[x]=bedOwner[x]||[]).push(t)}})));
+ const rows=ps.map(([u,p])=>{const m=Math.max(0,+p.state.money||0),pl=Array.isArray(p.state.pets)?p.state.pets:(Array.isArray(p.pets)?p.pets:[]),petV=pl.reduce((a,i)=>a+pet(i),0),skN=p.sk&&p.sk.own?String(p.sk.own).split(',').filter(Boolean).length:0,houseV=(bedOwner[u]||[]).reduce((a,t)=>a+(hp[t]||0),0),cr=p.state.cr?1:0;return{u,name:String(p.name||'?'),m,petV,petN:pl.length,skN,houseV,cr,asset:petV+houseV,tot:m+petV+houseV,on:pos[u]?1:0}});
+ return{rows,bedTypes,hp}}
+function getPrice(path,d){const parts=path.split('.');let v=config&&config.prices;for(const k of parts){v=v&&v[k]}return Number.isFinite(+v)&&v!=null?+v:d}
+function ecoRender(){if(!$('#ecoKpi'))return;const {rows,bedTypes,hp}=ecoCalc(),n=rows.length,ms=rows.map(r=>r.m).sort((a,b)=>a-b),sum=ms.reduce((a,b)=>a+b,0),med=n?ms[Math.floor(n/2)]:0,p90=n?ms[Math.min(n-1,Math.floor(n*.9))]:0,avg=n?sum/n:0;
+ let g=0;if(n>1&&sum>0){let cum=0;ms.forEach((v,i)=>cum+=(i+1)*v);g=(2*cum)/(n*sum)-(n+1)/n}
+ const now0=Date.now();if(now0-ecoLast>30000){ecoLast=now0;ecoHist.push([now0,sum]);if(ecoHist.length>240)ecoHist.shift()}
+ let rate='—';if(ecoHist.length>=2){const a=ecoHist[0],b=ecoHist[ecoHist.length-1],dt=(b[0]-a[0])/3600000;if(dt>.02)rate=(b[1]-a[1]>=0?'+':'')+VND(Math.round((b[1]-a[1])/dt))+'/giờ'}
+ const onl=rows.filter(r=>r.on).length;
+ const k=(l,v,s)=>`<div style="background:var(--panel2);border:3px solid #000;padding:8px 10px"><small style="color:var(--muted)">${l}</small><div style="font-size:24px;color:var(--sun)">${v}</div>${s?'<small style="color:var(--muted)">'+s+'</small>':''}</div>`;
+ $('#ecoKpi').innerHTML=k('NGƯỜI CHƠI',n,onl+' đang online')+k('TỔNG TIỀN VÍ',VND(sum),'lưu hành')+k('VÍ TRUNG VỊ',VND(med),'một nửa người chơi dưới mức này')+k('VÍ TRUNG BÌNH',VND(Math.round(avg)))+k('VÍ TOP 10%',VND(p90))+k('GIÀU NHẤT',VND(ms[n-1]||0))+k('CHÊNH LỆCH (GINI)',g.toFixed(2),g<.4?'khá đều':g<.6?'chênh vừa':'chênh nhiều')+k('TỔNG TIỀN THAY ĐỔI',rate,'ghi từ lúc mở trang này');
+ const B=[['dưới 1tr',0,1e6],['1–5tr',1e6,5e6],['5–20tr',5e6,2e7],['20–50tr',2e7,5e7],['50–200tr',5e7,2e8],['trên 200tr',2e8,1e15]],mx=Math.max(1,...B.map(([l,a,b])=>ms.filter(v=>v>=a&&v<b).length));
+ $('#ecoDist').innerHTML=B.map(([l,a,b])=>{const c=ms.filter(v=>v>=a&&v<b).length;return`<div style="display:flex;gap:8px;align-items:center;margin:3px 0"><span style="width:90px">${l}</span><div style="background:var(--sea);height:16px;width:${Math.round(c/mx*60)+(c?2:0)}%"></div><b>${c}</b></div>`}).join('');
+ const A=[['Giường phòng KS',hp.room],['Giường bungalow',hp.tent],['Giường villa',hp.villa],['Đất thường (45tr)',45e6],['Đất vàng (90tr)',90e6],['Lâu đài thấp nhất',2e7],['Lâu đài cao nhất',1e8]];
+ $('#ecoAfford').innerHTML='<table><thead><tr><th>Món</th><th>Giá</th><th>Đủ tiền</th></tr></thead><tbody>'+A.map(([l,p])=>{const c=rows.filter(r=>r.m>=p).length;return`<tr><td>${l}</td><td>${VND(p)}</td><td>${c}/${n} (${n?Math.round(c/n*100):0}%)</td></tr>`}).join('')+'</tbody></table>';
+ const cnt={villa:20,tent:30,room:40};const bt=bedTypes;
+ $('#ecoAsset').innerHTML=`<table><tbody><tr><td>Giường villa đã bán</td><td>${bt.villa}/20</td></tr><tr><td>Giường bungalow đã bán</td><td>${bt.tent}/30</td></tr><tr><td>Giường khách sạn đã bán</td><td>${bt.room}/40</td></tr><tr><td>Người có lâu đài</td><td>${rows.filter(r=>r.cr).length}</td></tr><tr><td>Thú cưng đang sở hữu</td><td>${rows.reduce((a,r)=>a+r.petN,0)} con, giá trị ${VND(rows.reduce((a,r)=>a+r.petV,0))}</td></tr><tr><td>Bộ đồ đã mua</td><td>${rows.reduce((a,r)=>a+r.skN,0)} bộ</td></tr><tr><td>Giá trị nhà (theo giá hiện tại)</td><td>${VND(rows.reduce((a,r)=>a+r.houseV,0))}</td></tr></tbody></table>`;
+ $('#ecoTop').innerHTML=rows.slice().sort((a,b)=>b.tot-a.tot).slice(0,10).map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${VND(r.m)}</td><td>${VND(r.asset)}</td><td>${VND(r.tot)}</td></tr>`).join('')||'<tr><td colspan="5">Chưa có dữ liệu.</td></tr>';
+ const adv=[];if(!n)adv.push('Chưa có người chơi để phân tích.');else{const vp=hp.villa,ab=rows.filter(r=>r.m>=vp).length/n;
+  if(med<1e6)adv.push('Ví trung vị dưới 1tr: người chơi đang thiếu tiền, nên giảm giá hoặc tăng thưởng minigame.');
+  if(med>vp)adv.push('Ví trung vị đã vượt giá villa ('+VND(vp)+'): tiền dư nhiều, nên tăng giá hoặc thêm chỗ tiêu (phí bảo trì, mồi câu, đạn).');
+  if(ab>.5)adv.push('Hơn nửa người chơi đã đủ tiền mua villa: villa đang quá rẻ so với thu nhập.');
+  if(ab===0&&n>=5)adv.push('Chưa ai đủ tiền mua villa: có thể giá đang quá cao hoặc người chơi chưa có đường kiếm đủ nhanh.');
+  if(g>.65)adv.push('Chênh lệch ví rất lớn (Gini '+g.toFixed(2)+'): người mới khó đuổi kịp, nên thêm thưởng cho người ít tiền hoặc chỗ tiêu cho người giàu.');
+  if(bt.villa+bt.tent+bt.room>=85)adv.push('Gần hết giường: cân nhắc thêm nhà hoặc tăng giá để người đến sau còn chỗ.');
+  if(!adv.length)adv.push('Chưa thấy dấu hiệu mất cân bằng. Tiếp tục theo dõi khi có thêm người chơi.')}
+ $('#ecoAdvice').innerHTML=adv.map(t=>'<li>'+t+'</li>').join('')}
+setInterval(()=>{if(started||admin)try{ecoRender()}catch(e){}},5000);
 function renderErr(){const el=$('#errList');if(!el)return;const rows=Object.entries(errs).map(([id,e])=>Object.assign({id},e)).filter(e=>e&&e.m).sort((p,q)=>(q.t||0)-(p.t||0)).slice(0,300);$('#errCount').textContent=rows.length+' lỗi';el.innerHTML=rows.map(e=>`<tr><td>${new Date(e.t||0).toLocaleString('vi-VN')}</td><td>${esc(e.n||'?')}</td><td>${esc(e.k||'')}</td><td><b>${esc(e.m)}</b><details><summary>stack</summary><pre style="white-space:pre-wrap;font-size:11px">${esc(e.s||'')}</pre></details></td><td>${e.x},${e.y} · ${esc(e.md||'')} · ${esc(e.vw||'')}</td><td>${esc(e.v||'')}</td><td><small>${esc((e.ua||'').slice(0,90))}</small></td></tr>`).join('')||'<tr><td colspan="7">Chưa có lỗi nào.</td></tr>'}
 $('#errClr').onclick=()=>{if(!confirm('Xoá toàn bộ nhật ký lỗi?'))return;db.ref('errlog').remove().then(()=>say('#errMsg','Đã xoá.')).catch(e=>say('#errMsg','Lỗi: '+e.message,1))};
 function tab(t){if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices()}
