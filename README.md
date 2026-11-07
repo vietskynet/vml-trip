@@ -12,6 +12,17 @@ Mã cheat trong khung chat (phím C): `VMLSANG`. Mỗi lần dùng mã tốn 50.
 Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VMLPHAN`, `VMLHAOQUANG`, `VMLXICHLO`, `VMLLUA`, `VMLMUA`, `VMLTANGHINH`, `VMLDISCO`, `VMLPHAOHOA`.
 
 
+## Phiên bản 08.11-c · 20 đồ trang trí cao cấp + Cửa hàng admin
+- **20 đồ trang trí cao cấp (★)** cho Villa và Bungalow: giá bungalow 10tr–100tr, **villa gấp đôi** (20tr–200tr). Không đặt được ở phòng khách sạn.
+  - Xe & Bay: mô tô nước 20tr, siêu xe 60tr, khinh khí cầu 40tr, trực thăng 100tr.
+  - Vườn & Nước: đài phun nước 30tr, hồ bơi vô cực 50tr, hồ cá Koi 15tr, thác đá 35tr.
+  - Sang trọng: cặp sư tử vàng 45tr, cổng vòm cẩm thạch 20tr, vương miện vàng 80tr, rương kho báu 12tr.
+  - Công nghệ: robot quản gia 18tr, tên lửa 90tr, rồng hologram 70tr, đàn drone đèn 25tr.
+  - Tiệc & Lễ hội: sân khấu DJ 40tr, pháo hoa bất tận 30tr, cổng tre hoa giấy 10tr, đèn lồng cung đình 12tr.
+- Bảng trang trí trong game có **tab phân loại**: Tất cả, ★ Cao cấp, Vui nhộn, Vườn & Nước, Sang trọng, Công nghệ, Xe & Bay, Tiệc & Lễ hội. 24 món cũ cũng được xếp loại.
+- Admin: tab **GIÁ CẢ** đổi thành **CỬA HÀNG**: chọn quầy (Nhà & Lâu đài, Thú cưng, Trang trí, Thời trang, Ăn uống, Dịch vụ, Thuyền, Việc vặt) có biểu tượng, lọc theo loại, tìm tên, sắp xếp theo giá hoặc bán chạy, lọc món đã đổi giá, nút Lưu dính đáy màn hình, hiển thị tốt trên điện thoại. Giá đồ cao cấp trong admin là giá bungalow, villa tự nhân đôi.
+- **Thống kê lượt mua**: mỗi món hiện số lượt mua và doanh thu ước tính, kèm Top 5 bán chạy. Game đếm lượt mua của từng người vào `players/<id>/state.bu` (không cần SQL). Số liệu chỉ đếm từ bản này; mỗi người phải vào game bản mới mới đẩy số lên.
+
 ## Phiên bản 08.11-b · Tab Kinh tế trong admin
 - Admin có tab **KINH TẾ**: tổng tiền lưu hành, ví trung vị/trung bình/top 10%, chỉ số chênh lệch (Gini), phân bố ví, tỉ lệ người đủ tiền mua từng món, nhà/thú/bộ đồ đã bán, top 10 giàu nhất và nhận xét tự động.
 - Dùng dữ liệu sẵn có, không cần chạy thêm SQL. Lịch sử tổng tiền chỉ ghi lúc trang admin đang mở.
