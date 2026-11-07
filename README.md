@@ -73,6 +73,11 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-y · Mỗi tàu một kiểu hoả lực
+- Thuyền Điêu: Pháo đôi (2 viên song song, 10 lần). Thiên Nga: Trứng nổ (bay vòng cung, nổ lan, 7 lần). Cá Heo: Tia nước (nhanh, tầm gần, 18 lần).
+- Rồng Vàng: Phun lửa (3 luồng hình quạt, 10 lần). Đĩa Bay: Tia laze (rất nhanh, tầm xa, 2 sát thương, 8 lần). Cá Voi: Sóng thần (sóng lớn xuyên thấu, 2 sát thương, 6 lần).
+- Bảng chỉnh hoả lực là WPN trong index.html. Thuyền nhỏ vẫn không có súng và không bị bắn.
+
 ## Phiên bản 07.11-x · Tàu hải tặc NPC
 - Khi bạn lái thuyền vừa/lớn, thỉnh thoảng (30–120 giây) có tàu hải tặc xuất hiện, vòng quanh và bắn đạn chậm vào bạn (mỗi 4–6 giây, né được).
 - Thuyền vừa: hải tặc 3 máu, thưởng 250k. Thuyền lớn: 5 máu, thưởng 600k (nhận khi về bến). Thuyền nhỏ được bảo vệ, không gặp hải tặc.
