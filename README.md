@@ -73,6 +73,11 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-s · Thời trang: tầm trung, đồ thể thao, giá rẻ, Cosplay hài
+
+- Shop có **79 bộ**. Thêm 14 bộ tầm trung (1 đến 4 triệu, chia đều 7 nhóm cũ), nhóm mới **Đồ thể thao** (bóng đá, pickleball, đồ bơi, bóng rổ, tennis, yoga, chạy bộ, golf, lặn), 10 bộ giá rẻ (100 nghìn đến 800 nghìn), nhóm mới **Cosplay hài** (2 đến 6 triệu): Con Gián Bất Tử, Cục Phân Đôi Tình Bạn, Khố Rách Áo Ôm, Bậc Thầy Đa Cấp, 4 Shipper (xanh lá, cam, xanh dương, vàng).
+- Thêm kiểu áo (`swim`, `roach`, `poo`, `rags`, `mlm`, `shipper`) và mũ (cap, headband, visor, goggles, sunhat, chef, roach, flies, rathat, slick, shiphelm). Chỉ là dữ liệu client, không cần SQL.
+
 ## Phiên bản 07.11-q · Nhật ký lỗi game cho admin
 
 - Lỗi JavaScript trên máy người chơi (lỗi thường, promise bị từ chối, lỗi vòng lặp game) tự gửi về `errlog/<mã>` (tối đa 8 lỗi khác nhau mỗi phiên, chế độ thử nghiệm không gửi). Mỗi bản ghi: giờ, nhân vật, loại, nội dung, stack, vị trí, chế độ, kích thước màn hình, bản game, thiết bị.
