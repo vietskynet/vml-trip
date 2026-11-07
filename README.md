@@ -188,3 +188,6 @@ Khu Vườn Tuổi Thơ đã thành **VƯỜN LIÊN MINH**: cổng mở, đi b�
 
 ### SQL
 - **Chỉ cần chạy `supabase-setup.sql`** trong Supabase SQL Editor (đã gồm mọi cập nhật, chạy lại an toàn, không xoá dữ liệu). Các file cập nhật lẻ cũ được dời vào thư mục `sql-cu/`, không cần chạy nữa.
+
+## 08.11-e
+- Dời Hair Salon Tóc Thề xuống thấp hơn (y 1140 → 1225) để không che hàng Bungalow phía trên.
