@@ -73,6 +73,13 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-v · Thuê thuyền câu cá ngoài biển
+- Quầy Thuê Thuyền ở bãi biển phía bắc (cạnh cầu tàu), có bến và thuyền đỗ trang trí.
+- 3 cấp thuyền, mỗi cấp 3 kiểu (9 mẫu): Nhỏ 80k/3 phút, Vừa 350k/4 phút, Lớn 1,5tr/4 phút. Càng lớn càng nhanh và ra cá quý.
+- Chèo tự do ngoài biển gần bờ (không vào màn riêng). E thả câu, chờ dấu ! rồi bấm E để giật. Bơi gần bóng cá thì cá cắn nhanh và hiếm hơn.
+- 14 loại cá, giá phụ thuộc cân nặng. Hết giờ hoặc bấm VỀ BẾN thì tự bán cá. Người khác nhìn thấy thuyền và cần câu.
+- Hằng số cân bằng nằm ở BTIER, FISHD, FW trong index.html.
+
 ## Phiên bản 07.11-u · Thu nhỏ quầy thông tin
 - Quầy thông tin ngoài cổng nhỏ hơn khoảng 36%, vùng chắn và nhãn chữ thu theo.
 
