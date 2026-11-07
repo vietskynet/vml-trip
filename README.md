@@ -73,6 +73,13 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-m · Tăng giá đất, nhân vật thử nghiệm (sandbox)
+
+- Đất Vườn Liên Minh tăng ×1,5: Thường 45 triệu, Vàng 90 triệu (đã mua giá cũ không đổi).
+- Admin: tab **THỬ NGHIỆM** chọn 1 nhân vật (lưu `config/tester`, không cần SQL mới).
+- Nhân vật đó có nút THỬ NGHIỆM trong menu: game tải lại và chạy **tách biệt hoàn toàn** (ngắt mọi listener, database giả không ghi gì lên server). Có 5 tỷ, sở hữu cả 5 tháp, bảng test: dịch chuyển, vào phòng bất kỳ (Villa/Bungalow/KS), reset 10 phút xe ngựa, thêm bot để trồng cây liên minh. Thoát bằng nút THOÁT (tải lại về game thật).
+- Thông báo khai trương/xe ngựa không còn là cửa sổ chặn game, chỉ là thẻ nhỏ góc phải (bản 07.11-l).
+
 ## Phiên bản 07.11-k · Dời ngân hàng, cửa xe ngựa, pháo hoa
 
 - Techcombank dời ra giữa quầy Câu Cá và Pha Chế (650,1150).
@@ -95,7 +102,7 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 
 ## Phiên bản 07.11-g · Vườn Liên Minh (luật hiện hành)
 Khu Vườn Tuổi Thơ đã thành **VƯỜN LIÊN MINH**: cổng mở, đi bộ vào được, 12 lô đất, mỗi lô trồng 1 **Cây Liên Minh**. Nút **LIÊN MINH** trong menu chính; đứng gần cổng hoặc từng lô bấm E cũng mở. Bấm vào một cây sẽ thấy bảng thông tin: tên liên minh, Gốc Chủ, tổng quỹ, thành viên, thuế, 5 thông số cây và danh sách thành viên xếp theo đóng góp. Thành viên liên minh có **biểu tượng cây** trên đầu nhân vật.
-- **Đất** (mua một lần, **không có thuế đất**): 6 lô ngoài là Đất Thường 30 triệu (cây tối đa 30 điểm), 6 lô giữa là Đất Vàng 60 triệu (tối đa 40 điểm).
+- **Đất** (mua một lần, **không có thuế đất**): 6 lô ngoài là Đất Thường 45 triệu (cây tối đa 30 điểm), 6 lô giữa là Đất Vàng 60 triệu (tối đa 40 điểm).
 - **Hạt giống** (hình dáng + điểm gốc): Dừa Vàng 8tr (Tiền) · Anh Đào 5tr (May mắn) · Thông Gió 5tr (Tốc độ) · Sồi Chiến 5tr (Khổng Lồ) · Bồ Đề 5tr (Năng lượng) · Thế Giới Thụ 20tr (đều 5 kênh). Mỗi hạt có 2 kênh "ưa" (giá nâng cấp −20%) và 1 kênh "kỵ" (+30%).
 - **Gốc Chủ đặt tên liên minh**, đổi tên được, mở hoặc đóng đăng ký (đóng thì chỉ người được mời mới vào), mời người online (lời mời lưu 24 giờ), mời ra, nhường chức, trả lại đất.
 - **Thành viên:** tối thiểu 3 người mới được TRỒNG, tối đa 10. Level tối đa = 5 × số thành viên, tính đến 8 người (3 người: 15, 8 người: 40), và không vượt giới hạn của lô. Thiếu 3 người thì buff còn 50%. Mỗi người chỉ ở 1 liên minh; rời xong chờ 12 giờ. Vào sau khi cây đã trồng phải trả phí 250.000₫ × số điểm cây (vào quỹ).
