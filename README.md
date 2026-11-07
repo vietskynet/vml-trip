@@ -73,6 +73,14 @@ Mã hiệu ứng 10 giây (người khác cũng thấy): `VMLTO`, `VMLTIEN`, `VM
 - **Menu chính** gom TÀI SẢN, BXH, CHUYỂN, HẠNH PHÚC, LUẬT, NHẠC, NV. Nút BẢN ĐỒ vẫn đứng riêng.
 - **Gián và ông già** ưu tiên xuất hiện gần người ít tiền (xếp hạng ví càng thấp càng gần và càng nhanh), người giàu thì xuất hiện ngẫu nhiên khắp resort.
 
+## Phiên bản 07.11-w · Thuyền sáng tạo, bãi cá động, đại bác
+- 9 thuyền mới: Chiếc Lá Xanh, Vịt Vàng Bơi Bơi, Thuyền Tình Ái; Thuyền Điêu (cướp biển), Thiên Nga Đạp Vịt, Cá Heo Nhảy Múa; Rồng Vàng Hoàng Gia, Đĩa Bay Alien, Cá Voi Phun Nước. Mỗi thuyền có hiệu ứng riêng, vệt sóng, lắc lư.
+- Bãi cá động: 6 chỗ nước sủi bọt, đổi chỗ mỗi 90 giây (mọi người thấy giống nhau), cá búng lên mặt nước. Câu ở đó cá quý nhiều hơn và cắn nhanh hơn.
+- Đứng một chỗ thả câu nhiều lần thì cá sợ, tỉ lệ cá đắt giảm dần, phải đổi chỗ.
+- Hai lần thuê cách nhau 1 phút (lưu cả khi tải lại trang).
+- Đại bác (phím F hoặc nút BẮN): thuyền vừa 3 máu 8 đạn, thuyền lớn 5 máu 14 đạn. Thuyền nhỏ được bảo vệ, không bị bắn. Bị chìm thì mất nửa số cá và về bến. Không cần sửa SQL (đạn đồng bộ qua vị trí người chơi).
+- Giá bán cá giảm 20% (FISH_K=.8).
+
 ## Phiên bản 07.11-v · Thuê thuyền câu cá ngoài biển
 - Quầy Thuê Thuyền ở bãi biển phía bắc (cạnh cầu tàu), có bến và thuyền đỗ trang trí.
 - 3 cấp thuyền, mỗi cấp 3 kiểu (9 mẫu): Nhỏ 80k/3 phút, Vừa 350k/4 phút, Lớn 1,5tr/4 phút. Càng lớn càng nhanh và ra cá quý.
