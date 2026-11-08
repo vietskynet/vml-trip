@@ -213,3 +213,18 @@ Khu Vườn Tuổi Thơ đã thành **VƯỜN LIÊN MINH**: cổng mở, đi b�
 ## 08.11-i
 - Thời gian chờ giữa 2 lượt chơi thường theo cấp: cấp 1 = 1 phút, cấp 2 = 2 phút, cấp 3 = 3 phút (chung cho mỗi khu game).
 - Thách Đấu: mỗi người gửi lời thách cách nhau 3 phút (tính từ lúc gửi và từ lúc nộp điểm trận trước). Bị từ chối thì cũng phải chờ 3 phút mới mời tiếp.
+
+## 08.11.2026-j · 3 game VIP của Lâu Đài
+
+Ba quầy nhỏ lấp lánh nằm ở sân phía đông Lâu Đài Tình Báo (cạnh đường lát đá, ai cũng chơi được):
+
+| Game | Cách chơi | Điểm chính |
+|---|---|---|
+| **Tình Báo** | Chộp hồ sơ trong 5 két sắt, tránh 2–3 đèn pha quét ngang | Hồ sơ +110k, cặp vàng +330k, bị đèn rọi −150k và khoá tay 1 giây |
+| **Pháp Thuật Hắc Ám** | Bắn phép Lửa/Băng/Độc đúng màu con quái thấp nhất (phím 1 2 3, Z X C hoặc bấm nút) | Quái +60k, combo tăng tới ×2, sai màu −120k, quái chạm đất mất 1 tim, về sau có quái 2 màu |
+| **Đua Chổi** | Bay 3 làn (← →, hoặc chạm trái/giữa/phải), qua vòng thần và sao, né mây giông và dơi | Vòng +55k, sao +160k, liên tiếp tăng thưởng, va chạm −150k, tốc độ tăng dần |
+
+- **Vé vào 600.000₫**, chờ 2 phút mới chơi lại cùng quầy. Điểm số thực tế của bot thử: người chơi khá khoảng 4–4,5 triệu, trung bình khoảng 2,4–3,4 triệu, người chơi tệ lỗ vé. Cao hơn cấp 3 bên ngoài khoảng 50%.
+- **Ban đêm (19h–5h) thưởng +10%.**
+- **Thuế chủ Lâu Đài**: trừ vào tiền thưởng của người chơi, chia cho các thành viên của tháp đã đủ 3 chủ (mỗi tháp chia đều 3 người): Quạ Đen 1%, Trăng Máu 1,5%, Pha Lê Đen 2%, Rồng Ngủ 2,5%, Tối Thượng 3%. Tối đa 10% khi cả 5 tháp có chủ. Chủ nhận tiền qua `gifts/` (không cần sửa SQL), chủ đang online sẽ thấy thông báo "Thu nhập chủ Lâu Đài".
+- Các hằng số nằm ở đầu khối `GAME VIP CỦA LÂU ĐÀI` trong `index.html`: `CZ_FEE`, `CZ_CD`, `CZ_NIGHT`, `CZ_SH`.
