@@ -209,3 +209,7 @@ Khu Vườn Tuổi Thơ đã thành **VƯỜN LIÊN MINH**: cổng mở, đi b�
 - **Mục THÁCH ĐẤU** ở mọi game: chọn một người đang online, chọn cấp độ và tiền cược 1–10 triệu. Hai bên chơi cùng một màn (cùng hạt giống ngẫu nhiên), điểm cao hơn thắng toàn bộ cược, hoà thì hoàn tiền, bỏ cuộc quá 2 phút thì xử thua. Cược bị trừ khi cả hai vào trận. Dùng đường dẫn `duels/` đã có sẵn trong `supabase-setup.sql`, không cần chạy SQL mới.
 - **Bến Thuyền Bãi Trái** (bên trái khu villa): thuê thuyền như bến chính, xuất phát và về lại đúng bến đã thuê.
 - **2 game bãi biển mới** cạnh bến đó: **Săn Kho Báu** (đào ô cát có máy dò kim loại, mỗi bãi sắp xếp rương, kim cương, chai thư, bom, cua ngẫu nhiên, màu cát và bầu trời đổi mỗi lần) và **Lâu Đài Cát** (xếp tầng khối cát, có gió bất chợt, màu khối và kiểu cửa sổ khác nhau mỗi lâu đài).
+
+## 08.11-i
+- Thời gian chờ giữa 2 lượt chơi thường theo cấp: cấp 1 = 1 phút, cấp 2 = 2 phút, cấp 3 = 3 phút (chung cho mỗi khu game).
+- Thách Đấu: mỗi người gửi lời thách cách nhau 3 phút (tính từ lúc gửi và từ lúc nộp điểm trận trước). Bị từ chối thì cũng phải chờ 3 phút mới mời tiếp.
