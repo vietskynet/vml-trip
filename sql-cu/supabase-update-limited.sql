@@ -45,8 +45,8 @@ begin
   ba := ba || to_jsonb(it);
   -- số lượng đã nhận + lịch sử (giữ 60 dòng gần nhất)
   bg := coalesce((bbag #>> array['g', it])::int, 0) + 1;
-  hb := coalesce(case jsonb_typeof(bbag -> 'h') when 'array' then bbag -> 'h' else '[]'::jsonb end, '[]'::jsonb) || jsonb_build_array(jsonb_build_array(t, it, 'buy:' || pr));
-  hs := coalesce(case jsonb_typeof(sbag -> 'h') when 'array' then sbag -> 'h' else '[]'::jsonb end, '[]'::jsonb) || jsonb_build_array(jsonb_build_array(t, it, 'sold:' || pr));
+  hb := coalesce(case jsonb_typeof(bbag -> 'h') when 'array' then bbag -> 'h' else '[]'::jsonb end, '[]'::jsonb) || jsonb_build_array(jsonb_build_array(t, it, left('buy:' || pr || ':' || coalesce(sdoc ->> 'name', '?'), 60)));
+  hs := coalesce(case jsonb_typeof(sbag -> 'h') when 'array' then sbag -> 'h' else '[]'::jsonb end, '[]'::jsonb) || jsonb_build_array(jsonb_build_array(t, it, left('sold:' || pr || ':' || coalesce(bdoc ->> 'name', '?'), 60)));
   if jsonb_array_length(hb) > 60 then hb := (select jsonb_agg(v) from (select v from jsonb_array_elements(hb) with ordinality as e(v, o) order by o desc limit 60) z); end if;
   if jsonb_array_length(hs) > 60 then hs := (select jsonb_agg(v) from (select v from jsonb_array_elements(hs) with ordinality as e(v, o) order by o desc limit 60) z); end if;
   sbag := jsonb_set(jsonb_set(sbag, array[ty], sa, true), '{h}', hs, true);

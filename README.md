@@ -302,3 +302,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 ## 08.11-w/x · Giao diện Thương Xá Tắc + sửa lỗi loá sáng
 - **Sửa lỗi nghiêm trọng:** màn hình bị loá trắng vào buổi chiều/tối (hàm vẽ ánh sáng của vật phẩm Limited gọi hàm không tồn tại làm hỏng chế độ trộn màu). Đã sửa và bọc `try/catch`.
 - Thương Xá Tắc đổi giao diện: mái hiên sọc nhiều màu, đèn nhấp nháy, mỗi người bán một quầy màu riêng, thẻ hàng viền/phát sáng theo hạng (Huyền thoại nhấp nháy), nhãn hạng, giá dạng đồng xu vàng. Thẻ trong Túi Thần Kỳ cũng viền màu theo hạng.
+
+## 08.11-y · Chống mất vật phẩm, ghi tên người mua/bán, danh mục Limited có viền theo hạng
+- Lưu Túi Thần Kỳ lên máy chủ nay có **báo lỗi + tự thử lại 3 lần**; nếu lần lưu gần nhất lỗi thì client **không nhận bản cũ từ máy chủ** mà đẩy lại (tránh món vừa nhặt biến mất do ghi hỏng/đồng bộ trễ).
+- Lịch sử túi ghi thêm **tên người mua** (khi bán) và **tên người bán** (khi mua). Cần chạy lại `sql-cu/supabase-update-limited.sql` (idempotent) để có tên.
+- Admin → tab LIMITED: danh mục hiện dạng thẻ **viền màu theo hạng** (Thường/Hiếm/Rất hiếm/Huyền thoại), nhóm theo Trang phục/Thú; túi người chơi hiển thị chip viền màu theo hạng.

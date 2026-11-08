@@ -63,6 +63,17 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
 .mon{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
 .mon label{display:flex;flex-direction:column;gap:4px;color:var(--muted)}.mon input,.mon select{width:100%}
 .hp{height:14px;background:#000;border:2px solid #000;margin:6px 0}.hp i{display:block;height:100%;background:#ff3b3b}
+
+.lgrp{margin:14px 0 6px;font-weight:bold;letter-spacing:1px}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.lcd{position:relative;border:3px solid var(--tc);border-radius:4px;padding:8px 8px 7px;background:radial-gradient(circle at 50% 0,var(--tg),transparent 75%),rgba(0,0,0,.25);box-shadow:3px 3px 0 rgba(0,0,0,.45);font-size:12px;line-height:1.3}
+.lcd b{display:block;font-size:13px;margin:12px 0 2px;color:#fff}
+.lcd .bd{position:absolute;top:-3px;left:-3px;padding:1px 7px;font-size:10px;font-weight:bold;color:#1a0a2a;background:var(--tc);border-radius:3px 0 6px 0}
+.lcd .ic{position:absolute;top:4px;right:6px;font-size:16px}
+.lcd .fx{color:#9ae6a0}.lcd .no{color:#8a93a8}
+.lcd .nm{display:flex;justify-content:space-between;margin-top:5px;padding-top:4px;border-top:1px dashed rgba(255,255,255,.2);color:#cfd6e6}
+.lcd.t3{animation:lg 2.2s linear infinite}@keyframes lg{50%{box-shadow:3px 3px 0 rgba(0,0,0,.45),0 0 16px var(--tc)}}
+.lchip{display:inline-block;margin:2px 3px 2px 0;padding:2px 7px;border:2px solid var(--tc);border-radius:10px;font-size:11px;background:rgba(0,0,0,.25)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script src="supabase-shim.js"></script>
@@ -183,7 +194,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    <div class="card" style="margin-top:14px">
     <h2>DANH MỤC VẬT PHẨM LIMITED</h2>
     <p style="color:var(--muted)">Quản lý riêng với danh mục thường. "Đã nhận" = tổng số lần mọi người chơi nhận được món này (nhặt, được tặng, mua lại); "Đang giữ" = số món đang nằm trong Túi Thần Kỳ.</p>
-    <table><thead><tr><th>Món</th><th>Loại</th><th>Hạng</th><th>Công năng</th><th>Giá shop</th><th>Đã nhận</th><th>Đang giữ</th></tr></thead><tbody id="limCat"></tbody></table>
+    <div id="limCat"></div>
    </div>
   </section>
 
@@ -343,8 +354,11 @@ const LIMT=[['Thường','#c8d0e0'],['Hiếm','#7ad8ff'],['Rất hiếm','#ffd23
 const LIMPILE=['Phân Bạc','Phân Vàng','Phân Kim Cương','Phân Ánh Tím Huyền Thoại'],LIMEGG=['Trứng Trắng','Trứng Bạc','Trứng Vàng','Trứng Ánh Tím'];
 const limArr=x=>Array.isArray(x)?x:(x&&typeof x==='object'?Object.values(x):[]);
 function limAct(){const c=(config&&config.limdrop)||{},now=Date.now()+off,a=Object.entries(c).filter(([k,v])=>v&&LIMBY[v.item]&&now<(+v.ts||0)+8*60000);$('#limActive').innerHTML=a.length?'<b>Đang rơi:</b> '+a.map(([k,v])=>{const it=LIMBY[v.item];return'<span style="color:'+LIMT[it[2]][1]+'">'+(it[3]==='o'?LIMPILE:LIMEGG)[it[2]]+'</span> ('+Math.max(0,Math.ceil(((+v.ts||0)+8*60000-now)/60000))+' phút)'}).join(' · '):'<small>Chưa có vật phẩm nào do admin thả.</small>'}
+const LIMTG=['rgba(200,208,224,.22)','rgba(122,216,255,.28)','rgba(255,210,63,.30)','rgba(215,155,255,.42)'],limV=t=>'--tc:'+LIMT[t][1]+';--tg:'+LIMTG[t];
 function limCatRender(){const got={},hold={};Object.values(players).forEach(p=>{const b=p&&p.bag;if(!b)return;const g=b.g||{};for(const k in g)got[k]=(got[k]||0)+(+g[k]||0);limArr(b.o).concat(limArr(b.p)).forEach(id=>hold[id]=(hold[id]||0)+1)});
- $('#limCat').innerHTML=LIMA.map(a=>'<tr><td style="color:'+LIMT[a[2]][1]+'">'+esc(a[1])+'</td><td>'+(a[3]==='o'?'Trang phục':'Thú cưng')+'</td><td>'+LIMT[a[2]][0]+'</td><td>'+(a[5]||'Chỉ chưng diện')+'</td><td>'+VND(a[4])+'</td><td>'+(got[a[0]]||0)+'</td><td>'+(hold[a[0]]||0)+'</td></tr>').join('');limAct()}
+ let h='';[['o','TRANG PHỤC LIMITED','👗'],['p','THÚ CƯNG LIMITED','🥚']].forEach(([k,title,ic])=>{h+='<div class="lgrp">'+title+'</div>';for(let t=3;t>=0;t--){const L=LIMA.filter(a=>a[3]===k&&a[2]===t);if(!L.length)continue;
+  h+='<div style="margin:8px 0 3px;color:'+LIMT[t][1]+';font-size:12px">'+LIMT[t][0].toUpperCase()+' · '+(k==='o'?LIMPILE:LIMEGG)[t]+'</div><div class="lgrid">'+L.map(a=>'<div class="lcd t'+t+'" style="'+limV(t)+'"><span class="bd">'+LIMT[t][0].toUpperCase()+'</span><span class="ic">'+ic+'</span><b>'+esc(a[1])+'</b><div class="'+(a[5]?'fx':'no')+'">'+(a[5]||'Chỉ chưng diện')+'</div><div class="nm"><span>Giá shop</span><span>'+VND(a[4])+'</span></div><div class="nm" style="border:0;margin:0;padding:0"><span>Đã nhận <b style="display:inline;margin:0">'+(got[a[0]]||0)+'</b></span><span>Đang giữ <b style="display:inline;margin:0">'+(hold[a[0]]||0)+'</b></span></div></div>').join('')+'</div>'}});
+ $('#limCat').innerHTML=h;limAct()}
 function limDropBtns(){const b=[];for(let t=0;t<4;t++){b.push(['o',t]);b.push(['p',t])}$('#limDropBtns').innerHTML=b.map(([k,t])=>'<button class="ok sm" data-ld="'+k+t+'" style="border-color:'+LIMT[t][1]+'">'+(k==='o'?LIMPILE:LIMEGG)[t]+'</button>').join('')+'<button class="sm" data-ld="rand">🎲 Ngẫu nhiên</button>'}
 function limDropGo(code){const kind=code==='rand'?(Math.random()<.5?'o':'p'):code[0];let L=LIMA.filter(a=>a[3]===kind),t;
  if(code==='rand'){const cw=[24*3,8*3,1.5*2,.5*2];let x=Math.random()*cw.reduce((a,v)=>a+v,0);for(t=0;t<3;t++){x-=cw[t];if(x<=0)break}}else t=+code[1];
@@ -360,8 +374,8 @@ $('#gLimGo').onclick=()=>{const u=sel,id=$('#gLim').value;if(!u||!LIMBY[id])retu
 function bagAdm(){const u=sel,el=$('#pBag');if(!el||!u)return;const p=players[u]||{},b=p.bag;if(!b){el.innerHTML='<b>Túi Thần Kỳ</b><br><small>Chưa có vật phẩm Limited.</small>';return}
  const cnt={};limArr(b.o).concat(limArr(b.p)).forEach(id=>cnt[id]=(cnt[id]||0)+1);const g=b.g||{},tot=Object.values(g).reduce((a,v)=>a+(+v||0),0);
  const SRC={drop:'nhặt ngoài map',gift:'admin tặng',buy:'mua Thương Xá',shop:'bán shop',sold:'bán Thương Xá'};
- const hist=limArr(b.h).slice(-12).reverse().map(h=>{const it=LIMBY[h[1]],[k,v]=String(h[2]).split(':');return'<tr><td>'+new Date(+h[0]).toLocaleString('vi-VN')+'</td><td style="color:'+(it?LIMT[it[2]][1]:'#fff')+'">'+esc(it?it[1]:h[1])+'</td><td>'+(SRC[k]||k)+(v?' · '+VND(+v):'')+'</td></tr>'}).join('');
- el.innerHTML='<b>Túi Thần Kỳ</b> · giữ '+(limArr(b.o).length+limArr(b.p).length)+' món · đã nhận tổng '+tot+'<table style="width:100%;font-size:12px;margin-top:4px"><thead><tr><th>Món</th><th>Giữ</th><th>Đã nhận</th></tr></thead><tbody>'+LIMA.filter(a=>g[a[0]]||cnt[a[0]]).map(a=>'<tr><td style="color:'+LIMT[a[2]][1]+'">'+esc(a[1])+'</td><td>'+(cnt[a[0]]||0)+'</td><td>'+(g[a[0]]||0)+'</td></tr>').join('')+'</tbody></table>'+(hist?'<b style="display:block;margin-top:6px">Lịch sử nhặt gần đây</b><table style="width:100%;font-size:11px"><tbody>'+hist+'</tbody></table>':'')}
+ const hist=limArr(b.h).slice(-12).reverse().map(h=>{const it=LIMBY[h[1]],pp=String(h[2]).split(':'),k=pp[0],v=pp[1],w=pp.slice(2).join(':');return'<tr><td>'+new Date(+h[0]).toLocaleString('vi-VN')+'</td><td style="color:'+(it?LIMT[it[2]][1]:'#fff')+'">'+esc(it?it[1]:h[1])+'</td><td>'+(SRC[k]||k)+(v?' · '+VND(+v):'')+(w?' · '+esc(w):'')+'</td></tr>'}).join('');
+ el.innerHTML='<b>Túi Thần Kỳ</b> · giữ '+(limArr(b.o).length+limArr(b.p).length)+' món · đã nhận tổng '+tot+'<div style="margin-top:6px">'+(LIMA.filter(a=>g[a[0]]||cnt[a[0]]).sort((a,b)=>b[2]-a[2]).map(a=>'<span class="lchip" style="'+limV(a[2])+'">'+(a[3]==='o'?'👗 ':'🥚 ')+esc(a[1])+' · giữ <b>'+(cnt[a[0]]||0)+'</b> · nhận <b>'+(g[a[0]]||0)+'</b></span>').join('')||'<small>Chưa có món nào.</small>')+'</div>'+(hist?'<b style="display:block;margin-top:6px">Lịch sử nhặt gần đây</b><table style="width:100%;font-size:11px"><tbody>'+hist+'</tbody></table>':'')}
 limDropBtns();
 $('#plist').addEventListener('click',e=>{const tr=e.target.closest('tr[data-u]');if(!tr)return;sel=tr.dataset.u;const p=players[sel]||{};$('#pTitle').textContent=(p.name||'?').toUpperCase();
  $('#pInfo').innerHTML=`Ví <b>${VND(p.state&&p.state.money)}</b> · ${bedsOf(sel)} giường · ${petsOf(p)} thú cưng · ${pos[sel]?'<span class="on">đang online</span>':'offline'}<br><small>Mã: ${sel.slice(0,8)}</small>`;$('#pAcc').innerHTML=accs[sel]?'Username: <b>'+esc(accs[sel])+'</b>':'Chưa có tài khoản (người chơi chưa tạo username).';$('#npw').value='';say('#npwMsg','');try{statAdm();bagAdm()}catch(e){}$('#pSide').hidden=false;say('#gMsg','');renderPl()});
