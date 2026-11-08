@@ -264,3 +264,7 @@ Ba quầy nhỏ lấp lánh nằm ở sân phía đông Lâu Đài Tình Báo (c
 ## 08.11.2026-o · Cấp 3 minigame khó hơn
 
 Cấp SIÊU KHÓ của các minigame thường (không áp dụng cho game Lâu Đài): thưởng ×3 → **×2,5**, nhịp nhanh hơn 40% → **55%**, tần suất vật phẩm dày hơn, bẫy 14% → **22%**. Chỉnh trong `LVS` (`mul`, `sp`, `v`, `bad`) ở `index.html`. Thách đấu không tính thưởng nhân nên không đổi tiền, chỉ màn chơi cấp 3 khó hơn.
+
+## 08.11.2026-p · Bản đồ desktop bớt phóng to
+
+Trên màn hình rộng (từ 900px) khung nhìn trước đây luôn ép về khoảng 420×260 điểm ảnh thế giới nên bị phóng to 3–4 lần. Nay mục tiêu là khoảng 700×390: màn 1440×800 thấy 720×400, màn 1920×1080 thấy 960×540 (mỗi điểm ảnh phóng gấp 2). Điện thoại/màn hẹp giữ nguyên. Công thức ở hàm `resize()`.

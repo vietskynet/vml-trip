@@ -1236,7 +1236,7 @@ const bell=()=>{[0,180,360].forEach(d=>setTimeout(()=>beep(1568,.25,'triangle',.
 
 /* ================= state ================= */
 const cv=$('#cv'),ctx=cv.getContext('2d');let VW=640,VH=360,SCALE=2;
-function resize(){const r=$('#game').getBoundingClientRect();let s=Math.min(r.width/420,r.height/260);if(s<1.5)s=1.5;else if(s>=2)s=Math.floor(s);VW=Math.ceil(r.width/s);VH=Math.ceil(r.height/s);cv.width=VW;cv.height=VH;cv.style.width=VW*s+'px';cv.style.height=VH*s+'px';SCALE=s;ctx.imageSmoothingEnabled=false}
+function resize(){const r=$('#game').getBoundingClientRect();let s=r.width>=900?Math.min(r.width/700,r.height/390):Math.min(r.width/420,r.height/260);if(s<1.5)s=1.5;else if(s>=2)s=Math.floor(s);VW=Math.ceil(r.width/s);VH=Math.ceil(r.height/s);cv.width=VW;cv.height=VH;cv.style.width=VW*s+'px';cv.style.height=VH*s+'px';SCALE=s;ctx.imageSmoothingEnabled=false}
 addEventListener('resize',resize);
 const BOTNAMES=['Linh T.','Minh K.','Trang N.','Huy P.','Ngọc A.','Bảo L.','Quân V.','Mai H.','Tuấn Đ.','Vy B.','Khoa T.','Hân N.','Duy L.','Thảo P.','Phúc H.','Yến V.','Long Đ.','My T.'];
 let S=null,P=null,keys={},mode='world',G=null,CAB=null,ROOM=null,running=false,last=0,uiT=0,cam={x:0,y:0},myLook=null;
@@ -3644,7 +3644,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-o';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-p';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
