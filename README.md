@@ -358,3 +358,6 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
   - Tiền mỗi ly: 17.500₫ xuống 12.250₫ mỗi nguyên liệu (−30%), thưởng nhanh tối đa 31.500₫ xuống 22.000₫. Tiền phạt giữ nguyên.
 - **Câu cá biển, thuyền cấp 2 và 3**: thêm nhóm **cá biển lạ** giá cao, cực hiếm (không có ở thuyền cấp 1): Cá Lồng Đèn Vực Sâu, Cá Rồng Biển Bạch Kim, Cá Mặt Trăng Phát Quang, Bạch Tuộc Ngọc Trai, Cá Kỳ Lân Sừng Xoắn, Rùa Cổ Thần Rong Vàng (3tr đến khoảng 9tr mỗi con). Tỉ lệ khoảng 0,25% mỗi con ở thuyền cấp 2 và 0,45% ở cấp 3, tăng khi câu ở bãi cá động. Có thông báo riêng khi câu được.
 - **Techcombank**: tổng số dư gửi tối đa **100 triệu** (cộng mọi sổ đang gửi). Lãi 6% nay cần **15 ngày game** (trước là 10 ngày). Sổ đã gửi trước đó giữ nguyên kỳ hạn và lãi cũ. Nút "TẤT CẢ" đổi thành "TỐI ĐA" (theo hạn mức còn lại).
+
+## 09.11.2026-f — Lịch sử tiền ghi rõ lý do thưởng ván game
+- Trước đây dòng "+X ₫" của một ván game hiện lý do là "Thuế liên minh −Y ₫" (vì toast thuế hiện sau cùng). Nay lý do ghi "Thưởng ván <tên game> cấp N (đã trừ thuế liên minh Y)". Số tiền X là tiền thực nhận sau thuế.
