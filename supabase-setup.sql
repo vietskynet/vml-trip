@@ -653,7 +653,7 @@ begin
   update public.rtdb set val = replace(val::text, '"' || n::text || '"', 'null')::jsonb, upd = t
     where path like 'beds/%' and val is not null and val::text like '%' || n::text || '%';
   update public.rtdb set val = replace(val::text, o::text, n::text)::jsonb, upd = t
-    where (path like 'beds/%' or path like 'duels/%' or path like 'castle/%') and val is not null and val::text like '%' || o::text || '%';
+    where (path like 'beds/%' or path like 'duels/%' or path like 'castle/%' or path like 'lm/%') and val is not null and val::text like '%' || o::text || '%';
   insert into public.rtdb(path, val, upd) values ('players/' || n, pv, t)
     on conflict (path) do update set val = excluded.val, upd = excluded.upd;
   update public.rtdb set val = null, upd = t where path = 'players/' || o;

@@ -381,3 +381,7 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - **Giảm giá Limited**: Thiên Sứ Cầu Vồng 30tr, Tiền Tài Kéo Dài Lê Thê 42tr, Hiệp Sĩ Cưỡi Rồng 12tr, Hoàng Bào Long Phụng 15tr, Công Chúa Thiên Nga 8tr, Lọ Lem Xe Bí Ngô 5tr, Cánh Xe Ngựa Hoàng Gia 4tr (cập nhật cả giá cơ bản trong admin).
 - **SQL cần chạy**: `sql-cu/supabase-update-castle-trade.sql` (cần đã chạy `supabase-update-castle.sql`).
 - Lưu ý: nếu admin từng lưu giá riêng cho các món này trong tab Cửa hàng thì giá lưu trên server sẽ ghi đè, cần bấm MẶC ĐỊNH rồi LƯU GIÁ.
+
+## Sửa lỗi mất liên minh khi sang máy khác (SQL)
+- Nguyên nhân: `rt_move_player` (dùng cho Mã đồng bộ và Đăng nhập tài khoản) chuyển nhân vật, giường, đấu, lâu đài nhưng không chuyển **liên minh** (`lm/*`). Người chơi sang máy mới thành uid mới, trong liên minh vẫn còn uid cũ làm "thành viên ma".
+- Sửa: chạy `sql-cu/supabase-update-move-lm.sql` (hàm đã thêm `lm/%`). Từ đó các lần chuyển máy sau giữ nguyên liên minh. Các uid ma đã sinh ra từ trước cần sửa tay (xem `sql-cu/check-user-lm.sql` để dò).
