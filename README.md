@@ -307,3 +307,12 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Lưu Túi Thần Kỳ lên máy chủ nay có **báo lỗi + tự thử lại 3 lần**; nếu lần lưu gần nhất lỗi thì client **không nhận bản cũ từ máy chủ** mà đẩy lại (tránh món vừa nhặt biến mất do ghi hỏng/đồng bộ trễ).
 - Lịch sử túi ghi thêm **tên người mua** (khi bán) và **tên người bán** (khi mua). Cần chạy lại `sql-cu/supabase-update-limited.sql` (idempotent) để có tên.
 - Admin → tab LIMITED: danh mục hiện dạng thẻ **viền màu theo hạng** (Thường/Hiếm/Rất hiếm/Huyền thoại), nhóm theo Trang phục/Thú; túi người chơi hiển thị chip viền màu theo hạng.
+
+## 08.11.2026-z — Admin: theo dõi vật phẩm Limited
+- Tab LIMITED (admin) có thêm thẻ **Theo dõi vật phẩm Limited**:
+  - Tổng quan: số món đang giữ / số người giữ, nhặt ngoài map, admin tặng, giao dịch Thương Xá, tổng tiền giao dịch, bán lại shop.
+  - Bảng **Ai đang giữ**: mỗi món có số đang giữ, tên người giữ và tổng đã nhận.
+  - Bảng **Đang rao ở Thương Xá**: món, người bán, giá, giờ đăng.
+  - **Dòng thời gian** toàn server (200 bản ghi mới nhất): người chơi, món, nguồn, giá, đối tác mua/bán.
+  - Bộ lọc theo món, nguồn và tên người chơi. Tự cập nhật khi dữ liệu người chơi hoặc chợ thay đổi.
+- Không cần chạy SQL mới.

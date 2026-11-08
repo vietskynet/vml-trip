@@ -74,6 +74,8 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
 .lcd .nm{display:flex;justify-content:space-between;margin-top:5px;padding-top:4px;border-top:1px dashed rgba(255,255,255,.2);color:#cfd6e6}
 .lcd.t3{animation:lg 2.2s linear infinite}@keyframes lg{50%{box-shadow:3px 3px 0 rgba(0,0,0,.45),0 0 16px var(--tc)}}
 .lchip{display:inline-block;margin:2px 3px 2px 0;padding:2px 7px;border:2px solid var(--tc);border-radius:10px;font-size:11px;background:rgba(0,0,0,.25)}
+.trk{width:100%;border-collapse:collapse;font-size:12px}.trk th,.trk td{padding:4px 6px;border-bottom:1px dashed rgba(255,255,255,.18);text-align:left}.trk td.r,.trk th.r{text-align:right}
+.tstat{display:inline-block;margin:0 6px 6px 0;padding:6px 10px;border:2px solid var(--line,#444);border-radius:4px;background:rgba(0,0,0,.25)}.tstat b{display:block;font-size:16px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script src="supabase-shim.js"></script>
@@ -196,6 +198,15 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <p style="color:var(--muted)">Quản lý riêng với danh mục thường. "Đã nhận" = tổng số lần mọi người chơi nhận được món này (nhặt, được tặng, mua lại); "Đang giữ" = số món đang nằm trong Túi Thần Kỳ.</p>
     <div id="limCat"></div>
    </div>
+   <div class="card" style="margin-top:14px">
+    <h2>THEO DÕI VẬT PHẨM LIMITED</h2>
+    <p style="color:var(--muted)">Ai đang giữ món nào, ai nhận từ đâu (nhặt ngoài map / admin tặng / mua bán), tin đang rao ở Thương Xá và dòng thời gian toàn server.</p>
+    <div class="row" style="flex-wrap:wrap;gap:6px"><select id="trkItem" aria-label="Lọc món"></select><select id="trkSrc" aria-label="Lọc nguồn"><option value="">Mọi nguồn</option><option value="drop">Nhặt ngoài map</option><option value="gift">Admin tặng</option><option value="buy">Mua Thương Xá</option><option value="sold">Bán Thương Xá</option><option value="shop">Bán lại shop</option></select><input id="trkName" placeholder="Lọc theo tên người chơi" style="min-width:170px"></div>
+    <div id="trkSum" style="margin:10px 0"></div>
+    <h3 style="margin:10px 0 4px">Ai đang giữ</h3><div id="trkHold"></div>
+    <h3 style="margin:12px 0 4px">Đang rao ở Thương Xá</h3><div id="trkMkt"></div>
+    <h3 style="margin:12px 0 4px">Dòng thời gian (mới nhất trước)</h3><div id="trkLog" style="max-height:420px;overflow-y:auto"></div>
+   </div>
   </section>
 
   <section data-p="eco" hidden>
@@ -263,11 +274,11 @@ firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously(
  db.ref('admins/'+uid).on('value',s=>{admin=s.val()===true;if(admin&&sessionStorage.getItem(SKEY))showApp(true);else if(!admin)showApp(false)});
  if(started)return;started=true;
  db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
- db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{ecoRender()}catch(e){}try{stUpdate()}catch(e){}});
+ db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{trkRender()}catch(e){}try{ecoRender()}catch(e){}try{stUpdate()}catch(e){}});
  db.ref('pos').on('value',s=>{pos=s.val()||{}});
 db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{statAdm();bagAdm()}catch(e){}});
  db.ref('beds').on('value',s=>{beds=s.val()||{}});
- db.ref('market').on('value',s=>{market=s.val()||{}});
+ db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
  db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}});
@@ -358,7 +369,26 @@ const LIMTG=['rgba(200,208,224,.22)','rgba(122,216,255,.28)','rgba(255,210,63,.3
 function limCatRender(){const got={},hold={};Object.values(players).forEach(p=>{const b=p&&p.bag;if(!b)return;const g=b.g||{};for(const k in g)got[k]=(got[k]||0)+(+g[k]||0);limArr(b.o).concat(limArr(b.p)).forEach(id=>hold[id]=(hold[id]||0)+1)});
  let h='';[['o','TRANG PHỤC LIMITED','👗'],['p','THÚ CƯNG LIMITED','🥚']].forEach(([k,title,ic])=>{h+='<div class="lgrp">'+title+'</div>';for(let t=3;t>=0;t--){const L=LIMA.filter(a=>a[3]===k&&a[2]===t);if(!L.length)continue;
   h+='<div style="margin:8px 0 3px;color:'+LIMT[t][1]+';font-size:12px">'+LIMT[t][0].toUpperCase()+' · '+(k==='o'?LIMPILE:LIMEGG)[t]+'</div><div class="lgrid">'+L.map(a=>'<div class="lcd t'+t+'" style="'+limV(t)+'"><span class="bd">'+LIMT[t][0].toUpperCase()+'</span><span class="ic">'+ic+'</span><b>'+esc(a[1])+'</b><div class="'+(a[5]?'fx':'no')+'">'+(a[5]||'Chỉ chưng diện')+'</div><div class="nm"><span>Giá shop</span><span>'+VND(a[4])+'</span></div><div class="nm" style="border:0;margin:0;padding:0"><span>Đã nhận <b style="display:inline;margin:0">'+(got[a[0]]||0)+'</b></span><span>Đang giữ <b style="display:inline;margin:0">'+(hold[a[0]]||0)+'</b></span></div></div>').join('')+'</div>'}});
- $('#limCat').innerHTML=h;limAct()}
+ $('#limCat').innerHTML=h;limAct();try{trkRender()}catch(e){console.warn(e)}}
+
+/* ===== THEO DÕI VẬT PHẨM LIMITED ===== */
+const TSRC={drop:'Nhặt ngoài map',gift:'Admin tặng',buy:'Mua Thương Xá',sold:'Bán Thương Xá',shop:'Bán lại shop'};
+function trkCall(it,cls){return it?'<span class="lchip" style="'+limV(it[2])+'">'+(it[3]==='o'?'👗 ':'🥚 ')+esc(it[1])+'</span>':''}
+function trkRender(){const el=$('#trkSum');if(!el)return;const fi=$('#trkItem').value,fs=$('#trkSrc').value,fn=($('#trkName').value||'').trim().toLowerCase();
+ const ev=[],hold={},recv={},sum={drop:0,gift:0,buy:0,sold:0,shop:0,money:0,held:0,holders:0};
+ Object.entries(players).forEach(([u,p])=>{const b=p&&p.bag;if(!b)return;const nm=p.name||'?',own={};limArr(b.o).concat(limArr(b.p)).forEach(id=>{own[id]=(own[id]||0)+1;sum.held++});if(Object.keys(own).length)sum.holders++;
+  for(const id in own){(hold[id]=hold[id]||[]).push({u,nm,n:own[id]})}
+  const g=b.g||{};for(const id in g)(recv[id]=recv[id]||[]).push({u,nm,n:+g[id]||0});
+  limArr(b.h).forEach(h=>{const pp=String(h[2]).split(':'),k=pp[0];if(sum[k]!=null)sum[k]++;if(k==='sold')sum.money+=+pp[1]||0;ev.push({t:+h[0]||0,u,nm,id:h[1],k,pr:pp[1],w:pp.slice(2).join(':')})})});
+ el.innerHTML=[['Đang giữ',sum.held+' món · '+sum.holders+' người'],['Nhặt ngoài map',sum.drop],['Admin tặng',sum.gift],['Giao dịch Thương Xá',sum.sold],['Tổng tiền giao dịch',VND(sum.money)],['Bán lại shop',sum.shop]].map(a=>'<span class="tstat"><small>'+a[0]+'</small><b>'+a[1]+'</b></span>').join('');
+ const ids=LIMA.filter(a=>!fi||a[0]===fi);
+ $('#trkHold').innerHTML='<table class="trk"><thead><tr><th>Món</th><th>Đang giữ</th><th>Người giữ</th><th class="r">Tổng đã nhận</th></tr></thead><tbody>'+ids.map(a=>{const H=(hold[a[0]]||[]).filter(x=>!fn||x.nm.toLowerCase().includes(fn)).sort((x,y)=>y.n-x.n),R=(recv[a[0]]||[]).reduce((s,x)=>s+x.n,0),tot=H.reduce((s,x)=>s+x.n,0);return'<tr><td>'+trkCall(a)+'</td><td>'+tot+'</td><td>'+(H.map(x=>esc(x.nm)+(x.n>1?' ×'+x.n:'')).join(', ')||'<small style="color:#8a93a8">—</small>')+'</td><td class="r">'+R+'</td></tr>'}).join('')+'</tbody></table>';
+ const mk=[];for(const su in market)for(const lid in(market[su]||{})){const L=market[su][lid];if(L&&+L.lim===1&&LIMBY[L.item])mk.push({su,lid,it:LIMBY[L.item],pr:+L.price||0,nm:(players[su]||{}).name||L.name||'?',ts:+L.ts||0})}
+ $('#trkMkt').innerHTML=mk.length?'<table class="trk"><thead><tr><th>Món</th><th>Người bán</th><th class="r">Giá</th><th class="r">Đăng lúc</th></tr></thead><tbody>'+mk.filter(m=>(!fi||m.it[0]===fi)&&(!fn||String(m.nm).toLowerCase().includes(fn))).sort((a,b)=>b.ts-a.ts).map(m=>'<tr><td>'+trkCall(m.it)+'</td><td>'+esc(m.nm)+'</td><td class="r">'+VND(m.pr)+'</td><td class="r">'+(m.ts?new Date(m.ts).toLocaleString('vi-VN'):'')+'</td></tr>').join('')+'</tbody></table>':'<small style="color:#8a93a8">Chưa có tin rao nào.</small>';
+ const L=ev.filter(e=>LIMBY[e.id]&&(!fi||e.id===fi)&&(!fs||e.k===fs)&&(!fn||e.nm.toLowerCase().includes(fn)||String(e.w).toLowerCase().includes(fn))).sort((a,b)=>b.t-a.t).slice(0,200);
+ $('#trkLog').innerHTML=L.length?'<table class="trk"><thead><tr><th>Thời gian</th><th>Người chơi</th><th>Món</th><th>Nguồn</th><th class="r">Giá</th><th>Đối tác</th></tr></thead><tbody>'+L.map(e=>'<tr><td>'+new Date(e.t).toLocaleString('vi-VN')+'</td><td>'+esc(e.nm)+'</td><td>'+trkCall(LIMBY[e.id])+'</td><td>'+(TSRC[e.k]||esc(e.k))+'</td><td class="r">'+(e.pr?VND(+e.pr):'')+'</td><td>'+esc(e.w||'')+'</td></tr>').join('')+'</tbody></table>':'<small style="color:#8a93a8">Chưa có bản ghi nào khớp bộ lọc.</small>'}
+$('#trkItem').innerHTML='<option value="">Tất cả vật phẩm</option>'+LIMA.map(a=>'<option value="'+a[0]+'">'+(a[3]==='o'?'[Áo] ':'[Thú] ')+esc(a[1])+' · '+LIMT[a[2]][0]+'</option>').join('');
+['#trkItem','#trkSrc'].forEach(q=>$(q).addEventListener('change',trkRender));$('#trkName').addEventListener('input',trkRender);
 function limDropBtns(){const b=[];for(let t=0;t<4;t++){b.push(['o',t]);b.push(['p',t])}$('#limDropBtns').innerHTML=b.map(([k,t])=>'<button class="ok sm" data-ld="'+k+t+'" style="border-color:'+LIMT[t][1]+'">'+(k==='o'?LIMPILE:LIMEGG)[t]+'</button>').join('')+'<button class="sm" data-ld="rand">🎲 Ngẫu nhiên</button>'}
 function limDropGo(code){const kind=code==='rand'?(Math.random()<.5?'o':'p'):code[0];let L=LIMA.filter(a=>a[3]===kind),t;
  if(code==='rand'){const cw=[24*3,8*3,1.5*2,.5*2];let x=Math.random()*cw.reduce((a,v)=>a+v,0);for(t=0;t<3;t++){x-=cw[t];if(x<=0)break}}else t=+code[1];
