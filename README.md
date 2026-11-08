@@ -281,3 +281,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Admin: bấm một người chơi trong danh sách → khung bên phải có mục **Thông số** cùng định dạng (đọc dữ liệu `lm` realtime).
 
 ## 08.11-s · BXH: bấm cả dòng để xem thông số (có dòng gợi ý), dùng event delegation
+
+## 08.11-t · Lâu đài 70% + lính hoàng gia + sửa bảng thông số
+- Bảng thông số mở ra thì BXH tự đóng; bỏ gạch chân dưới tên.
+- Lâu đài (hình, tháp, cửa, vùng bấm, ánh sáng, nhãn tháp, hiệu ứng) thu nhỏ còn **70%**.
+- **8 lính hoàng gia** đi tuần quanh lâu đài (vị trí theo giờ server nên mọi người thấy giống nhau). Thành viên đang giữ tháp lâu đài đi gần sẽ được lính **cúi chào** + "Kính chào!".
