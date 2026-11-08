@@ -337,3 +337,16 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
   - Nút **TẮT/BẬT RƠI TỰ NHIÊN** (`config/lim/dropOff`). Nút thả của admin vẫn dùng khi đang tắt.
   - **Báo cáo hôm nay**: rơi tự nhiên đã rơi / tối đa, trạng thái, số admin thả, lượt đã nhặt, giờ rơi tiếp theo, lịch rơi cả ngày (ngày VN).
   - Danh mục có thêm 13 món mới.
+
+## 09.11.2026-c — Admin: popup chi tiết người chơi
+- Bấm vào một người chơi trong tab NGƯỜI CHƠI sẽ mở **popup** (đóng bằng nút ĐÓNG, phím Esc hoặc bấm ra ngoài). Popup tự cập nhật theo dữ liệu mới.
+- Đầu popup: **hình nhân vật hiện tại** (đúng ngoại hình, tóc, trang phục đang mặc), các thú đang nuôi, username, trạng thái, năng lượng.
+- 6 tab:
+  1. **Tổng quan**: tiền mặt, tiền gửi ngân hàng, **tổng tài sản theo giá cơ bản** (villa, bungalow, phòng, chỗ lâu đài, vật trang trí, trang phục, thú, Túi Limited, liên minh) và **thẻ chỉ số cá nhân**: dấu **+ xanh lá** là chỉ số từ liên minh, dấu **+ tím** là chỉ số từ trang phục và thú Limited đang trang bị (tốc độ, minigame, may mắn, hồi năng lượng, khổng lồ, phát sáng đêm, bơi).
+  2. **Túi & tủ đồ**: icon vật phẩm trong Túi Thần Kỳ (viền theo hạng, kèm số lượng), trang phục thường đang sở hữu, thú đang nuôi.
+  3. **Item đặc biệt**: bộ sưu tập đủ 33 món Limited (món chưa có thì mờ), số giữ/số đã nhận, lịch sử item có icon.
+  4. **Tài sản**: giường và bất động sản (kèm người ở cùng), chỗ lâu đài, vật trang trí đã đặt (icon), liên minh đang tham gia và thành viên, số lượt mua theo bộ đếm.
+  5. **Lịch sử tiền**: tiền vào/ra, lọc và tìm theo lý do (cần SQL `supabase-update-admin-log.sql` như tab Lịch sử tiền cũ).
+  6. **Quản trị**: tặng tiền, tặng vật phẩm Limited, tài khoản, đổi mật khẩu.
+- Hình ảnh được vẽ bằng trang phụ **`avatar.html`**, sinh tự động từ `index.html` bằng `python3 tools/make-avatar.py`. Trang này không nạp Supabase, không đăng nhập, nên không đụng phiên admin. **Sau mỗi lần sửa `index.html` phải chạy lại lệnh này** để hình và bảng giá khớp game.
+- Fix nhỏ: món đã chuyển sang Limited giữ lại id cũ (`oid`) để admin nhận ra đồ cũ trong tủ.

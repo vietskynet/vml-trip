@@ -3743,7 +3743,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='09.11.2026-b';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='09.11.2026-c';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -4246,7 +4246,7 @@ PETS.slice(LIM_P0).forEach((p,k)=>LIM_ITEMS.push({id:p.id,kind:'p',t:p.t,n:p.nam
 const LIM_CVS=[['s30','lo11',3,{spd:.03,may:.012,glow:['255,230,255',120]}],['s34','lo12',3,{tien:.015,may:.01,glow:['255,215,90',116]}],['s10','lo13',2,{spd:.03,swim:1}],['s16','lo14',2,{tien:.01,glow:['255,190,80',112]}],['s08','lo15',1,{glow:['255,200,80',104]}],['s26','lo16',1,{swim:1}],['s06','lo17',1,{spd:.02}],['s31','lo18',0,{}]];
 const LIM_CVP=[['Rồng 3 Đầu','lp11',3,{spd:.04,may:.01,glow:['255,120,60',120]}],['Phượng Hoàng Witty','lp12',2,{may:.01,glow:['255,170,60',112]}],['Kỳ Lân','lp13',2,{may:.01,glow:['255,240,250',110]}],['Con Ong Cháu Cha','lp14',1,{spd:.03}],['Gấu Trúc','lp15',0,{}]];
 const LIM_SK_ALL=LIM_SK.slice();
-LIM_CVS.forEach(([o,n,t,lf])=>{const K=SKIN_BY[o];if(!K)return;K.id=n;K.t=t;K.lf=lf;K.lim=1;K.cv=1;SKIN_BY[n]=K;LIM_SK_ALL.push(K);LIM_ITEMS.push({id:n,kind:'o',t,n:K.n,lf,price:Math.floor(K.p0/2),K})});
+LIM_CVS.forEach(([o,n,t,lf])=>{const K=SKIN_BY[o];if(!K)return;K.oid=o;K.id=n;K.t=t;K.lf=lf;K.lim=1;K.cv=1;SKIN_BY[n]=K;LIM_SK_ALL.push(K);LIM_ITEMS.push({id:n,kind:'o',t,n:K.n,lf,price:Math.floor(K.p0/2),K})});
 LIM_CVP.forEach(([nm,id,t,lf])=>{const i=PETS.findIndex(p=>p.name===nm);if(i<0)return;const p=PETS[i];p.id=id;p.t=t;p.lf=lf;p.lim=1;p.cv=1;LIM_ITEMS.push({id,kind:'p',t,n:p.name,lf,price:Math.round(p.price*PET_REFUND),pi:i,note:p.note})});
 const LIM_BY={};LIM_ITEMS.forEach(it=>LIM_BY[it.id]=it);
 function limFxTxt(it){const f=it.lf,a=[];if(f.spd)a.push('Tốc độ +'+(f.spd*100)+'%');if(f.may)a.push('May mắn +'+String(f.may*100).replace('.',',')+'%');if(f.tien)a.push('Tiền minigame +'+String(f.tien*100).replace('.',',')+'%');if(f.glow)a.push('Phát sáng trong đêm');if(f.swim)a.push('Bơi lội tự do dưới nước');return a}
