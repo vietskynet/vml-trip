@@ -279,3 +279,5 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Bảng xếp hạng (BXH): bấm vào tên một người chơi để xem **thông số** (tiền, tốc độ, thu nhập minigame, may mắn, hồi/tiết kiệm năng lượng, Khổng Lồ).
 - Chỉ số cộng từ **Liên Minh** (dài hạn) hiện **màu xanh lá, có dấu +** (vd. `100% +6%`, tốc độ `84 +5.2`). Ngựa/thú cưỡi của bản thân cũng hiện `+` xanh ở tốc độ.
 - Admin: bấm một người chơi trong danh sách → khung bên phải có mục **Thông số** cùng định dạng (đọc dữ liệu `lm` realtime).
+
+## 08.11-s · BXH: bấm cả dòng để xem thông số (có dòng gợi ý), dùng event delegation

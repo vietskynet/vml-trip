@@ -178,7 +178,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
 .stats span{font-size:26px;color:var(--sun);font-variant-numeric:tabular-nums}
 .lb{list-style:none;margin:0 0 12px;padding:0;font-variant-numeric:tabular-nums}
 .lb li{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:8px;padding:3px 0;border-bottom:1px dashed var(--line);align-items:center}
-.lb li.me{color:var(--sun)}.lb .nm{cursor:pointer;text-decoration:underline dotted}.stt{width:100%;border-collapse:collapse;font-size:13px}.stt td{padding:4px 2px;border-bottom:1px dashed var(--line)}.stt td:last-child{text-align:right}.stt .up{color:#4cd964;font-weight:bold}
+.lb li.me{color:var(--sun)}.lb li{cursor:pointer}.lb .nm{text-decoration:underline dotted}.stt{width:100%;border-collapse:collapse;font-size:13px}.stt td{padding:4px 2px;border-bottom:1px dashed var(--line)}.stt td:last-child{text-align:right}.stt .up{color:#4cd964;font-weight:bold}
 .lb .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lb .dot{display:inline-block;width:12px;height:12px;border:2px solid #000;margin-right:6px;vertical-align:-1px}
 .qr{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-bottom:14px}
@@ -491,6 +491,7 @@ body.m-room .pad{display:none!important}
 <div class="modal" id="rankOv" hidden>
   <div class="card">
     <h2>BẢNG XẾP HẠNG</h2>
+    <p style="font-size:11px;color:var(--muted);margin:0 0 6px">Bấm vào tên để xem thông số nhân vật</p>
     <ol class="lb" id="lb"></ol>
     <div class="row"><button class="btn ghost" data-close="rankOv">ĐÓNG</button></div>
   </div>
@@ -3637,7 +3638,8 @@ $('#bMusic').onclick=()=>setMusic(!MUS.on);
 {const mp=$('#menuPanel'),mb=$('#bMenu');const closeMenu=()=>{mp.hidden=true;mb.setAttribute('aria-expanded','false')};mb.onclick=e=>{e.stopPropagation();mp.hidden=!mp.hidden;mb.setAttribute('aria-expanded',String(!mp.hidden))};mp.addEventListener('click',()=>setTimeout(closeMenu,0));document.addEventListener('click',e=>{if(!mp.hidden&&!e.target.closest('#menuPanel'))closeMenu()});window.closeMainMenu=closeMenu}
 $('#acctMusic').onclick=()=>{setMusic(!MUS.on);toast(MUS.on?'Đã bật nhạc.':'Đã tắt nhạc.')};
 $('#bEst').onclick=()=>{if(S&&mode==='world'&&!modalOpen())openEst('mine')};
-$('#bRank').onclick=()=>{if(!S)return;const sorted=rankList();$('#lb').innerHTML=sorted.map((c,i)=>`<li class="${c===P?'me':''}"><span>${i+1}</span><span class="nm" data-u="${c===P?'':esc(c.uid||'')}" data-i="${i}"><i class="dot" style="background:${c.look.shirt}"></i>${esc(c===P?c.name+' (bạn)':c.name)}${c.lodge?' · '+lodgeName(c.lodge):''}</span><span>${VND(c.money)}</span></li>`).join('');$('#rankOv').hidden=false;keys={};$('#lb').querySelectorAll('.nm').forEach(el=>el.onclick=()=>statShow(sorted[+el.dataset.i]))};
+$('#bRank').onclick=()=>{if(!S)return;const sorted=rankList();$('#lb').innerHTML=sorted.map((c,i)=>`<li data-i="${i}" class="${c===P?'me':''}"><span>${i+1}</span><span class="nm" data-u="${c===P?'':esc(c.uid||'')}" data-i="${i}"><i class="dot" style="background:${c.look.shirt}"></i>${esc(c===P?c.name+' (bạn)':c.name)}${c.lodge?' · '+lodgeName(c.lodge):''}</span><span>${VND(c.money)}</span></li>`).join('');$('#rankOv').hidden=false;keys={};window.__rk=sorted};
+$('#lb').addEventListener('click',e=>{const li=e.target.closest('li[data-i]');if(li&&window.__rk)statShow(window.__rk[+li.dataset.i])});
 
 function statShow(c){if(!c)return;const me=c===P,uid=me?lmMe():c.uid,r=uid?LMC.u[uid]:null,on=r&&r.d.st==='grow';
  const up=(ch,fmt)=>{const v=on?lmB(ch,uid):0;return v>0?` <span class="up">+${fmt(v)}</span>`:''};
@@ -3667,7 +3669,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-r';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-s';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
