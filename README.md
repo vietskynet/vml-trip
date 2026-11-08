@@ -390,3 +390,6 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Các tab cùng trình duyệt dùng chung phiên đăng nhập (cùng uid), nên mở 2 tab là 2 màn hình chơi cùng 1 nhân vật. Tab cũ vẫn lưu đè dữ liệu, tab mới đăng nhập nhân vật khác sẽ chuyển dữ liệu về uid đó, gây lẫn tiền, liên minh, v.v.
 - Giờ chỉ 1 tab được chơi: mở tab thứ hai sẽ thấy màn chặn, có nút DÙNG TAB NÀY (tab kia tự dừng, không còn ghi dữ liệu). Khoá tự hết hạn sau 75 giây nếu tab đóng đột ngột.
 - Không cần chạy SQL mới.
+
+## 09.11.2026-j — Xe ngựa lâu đài nhanh hơn
+- Tốc độ di chuyển khi đi xe ngựa tăng thêm 5 điểm %: tháp 1 đến 5 từ 3 / 5 / 7 / 8,5 / 10% lên **8 / 10 / 12 / 13,5 / 15%**. Không cần chạy SQL.

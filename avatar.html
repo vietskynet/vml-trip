@@ -858,7 +858,7 @@ const TORCHES=[[140,752],[460,752],[1020,752],[1300,752],[1620,752],[850,480],[9
 const CSH=170,CB=1790+CSH,CCX=880,FENCE_Y=1238+CSH,CGATE=P2(CCX,CB+16);
 const CF={x0:440,x1:1330,y1:2054},GARD={x0:1330,x1:2536,y1:2054,gx:1932};
 const GPLOTS=(()=>{const a=[],cols=[1530,1745,2115,2330],rows=[1610,1780,1950];rows.forEach((y,r)=>cols.forEach((x,c)=>a.push({n:r*4+c+1,x,y,w:190,h:120})));return a})();
-const CR_ST=[0,1,2,3,4].map(t=>({t,x:250,y:1520+t*112})),CR_HORSES=[2,3,4,5,6],CR_BON=[.03,.05,.07,.085,.10],CR_DAY=600,CARR={ret:[]},CR_DOOR=[1666,1714];
+const CR_ST=[0,1,2,3,4].map(t=>({t,x:250,y:1520+t*112})),CR_HORSES=[2,3,4,5,6],CR_BON=[.08,.10,.12,.135,.15],CR_DAY=600,CARR={ret:[]},CR_DOOR=[1666,1714];
 const crPairs=t=>(CR_HORSES[t]+1)>>1,crW=t=>76+crPairs(t)*40+10;
 const CS=.7,CTW0=[{dx:-250,w:26,h:230,sp:62},{dx:250,w:26,h:265,sp:66},{dx:-140,w:30,h:310,sp:74},{dx:140,w:30,h:350,sp:80},{dx:0,w:38,h:400,sp:96}],CTW=CTW0.map(T=>({dx:T.dx*CS,w:T.w*CS,h:T.h*CS,sp:T.sp*CS}));
 var BANKZ={id:'bank',name:'TECHCOMBANK',bx:400,by:1300};BANKZ.pt=P2(BANKZ.bx,BANKZ.by+18);
