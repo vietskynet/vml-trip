@@ -350,3 +350,11 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
   6. **Quản trị**: tặng tiền, tặng vật phẩm Limited, tài khoản, đổi mật khẩu.
 - Hình ảnh được vẽ bằng trang phụ **`avatar.html`**, sinh tự động từ `index.html` bằng `python3 tools/make-avatar.py`. Trang này không nạp Supabase, không đăng nhập, nên không đụng phiên admin. **Sau mỗi lần sửa `index.html` phải chạy lại lệnh này** để hình và bảng giá khớp game.
 - Fix nhỏ: món đã chuyển sang Limited giữ lại id cũ (`oid`) để admin nhận ra đồ cũ trong tủ.
+
+## 09.11.2026-e — Pha chế khó hơn, cá biển lạ, trần ngân hàng
+- **Pha chế**: khó hơn và tiền giảm 30%.
+  - Đơn dài hơn 1 nguyên liệu mỗi giai đoạn (5/6/7, cấp 3 thêm 1), khách kiên nhẫn ít hơn (3,3–6,2s xuống 2,5–4,9s cộng 0,38s mỗi nguyên liệu).
+  - Cho nhầm nguyên liệu: mất tiền như cũ, đổ ly làm lại từ đầu và **trừ thêm 0,9 giây kiên nhẫn** của khách.
+  - Tiền mỗi ly: 17.500₫ xuống 12.250₫ mỗi nguyên liệu (−30%), thưởng nhanh tối đa 31.500₫ xuống 22.000₫. Tiền phạt giữ nguyên.
+- **Câu cá biển, thuyền cấp 2 và 3**: thêm nhóm **cá biển lạ** giá cao, cực hiếm (không có ở thuyền cấp 1): Cá Lồng Đèn Vực Sâu, Cá Rồng Biển Bạch Kim, Cá Mặt Trăng Phát Quang, Bạch Tuộc Ngọc Trai, Cá Kỳ Lân Sừng Xoắn, Rùa Cổ Thần Rong Vàng (3tr đến khoảng 9tr mỗi con). Tỉ lệ khoảng 0,25% mỗi con ở thuyền cấp 2 và 0,45% ở cấp 3, tăng khi câu ở bãi cá động. Có thông báo riêng khi câu được.
+- **Techcombank**: tổng số dư gửi tối đa **100 triệu** (cộng mọi sổ đang gửi). Lãi 6% nay cần **15 ngày game** (trước là 10 ngày). Sổ đã gửi trước đó giữ nguyên kỳ hạn và lãi cũ. Nút "TẤT CẢ" đổi thành "TỐI ĐA" (theo hạn mức còn lại).
