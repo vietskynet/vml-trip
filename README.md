@@ -196,3 +196,10 @@ Khu Vườn Tuổi Thơ đã thành **VƯỜN LIÊN MINH**: cổng mở, đi b�
 - Salon tóc dời xuống ngay dưới Quầy Thú Cưng (x 1500, y 1310), không đè quầy.
 - Thiết kế lại 3 kiểu tóc to và lạ hơn: Pompadour Sóng Thần (m1), Sóng Biển Cuộn Trào (m5), Bob Pha Lê Bất Đối (f3).
 - Thêm 2 kiểu mới: Xù Bông Mây Bão (m7, nam, 5tr) và Dài Lê Thê Quét Đất (f7, nữ, 9tr, tóc dài chạm đất). Mỗi giới giờ có 7 kiểu; admin tab Cửa hàng đã có sẵn 2 kiểu mới.
+
+## 08.11-g
+- **Team Building thưởng x3** (2,25tr → 7,2tr tuỳ level), booth có biển "X3 TIỀN THƯỞNG".
+- **Tiệm thời trang đổi tên "Ếch&Em"** (logo ếch xanh vẽ riêng).
+- **Kinh tế bến tàu**: thuê 2 phút cho cả 3 hạng. Thuyền nhỏ 100k, vừa 300k, lớn 600k. Mô phỏng 4.000 chuyến: nhỏ ≈ 2,6tr, vừa ≈ 3,7tr (+40%), lớn ≈ 4,4tr (+65%, dùng lưới kéo 2–3 con/mẻ). Có mức tối thiểu bến bù cho chuyến đủ 60 giây trở lên và không bị chìm (2tr / 2,7tr / 3,1tr), và cơ chế cá đắt dễ cắn hơn khi chuyến đi đang chậm.
+- Mọi tàu đều có xác suất nhỏ dính cá quý trên 1 triệu (nhỏ ~0,4%, vừa ~1%, lớn ~0,3% mỗi con; bãi cá động tăng lên).
+- **Hải tặc 3 cấp, dùng chung cho mọi người**: cấp 1 (3 máu, thưởng 1,2tr), cấp 2 (5 máu, 2,8tr), cấp 3 (8 máu, 6tr, bắn 2 sát thương). Nhiều người cùng bắn thì thưởng chia theo số phát trúng.
