@@ -243,3 +243,9 @@ Ba quầy nhỏ lấp lánh nằm ở sân phía đông Lâu Đài Tình Báo (c
 - Hệ số thưởng chỉnh trong `CZMUL` (theo game và cấp), độ khó trong `CZLV`. Đêm vẫn +10%, thuế chủ Lâu Đài vẫn trừ vào tiền thưởng.
 - Thời gian chờ chơi lại theo cấp giống minigame: 1 / 2 / 3 phút.
 - Số liệu ước tính từ bot mô phỏng (người thật thường thấp hơn bot giỏi một chút).
+
+## 08.11.2026-m · Mã "mattroidem": mặt trời đêm
+
+- Gõ `mattroidem` vào khung chat (không phân biệt hoa thường, dấu cách, dấu) khi **trời tối** (từ 17h30 đến 6h30) và đang đi ngoài resort: tốn **300.000₫** (`SUN_FEE`), tạo một mặt trời nhỏ lơ lửng trên đầu và vầng sáng ấm bán kính khoảng 230px quanh người dùng mã trong **3 phút**, mờ dần ở những giây cuối.
+- Ban ngày gõ mã sẽ bị từ chối và **không bị trừ tiền**. Gõ lại khi đang hiệu lực thì tính 300.000₫ nữa và đếm lại 3 phút.
+- Hiệu ứng chỉ hiện trên máy người dùng mã (không đồng bộ sang người chơi khác).
