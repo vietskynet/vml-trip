@@ -228,3 +228,10 @@ Ba quầy nhỏ lấp lánh nằm ở sân phía đông Lâu Đài Tình Báo (c
 - **Ban đêm (19h–5h) thưởng +10%.**
 - **Thuế chủ Lâu Đài**: trừ vào tiền thưởng của người chơi, chia cho các thành viên của tháp đã đủ 3 chủ (mỗi tháp chia đều 3 người): Quạ Đen 1%, Trăng Máu 1,5%, Pha Lê Đen 2%, Rồng Ngủ 2,5%, Tối Thượng 3%. Tối đa 10% khi cả 5 tháp có chủ. Chủ nhận tiền qua `gifts/` (không cần sửa SQL), chủ đang online sẽ thấy thông báo "Thu nhập chủ Lâu Đài".
 - Các hằng số nằm ở đầu khối `GAME VIP CỦA LÂU ĐÀI` trong `index.html`: `CZ_FEE`, `CZ_CD`, `CZ_NIGHT`, `CZ_SH`.
+
+## 08.11.2026-k · Đêm sáng hơn, admin tạo username, 4 kiểu tóc cao, dời quầy VIP
+
+- **Ban đêm bớt tối:** lớp phủ ban đêm nhẹ hơn nhiều (còn khoảng 60% độ sáng thay vì 25%), vẫn có màu xanh đêm và đèn phát sáng nhưng nhìn rõ vật phẩm.
+- **Admin tạo username:** chọn người chơi chưa có tài khoản trong tab Người chơi, admin sẽ thấy sẵn username gợi ý (từ tên hiển thị) và mật khẩu ngẫu nhiên, sửa tuỳ ý rồi bấm TẠO USERNAME. Nút TẠO USERNAME CHO TẤT CẢ NGƯỜI CHƯA CÓ tạo hàng loạt và hiện bảng Tên / Username / Mật khẩu để sao chép gửi riêng. **Cần chạy 1 lần** `sql-cu/supabase-update-admin-create-account.sql` trong Supabase SQL Editor (đã gộp sẵn vào `supabase-setup.sql`).
+- **4 kiểu tóc mới (2–4 triệu):** Goku Chĩa Chủa 2,5tr, Bờm Ngựa Phi Nước Đại 3,2tr, Thủy Thủ Mặt Trăng 3,8tr, Tháp Eiffel Chọc Trời 4tr (đã thêm vào bảng giá admin). Kiểu tóc cao dùng `ex` (số dòng thêm phía trên đầu): khung nhân vật tự cao thêm, mọi chỗ vẽ nhân vật vẫn giữ chân đúng vị trí.
+- **3 quầy VIP Lâu Đài** dời ra ngay cạnh cổng trước của sân Lâu Đài, xếp ngang để dễ thấy.
