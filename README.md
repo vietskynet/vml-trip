@@ -373,3 +373,11 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Đã cập nhật chữ hướng dẫn trong game và giá mặc định trong tab Cửa hàng của admin.
 - **Lưu ý**: nếu admin từng bấm LƯU GIÁ trong tab Cửa hàng, giá lưu trên server sẽ ghi đè giá mặc định trong code. Khi đó cần bấm MẶC ĐỊNH rồi LƯU GIÁ lại.
 - Đồ người chơi đã mua không bị ảnh hưởng.
+
+## 09.11.2026-h — Luật lâu đài mới + giảm giá Limited
+- **Bán chỗ lâu đài**: bấm "MUA CHỖ CỦA <tên>" ở tháp, chọn giá, gửi đề nghị (giống mua giường villa, 30 giây). Người bán đồng ý thì máy chủ chuyển chỗ, người bán nhận tiền, người mua nhận chỗ (giá đã trả được ghi lại để tính hoàn tiền).
+- **Trả chỗ**: bấm 2 lần "TRẢ CHỖ". Tháp đã hoạt động thì hoàn **70%** giá đã trả (mất 30%), chưa đủ người thì hoàn đủ. Có người trả chỗ thì liên minh tạm dừng, chờ đủ 3 người.
+- Bỏ luật bỏ phiếu thoát và mất toàn bộ tiền.
+- **Giảm giá Limited**: Thiên Sứ Cầu Vồng 30tr, Tiền Tài Kéo Dài Lê Thê 42tr, Hiệp Sĩ Cưỡi Rồng 12tr, Hoàng Bào Long Phụng 15tr, Công Chúa Thiên Nga 8tr, Lọ Lem Xe Bí Ngô 5tr, Cánh Xe Ngựa Hoàng Gia 4tr (cập nhật cả giá cơ bản trong admin).
+- **SQL cần chạy**: `sql-cu/supabase-update-castle-trade.sql` (cần đã chạy `supabase-update-castle.sql`).
+- Lưu ý: nếu admin từng lưu giá riêng cho các món này trong tab Cửa hàng thì giá lưu trên server sẽ ghi đè, cần bấm MẶC ĐỊNH rồi LƯU GIÁ.
