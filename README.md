@@ -274,3 +274,8 @@ Trên màn hình rộng (từ 900px) khung nhìn trước đây luôn ép về k
 Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ số phóng to nguyên (2×, 3×), nên màn hình lớn thấy bản đồ rất gần (1440×780 chỉ thấy khoảng 720×390 điểm ảnh bản đồ, màn 2560 bị 3×). Nay hệ số tính theo mục tiêu thấy khoảng 805×448 điểm ảnh (bản 08.11-q zoom thêm ~15% so với 08.11-p), làm tròn xuống bước 0,05, tối thiểu 1,4. Điện thoại và cửa sổ hẹp giữ nguyên. Chỉnh trong hàm `resize()`: đổi 900 và 500 để phóng to hoặc thu nhỏ thêm.
 
 **08.11.2026-q:** zoom gần thêm khoảng 15%: mục tiêu khung nhìn 805×448 điểm ảnh (1440×780 thấy khoảng 830×450, 1920×950 thấy khoảng 920×460), bước làm tròn 0,05. Chỉnh hai số 805 và 448 trong `resize()`.
+
+## 08.11-r · Bảng thông số nhân vật
+- Bảng xếp hạng (BXH): bấm vào tên một người chơi để xem **thông số** (tiền, tốc độ, thu nhập minigame, may mắn, hồi/tiết kiệm năng lượng, Khổng Lồ).
+- Chỉ số cộng từ **Liên Minh** (dài hạn) hiện **màu xanh lá, có dấu +** (vd. `100% +6%`, tốc độ `84 +5.2`). Ngựa/thú cưỡi của bản thân cũng hiện `+` xanh ở tốc độ.
+- Admin: bấm một người chơi trong danh sách → khung bên phải có mục **Thông số** cùng định dạng (đọc dữ liệu `lm` realtime).

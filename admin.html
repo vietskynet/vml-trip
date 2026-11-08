@@ -112,6 +112,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <p class="msg" id="gMsg"></p>
     <h2 style="margin-top:12px">TÀI KHOẢN</h2>
     <p id="pAcc"></p>
+    <div id="pStat" style="margin:8px 0"></div>
     <div id="nuBox" hidden><div class="row"><input id="nuU" maxlength="16" placeholder="Username (4-16 ký tự)" aria-label="Username mới" autocomplete="off" autocapitalize="none" spellcheck="false"><input id="nuP" type="text" maxlength="64" placeholder="Mật khẩu (từ 6 ký tự)" aria-label="Mật khẩu" autocomplete="off"></div>
     <div class="row"><button class="ghost" id="nuAuto">GỢI Ý TỰ ĐỘNG</button><button class="ok" id="nuGo">TẠO USERNAME</button></div><p class="msg" id="nuMsg"></p></div>
     <div id="npwBox"><div class="row"><input id="npw" type="text" maxlength="64" placeholder="Mật khẩu mới (từ 6 ký tự)" aria-label="Mật khẩu mới" autocomplete="off"><button class="ok" id="npwGo">ĐỔI MẬT KHẨU</button></div></div>
@@ -229,6 +230,7 @@ firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously(
  db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
  db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{ecoRender()}catch(e){}try{stUpdate()}catch(e){}});
  db.ref('pos').on('value',s=>{pos=s.val()||{}});
+db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{statAdm()}catch(e){}});
  db.ref('beds').on('value',s=>{beds=s.val()||{}});
  db.ref('market').on('value',s=>{market=s.val()||{}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
@@ -300,8 +302,18 @@ function renderPl(){if($('#app').hidden)return;const q=$('#q').value.trim().toLo
  $('#plist').innerHTML=rows.map(r=>`<tr data-u="${r.u}" class="${r.u===sel?'sel':''}"><td>${esc(r.name)}</td><td>${r.user?esc(r.user):'<small>chưa có</small>'}</td><td>${VND(r.money)}</td><td>${r.beds}</td><td>${r.pets}</td><td>${r.en}%</td><td class="${r.on?'on':'off'}">${r.on?'Online':r.p.state.fainted?'Đã xỉu':'Offline'}</td></tr>`).join('')||'<tr><td colspan="7">Chưa có người chơi.</td></tr>'}
 setInterval(renderPl,3000);$('#q').addEventListener('input',renderPl);
 $$('th[data-s]').forEach(th=>th.onclick=()=>{const k=th.dataset.s;if(sortK===k)sortD*=-1;else{sortK=k;sortD=k==='name'?1:-1}$$('th[data-s]').forEach(t=>t.textContent=t.textContent.replace(/ [▾▴]$/,''));th.textContent+=sortD<0?' ▾':' ▴';renderPl()});
+
+/* thông số nhân vật + chỉ số cộng từ Liên Minh (xanh, dấu +) */
+var LMA={};
+const LMX=[['tien','Thu nhập minigame',.08],['may','May mắn (tiền việc làm)',.30],['toc','Tốc độ chạy',.15],['nl','Hồi/tiết kiệm năng lượng',.30],['kl','Khổng Lồ (kích thước/sức mạnh)',.25]];
+function lmFind(u){for(const n in LMA){const d=LMA[n];if(!d||!d.h)continue;if(d.m&&(d.m[u]!=null||d.h===u))return{n:+n,d}}return null}
+function lmCalc(r,ch,mx){const d=r.d;if(!d||d.st!=='grow')return 0;const pt=d.pt||{},up=d.up&&Date.now()+off>=d.up.te;let tot=0;for(const k in pt)tot+=+pt[k]||0;if(up)tot+=1;const v=Math.min(1,(((+pt[ch]||0)+(up&&d.up.c===ch?1:0)))/10);const mem=Object.keys(d.m||{}).length,tier=((r.n-1)%4===1||(r.n-1)%4===2)?1:0,cap=Math.min(tier?40:30,5*Math.max(3,Math.min(8,mem)));return mx*v*((tot>cap?cap/tot:1)*(mem<3?.5:1))}
+function statAdm(){const u=sel;if(!u){return}const p=players[u]||{},r=lmFind(u),on=r&&r.d.st==='grow';const pc=v=>(Math.round(v*1000)/10)+'%';
+ const rows=[['Tiền hiện có',VND(p.state&&p.state.money)],['Năng lượng',Math.round((p.state&&p.state.energy)||0)+'%']];
+ LMX.forEach(([ch,n,mx])=>{const v=on?lmCalc(r,ch,mx):0;rows.push([n,(ch==='toc'?'84':'100%')+(v>0?' <span style="color:#4cd964;font-weight:bold">+'+(ch==='toc'?Math.round(84*v*10)/10:pc(v))+'</span>':'')])});
+ const el=$('#pStat');if(el)el.innerHTML='<b>Thông số</b><table style="width:100%;font-size:13px;border-collapse:collapse">'+rows.map(x=>'<tr><td style="padding:3px 0;border-bottom:1px dashed #555">'+x[0]+'</td><td style="text-align:right;border-bottom:1px dashed #555">'+x[1]+'</td></tr>').join('')+'</table><small>'+(on?'Liên minh: '+esc(r.d.nm||('Liên Minh '+String(r.d.hn||'').slice(0,10)))+'. ':'Chưa có liên minh đang trồng cây. ')+'<span style="color:#4cd964">+xanh</span> = cộng từ Liên Minh (dài hạn).</small>'}
 $('#plist').addEventListener('click',e=>{const tr=e.target.closest('tr[data-u]');if(!tr)return;sel=tr.dataset.u;const p=players[sel]||{};$('#pTitle').textContent=(p.name||'?').toUpperCase();
- $('#pInfo').innerHTML=`Ví <b>${VND(p.state&&p.state.money)}</b> · ${bedsOf(sel)} giường · ${petsOf(p)} thú cưng · ${pos[sel]?'<span class="on">đang online</span>':'offline'}<br><small>Mã: ${sel.slice(0,8)}</small>`;$('#pAcc').innerHTML=accs[sel]?'Username: <b>'+esc(accs[sel])+'</b>':'Chưa có tài khoản (người chơi chưa tạo username).';$('#npw').value='';say('#npwMsg','');$('#pSide').hidden=false;say('#gMsg','');renderPl()});
+ $('#pInfo').innerHTML=`Ví <b>${VND(p.state&&p.state.money)}</b> · ${bedsOf(sel)} giường · ${petsOf(p)} thú cưng · ${pos[sel]?'<span class="on">đang online</span>':'offline'}<br><small>Mã: ${sel.slice(0,8)}</small>`;$('#pAcc').innerHTML=accs[sel]?'Username: <b>'+esc(accs[sel])+'</b>':'Chưa có tài khoản (người chơi chưa tạo username).';$('#npw').value='';say('#npwMsg','');try{statAdm()}catch(e){}$('#pSide').hidden=false;say('#gMsg','');renderPl()});
 $$('#pSide .chips button').forEach(b=>b.onclick=()=>{$('#gAmt').value=b.dataset.v});
 $('#pClose').onclick=()=>{sel=null;$('#pSide').hidden=true;renderPl()};
 $('#gGo').onclick=()=>{const a=Math.round(+$('#gAmt').value||0),u=sel,p=players[u]||{};if(!u)return;if(a<=0){say('#gMsg','Nhập số tiền lớn hơn 0.',1);return}

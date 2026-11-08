@@ -178,7 +178,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
 .stats span{font-size:26px;color:var(--sun);font-variant-numeric:tabular-nums}
 .lb{list-style:none;margin:0 0 12px;padding:0;font-variant-numeric:tabular-nums}
 .lb li{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:8px;padding:3px 0;border-bottom:1px dashed var(--line);align-items:center}
-.lb li.me{color:var(--sun)}
+.lb li.me{color:var(--sun)}.lb .nm{cursor:pointer;text-decoration:underline dotted}.stt{width:100%;border-collapse:collapse;font-size:13px}.stt td{padding:4px 2px;border-bottom:1px dashed var(--line)}.stt td:last-child{text-align:right}.stt .up{color:#4cd964;font-weight:bold}
 .lb .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lb .dot{display:inline-block;width:12px;height:12px;border:2px solid #000;margin-right:6px;vertical-align:-1px}
 .qr{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-bottom:14px}
@@ -481,6 +481,13 @@ body.m-room .pad{display:none!important}
   </div>
 </div>
 
+<div class="modal" id="statOv" hidden>
+  <div class="card">
+    <h2 id="statT">THÔNG SỐ</h2>
+    <div id="statB"></div>
+    <div class="row"><button class="btn ghost" data-close="statOv">ĐÓNG</button></div>
+  </div>
+</div>
 <div class="modal" id="rankOv" hidden>
   <div class="card">
     <h2>BẢNG XẾP HẠNG</h2>
@@ -3630,7 +3637,23 @@ $('#bMusic').onclick=()=>setMusic(!MUS.on);
 {const mp=$('#menuPanel'),mb=$('#bMenu');const closeMenu=()=>{mp.hidden=true;mb.setAttribute('aria-expanded','false')};mb.onclick=e=>{e.stopPropagation();mp.hidden=!mp.hidden;mb.setAttribute('aria-expanded',String(!mp.hidden))};mp.addEventListener('click',()=>setTimeout(closeMenu,0));document.addEventListener('click',e=>{if(!mp.hidden&&!e.target.closest('#menuPanel'))closeMenu()});window.closeMainMenu=closeMenu}
 $('#acctMusic').onclick=()=>{setMusic(!MUS.on);toast(MUS.on?'Đã bật nhạc.':'Đã tắt nhạc.')};
 $('#bEst').onclick=()=>{if(S&&mode==='world'&&!modalOpen())openEst('mine')};
-$('#bRank').onclick=()=>{if(!S)return;const sorted=rankList();$('#lb').innerHTML=sorted.map((c,i)=>`<li class="${c===P?'me':''}"><span>${i+1}</span><span class="nm"><i class="dot" style="background:${c.look.shirt}"></i>${esc(c===P?c.name+' (bạn)':c.name)}${c.lodge?' · '+lodgeName(c.lodge):''}</span><span>${VND(c.money)}</span></li>`).join('');$('#rankOv').hidden=false;keys={}};
+$('#bRank').onclick=()=>{if(!S)return;const sorted=rankList();$('#lb').innerHTML=sorted.map((c,i)=>`<li class="${c===P?'me':''}"><span>${i+1}</span><span class="nm" data-u="${c===P?'':esc(c.uid||'')}" data-i="${i}"><i class="dot" style="background:${c.look.shirt}"></i>${esc(c===P?c.name+' (bạn)':c.name)}${c.lodge?' · '+lodgeName(c.lodge):''}</span><span>${VND(c.money)}</span></li>`).join('');$('#rankOv').hidden=false;keys={};$('#lb').querySelectorAll('.nm').forEach(el=>el.onclick=()=>statShow(sorted[+el.dataset.i]))};
+
+function statShow(c){if(!c)return;const me=c===P,uid=me?lmMe():c.uid,r=uid?LMC.u[uid]:null,on=r&&r.d.st==='grow';
+ const up=(ch,fmt)=>{const v=on?lmB(ch,uid):0;return v>0?` <span class="up">+${fmt(v)}</span>`:''};
+ const pc=v=>(Math.round(v*1000)/10)+'%';
+ const sp=84,mt=me?crBonus():0;
+ const rows=[['Tiền hiện có',VND(c.money||0)],
+  ['Tốc độ chạy',sp+(mt>0?` <span class="up">+${Math.round(sp*mt)}</span>`:'')+up('toc',v=>Math.round(sp*v*10)/10)],
+  ['Thu nhập minigame','100%'+up('tien',pc)],
+  ['May mắn (tiền việc làm)','100%'+up('may',pc)],
+  ['Hồi năng lượng','100%'+up('nl',v=>pc(v*.25/.3))],
+  ['Tiết kiệm năng lượng','0%'+up('nl',pc)],
+  ['Khổng Lồ (kích thước/sức mạnh)','100%'+up('kl',pc)]];
+ if(me){const bf=P.buf||{};[['rb','RedBull +10% tốc độ'],['tea','Trà xanh'],['xoi','Xôi no lâu'],['col','Collagen']].forEach(([k,n])=>{if(bufOn(k))rows.push([n,'<span class="up">+ đang bật</span>'])})}
+ $('#statT').textContent=(me?c.name+' (bạn)':c.name).toUpperCase();
+ $('#statB').innerHTML=`<table class="stt">${rows.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}</table><p style="font-size:11px;color:var(--muted)">${on?'Liên minh: '+esc(lmName(r.d))+'. ':'Chưa có liên minh nào đang trồng cây. '}<span class="up">+xanh</span> = chỉ số cộng thêm từ Liên Minh (dài hạn).</p>`;
+ $('#statOv').hidden=false}
 $('#rbSleep').onclick=toggleSleep;$('#rbToilet').onclick=roomToilet;$('#rbExit').onclick=exitRoom;
 const ANN=[
  {id:'lm',t:'KHAI TRƯƠNG VƯỜN LIÊN MINH!',b:'<p>Cổng <b>Vườn Liên Minh</b> (phía đông khu VIP, qua hàng rào) đã mở cửa! Mua đất (45tr / 90tr), góp ít nhất <b>3 người</b> trồng chung một cây, đóng góp quỹ để nâng cấp 5 kênh buff: Tiền, May mắn, Tốc độ, Năng lượng, Khổng Lồ.</p><p>Đọc <b>bảng hướng dẫn</b> trước cổng vườn để nghe câu chuyện và cách chơi.</p>',go:()=>P2(GARD.gx,FENCE_Y-30)}];
@@ -3644,7 +3667,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-q';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-r';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
