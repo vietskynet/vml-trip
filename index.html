@@ -1632,7 +1632,7 @@ function mgBackground(id){if(MGBG[id])return MGBG[id];const [c,g]=mk(id==='surf'
 const holePos=i=>P2(150+(i%3)*90,104+((i/3)|0)*62);
 /* ===== 3 độ khó · hiệu ứng theo cấp ===== */
 const LVCD=[60,120,180],DUCD=180000;
-const LVS=[{n:'DỄ',mul:1,fee:0,sp:1,v:1,bad:0,d:'Ban ngày · nhịp chậm, ít bẫy'},{n:'KHÓ',mul:2,fee:100000,sp:.78,v:1.2,bad:.07,d:'Hoàng hôn · nhanh hơn 20%, nhiều bẫy hơn'},{n:'SIÊU KHÓ',mul:3,fee:250000,sp:.6,v:1.4,bad:.14,d:'Đêm neon · nhanh hơn 40%, nhiều bẫy, vật phẩm phát sáng'}];
+const LVS=[{n:'DỄ',mul:1,fee:0,sp:1,v:1,bad:0,d:'Ban ngày · nhịp chậm, ít bẫy'},{n:'KHÓ',mul:2,fee:100000,sp:.78,v:1.2,bad:.07,d:'Hoàng hôn · nhanh hơn 20%, nhiều bẫy hơn'},{n:'SIÊU KHÓ',mul:2.5,fee:250000,sp:.52,v:1.55,bad:.22,d:'Đêm neon · nhanh hơn 55%, rất nhiều bẫy, vật phẩm phát sáng'}];
 function RS(q,f){const o=Math.random;Math.random=q.R;try{f()}finally{Math.random=o}}
 const MGBGL={};
 function mgBG(id,lv){const b=mgBackground(id);if(!lv||lv<2)return b;const k=id+lv;if(MGBGL[k])return MGBGL[k];const [c,g]=mk(b.width,b.height);g.drawImage(b,0,0);g.globalCompositeOperation='multiply';g.fillStyle=lv===2?'#ffb184':'#56679f';g.fillRect(0,0,c.width,c.height);g.globalCompositeOperation='source-over';
@@ -1747,7 +1747,7 @@ function openLv(z){if(!S||mode!=='world'||P.busy>0)return;LVU.z=z;LVU.tab='play'
 const lvCd=()=>{const z=LVU.z;return z&&S?Math.max(0,(P.cd[z.id]||0)-S.time):0};
 function renderLv(){const z=LVU.z;if(!z)return;$('#lvTitle').textContent=z.name;const cd=lvCd();if(z.cz){renderCzModal(z,cd);return}
  let h='<div class="lvtabs"><button class="lvtab'+(LVU.tab==='play'?' on':'')+'" data-lvt="play">CHƠI THƯỜNG</button><button class="lvtab'+(LVU.tab==='ch'?' on':'')+'" data-lvt="ch">⚔ THÁCH ĐẤU</button></div>';
- if(LVU.tab==='play'){h+=cd>0?'<p class="lvnote">Khu này cần chờ <b>'+mmss(cd)+'</b> nữa mới chơi thường được. Bạn vẫn có thể Thách Đấu.</p>':'<p class="lvnote">Cấp càng cao, tiền thưởng càng lớn (×2, ×3) nhưng game nhanh hơn, nhiều bẫy hơn, có phí vào cổng nhỏ.</p>';
+ if(LVU.tab==='play'){h+=cd>0?'<p class="lvnote">Khu này cần chờ <b>'+mmss(cd)+'</b> nữa mới chơi thường được. Bạn vẫn có thể Thách Đấu.</p>':'<p class="lvnote">Cấp càng cao, tiền thưởng càng lớn (×2, ×2,5) nhưng game nhanh hơn, nhiều bẫy hơn, có phí vào cổng nhỏ.</p>';
   h+='<div class="lvcards">'+LVS.map((L,i)=>{const dis=cd>0||P.money<L.fee;return'<button class="lvcard lv'+(i+1)+'" data-lvp="'+(i+1)+'"'+(dis?' disabled':'')+'><b>CẤP '+(i+1)+' · '+L.n+'</b><span class="lvx">THƯỞNG ×'+L.mul+'</span><small>'+L.d+'</small><span class="lvfee">'+(L.fee?'Phí vào: '+VND(L.fee):'Miễn phí')+'</span></button>'}).join('')+'</div>'}
  else if(!duelOn())h+='<p class="lvnote">Thách Đấu chỉ dùng được khi chơi online cùng mọi người.</p>';
  else if(DU.out)h+='<p class="lvnote">Đang chờ <b>'+esc(DU.out.name)+'</b> trả lời (cược '+VND(DU.out.bet)+')…</p><button class="btn ghost" data-lvx="cancel">HUỶ THÁCH ĐẤU</button>';
@@ -3644,7 +3644,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-n';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-o';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

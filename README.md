@@ -260,3 +260,7 @@ Ba quầy nhỏ lấp lánh nằm ở sân phía đông Lâu Đài Tình Báo (c
   - **Collagen** 3tr: phát sáng nhẹ vừa đủ thấy đường vào ban đêm, 1 ngày game.
 - **Thời gian ăn 15–30 giây** tuỳ món (dừa 15s … hải sản 30s). Trong lúc ăn nhân vật đứng yên nhai nhóp nhép, cầm món ăn nhấp nhô, có hiệu ứng riêng từng món (giọt nước, hơi nóng, vụn bánh, tia chớp, lá trà, lấp lánh…), tim bay lên, câu khen "Ngon quá trời!" và thanh tiến độ. Năng lượng và hiệu ứng nhận khi ăn xong. Đồng hồ buồn vệ sinh tạm dừng khi đang ăn để không bị tai nạn.
 - Bot không mua thực phẩm chức năng. Admin thống kê lượt mua đủ 10 món.
+
+## 08.11.2026-o · Cấp 3 minigame khó hơn
+
+Cấp SIÊU KHÓ của các minigame thường (không áp dụng cho game Lâu Đài): thưởng ×3 → **×2,5**, nhịp nhanh hơn 40% → **55%**, tần suất vật phẩm dày hơn, bẫy 14% → **22%**. Chỉnh trong `LVS` (`mul`, `sp`, `v`, `bad`) ở `index.html`. Thách đấu không tính thưởng nhân nên không đổi tiền, chỉ màn chơi cấp 3 khó hơn.
