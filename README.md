@@ -361,3 +361,15 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 
 ## 09.11.2026-f — Lịch sử tiền ghi rõ lý do thưởng ván game
 - Trước đây dòng "+X ₫" của một ván game hiện lý do là "Thuế liên minh −Y ₫" (vì toast thuế hiện sau cùng). Nay lý do ghi "Thưởng ván <tên game> cấp N (đã trừ thuế liên minh Y)". Số tiền X là tiền thực nhận sau thuế.
+
+## 09.11.2026-g — Cân bằng kinh tế lần 2
+- **Techcombank**: tổng số dư các sổ tối đa **120 triệu**. Kỳ hạn dài nhất là 15 ngày game, lãi **5%** (trước là 6%, trần 100tr). Các mức 1 ngày 1%, 3 ngày 2%, 5 ngày 3% giữ nguyên. Sổ đã gửi giữ nguyên lãi và kỳ hạn cũ.
+- **Giá ×1,5**:
+  - Villa: 25tr xuống 37,5tr mỗi giường.
+  - Lâu đài: 20/40/60/80/100tr xuống 30/60/90/120/150tr mỗi người.
+  - Đất liên minh: Thường 45tr xuống 67,5tr, Vàng 90tr xuống 135tr.
+  - Hạt giống: 8tr xuống 12tr (Dừa Vàng), 5tr xuống 7,5tr (Anh Đào, Thông Gió, Sồi Chiến, Bồ Đề), 20tr xuống 30tr (Thế Giới Thụ).
+  - Giá nâng điểm cây liên minh: gốc 490.000₫ xuống 735.000₫ (vẫn nhân 1,11 mỗi điểm, kênh ưa ×0,8, kênh kỵ ×1,3).
+- Đã cập nhật chữ hướng dẫn trong game và giá mặc định trong tab Cửa hàng của admin.
+- **Lưu ý**: nếu admin từng bấm LƯU GIÁ trong tab Cửa hàng, giá lưu trên server sẽ ghi đè giá mặc định trong code. Khi đó cần bấm MẶC ĐỊNH rồi LƯU GIÁ lại.
+- Đồ người chơi đã mua không bị ảnh hưởng.
