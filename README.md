@@ -295,3 +295,6 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Ếch&Em và Quầy Thú Cưng có tab **LIMITED** (xem được, không mua được).
 - **Admin → tab LIMITED**: nút thả Phân/Trứng từng hạng hoặc ngẫu nhiên, thu hồi, chỉnh hạn khuyến mãi, danh mục + số đã nhận/đang giữ; panel người chơi hiện Túi Thần Kỳ + lịch sử + nút tặng vật phẩm.
 - **Cần chạy 1 lần trong SQL Editor:** `sql-cu/supabase-update-limited.sql` (đã gộp vào `supabase-setup.sql`). Chưa chạy thì mua ở Thương Xá báo lỗi, các phần khác vẫn chạy.
+
+## 08.11-v · Dời Thương Xá Tắc và Techcombank
+- Thương Xá Tắc và Techcombank dời xuống phía dưới bên trái (khu riêng, dưới hàng bungalow), không còn che bungalow B06–B10. Đường đi tới hai nơi đã kiểm tra thông.
