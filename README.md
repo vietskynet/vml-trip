@@ -298,3 +298,7 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 
 ## 08.11-v · Dời Thương Xá Tắc và Techcombank
 - Thương Xá Tắc và Techcombank dời xuống phía dưới bên trái (khu riêng, dưới hàng bungalow), không còn che bungalow B06–B10. Đường đi tới hai nơi đã kiểm tra thông.
+
+## 08.11-w/x · Giao diện Thương Xá Tắc + sửa lỗi loá sáng
+- **Sửa lỗi nghiêm trọng:** màn hình bị loá trắng vào buổi chiều/tối (hàm vẽ ánh sáng của vật phẩm Limited gọi hàm không tồn tại làm hỏng chế độ trộn màu). Đã sửa và bọc `try/catch`.
+- Thương Xá Tắc đổi giao diện: mái hiên sọc nhiều màu, đèn nhấp nháy, mỗi người bán một quầy màu riêng, thẻ hàng viền/phát sáng theo hạng (Huyền thoại nhấp nháy), nhãn hạng, giá dạng đồng xu vàng. Thẻ trong Túi Thần Kỳ cũng viền màu theo hạng.
