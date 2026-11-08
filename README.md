@@ -249,3 +249,14 @@ Ba quầy nhỏ lấp lánh nằm ở sân phía đông Lâu Đài Tình Báo (c
 - Gõ `mattroidem` vào khung chat (không phân biệt hoa thường, dấu cách, dấu) khi **trời tối** (từ 17h30 đến 6h30) và đang đi ngoài resort: tốn **300.000₫** (`SUN_FEE`), tạo một mặt trời nhỏ lơ lửng trên đầu và vầng sáng ấm bán kính khoảng 230px quanh người dùng mã trong **3 phút**, mờ dần ở những giây cuối.
 - Ban ngày gõ mã sẽ bị từ chối và **không bị trừ tiền**. Gõ lại khi đang hiệu lực thì tính 300.000₫ nữa và đếm lại 3 phút.
 - Hiệu ứng chỉ hiện trên máy người dùng mã (không đồng bộ sang người chơi khác).
+
+## 08.11.2026-n · Thực đơn 10 món có hình, thực phẩm chức năng, thời gian ăn
+
+- **10 món, mỗi món có hình pixel-art** (vẽ bằng code): Nước dừa 40k, Kem dừa 60k, Bánh mì 100k, Phở bò 150k, Cơm gà 200k, Hải sản 400k, cộng 4 thực phẩm chức năng (viền vàng).
+- **Thực phẩm chức năng** (không mua lại khi đang còn hiệu lực, lưu cả khi tải lại trang):
+  - **Redbull** 2tr: chạy nhanh hơn 10% trong 5 phút.
+  - **Trà Xanh Tiêu Hoá** 3tr: khi buồn vệ sinh được chờ 60 giây thay vì 30, hiệu lực 1 ngày game (`CFG.DAY` giây).
+  - **Xôi No Lâu** 2tr: năng lượng tụt chậm một nửa trong 1 ngày game (+15% năng lượng).
+  - **Collagen** 3tr: phát sáng nhẹ vừa đủ thấy đường vào ban đêm, 1 ngày game.
+- **Thời gian ăn 15–30 giây** tuỳ món (dừa 15s … hải sản 30s). Trong lúc ăn nhân vật đứng yên nhai nhóp nhép, cầm món ăn nhấp nhô, có hiệu ứng riêng từng món (giọt nước, hơi nóng, vụn bánh, tia chớp, lá trà, lấp lánh…), tim bay lên, câu khen "Ngon quá trời!" và thanh tiến độ. Năng lượng và hiệu ứng nhận khi ăn xong. Đồng hồ buồn vệ sinh tạm dừng khi đang ăn để không bị tai nạn.
+- Bot không mua thực phẩm chức năng. Admin thống kê lượt mua đủ 10 món.
