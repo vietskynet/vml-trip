@@ -385,3 +385,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 ## Sửa lỗi mất liên minh khi sang máy khác (SQL)
 - Nguyên nhân: `rt_move_player` (dùng cho Mã đồng bộ và Đăng nhập tài khoản) chuyển nhân vật, giường, đấu, lâu đài nhưng không chuyển **liên minh** (`lm/*`). Người chơi sang máy mới thành uid mới, trong liên minh vẫn còn uid cũ làm "thành viên ma".
 - Sửa: chạy `sql-cu/supabase-update-move-lm.sql` (hàm đã thêm `lm/%`). Từ đó các lần chuyển máy sau giữ nguyên liên minh. Các uid ma đã sinh ra từ trước cần sửa tay (xem `sql-cu/check-user-lm.sql` để dò).
+
+## 09.11.2026-i — Chặn mở 2 tab cùng lúc
+- Các tab cùng trình duyệt dùng chung phiên đăng nhập (cùng uid), nên mở 2 tab là 2 màn hình chơi cùng 1 nhân vật. Tab cũ vẫn lưu đè dữ liệu, tab mới đăng nhập nhân vật khác sẽ chuyển dữ liệu về uid đó, gây lẫn tiền, liên minh, v.v.
+- Giờ chỉ 1 tab được chơi: mở tab thứ hai sẽ thấy màn chặn, có nút DÙNG TAB NÀY (tab kia tự dừng, không còn ghi dữ liệu). Khoá tự hết hạn sau 75 giây nếu tab đóng đột ngột.
+- Không cần chạy SQL mới.
