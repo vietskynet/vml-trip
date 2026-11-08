@@ -190,6 +190,8 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    <div class="card" style="margin-top:14px">
     <h2>KHUYẾN MÃI TỈ LỆ RƠI</h2>
     <p>Giai đoạn đầu mỗi món được cộng thêm <b>+5%</b> trọng số tỉ lệ rơi (rồi tự về tiêu chuẩn khi hết hạn). Mặc định đến 00:00 ngày 15/11/2026.</p>
+    <div class="row" style="align-items:center"><button class="ok" id="limOffGo">TẮT RƠI TỰ NHIÊN</button><span id="limOffMsg"></span></div>
+    <div id="limRep" style="margin:8px 0"></div>
     <div class="row"><label for="limMax" style="align-self:center">Tối đa vật phẩm rơi / ngày (24h):</label><input id="limMax" type="number" min="0" max="144" value="12" style="width:80px"><button class="ok" id="limMaxGo">LƯU</button><span id="limMaxMsg" style="align-self:center"></span></div>
     <div class="row"><input id="limPromo" type="datetime-local" aria-label="Hạn khuyến mãi"><button class="ok" id="limPromoGo">LƯU HẠN</button><button class="ghost" id="limPromoOff">TẮT KHUYẾN MÃI</button></div>
     <p class="msg" id="limPMsg"></p>
@@ -275,14 +277,14 @@ firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously(
  db.ref('admins/'+uid).on('value',s=>{admin=s.val()===true;if(admin&&sessionStorage.getItem(SKEY))showApp(true);else if(!admin)showApp(false)});
  if(started)return;started=true;
  db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
- db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{trkRender()}catch(e){}try{ecoRender()}catch(e){}try{stUpdate()}catch(e){}});
+ db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{trkRender()}catch(e){}try{limRep()}catch(e){}try{ecoRender()}catch(e){}try{stUpdate()}catch(e){}});
  db.ref('pos').on('value',s=>{pos=s.val()||{}});
 db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{statAdm();bagAdm()}catch(e){}});
  db.ref('beds').on('value',s=>{beds=s.val()||{}});
  db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
- db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
+ db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
 });
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=SB();if(!sb)return;$('#lgo').disabled=true;say('#lmsg','Đang kiểm tra…');
  try{const {data,error}=await sb.rpc('admin_login',{u_name:$('#lu').value,p_word:$('#lp').value});if(error)throw error;if(!data||!data.ok){say('#lmsg',(data&&data.msg)||'Sai username hoặc mật khẩu.',1);$('#lgo').disabled=false;return}
@@ -361,7 +363,7 @@ function statAdm(){const u=sel;if(!u){return}const p=players[u]||{},r=lmFind(u),
  const el=$('#pStat');if(el)el.innerHTML='<b>Thông số</b><table style="width:100%;font-size:13px;border-collapse:collapse">'+rows.map(x=>'<tr><td style="padding:3px 0;border-bottom:1px dashed #555">'+x[0]+'</td><td style="text-align:right;border-bottom:1px dashed #555">'+x[1]+'</td></tr>').join('')+'</table><small>'+(on?'Liên minh: '+esc(r.d.nm||('Liên Minh '+String(r.d.hn||'').slice(0,10)))+'. ':'Chưa có liên minh đang trồng cây. ')+'<span style="color:#4cd964">+xanh</span> = cộng từ Liên Minh (dài hạn).</small>'}
 
 /* ===== VẬT PHẨM LIMITED ===== */
-const LIMA=[["lo1", "Áo Sương Mai", 0, "o", 500000, ""], ["lo2", "Áo Cánh Bướm Lặng", 0, "o", 500000, ""], ["lo3", "Áo Dừa Say Nắng", 0, "o", 500000, ""], ["lo4", "Giày Đạp Gió", 1, "o", 1500000, "Tốc độ +3%"], ["lo5", "Áo Đom Đóm Dẫn Lối", 1, "o", 1500000, "Phát sáng đêm"], ["lo6", "Phao Cá Nóc Thần", 1, "o", 1500000, "Bơi"], ["lo7", "Áo Choàng Nguyệt Quang Phi Hành", 2, "o", 5000000, "Tốc độ +2%, Phát sáng đêm"], ["lo8", "Giáp Vảy Cá Chép Vượt Vũ Môn", 2, "o", 5000000, "May mắn +1%, Bơi"], ["lo9", "Bộ Kim Ngân Tụ Bảo", 3, "o", 12000000, "May mắn +1,2%, Tiền +1,2%, Phát sáng đêm"], ["lo10", "Bộ Thuỷ Long Ngự Phong", 3, "o", 12000000, "Tốc độ +4%, Phát sáng đêm, Bơi"], ["lp1", "Bóng Sương Lặng", 0, "p", 500000, ""], ["lp2", "Nấm Hồn Thì Thầm", 0, "p", 500000, ""], ["lp3", "Rêu Tinh Ngủ Mơ", 0, "p", 500000, ""], ["lp4", "Hồ Ly Lướt Gió", 1, "p", 1500000, "Tốc độ +3%"], ["lp5", "Đom Đóm Tinh Linh", 1, "p", 1500000, "Phát sáng đêm"], ["lp6", "Quy Thần Cõng Sông", 1, "p", 1500000, "Bơi"], ["lp7", "Cú Nguyệt Hồn", 2, "p", 5000000, "May mắn +1%, Phát sáng đêm"], ["lp8", "Giao Long Con Thuỷ Triều", 2, "p", 5000000, "Tốc độ +3%, Bơi"], ["lp9", "Kỳ Lân Kim Quang", 3, "p", 12000000, "May mắn +1,2%, Tiền +1,2%, Phát sáng đêm"], ["lp10", "Phượng Hoàng Tro Tàn", 3, "p", 12000000, "Tốc độ +4%, May mắn +1%, Phát sáng đêm"]];
+const LIMA=[["lo1", "Áo Sương Mai", 0, "o", 500000, ""], ["lo2", "Áo Cánh Bướm Lặng", 0, "o", 500000, ""], ["lo3", "Áo Dừa Say Nắng", 0, "o", 500000, ""], ["lo4", "Giày Đạp Gió", 1, "o", 1500000, "Tốc độ +3%"], ["lo5", "Áo Đom Đóm Dẫn Lối", 1, "o", 1500000, "Phát sáng đêm"], ["lo6", "Phao Cá Nóc Thần", 1, "o", 1500000, "Bơi"], ["lo7", "Áo Choàng Nguyệt Quang Phi Hành", 2, "o", 5000000, "Tốc độ +2%, Phát sáng đêm"], ["lo8", "Giáp Vảy Cá Chép Vượt Vũ Môn", 2, "o", 5000000, "May mắn +1%, Bơi"], ["lo9", "Bộ Kim Ngân Tụ Bảo", 3, "o", 12000000, "May mắn +1,2%, Tiền +1,2%, Phát sáng đêm"], ["lo10", "Bộ Thuỷ Long Ngự Phong", 3, "o", 12000000, "Tốc độ +4%, Phát sáng đêm, Bơi"], ["lp1", "Bóng Sương Lặng", 0, "p", 500000, ""], ["lp2", "Nấm Hồn Thì Thầm", 0, "p", 500000, ""], ["lp3", "Rêu Tinh Ngủ Mơ", 0, "p", 500000, ""], ["lp4", "Hồ Ly Lướt Gió", 1, "p", 1500000, "Tốc độ +3%"], ["lp5", "Đom Đóm Tinh Linh", 1, "p", 1500000, "Phát sáng đêm"], ["lp6", "Quy Thần Cõng Sông", 1, "p", 1500000, "Bơi"], ["lp7", "Cú Nguyệt Hồn", 2, "p", 5000000, "May mắn +1%, Phát sáng đêm"], ["lp8", "Giao Long Con Thuỷ Triều", 2, "p", 5000000, "Tốc độ +3%, Bơi"], ["lp9", "Kỳ Lân Kim Quang", 3, "p", 12000000, "May mắn +1,2%, Tiền +1,2%, Phát sáng đêm"], ["lp10", "Phượng Hoàng Tro Tàn", 3, "p", 12000000, "Tốc độ +4%, May mắn +1%, Phát sáng đêm"], ["lo11", "Thiên Sứ Cầu Vồng", 3, "o", 100000000, "Tốc độ +3%, May mắn +1,2%, Phát sáng đêm"], ["lo12", "Tiền Tài Kéo Dài Lê Thê", 3, "o", 99000000, "Tiền +1,5%, May mắn +1%, Phát sáng đêm"], ["lo13", "Hiệp Sĩ Cưỡi Rồng", 2, "o", 90000000, "Tốc độ +3%, Bơi"], ["lo14", "Hoàng Bào Long Phụng", 2, "o", 85000000, "Tiền +1%, Phát sáng đêm"], ["lo15", "Vua Mặt Trời", 1, "o", 80000000, "Phát sáng đêm"], ["lo16", "Công Chúa Thiên Nga", 1, "o", 75000000, "Bơi"], ["lo17", "Lọ Lem Xe Bí Ngô", 1, "o", 70000000, "Tốc độ +2%"], ["lo18", "Cánh Xe Ngựa Hoàng Gia", 0, "o", 78000000, ""], ["lp11", "Rồng 3 Đầu", 3, "p", 20000000, "Tốc độ +4%, May mắn +1%, Phát sáng đêm"], ["lp12", "Phượng Hoàng Witty", 2, "p", 10000000, "May mắn +1%, Phát sáng đêm"], ["lp13", "Kỳ Lân", 2, "p", 8000000, "May mắn +1%, Phát sáng đêm"], ["lp14", "Con Ong Cháu Cha", 1, "p", 5000000, "Tốc độ +3%"], ["lp15", "Gấu Trúc", 0, "p", 3500000, ""]];
 const LIMT=[['Thường','#c8d0e0'],['Hiếm','#7ad8ff'],['Rất hiếm','#ffd23f'],['Huyền thoại','#d79bff']],LIMBY={};LIMA.forEach(a=>LIMBY[a[0]]=a);
 const LIMPILE=['Phân Bạc','Phân Vàng','Phân Kim Cương','Phân Ánh Tím Huyền Thoại'],LIMEGG=['Trứng Trắng','Trứng Bạc','Trứng Vàng','Trứng Ánh Tím'];
 const limArr=x=>Array.isArray(x)?x:(x&&typeof x==='object'?Object.values(x):[]);
@@ -373,7 +375,7 @@ function limCatRender(){const got={},hold={};Object.values(players).forEach(p=>{
  $('#limCat').innerHTML=h;limAct();try{trkRender()}catch(e){console.warn(e)}}
 
 /* ===== THEO DÕI VẬT PHẨM LIMITED ===== */
-const TSRC={drop:'Nhặt ngoài map',gift:'Admin tặng',buy:'Mua Thương Xá',sold:'Bán Thương Xá',shop:'Bán lại shop'};
+const TSRC={mig:'Chuyển từ shop',drop:'Nhặt ngoài map',gift:'Admin tặng',buy:'Mua Thương Xá',sold:'Bán Thương Xá',shop:'Bán lại shop'};
 function trkCall(it,cls){return it?'<span class="lchip" style="'+limV(it[2])+'">'+(it[3]==='o'?'👗 ':'🥚 ')+esc(it[1])+'</span>':''}
 function trkRender(){const el=$('#trkSum');if(!el)return;const fi=$('#trkItem').value,fs=$('#trkSrc').value,fn=($('#trkName').value||'').trim().toLowerCase();
  const ev=[],hold={},recv={},sum={drop:0,gift:0,buy:0,sold:0,shop:0,money:0,held:0,holders:0};
@@ -390,6 +392,21 @@ function trkRender(){const el=$('#trkSum');if(!el)return;const fi=$('#trkItem').
  $('#trkLog').innerHTML=L.length?'<table class="trk"><thead><tr><th>Thời gian</th><th>Người chơi</th><th>Món</th><th>Nguồn</th><th class="r">Giá</th><th>Đối tác</th></tr></thead><tbody>'+L.map(e=>'<tr><td>'+new Date(e.t).toLocaleString('vi-VN')+'</td><td>'+esc(e.nm)+'</td><td>'+trkCall(LIMBY[e.id])+'</td><td>'+(TSRC[e.k]||esc(e.k))+'</td><td class="r">'+(e.pr?VND(+e.pr):'')+'</td><td>'+esc(e.w||'')+'</td></tr>').join('')+'</tbody></table>':'<small style="color:#8a93a8">Chưa có bản ghi nào khớp bộ lọc.</small>'}
 $('#trkItem').innerHTML='<option value="">Tất cả vật phẩm</option>'+LIMA.map(a=>'<option value="'+a[0]+'">'+(a[3]==='o'?'[Áo] ':'[Thú] ')+esc(a[1])+' · '+LIMT[a[2]][0]+'</option>').join('');
 ['#trkItem','#trkSrc'].forEach(q=>$(q).addEventListener('change',trkRender));$('#trkName').addEventListener('input',trkRender);
+
+/* ----- báo cáo rơi vật phẩm hôm nay + nút tắt/bật ----- */
+const LIM_SLOT=6e5,LIM_DAYMS=864e5,LIM_TZ=252e5,LIM_PCT=.8;
+function mb32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const limCfg=()=>(config&&config.lim)||{};
+const limDayMaxA=()=>{const v=limCfg().dayMax;return v!=null&&v!==''&&isFinite(+v)&&+v>=0?Math.floor(+v):12};
+function limToday(now){const day=Math.floor((now+LIM_TZ)/LIM_DAYMS),s0=Math.ceil((day*LIM_DAYMS-LIM_TZ)/LIM_SLOT),n=LIM_DAYMS/LIM_SLOT,L=[];for(let i=0;i<n;i++){const q=s0+i;if(mb32(q*7919+13)()<=LIM_PCT)L.push([mb32(q*104729+7)(),q])}L.sort((a,b)=>a[0]-b[0]);
+ const sl=L.slice(0,limDayMaxA()).map(x=>x[1]).sort((a,b)=>a-b).map(q=>{const r=mb32(q*7919+13);r();r();return q*LIM_SLOT+Math.floor(r()*LIM_SLOT*.4)});return{day,start:day*LIM_DAYMS-LIM_TZ,end:(day+1)*LIM_DAYMS-LIM_TZ,sl}}
+function limRep(){const el=$('#limRep');if(!el)return;const now=Date.now()+off,T=limToday(now),c=limCfg(),offd=+c.dropOff===1,X=limDayMaxA(),done=T.sl.filter(t=>t<=now).length,next=T.sl.find(t=>t>now),hh=t=>new Date(t).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',hour12:false});
+ let adm=0,pick=0;Object.values(config.limdrop||{}).forEach(v=>{if(v&&+v.ts>=T.start&&+v.ts<T.end)adm++});Object.values(players).forEach(p=>{const b=p&&p.bag;if(!b)return;limArr(b.h).forEach(h=>{if(+h[0]>=T.start&&+h[0]<T.end&&String(h[2]).split(':')[0]==='drop')pick++})});
+ const bt=$('#limOffGo');bt.textContent=offd?'BẬT LẠI RƠI TỰ NHIÊN':'TẮT RƠI TỰ NHIÊN';bt.className=offd?'ok':'warn';
+ el.innerHTML='<span class="tstat"><small>Rơi tự nhiên hôm nay</small><b>'+(offd?0:done)+' / '+X+'</b></span><span class="tstat"><small>Trạng thái</small><b style="color:'+(offd?'#ff6a6a':'#7dff9a')+'">'+(offd?'ĐANG TẮT':'ĐANG BẬT')+'</b></span><span class="tstat"><small>Admin thả hôm nay</small><b>'+adm+'</b></span><span class="tstat"><small>Lượt đã nhặt (tự nhiên)</small><b>'+pick+'</b></span><span class="tstat"><small>Lần rơi tiếp theo</small><b>'+(offd?'—':next?hh(next):'hết hôm nay')+'</b></span>'+
+ '<details style="margin-top:6px"><summary>Lịch rơi hôm nay (ngày VN)</summary><small>'+(T.sl.map(t=>'<span style="'+(t<=now?'opacity:.55;text-decoration:line-through':'')+'">'+hh(t)+'</span>').join(' · ')||'Không có lần rơi nào.')+'</small></details>'}
+$('#limOffGo').onclick=()=>{const offd=+limCfg().dropOff===1;db.ref('config/lim/dropOff').set(offd?0:1).then(()=>say('#limOffMsg',offd?'Đã bật lại rơi tự nhiên.':'Đã tắt rơi tự nhiên (nút thả của admin vẫn dùng được).')).catch(e=>say('#limOffMsg','Lỗi: '+e.message,1))};
+setInterval(()=>{try{limRep()}catch(e){}},30000);
 function limDropBtns(){const b=[];for(let t=0;t<4;t++){b.push(['o',t]);b.push(['p',t])}$('#limDropBtns').innerHTML=b.map(([k,t])=>'<button class="ok sm" data-ld="'+k+t+'" style="border-color:'+LIMT[t][1]+'">'+(k==='o'?LIMPILE:LIMEGG)[t]+'</button>').join('')+'<button class="sm" data-ld="rand">🎲 Ngẫu nhiên</button>'}
 function limDropGo(code){const kind=code==='rand'?(Math.random()<.5?'o':'p'):code[0];let L=LIMA.filter(a=>a[3]===kind),t;
  if(code==='rand'){const cw=[24*3,8*3,1.5*2,.5*2];let x=Math.random()*cw.reduce((a,v)=>a+v,0);for(t=0;t<3;t++){x-=cw[t];if(x<=0)break}}else t=+code[1];

@@ -323,3 +323,17 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Cách chọn: mỗi ngày có 144 ô 10 phút, chọn X ô bằng hash cố định nên rải đều cả ngày; mọi máy tính ra cùng kết quả, không cần SQL.
 - Món admin thả bằng nút thả và món admin tặng không bị tính vào giới hạn này.
 - Giữ nguyên quy tắc cũ: mỗi người nhặt được 1 bản mỗi lần rơi.
+
+## 09.11.2026-b — Chuyển 13 món shop sang Limited, nút tắt rơi, báo cáo rơi/ngày
+- **13 món chuyển sang Limited** (hết bán trong shop, vẫn hiện trong shop với nhãn Limited, chỉ nhặt hoặc mua ở Thương Xá):
+  - Trang phục (id mới `lo11`–`lo18`): Thiên Sứ Cầu Vồng, Tiền Tài Kéo Dài Lê Thê (Huyền thoại); Hiệp Sĩ Cưỡi Rồng, Hoàng Bào Long Phụng (Rất hiếm); Vua Mặt Trời, Công Chúa Thiên Nga, Lọ Lem Xe Bí Ngô (Hiếm); Cánh Xe Ngựa Hoàng Gia (Thường).
+  - Thú (id `lp11`–`lp15`): Rồng 3 Đầu (Huyền thoại); Phượng Hoàng Witty, Kỳ Lân (Rất hiếm); Con Ong Cháu Cha (Hiếm); Gấu Trúc (Thường).
+  - Công năng nhẹ theo hạng, vẫn dưới trần: tốc độ ≤7%, tiền ≤1,5%, may mắn ≤1,5%.
+  - Giá bán lại cho shop: trang phục 50% giá gốc, thú 70% giá gốc (như refund cũ), tránh nhặt rồi bán lấy lãi.
+  - Dùng id `lo*`/`lp*` nên **không cần chạy lại SQL** (`rt_lim_buy` kiểm theo mẫu id này).
+- **Người đã mua trước**: khi vào game, đồ đang sở hữu tự chuyển vào Túi Thần Kỳ (lịch sử ghi "Chuyển từ shop sang Túi"). Đang mặc/nuôi thì giữ nguyên. Từ đó bán được ở Thương Xá.
+- **Sửa cách tính giới hạn/ngày**: trước đó 12 ô còn bị lọc thêm 80% nên thực tế ~9,6 món; nay chọn đúng X ô trong số ô đủ điều kiện, mỗi ngày đúng X món (X mặc định 12).
+- **Admin → LIMITED**:
+  - Nút **TẮT/BẬT RƠI TỰ NHIÊN** (`config/lim/dropOff`). Nút thả của admin vẫn dùng khi đang tắt.
+  - **Báo cáo hôm nay**: rơi tự nhiên đã rơi / tối đa, trạng thái, số admin thả, lượt đã nhặt, giờ rơi tiếp theo, lịch rơi cả ngày (ngày VN).
+  - Danh mục có thêm 13 món mới.
