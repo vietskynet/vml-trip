@@ -190,6 +190,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    <div class="card" style="margin-top:14px">
     <h2>KHUYẾN MÃI TỈ LỆ RƠI</h2>
     <p>Giai đoạn đầu mỗi món được cộng thêm <b>+5%</b> trọng số tỉ lệ rơi (rồi tự về tiêu chuẩn khi hết hạn). Mặc định đến 00:00 ngày 15/11/2026.</p>
+    <div class="row"><label for="limMax" style="align-self:center">Tối đa vật phẩm rơi / ngày (24h):</label><input id="limMax" type="number" min="0" max="144" value="12" style="width:80px"><button class="ok" id="limMaxGo">LƯU</button><span id="limMaxMsg" style="align-self:center"></span></div>
     <div class="row"><input id="limPromo" type="datetime-local" aria-label="Hạn khuyến mãi"><button class="ok" id="limPromoGo">LƯU HẠN</button><button class="ghost" id="limPromoOff">TẮT KHUYẾN MÃI</button></div>
     <p class="msg" id="limPMsg"></p>
    </div>
@@ -281,7 +282,7 @@ db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{statAdm();bagAdm()}catch(
  db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
- db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}});
+ db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
 });
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=SB();if(!sb)return;$('#lgo').disabled=true;say('#lmsg','Đang kiểm tra…');
  try{const {data,error}=await sb.rpc('admin_login',{u_name:$('#lu').value,p_word:$('#lp').value});if(error)throw error;if(!data||!data.ok){say('#lmsg',(data&&data.msg)||'Sai username hoặc mật khẩu.',1);$('#lgo').disabled=false;return}
@@ -398,6 +399,7 @@ $('#limDropClr').onclick=()=>db.ref('config/limdrop').set(null).then(()=>say('#l
 const pad2=n=>String(n).padStart(2,'0'),toLocalIn=ms=>{const d=new Date(ms);return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())+'T'+pad2(d.getHours())+':'+pad2(d.getMinutes())};
 $('#limPromo').value=toLocalIn(Date.UTC(2026,10,14,17,0,0));
 $('#limPromoGo').onclick=()=>{const v=$('#limPromo').value;if(!v){say('#limPMsg','Chọn ngày giờ.',1);return}const ms=new Date(v).getTime();db.ref('config/lim/promoEnd').set(ms).then(()=>say('#limPMsg','Đã lưu hạn khuyến mãi.')).catch(e=>say('#limPMsg','Lỗi: '+e.message,1))};
+$('#limMaxGo').onclick=()=>{const v=Math.max(0,Math.min(144,Math.floor(+$('#limMax').value)));if(!isFinite(v)){say('#limMaxMsg','Số không hợp lệ.',1);return}db.ref('config/lim/dayMax').set(v).then(()=>say('#limMaxMsg','Đã lưu: tối đa '+v+' món/ngày (không tính món admin thả).')).catch(e=>say('#limMaxMsg','Lỗi: '+e.message,1))};
 $('#limPromoOff').onclick=()=>db.ref('config/lim/promoEnd').set(1).then(()=>say('#limPMsg','Đã tắt khuyến mãi (tỉ lệ về tiêu chuẩn).')).catch(e=>say('#limPMsg','Lỗi: '+e.message,1));
 $('#gLim').innerHTML=LIMA.map(a=>'<option value="'+a[0]+'">'+(a[3]==='o'?'[Áo] ':'[Thú] ')+esc(a[1])+' · '+LIMT[a[2]][0]+'</option>').join('');
 $('#gLimGo').onclick=()=>{const u=sel,id=$('#gLim').value;if(!u||!LIMBY[id])return;db.ref('gifts/'+u+'/L'+Date.now()).set({lim:id,ts:TS,from:'admin',amount:0}).then(()=>say('#gLimMsg','Đã tặng '+LIMBY[id][1]+' cho '+((players[u]||{}).name||'?')+'.')).catch(e=>say('#gLimMsg','Lỗi: '+e.message,1))};

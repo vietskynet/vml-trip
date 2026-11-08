@@ -316,3 +316,10 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
   - **Dòng thời gian** toàn server (200 bản ghi mới nhất): người chơi, món, nguồn, giá, đối tác mua/bán.
   - Bộ lọc theo món, nguồn và tên người chơi. Tự cập nhật khi dữ liệu người chơi hoặc chợ thay đổi.
 - Không cần chạy SQL mới.
+
+## 09.11.2026-a — Giới hạn vật phẩm Limited rơi mỗi ngày
+- Chống lạm phát: mỗi ngày (24h, tính theo ngày giờ Việt Nam, 00:00–24:00) chỉ tối đa **X** vật phẩm Limited rơi ngoài map. Mặc định **X = 12**.
+- Admin → tab LIMITED → ô "Tối đa vật phẩm rơi / ngày" → LƯU (lưu vào `config/lim/dayMax`). Đặt 0 để tắt hẳn rơi tự nhiên.
+- Cách chọn: mỗi ngày có 144 ô 10 phút, chọn X ô bằng hash cố định nên rải đều cả ngày; mọi máy tính ra cùng kết quả, không cần SQL.
+- Món admin thả bằng nút thả và món admin tặng không bị tính vào giới hạn này.
+- Giữ nguyên quy tắc cũ: mỗi người nhặt được 1 bản mỗi lần rơi.
