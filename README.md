@@ -203,3 +203,9 @@ Khu Vườn Tuổi Thơ đã thành **VƯỜN LIÊN MINH**: cổng mở, đi b�
 - **Kinh tế bến tàu**: thuê 2 phút cho cả 3 hạng. Thuyền nhỏ 100k, vừa 300k, lớn 600k. Mô phỏng 4.000 chuyến: nhỏ ≈ 2,6tr, vừa ≈ 3,7tr (+40%), lớn ≈ 4,4tr (+65%, dùng lưới kéo 2–3 con/mẻ). Có mức tối thiểu bến bù cho chuyến đủ 60 giây trở lên và không bị chìm (2tr / 2,7tr / 3,1tr), và cơ chế cá đắt dễ cắn hơn khi chuyến đi đang chậm.
 - Mọi tàu đều có xác suất nhỏ dính cá quý trên 1 triệu (nhỏ ~0,4%, vừa ~1%, lớn ~0,3% mỗi con; bãi cá động tăng lên).
 - **Hải tặc 3 cấp, dùng chung cho mọi người**: cấp 1 (3 máu, thưởng 1,2tr), cấp 2 (5 máu, 2,8tr), cấp 3 (8 máu, 6tr, bắn 2 sát thương). Nhiều người cùng bắn thì thưởng chia theo số phát trúng.
+
+## 08.11-h
+- **Mọi minigame có 3 độ khó**: Cấp 1 (ban ngày, thưởng ×1, miễn phí), Cấp 2 (hoàng hôn, ×2, phí 100.000₫, nhanh hơn 20%, nhiều bẫy hơn), Cấp 3 (đêm neon, ×3, phí 250.000₫, nhanh hơn 40%, nhiều bẫy, vật phẩm phát sáng viền neon). Hình nền và vật phẩm đổi màu theo cấp. Đứng ở khu game bấm E để chọn cấp.
+- **Mục THÁCH ĐẤU** ở mọi game: chọn một người đang online, chọn cấp độ và tiền cược 1–10 triệu. Hai bên chơi cùng một màn (cùng hạt giống ngẫu nhiên), điểm cao hơn thắng toàn bộ cược, hoà thì hoàn tiền, bỏ cuộc quá 2 phút thì xử thua. Cược bị trừ khi cả hai vào trận. Dùng đường dẫn `duels/` đã có sẵn trong `supabase-setup.sql`, không cần chạy SQL mới.
+- **Bến Thuyền Bãi Trái** (bên trái khu villa): thuê thuyền như bến chính, xuất phát và về lại đúng bến đã thuê.
+- **2 game bãi biển mới** cạnh bến đó: **Săn Kho Báu** (đào ô cát có máy dò kim loại, mỗi bãi sắp xếp rương, kim cương, chai thư, bom, cua ngẫu nhiên, màu cát và bầu trời đổi mỗi lần) và **Lâu Đài Cát** (xếp tầng khối cát, có gió bất chợt, màu khối và kiểu cửa sổ khác nhau mỗi lâu đài).
