@@ -286,3 +286,12 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Bảng thông số mở ra thì BXH tự đóng; bỏ gạch chân dưới tên.
 - Lâu đài (hình, tháp, cửa, vùng bấm, ánh sáng, nhãn tháp, hiệu ứng) thu nhỏ còn **70%**.
 - **8 lính hoàng gia** đi tuần quanh lâu đài (vị trí theo giờ server nên mọi người thấy giống nhau). Thành viên đang giữ tháp lâu đài đi gần sẽ được lính **cúi chào** + "Kính chào!".
+
+## 08.11-u · Vật phẩm Limited · Túi Thần Kỳ · Thương Xá Tắc
+- **20 món Limited** (10 trang phục + 10 thú huyền bí), 4 hạng: Thường (không công năng) / Hiếm (1) / Rất hiếm (2) / Huyền thoại (3 công năng). Công năng: tốc độ, may mắn, tiền minigame, phát sáng trong đêm, bơi lội. Mỗi chỉ số chỉ lấy món cao nhất; trần tốc độ +7%, tiền/may mắn +1,5%.
+- **Rơi ngoài bản đồ** (mọi người cùng thấy, mỗi người nhặt 1 phần): trang phục là **Đống Phân** (Bạc / Vàng / Kim Cương / Ánh Tím Huyền Thoại), thú là **Trứng** (Trắng / Bạc / Vàng / Ánh Tím). Tự rơi theo giờ server (10 phút/lượt, tồn tại 5 phút). **Khuyến mãi +5% trọng số mỗi món** đến 15/11/2026 (admin chỉnh được), sau đó về tiêu chuẩn.
+- **Túi Thần Kỳ** (nút TÚI): giữ trang phục/thú Limited, mặc/cất, bán lại shop theo giá mặc định, **ghi số lượng đã nhận từng loại + lịch sử nhận** (nhặt / admin tặng / mua / bán).
+- **Thương Xá Tắc** (cạnh Techcombank): mỗi người một quầy (tối đa 8 món), tự đặt giá; mua qua hàm `rt_lim_buy`.
+- Ếch&Em và Quầy Thú Cưng có tab **LIMITED** (xem được, không mua được).
+- **Admin → tab LIMITED**: nút thả Phân/Trứng từng hạng hoặc ngẫu nhiên, thu hồi, chỉnh hạn khuyến mãi, danh mục + số đã nhận/đang giữ; panel người chơi hiện Túi Thần Kỳ + lịch sử + nút tặng vật phẩm.
+- **Cần chạy 1 lần trong SQL Editor:** `sql-cu/supabase-update-limited.sql` (đã gộp vào `supabase-setup.sql`). Chưa chạy thì mua ở Thương Xá báo lỗi, các phần khác vẫn chạy.
