@@ -268,3 +268,7 @@ Cấp SIÊU KHÓ của các minigame thường (không áp dụng cho game Lâu 
 ## 08.11.2026-p · Bản đồ desktop bớt phóng to
 
 Trên màn hình rộng (từ 900px) khung nhìn trước đây luôn ép về khoảng 420×260 điểm ảnh thế giới nên bị phóng to 3–4 lần. Nay mục tiêu là khoảng 700×390: màn 1440×800 thấy 720×400, màn 1920×1080 thấy 960×540 (mỗi điểm ảnh phóng gấp 2). Điện thoại/màn hẹp giữ nguyên. Công thức ở hàm `resize()`.
+
+## 08.11.2026-p · Bản đồ desktop bớt phóng to
+
+Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ số phóng to nguyên (2×, 3×), nên màn hình lớn thấy bản đồ rất gần (1440×780 chỉ thấy khoảng 720×390 điểm ảnh bản đồ, màn 2560 bị 3×). Nay hệ số tính theo mục tiêu thấy khoảng 900×500 điểm ảnh, làm tròn xuống bước 0,25, tối thiểu 1,25: 1440×780 thấy 960×520, 1920×950 thấy 1098×543, 2560×1300 thấy 1024×520. Điện thoại và cửa sổ hẹp giữ nguyên. Chỉnh trong hàm `resize()`: đổi 900 và 500 để phóng to hoặc thu nhỏ thêm.
