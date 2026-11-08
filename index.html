@@ -1636,12 +1636,12 @@ function lvFx(q,t){if(q.lv<2)return;const id=q.id;
   else if(id==='bar')for(let x=6;x<480;x+=24){rr(m,x,22,1,6,'#5e3a1a');rr(m,x-2,28,5,6,Math.floor(t*3+x)%2?'#ffd23f':'#ffb02e')}}
  else{if(id!=='bar'&&id!=='crab'&&id!=='cast'&&id!=='dig')for(let k=0;k<22;k++){const x=h2(k,7)*480,y=22+h2(k,8)*38,a=.35+.65*Math.abs(Math.sin(t*2+k));rr(m,x,y,k%4?1:2,k%4?1:2,`rgba(255,255,255,${a.toFixed(2)})`)}
   const cols=['#ff4fd8','#3ff2ff','#ffd23f','#7aff8a'];for(let x=4;x<480;x+=18){const c2=cols[(x/18|0)%4],on=Math.floor(t*4+x/18)%3?1:.4;m.globalAlpha=on;rr(m,x,21,2,2,c2);m.globalAlpha=1}}}
-function startGame(z,lv,opt){opt=opt||{};lv=clamp(lv|0||1,1,3);const L=LVS[lv-1];mgSprites();mode='game';P.path=[];G={lv,L,mul:opt.duel?1:L.mul,duel:opt.duel||null,R:mulberry(opt.seed||Math.floor(Math.random()*2147483646)+1),id:z.id,z,t:CFG.GAME_LEN,score:0,intro:2.5,done:false,endT:0,sp:0,items:[],parts:[],fl:[],bx:240,tx:null,py:150,ty:null,lives:3,inv:0,scroll:0,holes:[...Array(9)].map(()=>({k:null,t:0,up:0})),mx:240,my:150,sw:0,anim:0,hook:{st:'idle',x:240,y:74,f:null},bar:{order:[],prog:0,pat:0,patMax:1,cust:0,inT:0,spill:0,pour:0,served:0,happy:0}};if(z.id==='bar')barNew(G);if(z.id==='dig')digInit(G);if(z.id==='cast')castInit(G);if(z.cz)czInit(G);beep(523,.08);setTimeout(()=>beep(784,.12),90)}
-function endGame(){const q=G;q.done=true;q.endT=2.4;if(q.duel){q.earn=0;q.tax=0;P.energy-=CFG.GAME_EN;duelScore(q);return}q.earn=Math.max(0,Math.round(q.score*lmBon('tien')));q.tax=lmCut(q.earn);q.earn-=q.tax;if(q.cz){q.ct=czPay(q.earn);q.earn-=q.ct}P.money+=q.earn;if(q.tax)toast('Thuế liên minh −'+VND(q.tax),false,2500);P.energy-=CFG.GAME_EN;P.cd[q.id]=S.time+(q.cz?CZ_CD:LVCD[(q.lv||1)-1]);P.guideGame=true;if(q.earn)coin()}
+function startGame(z,lv,opt){opt=opt||{};lv=clamp(lv|0||1,1,3);const L=LVS[lv-1];mgSprites();mode='game';P.path=[];G={lv,L,mul:opt.duel?1:L.mul,duel:opt.duel||null,R:mulberry(opt.seed||Math.floor(Math.random()*2147483646)+1),id:z.id,z,t:CFG.GAME_LEN,score:0,intro:2.5,done:false,endT:0,sp:0,items:[],parts:[],fl:[],bx:240,tx:null,py:150,ty:null,lives:3,inv:0,scroll:0,holes:[...Array(9)].map(()=>({k:null,t:0,up:0})),mx:240,my:150,sw:0,anim:0,hook:{st:'idle',x:240,y:74,f:null},bar:{order:[],prog:0,pat:0,patMax:1,cust:0,inT:0,spill:0,pour:0,served:0,happy:0}};if(z.id==='bar')barNew(G);if(z.id==='dig')digInit(G);if(z.id==='cast')castInit(G);if(z.cz){G.lv=1;G.L=LVS[0];czInit(G,lv)}beep(523,.08);setTimeout(()=>beep(784,.12),90)}
+function endGame(){const q=G;q.done=true;q.endT=2.4;if(q.duel){q.earn=0;q.tax=0;P.energy-=CFG.GAME_EN;duelScore(q);return}q.earn=Math.max(0,Math.round(q.score*lmBon('tien')));q.tax=lmCut(q.earn);q.earn-=q.tax;if(q.cz){q.ct=czPay(q.earn);q.earn-=q.ct}P.money+=q.earn;if(q.tax)toast('Thuế liên minh −'+VND(q.tax),false,2500);P.energy-=CFG.GAME_EN;P.cd[q.id]=S.time+LVCD[(q.cz?q.clv:q.lv||1)-1];P.guideGame=true;if(q.earn)coin()}
 function burst(q,x,y,col,n=8){for(let i=0;i<n;i++)q.parts.push({x,y,vx:rnd(-60,60),vy:rnd(-90,-20),t:rnd(.4,.8),col})}
 function addScore(q,v,x,y){v=Math.round(v*(q.mul||1));q.score+=v;q.fl.push({x,y,v,t:.9});burst(q,x,y,v>0?'#ffd23f':'#ff5f6d',v>0?10:6);v>0?beep(880,.05):beep(150,.15,'sawtooth')}
 function updGame(dt){const q=G;q.anim+=dt;q.parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=200*dt;p.t-=dt});q.parts=q.parts.filter(p=>p.t>0);q.fl.forEach(f=>{f.t-=dt;f.y-=22*dt});q.fl=q.fl.filter(f=>f.t>0);if(q.sw>0)q.sw-=dt;
- if(q.done){q.endT-=dt;if(q.endT<=0){mode='world';if(!q.duel)toast('+'+VND(q.earn)+' từ '+q.z.name+'. Chờ '+((q.cz?CZ_CD:LVCD[(q.lv||1)-1])/60)+' phút để chơi thường lại khu này.');G=null}return}
+ if(q.done){q.endT-=dt;if(q.endT<=0){mode='world';if(!q.duel)toast('+'+VND(q.earn)+' từ '+q.z.name+'. Chờ '+(LVCD[(q.cz?q.clv:q.lv||1)-1]/60)+' phút để chơi thường lại khu này.');G=null}return}
  if(q.intro>0){q.intro-=dt;return}
  q.t-=dt;if(q.t<=0){q.t=0;endGame();return}const el=CFG.GAME_LEN-q.t;q.sp-=dt;
  if(q.id==='coco'){const mv=((keys.right?1:0)-(keys.left?1:0))*230*dt;q.bx+=mv;if(q.tx!=null&&!mv)q.bx+=Math.sign(q.tx-q.bx)*Math.min(Math.abs(q.tx-q.bx),320*dt);q.bx=clamp(q.bx,30,450);
@@ -1703,12 +1703,12 @@ function renderGame(){const q=G,t=q.anim;m.clearRect(0,0,480,270);
   ptext(m,'Đã phục vụ: '+b.served,470,140,13,'#fffaf0','right')}
  if(q.id==='dig')renderDig(q,t);if(q.id==='cast')renderCast(q,t);if(q.cz)renderCz(q,t);lvFx(q,t);
  q.parts.forEach(p=>{if(!p.nog)rr(m,p.x,p.y,2,2,p.col)});
- rr(m,0,0,480,20,'rgba(8,16,44,.85)');ptext(m,q.z.name,8,15,q.cz?13:16,'#ffd23f','left');ptext(m,q.cz?(q.night?'VIP · ĐÊM +10%':'VIP'):q.duel?'THÁCH ĐẤU':q.L.n+(q.mul>1?' ×'+q.mul:''),q.cz?196:158,15,13,q.cz?'#ff6fd8':q.duel?'#ff9ad5':q.lv===3?'#ff6fd8':q.lv===2?'#ffb27a':'#8fe6a8','left');ptext(m,VND(q.score),340,15,16,'#ffffff','center');ptext(m,Math.ceil(q.t)+'s',472,15,16,q.t<6?'#ff5f6d':'#ffffff','right');
+ rr(m,0,0,480,20,'rgba(8,16,44,.85)');ptext(m,q.z.name,8,15,q.cz?13:16,'#ffd23f','left');ptext(m,q.cz?'VIP CẤP '+q.clv+(q.night?' · ĐÊM +10%':''):q.duel?'THÁCH ĐẤU':q.L.n+(q.mul>1?' ×'+q.mul:''),q.cz?196:158,15,13,q.cz?'#ff6fd8':q.duel?'#ff9ad5':q.lv===3?'#ff6fd8':q.lv===2?'#ffb27a':'#8fe6a8','left');ptext(m,VND(q.score),340,15,16,'#ffffff','center');ptext(m,Math.ceil(q.t)+'s',472,15,16,q.t<6?'#ff5f6d':'#ffffff','right');
  q.fl.forEach(f=>ptext(m,(f.v>0?'+':'')+VND(f.v),f.x,f.y,15,f.v>0?'#ffd23f':'#ff5f6d'));
  rr(m,0,252,480,18,'rgba(8,16,44,.75)');ptext(m,'Đồng hồ vệ sinh và năng lượng tạm dừng khi đang chơi',240,265,13,'#a9bde0');
  if(q.intro>0){rr(m,60,52,360,138,'rgba(8,16,44,.92)');rr(m,60,52,360,3,'#ffd23f');rr(m,60,187,360,3,'#ffd23f');ptext(m,q.z.name,240,86,22,'#ffd23f','center',DFONT);
   const L={dig:['← ↑ ↓ → hoặc rê chuột chọn ô, bấm E / chạm để đào','Máy dò kêu to = kim loại gần · Rương +150k · Kim cương +80k · Bom -90k'],cast:['E / Space / chạm để thả khối cát đúng chỗ','Xếp trúng +15k · Hoàn hảo +45k · Xong lâu đài +60k · Trượt -30k'],coco:['← → di chuyển giỏ, hoặc rê chuột','Dừa +30.000₫ · Dừa vàng +100.000₫ · Dừa thối -50.000₫'],surf:['↑ ↓ lái mô tô nước, hoặc rê chuột','Vỏ sò +40.000₫ · Sao biển +100.000₫ · Đá, cá mập -80.000₫'],crab:['Bấm vào cua, hoặc phím Q W E / A S D / Z X C','Cua +30.000₫ · Cua vàng +100.000₫ · Đập rùa -80.000₫'],fish:['← → lái thuyền, E / Space / chạm để thả lưỡi câu','Cá nhỏ +30k · Cá xanh +70k · Cá vàng +150k · Ủng -50k · Sứa -80k'],spy:['← → chọn két, E / chạm vào két để lấy hồ sơ (hoặc phím 1-5)','Hồ sơ +110k · Cặp vàng +330k · Bị đèn rọi -150k, khoá tay 1 giây'],dark:['Phím 1 2 3 (hoặc Z X C) hoặc bấm nút: bắn Lửa, Băng, Độc','Bắn đúng màu con quái thấp nhất · +60k, combo tới ×2 · Sai màu -120k · Chạm đất mất 1 tim'],broom:['← → (hoặc chạm trái / giữa / phải) đổi làn bay','Vòng +55k (liên tiếp thưởng thêm) · Sao +160k · Mây giông, dơi -150k'],bar:['Pha đúng thứ tự khách gọi: phím 1 2 3 4 hoặc bấm nút','Mỗi ly +25k/nguyên liệu + thưởng nhanh · Sai -30k · Khách bỏ đi -20k']}[q.id];
-  ptext(m,L[0],240,114,17,'#ffffff');ptext(m,L[1],240,136,15,'#a9bde0');ptext(m,q.duel?'THÁCH ĐẤU vs '+q.duel.opp+' · cược '+VND(q.duel.bet):q.cz?'VIP LÂU ĐÀI · '+(q.night?'ĐÊM: thưởng +10%':'ban đêm thưởng +10%'):'Độ khó: '+q.L.n+' · Thưởng ×'+q.mul,240,153,14,q.duel?'#ff9ad5':'#ffb27a');ptext(m,'Bắt đầu sau '+Math.ceil(q.intro)+'… (E để bỏ qua)',240,168,16,'#2fd0c8')}
+  ptext(m,L[0],240,114,17,'#ffffff');ptext(m,L[1],240,136,15,'#a9bde0');ptext(m,q.duel?'THÁCH ĐẤU vs '+q.duel.opp+' · cược '+VND(q.duel.bet):q.cz?'VIP CẤP '+q.clv+' · thưởng ×'+q.cmul+(q.night?' · ĐÊM +10%':' · đêm +10%'):'Độ khó: '+q.L.n+' · Thưởng ×'+q.mul,240,153,14,q.duel?'#ff9ad5':'#ffb27a');ptext(m,'Bắt đầu sau '+Math.ceil(q.intro)+'… (E để bỏ qua)',240,168,16,'#2fd0c8')}
  if(q.done){rr(m,120,80,240,96,'rgba(8,16,44,.92)');rr(m,120,80,240,3,'#ffd23f');rr(m,120,173,240,3,'#ffd23f');ptext(m,'HẾT GIỜ!',240,112,22,'#ffffff','center',DFONT);ptext(m,q.duel?'ĐIỂM '+VND(q.score):'+'+VND(q.earn),240,148,q.duel?22:28,'#ffd23f');if(q.ct)ptext(m,'Thuế chủ Lâu Đài −'+VND(q.ct),240,167,12,'#ffb27a')}
  G.fit=fitMg()}
 
@@ -1778,7 +1778,7 @@ function duelTick(){if(!duelOn()||!S)return;
  duelSync()}
 setInterval(()=>{try{duelTick()}catch(e){console.warn(e)}},700);
 $('#lvBody').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;
- if(b.dataset.lvt){LVU.tab=b.dataset.lvt;renderLv()}else if(b.dataset.lvp)lvPlay(+b.dataset.lvp);else if(b.dataset.czp)czPlay();else if(b.dataset.lvo){LVU.opp=b.dataset.lvo;renderLv()}else if(b.dataset.lvc){LVU.lv=+b.dataset.lvc;renderLv()}else if(b.dataset.lvb){LVU.bet=+b.dataset.lvb;renderLv()}
+ if(b.dataset.lvt){LVU.tab=b.dataset.lvt;renderLv()}else if(b.dataset.lvp)lvPlay(+b.dataset.lvp);else if(b.dataset.czp)czPlay(+b.dataset.czp);else if(b.dataset.lvo){LVU.opp=b.dataset.lvo;renderLv()}else if(b.dataset.lvc){LVU.lv=+b.dataset.lvc;renderLv()}else if(b.dataset.lvb){LVU.bet=+b.dataset.lvb;renderLv()}
  else if(b.dataset.lvx==='send')duelSend();else if(b.dataset.lvx==='cancel')duelCancel()});
 $('#duelYes').onclick=()=>{const inv=DU.inv;$('#duelOv').hidden=true;if(!inv)return;const {id,d}=inv;DU.inv=null;
  if(mode!=='world'||P.busy>0||P.boat){toast('Hãy về lại khu vực chính rồi nhờ đối thủ thách lại.',true);NET.db.ref('duels/'+id).update({st:2});return}
@@ -1877,7 +1877,7 @@ function renderCast(q,t){const c=q.cs,sky=[['#6fcaff','#d8f3ff'],['#ffd9a0','#ff
  if(c.flash>0&&c.msg)ptext(m,c.msg,240,92,20,'#ffd23f')}
 
 /* ================= 3 GAME VIP CỦA LÂU ĐÀI: Tình Báo · Pháp Thuật Hắc Ám · Đua Chổi ================= */
-const CZ_FEE=600000,CZ_CD=120,CZ_NIGHT=1.1,CZ_SH=[.01,.015,.02,.025,.03];
+const CZMUL={spy:[.3,1.05,1.65],dark:[.35,.95,1.5],broom:[.28,.78,1.2]},CZ_FEE=300000,CZ_NIGHT=1.1,CZLV=[{n:'DỄ',mul:.5,v:.75,bad:.6,life:1.4,two:999,b3:999,r:'0,8 – 1,5 triệu'},{n:'KHÓ',mul:1,v:.9,bad:.85,life:1.15,two:16,b3:18,r:'2 – 4 triệu'},{n:'SIÊU KHÓ',mul:1.5,v:1,bad:1,life:1,two:11,b3:13,r:'4 – 6 triệu'}],CZ_SH=[.01,.015,.02,.025,.03];
 const czNight=()=>{const h=hour();return h>=19||h<5};
 const czRate=()=>{let r=0,n=0;for(let t=0;t<5;t++)if(ctw(t).done){r+=CZ_SH[t];n++}return{r,n}};
 /* Chủ lâu đài chia % tiền thưởng: mỗi tháp đã đủ 3 chủ nhận CZ_SH[t] tổng thưởng, chia đều 3 người (trừ vào tiền thưởng người chơi) */
@@ -1889,15 +1889,15 @@ function czPay(amt){let cut=0;if(!(amt>0))return 0;
  return cut}
 function renderCzModal(z,cd){const cr=czRate(),ni=czNight();
  const D={spy:'Hồ sơ mật nằm trong 5 két sắt. Chộp đúng lúc, nhưng đèn pha quét qua là bị bắt!',dark:'Quái vật hắc ám lao xuống. Bắn đúng màu phép: Lửa, Băng, Độc. Combo càng dài thưởng càng cao.',broom:'Phi chổi qua các vòng thần và sao vàng, né mây giông và dơi đen. Càng bay càng nhanh.'}[z.id];
- $('#lvBody').innerHTML='<p class="lvnote">Game VIP chỉ có ở Lâu Đài Tình Báo. Khó hơn cấp SIÊU KHÓ bên ngoài nhưng <b>thưởng cao hơn 50%</b>.</p>'
+ $('#lvBody').innerHTML='<p class="lvnote">Game VIP chỉ có ở Lâu Đài Tình Báo. 3 cấp độ như minigame, <b>thưởng cao hơn bên ngoài</b>, cùng một mức vé.</p>'
  +(cd>0?'<p class="lvnote">Cần chờ <b>'+mmss(cd)+'</b> nữa mới chơi lại quầy này.</p>':'')
- +'<div class="lvcards"><button class="lvcard lv3" data-czp="1"'+(cd>0||P.money<CZ_FEE?' disabled':'')+'><b>'+z.name+'</b><span class="lvx">THƯỞNG +50% so với cấp 3</span><small>'+D+'</small><span class="lvfee">Vé vào: '+VND(CZ_FEE)+'</span></button></div>'
+ +'<div class="lvcards">'+CZLV.map((L,i)=>'<button class="lvcard lv'+(i+1)+'" data-czp="'+(i+1)+'"'+(cd>0||P.money<CZ_FEE?' disabled':'')+'><b>CẤP '+(i+1)+' · '+L.n+'</b><span class="lvx">THẮNG '+L.r+'</span><small>'+D+'</small><span class="lvfee">Vé vào: '+VND(CZ_FEE)+'</span></button>').join('')+'</div>'
  +'<p class="lvnote">'+(ni?'🌙 <b>Đang là ban đêm: tiền thưởng +10%!</b>':'🌙 Ban đêm (19h–5h) tiền thưởng +10%.')+'</p>'
  +'<p class="lvnote">Thuế chủ Lâu Đài: <b>'+(cr.r*100).toFixed(1).replace('.0','')+'%</b> tiền thưởng ('+cr.n+'/5 tháp có chủ) chia cho các thành viên sở hữu. Tháp càng cao cấp, phần chia càng lớn.</p>';
  $('#lvMoney').textContent=VND(P.money)}
-function czPlay(){const z=LVU.z;if(!z||!z.cz||lvCd()>0)return;if(P.energy<CFG.PLAY_MIN){toast('Năng lượng chỉ còn '+Math.round(P.energy)+'%. Cần tối thiểu '+CFG.PLAY_MIN+'%.',true);return}
- if(P.money<CZ_FEE){toast('Chưa đủ vé VIP '+VND(CZ_FEE)+'.',true);return}P.money-=CZ_FEE;track('czfee.'+z.id);$('#lvOv').hidden=true;startGame(z,1)}
-function czInit(q){q.cz=1;q.night=czNight();q.mul=q.night?CZ_NIGHT:1;q.lives=3;if(q.id==='spy')spyInit(q);if(q.id==='dark')darkInit(q);if(q.id==='broom')broomInit(q)}
+function czPlay(i){const z=LVU.z;if(!z||!z.cz||lvCd()>0||!CZLV[i-1])return;if(P.energy<CFG.PLAY_MIN){toast('Năng lượng chỉ còn '+Math.round(P.energy)+'%. Cần tối thiểu '+CFG.PLAY_MIN+'%.',true);return}
+ if(P.money<CZ_FEE){toast('Chưa đủ vé VIP '+VND(CZ_FEE)+'.',true);return}P.money-=CZ_FEE;track('czfee.'+z.id);$('#lvOv').hidden=true;startGame(z,i)}
+function czInit(q,lv){q.cz=1;q.clv=lv;q.cl=CZLV[lv-1];q.night=czNight();q.cmul=CZMUL[q.id][lv-1];q.mul=(q.night?CZ_NIGHT:1)*q.cmul;q.lives=3;if(q.id==='spy')spyInit(q);if(q.id==='dark')darkInit(q);if(q.id==='broom')broomInit(q)}
 function czUpd(q,dt,el){if(q.id==='spy')spyUpd(q,dt,el);if(q.id==='dark')darkUpd(q,dt,el);if(q.id==='broom')broomUpd(q,dt,el)}
 function renderCz(q,t){if(q.id==='spy')renderSpy(q,t);if(q.id==='dark')renderDark(q,t);if(q.id==='broom')renderBroom(q,t)}
 function czTap(q,p){if(q.done||q.intro>0)return;
@@ -1924,11 +1924,11 @@ function czBG(id){if(CZBG[id])return CZBG[id];const [c,g]=mk(480,270);
  CZBG[id]=c;return c}
 /* ---------- TÌNH BÁO ---------- */
 const SPYX=[66,153,240,327,414],SPYY=190;
-function spyInit(q){q.c={cur:2,mvT:0,stun:0,alarm:0,sp:.5,bt:0,grab:0,safes:[0,1,2,3,4].map(()=>({k:null,t:0,life:1,age:0})),beams:[{w:1.45,ph:0,r:175},{w:1.05,ph:2.2,r:140},{w:1.8,ph:4.1,r:115,from:13}]}}
+function spyInit(q){q.c={cur:2,mvT:0,stun:0,alarm:0,sp:.5,bt:0,grab:0,safes:[0,1,2,3,4].map(()=>({k:null,t:0,life:1,age:0})),beams:[{w:1.45,ph:0,r:175},{w:1.05,ph:2.2,r:140},{w:1.8,ph:4.1,r:115,from:q.cl.b3}]}}
 function spyBeams(q){const c=q.c,a=[];c.beams.forEach(b=>{if(b.from&&(CFG.GAME_LEN-q.t)<b.from)return;a.push({x:240+Math.sin(c.bt*b.w+b.ph)*b.r})});return a}
-function spyUpd(q,dt,el){const c=q.c;c.bt+=dt*(1+el*.02);c.stun=Math.max(0,c.stun-dt);c.alarm=Math.max(0,c.alarm-dt);c.grab=Math.max(0,c.grab-dt);c.mvT-=dt;
+function spyUpd(q,dt,el){const c=q.c;c.bt+=dt*(1+el*.02)*q.cl.v;c.stun=Math.max(0,c.stun-dt);c.alarm=Math.max(0,c.alarm-dt);c.grab=Math.max(0,c.grab-dt);c.mvT-=dt;
  const dx=(keys.right?1:0)-(keys.left?1:0);if(dx&&c.mvT<=0){c.cur=clamp(c.cur+dx,0,4);c.mvT=.13}
- c.sp-=dt;if(c.sp<=0)RS(q,()=>{c.sp=Math.max(.34,.72-el*.012);const free=c.safes.map((s,i)=>s.k?-1:i).filter(i=>i>=0),a=Math.random(),r=Math.random();if(free.length){const s=c.safes[free[Math.floor(a*free.length)]];s.k=r<.13?'gold':'doc';s.life=s.t=Math.max(.85,1.5-el*.014);s.age=0}});
+ c.sp-=dt;if(c.sp<=0)RS(q,()=>{c.sp=Math.max(.34,.72-el*.012);const free=c.safes.map((s,i)=>s.k?-1:i).filter(i=>i>=0),a=Math.random(),r=Math.random();if(free.length){const s=c.safes[free[Math.floor(a*free.length)]];s.k=r<.13?'gold':'doc';s.life=s.t=Math.max(.85,1.5-el*.014)*q.cl.life;s.age=0}});
  c.safes.forEach(s=>{if(s.k){s.t-=dt;s.age+=dt;if(s.t<=0)s.k=null}})}
 function spyGrab(q,i){if(!q||q.id!=='spy'||q.done||q.intro>0)return;const c=q.c;if(c.stun>0)return;c.cur=i;c.grab=.18;const s=c.safes[i];if(!s.k)return;
  if(spyBeams(q).some(b=>Math.abs(b.x-SPYX[i])<44)){addScore(q,-150000,SPYX[i],SPYY-34);c.stun=.9;c.alarm=.9;s.k=null;beep(120,.3,'sawtooth')}
@@ -1951,8 +1951,8 @@ function renderSpy(q,t){const c=q.c;m.drawImage(czBG('spy'),0,0);const bs=spyBea
 const DKC={fire:{c:'#ff5a3a',d:'#7a1a0c',l:'#ffb090',n:'LỬA'},ice:{c:'#5ad0ff',d:'#16508a',l:'#d8f4ff',n:'BĂNG'},poi:{c:'#6fe05a',d:'#1f6a18',l:'#d0ffb8',n:'ĐỘC'}},DKE=['fire','ice','poi'],DKDEAD=186;
 function darkInit(q){q.c={mons:[],sp:.4,combo:0,best:0,beam:null,cast:0,cel:0,hurt:0,btns:[0,1,2].map(i=>({x:[70,203,336][i],y:224,w:74,h:24}))}}
 function darkUpd(q,dt,el){const c=q.c;c.cast=Math.max(0,c.cast-dt);c.hurt=Math.max(0,c.hurt-dt);if(c.beam){c.beam.t-=dt;if(c.beam.t<=0)c.beam=null}
- c.sp-=dt;if(c.sp<=0)RS(q,()=>{c.sp=Math.max(.6,1.15-el*.016);const a=Math.random(),b=Math.random(),d=Math.random(),e1=Math.random(),e2=Math.random(),gold=a<.1,two=!gold&&el>11&&b<.35,f=v=>DKE[Math.floor(v*3)];
-  c.mons.push({x:46+Math.round(d*388),y:28,vy:(34+el*1.2)*(gold?1.5:1),seq:gold?['any']:two?[f(e1),f(e2)]:[f(e1)],gold,val:gold?160000:two?95000:60000,ph:d*6,fl:0})});
+ c.sp-=dt;if(c.sp<=0)RS(q,()=>{c.sp=Math.max(.6,1.15-el*.016);const a=Math.random(),b=Math.random(),d=Math.random(),e1=Math.random(),e2=Math.random(),gold=a<.1,two=!gold&&el>q.cl.two&&b<.35,f=v=>DKE[Math.floor(v*3)];
+  c.mons.push({x:46+Math.round(d*388),y:28,vy:(34+el*1.2)*q.cl.v*(gold?1.5:1),seq:gold?['any']:two?[f(e1),f(e2)]:[f(e1)],gold,val:gold?160000:two?95000:60000,ph:d*6,fl:0})});
  c.mons.forEach(o=>{o.y+=o.vy*dt;o.fl=Math.max(0,o.fl-dt);if(o.y>=DKDEAD&&!o.dead){o.dead=1;q.lives--;c.hurt=.5;c.combo=0;addScore(q,-100000,o.x,DKDEAD-6);beep(110,.3,'sawtooth');if(q.lives<=0)endGame()}});
  c.mons=c.mons.filter(o=>!o.dead)}
 function darkCast(i){const q=G;if(!q||q.id!=='dark'||!q.cz||q.done||q.intro>0)return;const c=q.c,tg=c.mons.reduce((a,b)=>!a||b.y>a.y?b:a,null);c.cast=.2;c.cel=i;if(!tg)return;const e=DKE[i];
@@ -1982,8 +1982,8 @@ function renderDark(q,t){const c=q.c;m.drawImage(czBG('dark'),0,0);
 const BRY=86,BRN=214,bproj=(p,l)=>{const e=Math.pow(clamp(p,0,1.2),1.6);return{x:240+l*(18+148*e),y:BRY+(BRN-BRY)*e,s:.14+.86*e}};
 function broomInit(q){q.c={lane:0,lx:0,items:[],sp:.5,dist:0,inv:0,streak:0,held:0,best:0}}
 function broomUpd(q,dt,el){const c=q.c;c.inv=Math.max(0,c.inv-dt);const L=(keys.right?1:0)-(keys.left?1:0);if(L&&!c.held){c.lane=clamp(c.lane+L,-1,1);c.held=1}if(!L)c.held=0;c.lx+=(c.lane-c.lx)*Math.min(1,dt*14);
- const spd=(.45+el*.015)*(c.inv>0?.55:1);c.dist+=dt*spd;
- c.sp-=dt;if(c.sp<=0)RS(q,()=>{c.sp=Math.max(.5,.85-el*.01);const fl=Math.floor(Math.random()*3)-1,r=Math.random(),pH=.55+Math.min(.35,el*.012);
+ const spd=(.45+el*.015)*q.cl.v*(c.inv>0?.55:1);c.dist+=dt*spd;
+ c.sp-=dt;if(c.sp<=0)RS(q,()=>{c.sp=Math.max(.5,.85-el*.01);const fl=Math.floor(Math.random()*3)-1,r=Math.random(),pH=(.55+Math.min(.35,el*.012))*q.cl.bad;
   for(let l=-1;l<=1;l++){const a=Math.random(),b=Math.random();if(l===fl)c.items.push({l,p:0,k:r<.14?'star':'ring',ph:a*6});else if(a<pH)c.items.push({l,p:0,k:b<.5?'cloud':'bat',ph:b*6})}});
  c.items.forEach(it=>{it.p+=dt*spd;if(!it.got&&it.p>=.93&&it.p<=1.08&&Math.abs(it.l-c.lx)<.55){it.got=1;const pr=bproj(1,it.l);
   if(it.k==='ring'||it.k==='star'){c.streak++;c.best=Math.max(c.best,c.streak);addScore(q,Math.round((it.k==='star'?160000:55000)*(1+Math.min(10,c.streak)*.05)),pr.x,BRN-40)}
@@ -3585,7 +3585,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-k';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='08.11.2026-l';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

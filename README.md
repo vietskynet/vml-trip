@@ -235,3 +235,11 @@ Ba quầy nhỏ lấp lánh nằm ở sân phía đông Lâu Đài Tình Báo (c
 - **Admin tạo username:** chọn người chơi chưa có tài khoản trong tab Người chơi, admin sẽ thấy sẵn username gợi ý (từ tên hiển thị) và mật khẩu ngẫu nhiên, sửa tuỳ ý rồi bấm TẠO USERNAME. Nút TẠO USERNAME CHO TẤT CẢ NGƯỜI CHƯA CÓ tạo hàng loạt và hiện bảng Tên / Username / Mật khẩu để sao chép gửi riêng. **Cần chạy 1 lần** `sql-cu/supabase-update-admin-create-account.sql` trong Supabase SQL Editor (đã gộp sẵn vào `supabase-setup.sql`).
 - **4 kiểu tóc mới (2–4 triệu):** Goku Chĩa Chủa 2,5tr, Bờm Ngựa Phi Nước Đại 3,2tr, Thủy Thủ Mặt Trăng 3,8tr, Tháp Eiffel Chọc Trời 4tr (đã thêm vào bảng giá admin). Kiểu tóc cao dùng `ex` (số dòng thêm phía trên đầu): khung nhân vật tự cao thêm, mọi chỗ vẽ nhân vật vẫn giữ chân đúng vị trí.
 - **3 quầy VIP Lâu Đài** dời ra ngay cạnh cổng trước của sân Lâu Đài, xếp ngang để dễ thấy.
+
+## 08.11.2026-l · Game VIP Lâu Đài: vé 300k, 3 cấp độ
+
+- **Vé vào 300.000₫** cho mọi cấp (hằng số `CZ_FEE`).
+- **3 cấp như minigame**, thưởng ước tính: Cấp 1 DỄ 0,8–1,5 triệu · Cấp 2 KHÓ 2–4 triệu · Cấp 3 SIÊU KHÓ 4–6 triệu. Cấp thấp chậm hơn, ít bẫy, két mở lâu hơn, chưa có quái 2 màu, đèn pha ít hơn; cấp cao nhanh và nhiều bẫy.
+- Hệ số thưởng chỉnh trong `CZMUL` (theo game và cấp), độ khó trong `CZLV`. Đêm vẫn +10%, thuế chủ Lâu Đài vẫn trừ vào tiền thưởng.
+- Thời gian chờ chơi lại theo cấp giống minigame: 1 / 2 / 3 phút.
+- Số liệu ước tính từ bot mô phỏng (người thật thường thấp hơn bot giỏi một chút).
