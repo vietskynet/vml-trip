@@ -393,3 +393,10 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 
 ## 09.11.2026-j — Xe ngựa lâu đài nhanh hơn
 - Tốc độ di chuyển khi đi xe ngựa tăng thêm 5 điểm %: tháp 1 đến 5 từ 3 / 5 / 7 / 8,5 / 10% lên **8 / 10 / 12 / 13,5 / 15%**. Không cần chạy SQL.
+
+## 09.11.2026-k — Bộ đua F1 "Tay Đua Công Thức Một"
+- Cửa hàng thời trang, mục Đồ thể thao, giá **100 triệu**. Áo đua đỏ viền trắng, huy hiệu tự vẽ (không dùng logo thật), **nón bảo hiểm vàng gold** kính đen.
+- Khi đi có **vệt tốc độ** phía sau (dài và sáng hơn khi đang tăng tốc).
+- **Tăng tốc x3 trong 2 giây**, sau đó hồi 5 giây. Bấm nút TĂNG TỐC (góc phải dưới) hoặc phím **B** (hoặc Shift). Chỉ hiện khi đang mặc bộ này.
+- Không cần chạy SQL.
+- Ghi chú: các bản -i và -j trước đó bị lỗi không tăng số phiên bản trong game; từ bản này số phiên bản hiển thị đúng 09.11.2026-k.
