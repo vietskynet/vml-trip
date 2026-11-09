@@ -400,3 +400,9 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - **Tăng tốc x3 trong 2 giây**, sau đó hồi 5 giây. Bấm nút TĂNG TỐC (góc phải dưới) hoặc phím **B** (hoặc Shift). Chỉ hiện khi đang mặc bộ này.
 - Không cần chạy SQL.
 - Ghi chú: các bản -i và -j trước đó bị lỗi không tăng số phiên bản trong game; từ bản này số phiên bản hiển thị đúng 09.11.2026-k.
+
+## Kế hoạch (chưa thực hiện): bản tiếng Anh `/en/`
+- Dịch lúc build, không dịch runtime: `tools/make-en.py` quét `index.html`, xuất `en.json` (khoá = chuỗi Việt), thay chuỗi và sinh `en/index.html`. Chuỗi chưa dịch giữ tiếng Việt và được báo cáo.
+- Cùng domain nên dùng chung đăng nhập và nhân vật; không mở hai trang cùng lúc (chốt một tab).
+- Cần xử lý: chuỗi nối bằng `+` hoặc có `${}`, đơn vị tiền (₫, tr/triệu), nội dung do người chơi/admin tạo không dịch. Admin giữ tiếng Việt.
+- Bước đầu đề xuất: chạy script quét để đếm số chuỗi cần dịch rồi ước lượng khối lượng.
