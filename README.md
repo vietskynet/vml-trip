@@ -406,3 +406,9 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Cùng domain nên dùng chung đăng nhập và nhân vật; không mở hai trang cùng lúc (chốt một tab).
 - Cần xử lý: chuỗi nối bằng `+` hoặc có `${}`, đơn vị tiền (₫, tr/triệu), nội dung do người chơi/admin tạo không dịch. Admin giữ tiếng Việt.
 - Bước đầu đề xuất: chạy script quét để đếm số chuỗi cần dịch rồi ước lượng khối lượng.
+
+## 09.11.2026-l — Quái vật tự động mỗi 20 phút
+- Mỗi chu kỳ (mặc định **20 phút**, theo giờ máy chủ) game tự thả 1 quái: loại ngẫu nhiên, **thưởng ngẫu nhiên 3 đến 10 triệu**, **máu 200 đòn**, tồn tại 4 phút. Mọi máy tự tính cùng một con từ số thứ tự chu kỳ nên không cần máy chủ hay SQL.
+- Admin, tab Sự kiện, mục "QUÁI VẬT TỰ ĐỘNG": bật/tắt, chu kỳ, thưởng thấp nhất và cao nhất, máu, thời gian tồn tại. Lưu ở `config/mon`, áp dụng từ chu kỳ kế tiếp. Hiện giờ quái kế tiếp.
+- Quái thả tay từ admin vẫn có ưu tiên khi đang hoạt động.
+- Không cần chạy SQL.

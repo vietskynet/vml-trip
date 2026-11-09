@@ -187,6 +187,18 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
      <label>Thời gian (phút)<input id="mDur" type="number" min="1" max="30" step="1" value="5"></label>
     </div>
     <div class="row" style="margin-top:12px"><button class="ok" id="mGo">THẢ QUÁI VẬT</button><button class="ghost" id="mStop">THU HỒI QUÁI VẬT</button></div>
+    <h3 style="margin-top:18px">QUÁI VẬT TỰ ĐỘNG</h3>
+    <p>Mỗi chu kỳ, game tự thả 1 con (loại ngẫu nhiên, tiền thưởng ngẫu nhiên trong khoảng bên dưới). Quái thả tay ở trên có ưu tiên khi đang hoạt động. Mọi máy tự tính cùng thời điểm, không cần bật gì thêm.</p>
+    <div class="mon">
+     <label>Trạng thái<select id="maOn"><option value="1">BẬT</option><option value="0">TẮT</option></select></label>
+     <label>Chu kỳ (phút)<input id="maEvery" type="number" min="1" max="1440" step="1" value="20"></label>
+     <label>Thưởng thấp nhất (₫)<input id="maMin" type="number" min="0" step="100000" value="3000000"></label>
+     <label>Thưởng cao nhất (₫)<input id="maMax" type="number" min="0" step="100000" value="10000000"></label>
+     <label>Máu (số đòn)<input id="maHp" type="number" min="5" step="5" value="200"></label>
+     <label>Thời gian tồn tại (phút)<input id="maDur" type="number" min="1" max="30" step="1" value="4"></label>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="ok" id="maSave">LƯU CÀI ĐẶT TỰ ĐỘNG</button></div>
+    <p class="msg" id="maMsg"></p><div id="maNext" style="margin-top:6px"></div>
     <div id="mStatus" style="margin-top:12px"></div>
     <p class="msg" id="mMsg"></p>
    </div>
@@ -304,7 +316,7 @@ db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{pdRender()}catch(e){}});
  db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
- db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
+ db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
 });
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=SB();if(!sb)return;$('#lgo').disabled=true;say('#lmsg','Đang kiểm tra…');
  try{const {data,error}=await sb.rpc('admin_login',{u_name:$('#lu').value,p_word:$('#lp').value});if(error)throw error;if(!data||!data.ok){say('#lmsg',(data&&data.msg)||'Sai username hoặc mật khẩu.',1);$('#lgo').disabled=false;return}
@@ -643,6 +655,14 @@ MONS.forEach(([k,n])=>{const o=document.createElement('option');o.value=k;o.text
 $('#mGo').onclick=()=>{let k=$('#mKind').value;if(k==='random')k=MONS[Math.floor(Math.random()*MONS.length)][0];const hp=Math.max(5,Math.round(+$('#mHp').value||0)),rw=Math.max(0,Math.round(+$('#mRw').value||0)),dur=Math.min(1800,Math.max(60,Math.round((+$('#mDur').value||5)*60)));
  const mi=monInfo();if(mi&&mi.state==='live'&&!$('#mGo').dataset.armed){$('#mGo').dataset.armed='1';say('#mMsg','Đang có quái vật. Bấm lần nữa để thay bằng con mới.',1);setTimeout(()=>delete $('#mGo').dataset.armed,4000);return}delete $('#mGo').dataset.armed;
  db.ref('event/monster').set({id:Date.now(),kind:k,seed:Math.floor(Math.random()*1e9),start:TS,dur,hp,reward:rw}).then(()=>say('#mMsg','Đã thả '+(MONS.find(x=>x[0]===k)||['',k])[1]+'! Người chơi sẽ thấy trong vài giây.')).catch(e=>say('#mMsg','Lỗi: '+e.message,1))};
+function maCfg(){const c=(config.mon)||{};return{on:c.on==null?1:+c.on,every:+c.every>0?+c.every:20,min:c.min!=null?+c.min:3000000,max:c.max!=null?+c.max:10000000,hp:+c.hp>0?+c.hp:200,dur:+c.dur>0?+c.dur:240}}
+function maFill(){const c=maCfg(),set=(id,v)=>{if(document.activeElement!==$(id))$(id).value=v};set('#maOn',c.on?'1':'0');set('#maEvery',c.every);set('#maMin',c.min);set('#maMax',c.max);set('#maHp',c.hp);set('#maDur',Math.round(c.dur/60));maNext()}
+function maNext(){const c=maCfg(),el=$('#maNext');if(!el)return;if(!c.on){el.textContent='Đang TẮT: không có quái tự động.';return}const ms=c.every*60000,nx=(Math.floor(Date.now()/ms)+1)*ms;el.textContent='Quái tự động kế tiếp: '+new Date(nx).toLocaleTimeString('vi-VN')+' (giờ máy bạn), sau đó cứ mỗi '+c.every+' phút. Thưởng '+VND(Math.min(c.min,c.max))+' đến '+VND(Math.max(c.min,c.max))+', máu '+c.hp+'.'}
+setInterval(()=>{try{maNext()}catch(e){}},15000);
+$('#maSave').onclick=()=>{const g=id=>+$(id).value,v={on:$('#maOn').value==='1'?1:0,every:Math.min(1440,Math.max(1,Math.round(g('#maEvery'))||20)),min:Math.max(0,Math.round(g('#maMin'))||0),max:Math.max(0,Math.round(g('#maMax'))||0),hp:Math.max(5,Math.round(g('#maHp'))||200),dur:Math.min(1800,Math.max(60,Math.round((g('#maDur')||4)*60)))};
+ if(v.min>v.max){const x=v.min;v.min=v.max;v.max=x}
+ if(v.dur>v.every*60-10){say('#maMsg','Thời gian tồn tại phải ngắn hơn chu kỳ.',1);return}
+ db.ref('config/mon').set(v).then(()=>say('#maMsg','Đã lưu. Áp dụng từ chu kỳ kế tiếp trên mọi máy.')).catch(e=>say('#maMsg','Lỗi: '+e.message,1))};
 $('#mStop').onclick=()=>{db.ref('event/monster').set(null).then(()=>say('#mMsg','Đã thu hồi quái vật.')).catch(e=>say('#mMsg','Lỗi: '+e.message,1))};
 $('#bGo').onclick=()=>{const a=Math.round(+$('#bAmt').value||0);if(a<=0){say('#bMsg','Nhập số tiền lớn hơn 0.',1);return}db.ref('day/bonus').set({id:Date.now(),amount:a,ts:TS}).then(()=>say('#bMsg','Đã tặng '+VND(a)+' cho mọi người.')).catch(e=>say('#bMsg','Lỗi: '+e.message,1))};
 /* system */

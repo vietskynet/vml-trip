@@ -2432,7 +2432,12 @@ const MONS=[{k:'kraken',n:'Bạch Tuộc Khổng Lồ'},{k:'crab',n:'Cua Hoàng 
 const MON_BY={};MONS.forEach(m=>MON_BY[m.k]=m);
 const monRng=seed=>{let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}};
 let MONP={id:null},monHitCd=0,monBumpCd=0,monSync=0,monShake=0,monFx=[];
-function curMon(){const m=NET.on?(NET.event&&NET.event.monster):(S&&S.mon);if(!m||!m.id||!MON_BY[m.kind])return null;return m}
+/* Quái vật tự động: mỗi chu kỳ (mặc định 20 phút) tất cả máy cùng tính ra 1 con từ số thứ tự chu kỳ (không cần máy chủ), cấu hình ở admin: config/mon */
+function monAutoCfg(){const c=(NET.config&&NET.config.mon)||{},n=(v,d,lo,hi)=>{v=+v;return Number.isFinite(v)&&v>=lo?Math.min(hi,v):d};return{on:c.on==null?1:+c.on,every:Math.round(n(c.every,20,1,1440)),min:n(c.min,3000000,0,1e9),max:n(c.max,10000000,0,1e9),hp:Math.round(n(c.hp,200,5,100000)),dur:Math.round(n(c.dur,240,60,1800))}}
+let MAUTO=null;
+function monAuto(){const c=monAutoCfg();if(!c.on)return null;const ms=c.every*60000,slot=Math.floor(serverNow()/ms);if(MAUTO&&MAUTO.slot===slot&&MAUTO.sig===JSON.stringify(c))return MAUTO.m;
+ const lo=Math.min(c.min,c.max),hi=Math.max(c.min,c.max),rw=Math.round((lo+hsh(slot,72)*(hi-lo))/100000)*100000,m={id:slot*1000+7,kind:MONS[Math.floor(hsh(slot,71)*MONS.length)%MONS.length].k,seed:Math.floor(hsh(slot,73)*1e9),start:slot*ms,dur:Math.min(c.dur,c.every*60-10),hp:c.hp,reward:Math.max(0,rw),auto:1};MAUTO={slot,sig:JSON.stringify(c),m};return m}
+function curMon(){let m;if(NET.on){m=NET.event&&NET.event.monster;if(!(m&&m.id&&MON_BY[m.kind]&&monT(m)<=(m.dur||0)+30))m=monAuto()}else m=S&&S.mon;if(!m||!m.id||!MON_BY[m.kind])return null;return m}
 function monT(m){return NET.on?(serverNow()-m.start)/1000:S.time-m.start}
 function monPath(m){if(MONP.id===m.id)return MONP;const rnd2=monRng(m.seed||m.id),pts=[],sp=36;let tries=0;const pickPt=()=>{for(let k=0;k<200;k++){const x=120+rnd2()*(MW-240),y=300+rnd2()*880;if(canStand(x,y)&&!inPool(x,y))return P2(x,y)}return P2(880,760)};
  pts.push(pickPt());let tot=0;while(tot<(m.dur||300)*sp+200&&tries<400){tries++;const a=pts[pts.length-1],b=pickPt(),d=dist(a,b);if(d<60||d>420)continue;pts.push(b);tot+=d}MONP={id:m.id,pts,sp};return MONP}
@@ -3781,7 +3786,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='09.11.2026-k';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='09.11.2026-l';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
