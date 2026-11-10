@@ -618,3 +618,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - `tools/en-rules.json`: 236 mẫu thông báo có chỗ trống `{n}` (tên, số tiền...) → bản tiếng Anh; runtime khớp bằng regex rồi dịch từng phần chèn vào.
 - Thêm 85 đoạn ghép trong bảng/hộp thoại vào `en-dict.json` (1225 mục); cụm thay thế nhận từ 6 ký tự.
 - Không đổi index.html nên không cần chạy SQL. Sau mỗi bản phát hành chạy `python3 tools/make-en.py`.
+
+### EN: tên vật phẩm / thú / trang phục (từ điển 2320 mục)
+- Thêm ~1100 mục: tên thú, cá, trang phục, đồ trang trí, xe, mô tả, chỉ dẫn minigame và các đoạn ghép còn lại.
+- Tên riêng không đổi được có chú thích gốc, ví dụ "Tóc Thề Hair Salon (Hair Salon Tóc Thề)", "Tắc Mall".
+- Không đổi index.html, không cần SQL.
