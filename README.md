@@ -471,3 +471,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Người đi bộ tính **1 lỗi** (trước là 2). Số lỗi cho phép: V1 3, V2 3 (trước 2), V3 2 (trước 1).
 - Xe chạy chậm hơn một chút (V2 ×0,8, V3 ×0,9 so với trước ×0,85 và ×1,0), vật cản thưa hơn, ít khi hai vật cản cùng xuất hiện, vệt dầu ít và trượt ngắn hơn.
 - Không cần chạy SQL.
+
+## 10.11.2026-u — Thi bằng lái V2 khó hơn 50%, V3 khó hơn 30%
+- **V2** (khó hơn khoảng 50%): xe nhanh hơn (×0,95), vật cản dày hơn (khoảng cách giữa các vật cản giảm từ 0,96s xuống 0,62s), thêm **xe máy và người chạy lạng lách** (đổi làn liên tục theo đường lượn sóng), vật cản đôi 25%. Giữ 3 lỗi cho phép.
+- **V3** (khó hơn khoảng 30%): **đường cong** uốn lượn, xe **tăng tốc dần** từ ×0,95 lên ×1,2 trong 30 giây, thêm **rào chắn chỉ chừa một khe hở** (phải tìm khe chui qua), vệt dầu, xe lạng lách, người đi bộ. 4 làn, cho phép 2 lỗi.
+- Không cần chạy SQL.
