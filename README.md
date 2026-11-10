@@ -465,3 +465,9 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - **Xe tông có 4 mức chấn động**: Va chạm nhẹ (nằm 5s, đền 5 triệu), Chấn thương (7s, 10 triệu), Gãy xương (8,5s, 15 triệu), Chấn động não nguy kịch (10s, 20 triệu). Xe V1 hay gây mức 1 đến 2, V2 mức 2 đến 3, V3 mức 3 đến 4.
 - Người bị tông bất động đúng thời gian đó (ngã nằm ngang, sao quay trên đầu, nhãn mức thương tật cho mọi người thấy), không bị tông tiếp. Cả hai bên đều có banner lớn nháy đỏ báo mức chấn động; tiền đền chuyển cho nạn nhân như cũ (không đủ tiền thì có 2 phút, quá hạn xe bị thu hồi).
 - Không cần chạy SQL.
+
+## 10.11.2026-t — Giảm độ khó thi bằng lái V2 và V3
+- Va chạm tính theo **hộp va chạm thật** (nón, người, vệt dầu so với thân xe) thay cho vùng rộng cũ, hết cảnh chưa chạm mà bị tính lỗi.
+- Người đi bộ tính **1 lỗi** (trước là 2). Số lỗi cho phép: V1 3, V2 3 (trước 2), V3 2 (trước 1).
+- Xe chạy chậm hơn một chút (V2 ×0,8, V3 ×0,9 so với trước ×0,85 và ×1,0), vật cản thưa hơn, ít khi hai vật cản cùng xuất hiện, vệt dầu ít và trượt ngắn hơn.
+- Không cần chạy SQL.
