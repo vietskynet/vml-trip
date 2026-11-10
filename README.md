@@ -579,3 +579,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 
 ## 10.11.2026-z16 — BXH Tổng tài sản
 - Tab "TIỀN" đổi thành "TÀI SẢN": tổng tài sản = tiền + giá giường đang sở hữu (villa/phòng/lều) + chỗ lâu đài đã trả + đất & hạt giống Vườn Liên Minh (chủ đất). Thẻ Thành Viên hiển thị tổng tài sản kèm chi tiết. Không cần SQL.
+
+## 10.11.2026-z17 — Gym hiện đại, máy tập bấm chọn, game tập dễ hơn
+- Vẽ lại Phòng Gym: mặt kính, mái phẳng, bảng neon, cửa kính đôi.
+- 4 máy tập ngoài sân (đẩy tạ, chạy bộ, xe đạp, trụ phản xạ): bấm vào máy (hoặc đứng gần + E) để vào thẳng bài đó; cửa chính mở menu cả 4 bài.
+- Giảm độ khó: vùng xanh rộng hơn/thu hẹp chậm (đẩy tạ), chạy 95 bước & vấp nhẹ (nước rút), vùng nhịp tim rộng, kim phản hồi mượt hơn (đạp xe), mục tiêu hiện lâu hơn, ít bẫy, chấm điểm dễ hơn (phản xạ). Không cần SQL.
