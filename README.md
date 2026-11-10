@@ -596,3 +596,6 @@ Bấm cửa Phòng Gym để vào trong: căn phòng 4 máy (đẩy tạ, chạy
 
 ## 10.11.2026-z21 — Nội thất tăng tốc hồi năng lượng
 Khi ngủ trong bungalow/villa/phòng, tốc độ hồi năng lượng ×(1+B). B tối đa 50% khi đủ bộ 8 món (giấy dán tường, TV, đèn ngủ, bàn thờ, bùa, vật treo, nệm, gối ở phía giường mình). Mỗi món góp 1/8, món rẻ nhất 40% – xịn nhất 100% (bộ rẻ nhất ≈ +20%). Hiển thị trong tab Nội thất. Không cần SQL.
+
+## 10.11.2026-z22 — Sửa game Chạy nước rút
+Đủ 95 bước là kết thúc ngay (trước đây vẫn chạy tiếp đến hết giờ, hiện 112/95). Sửa thêm lỗi `GY.endAt` không được reset giữa các lần tập (có thể làm bài sau kết thúc sớm). Không cần SQL.

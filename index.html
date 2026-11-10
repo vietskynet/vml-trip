@@ -4634,7 +4634,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z21';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z22';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -5265,14 +5265,14 @@ window.addEventListener('keydown',e=>{if($('#gymOv').hidden||GY.run)return;const
 window.addEventListener('keyup',e=>{const mp={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'u',KeyW:'u',ArrowDown:'d',KeyS:'d'};if(mp[e.code])GYR.k[mp[e.code]]=0},true);
 /* ---------- mini-game ---------- */
 function gymStart(ex){const E=FIT_EX[ex];fitSettle(false);if(P.energy<CFG.PLAY_MIN){toast('Năng lượng chưa đủ để tập.',true);return}const f=P.fit;if((f.t.n[ex]||0)>=FIT.TRY){toast('Hết lượt tập bài này hôm nay.',true);return}
- $('#gymRoomBox').hidden=true;GY.ex=ex;GY.t=0;GY.run=1;GY.done=0;GY.last=performance.now();GY.hold=0;GY.keyL=GY.keyR=0;
+ $('#gymRoomBox').hidden=true;GY.ex=ex;GY.t=0;GY.endAt=0;GY.run=1;GY.done=0;GY.last=performance.now();GY.hold=0;GY.keyL=GY.keyR=0;
  const S0=[()=>({rep:0,acc:[],zone:.36,pos:.5,flash:0,ly:0,msg:''}),()=>({steps:0,last:'',stum:0,need:95,px:0}),()=>({H:.5,inT:0,zc:.5,zw:.38,ang:0}),()=>({n:0,sc:0,wrong:0,ph:'wait',w:.8,tg:null,rt:0,fl:0,fm:''})][ex]();GY.st=S0;
  $('#gymMenu').hidden=true;$('#gymPlay').hidden=false;$('#gymTitle').textContent=E.n.toUpperCase()+' · '+FIT_N[E.s];
  $('#gymBL').hidden=$('#gymBR').hidden=ex!==1;$('#gymBA').hidden=ex===1;$('#gymBA').textContent=ex===2?'GIỮ ĐỂ ĐẠP (E / SPACE)':ex===3?'BẤM! (E / SPACE)':'ĐẨY! (E / SPACE)';
  cancelAnimationFrame(GY.raf);GY.raf=requestAnimationFrame(gymLoop)}
 function gymPress(side){if(!GY.run)return;const st=GY.st,ex=GY.ex;
  if(ex===0){if(st.rep>=8)return;const d=Math.abs(st.pos-.5),hw=st.zone/2,a=d<=hw?1-.2*d/hw:Math.max(0,.8-(d-hw)*2);st.acc.push(a);st.rep++;st.ly=a;st.flash=.5;st.msg=a>.85?'HOÀN HẢO':a>.6?'TỐT':a>.3?'LỆCH':'TRƯỢT';st.zone=Math.max(.18,st.zone-.014);beep(200+a*400,.08,'square',.06);if(st.rep>=8)GY.endAt=GY.t+.9}
- else if(ex===1){if(side==='L'||side==='R'){if(st.last&&st.last===side){st.stum=.18;beep(120,.06,'sawtooth',.05)}else{st.steps++;st.px+=1;beep(300+(st.steps%2)*60,.03,'square',.03)}st.last=side}}
+ else if(ex===1){if(GY.endAt)return;if(side==='L'||side==='R'){if(st.last&&st.last===side){st.stum=.18;beep(120,.06,'sawtooth',.05)}else{st.steps++;st.px+=1;beep(300+(st.steps%2)*60,.03,'square',.03);if(st.steps>=st.need){GY.endAt=GY.t+.7;toast('VỀ ĐÍCH!',false,1200)}}st.last=side}}
  else if(ex===3){if(st.ph==='show'&&st.tg){if(st.tg.decoy){st.wrong++;st.fl=.4;st.fm='BẪY!';st.tg=null;st.ph='wait';st.w=rnd(.5,1.2);beep(120,.12,'sawtooth',.06)}else{const rt=GY.t-st.tg.t0,sc=clamp((1.0-rt)/.55,0,1);st.sc+=sc;st.n++;st.fm=Math.round(rt*1000)+' ms';st.fl=.5;st.tg=null;st.ph='wait';st.w=rnd(.5,1.3);beep(500+sc*500,.06,'triangle',.06);if(st.n>=20)GY.endAt=GY.t+.7}}else if(st.ph==='wait'&&!GY.endAt){st.wrong++;st.fl=.4;st.fm='SỚM QUÁ!';st.w=rnd(.6,1.4);beep(120,.1,'sawtooth',.05)}}}
 function gymQ(){const st=GY.st;switch(GY.ex){case 0:return st.acc.reduce((a,b)=>a+b,0)/8;case 1:return Math.min(1,st.steps/st.need);case 2:return GY.t>0?Math.min(1,st.inT/FIT_EX[2].sec):0;default:return clamp(st.sc/20-.05*st.wrong,0,1)}}
 function gymLoop(ts){if(!GY.run)return;const dt=Math.min(.05,(ts-GY.last)/1000||0);GY.last=ts;GY.t+=dt;const st=GY.st,ex=GY.ex,E=FIT_EX[ex];
