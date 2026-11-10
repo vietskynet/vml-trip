@@ -476,3 +476,7 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - **V2** (khó hơn khoảng 50%): xe nhanh hơn (×0,95), vật cản dày hơn (khoảng cách giữa các vật cản giảm từ 0,96s xuống 0,62s), thêm **xe máy và người chạy lạng lách** (đổi làn liên tục theo đường lượn sóng), vật cản đôi 25%. Giữ 3 lỗi cho phép.
 - **V3** (khó hơn khoảng 30%): **đường cong** uốn lượn, xe **tăng tốc dần** từ ×0,95 lên ×1,2 trong 30 giây, thêm **rào chắn chỉ chừa một khe hở** (phải tìm khe chui qua), vệt dầu, xe lạng lách, người đi bộ. 4 làn, cho phép 2 lỗi.
 - Không cần chạy SQL.
+
+## 10.11.2026-v — Admin huỷ/hạ bằng lái
+- Trong bảng chi tiết người chơi (admin), thêm mục **BẰNG LÁI XE**: hiện bằng hiện tại (V1/V2/V3 hay chưa có), chọn **Huỷ toàn bộ**, **Hạ xuống V1** hoặc **Hạ xuống V2**, bấm 2 lần để xác nhận. Lệnh gửi qua `gifts/{uid}/R…` (`rl` = mức mới, `from:'admin'`), người chơi nhận ngay khi online hoặc lần vào game kế tiếp, có thông báo; đang lái xe cấp cao hơn thì bị dừng xe. Xe đã mua giữ nguyên, muốn lái lại phải thi lại bằng ở VINH PHÁT (mất phí thi).
+- Không cần chạy SQL.

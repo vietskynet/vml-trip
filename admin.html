@@ -148,6 +148,8 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <h2 style="margin-top:12px">TÀI KHOẢN</h2>
     <p id="pAcc"></p>
     <div class="row"><select id="gLim" aria-label="Vật phẩm Limited tặng"></select><button class="ok" id="gLimGo">TẶNG VẬT PHẨM</button></div><p class="msg" id="gLimMsg"></p>
+    <div class="lbl">BẰNG LÁI XE · <span id="gRevCur">…</span></div>
+    <div class="row"><select id="gRev" aria-label="Mức bằng lái sau khi huỷ"><option value="0">Huỷ toàn bộ (về chưa có bằng)</option><option value="1">Hạ xuống bằng V1</option><option value="2">Hạ xuống bằng V2</option></select><button style="background:#b02a37" id="gRevGo">HUỶ BẰNG LÁI</button></div><p class="msg" id="gRevMsg"></p>
     <div id="nuBox" hidden><div class="row"><input id="nuU" maxlength="16" placeholder="Username (4-16 ký tự)" aria-label="Username mới" autocomplete="off" autocapitalize="none" spellcheck="false"><input id="nuP" type="text" maxlength="64" placeholder="Mật khẩu (từ 6 ký tự)" aria-label="Mật khẩu" autocomplete="off"></div>
     <div class="row"><button class="ghost" id="nuAuto">GỢI Ý TỰ ĐỘNG</button><button class="ok" id="nuGo">TẠO USERNAME</button></div><p class="msg" id="nuMsg"></p></div>
     <div id="npwBox"><div class="row"><input id="npw" type="text" maxlength="64" placeholder="Mật khẩu mới (từ 6 ký tự)" aria-label="Mật khẩu mới" autocomplete="off"><button class="ok" id="npwGo">ĐỔI MẬT KHẨU</button></div></div>
@@ -484,7 +486,9 @@ function pdCards(u,p){const r=lmFind(u),on=r&&r.d.st==='grow',g=pdGear(p),st=p.s
  '<div class="scard"><small>Phát sáng trong đêm</small><b>'+(g.glow?'CÓ':'—')+'</b>'+(g.glow?'<span class="sp v">+</span>':'')+'</div>'+
  '<div class="scard"><small>Bơi lội tự do</small><b>'+(g.swim?'CÓ':'—')+'</b>'+(g.swim?'<span class="sp v">+</span>':'')+'</div>'+
  '<div class="scard" style="grid-column:1/-1"><small>NGUỒN CỘNG CHỈ SỐ</small><span style="font-size:17px">'+(on?'<span class="sp g">+</span> Liên minh '+esc(r.d.nm||'')+' (đang trồng cây)':'<span style="color:var(--muted)">Không có chỉ số từ liên minh (chưa tham gia hoặc cây chưa lớn).</span>')+'<br>'+(g.names.length?'<span class="sp v">+</span> '+g.names.map(esc).join(', '):'<span style="color:var(--muted)">Không có Limited đang trang bị.</span>')+'</span></div>'}
+function licOf(u){const av=((players[u]||{}).state||{}).av;return Math.max(0,Math.min(3,(av&&av.l)|0))}
 function pdRender(){const u=sel;if(!u||$('#pSide').hidden)return;const p=players[u]||{},st=p.state||{};avLoad();
+ {const l=licOf(u);$('#gRevCur').textContent=l?'đang có bằng V'+l:'chưa có bằng';$('#gRev').querySelectorAll('option').forEach(o=>o.disabled=+o.value>=l)}
  const worn=pdWornSkin(p),A=pdAssets(u,p),pets=pdArr(p.pets),wi=AVM.sk[worn];
  $('#pTitle').textContent=(p.name||'?').toUpperCase();
  $('#pAv').innerHTML=AV?pdIm(AV.char(p.look,worn||'',p.hr||null)):'<span class="pim ph">…</span>';
@@ -544,6 +548,7 @@ $('#limPromoGo').onclick=()=>{const v=$('#limPromo').value;if(!v){say('#limPMsg'
 $('#limMaxGo').onclick=()=>{const v=Math.max(0,Math.min(144,Math.floor(+$('#limMax').value)));if(!isFinite(v)){say('#limMaxMsg','Số không hợp lệ.',1);return}db.ref('config/lim/dayMax').set(v).then(()=>say('#limMaxMsg','Đã lưu: tối đa '+v+' món/ngày (không tính món admin thả).')).catch(e=>say('#limMaxMsg','Lỗi: '+e.message,1))};
 $('#limPromoOff').onclick=()=>db.ref('config/lim/promoEnd').set(1).then(()=>say('#limPMsg','Đã tắt khuyến mãi (tỉ lệ về tiêu chuẩn).')).catch(e=>say('#limPMsg','Lỗi: '+e.message,1));
 $('#gLim').innerHTML=LIMA.map(a=>'<option value="'+a[0]+'">'+(a[3]==='o'?'[Áo] ':'[Thú] ')+esc(a[1])+' · '+LIMT[a[2]][0]+'</option>').join('');
+$('#gRevGo').onclick=e=>{const u=sel;if(!u)return;const lv=+$('#gRev').value,cur=licOf(u);if(cur<=lv){say('#gRevMsg','Người này đang có '+(cur?'bằng V'+cur:'chưa có bằng')+', không cần '+(lv?'hạ':'huỷ')+'.',1);return}arm(e.target,'BẤM LẦN NỮA ĐỂ '+(lv?'HẠ XUỐNG V'+lv:'HUỶ BẰNG'),()=>{db.ref('gifts/'+u+'/R'+Date.now()).set({rl:lv,ts:TS,from:'admin',amount:0}).then(()=>say('#gRevMsg','Đã '+(lv?'hạ bằng xuống V'+lv:'huỷ bằng lái')+' của '+((players[u]||{}).name||'?')+'. Có hiệu lực ngay khi người chơi online (hoặc lần vào game kế tiếp).')).catch(er=>say('#gRevMsg','Lỗi: '+er.message,1))})};
 $('#gLimGo').onclick=()=>{const u=sel,id=$('#gLim').value;if(!u||!LIMBY[id])return;db.ref('gifts/'+u+'/L'+Date.now()).set({lim:id,ts:TS,from:'admin',amount:0}).then(()=>say('#gLimMsg','Đã tặng '+LIMBY[id][1]+' cho '+((players[u]||{}).name||'?')+'.')).catch(e=>say('#gLimMsg','Lỗi: '+e.message,1))};
 function bagAdm(){const u=sel,el=$('#pBag');if(!el||!u)return;const p=players[u]||{},b=p.bag;if(!b){el.innerHTML='<b>Túi Thần Kỳ</b><br><small>Chưa có vật phẩm Limited.</small>';return}
  const cnt={};limArr(b.o).concat(limArr(b.p)).forEach(id=>cnt[id]=(cnt[id]||0)+1);const g=b.g||{},tot=Object.values(g).reduce((a,v)=>a+(+v||0),0);
