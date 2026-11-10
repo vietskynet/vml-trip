@@ -425,3 +425,7 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - **Ngân hàng**: trần tổng số dư gửi 300 triệu.
 - Admin: danh sách mua hàng ở thẻ người chơi ẩn các khoá đếm nội bộ (play_, mgp_, czg_).
 - Không cần chạy SQL.
+
+## 10.11.2026-n — Popup gợi ý minigame chỉnh lại
+- Gợi ý minigame mới cách nhau **5 phút**; chỉ giới thiệu game **chưa từng chơi** và người chơi **chưa bấm ĐÓNG 2 lần** cho game đó (không bấm gì, popup tự tắt sau 14 giây, không tính). Chơi game đó rồi thì không gợi ý nữa.
+- Mẹo mã chat vẫn 15 đến 25 phút một lần, tách riêng; không hiện chồng với gợi ý minigame.

@@ -2168,16 +2168,16 @@ function drawCharFx(c,x,y,t){const f=fxOf(c);if(!f){drawChar(c,x,y);return}const
 function drawCharNoSwim(c,x,y){const sw=inPool;inPoolSkip=true;drawChar(c,x,y);inPoolSkip=false}
 var inPoolSkip=false;
 /* tips popup */
-let tipT=420,tipCode=null,tipHide=null,tipKind='code',tipZone=null,NAVG=null;
+let tipT=420,tipMg=240,tipCode=null,tipHide=null,tipKind='code',tipZone=null,NAVG=null;
 const ZDESC={coco:'Đỡ dừa rơi bằng giỏ, tránh dừa thối.',surf:'Lái mô tô nước nhặt vỏ sò, né đá và cá mập.',crab:'Đập cua chui lên khỏi hố, đừng đập nhầm rùa.',fish:'Lái thuyền thả câu bắt cá, tránh ủng và sứa.',bar:'Pha đồ uống đúng thứ tự khách gọi.',dig:'Dò và đào kho báu, tránh bom.',cast:'Xếp khối cát thành lâu đài thật cao.'};
-const mgPlayed=id=>!!(P.buys&&P.buys['play_'+id]),mgPromoN=id=>(P.buys&&P.buys['mgp_'+id])||0;
-function mgCandidate(){if(!P||P.hidden||P.need||P.energy<CFG.GAME_EN+8)return null;const zs=ZONES.filter(z=>!mgPlayed(z.id)&&mgPromoN(z.id)<2&&(P.cd[z.id]||0)<=S.time).sort((a,b)=>dist(P,a.pt)-dist(P,b.pt));return zs[0]||null}
-/* Tối đa 1 popup mỗi 15 đến 25 phút; ưu tiên gợi ý minigame chưa chơi, mỗi game chỉ gợi ý tối đa 2 lần */
-function updTip(dt){if(!S||mode!=='world'||modalOpen()||S.ended||GUIDE.on||!$('#tip').hidden)return;tipT-=dt;if(tipT>0)return;tipT=rnd(900,1500);const z=mgCandidate();if(z)showPromo(z);else showTip()}
-function showPromo(z){tipKind='mg';tipZone=z;track('mgp_'+z.id);$('.tipH').textContent='THỬ MINIGAME MỚI';$('#tipText').innerHTML='<b>'+z.name+'</b>: '+ZDESC[z.id]+' Bạn chưa chơi game này. Bấm <b>CHỈ ĐƯỜNG</b> để được dẫn tới đó.';$('#tipTry').textContent='CHỈ ĐƯỜNG';$('#tip').hidden=false;$('#tip').classList.remove('in');void $('#tip').offsetWidth;$('#tip').classList.add('in');beep(880,.05,'triangle',.03);clearTimeout(tipHide);tipHide=setTimeout(()=>{$('#tip').hidden=true},14000)}
+const mgPlayed=id=>!!(P.buys&&P.buys['play_'+id]),mgDecl=id=>(P.buys&&P.buys['mgd_'+id])||0;
+function mgCandidate(){if(!P||P.hidden||P.need||P.energy<CFG.GAME_EN+8)return null;const zs=ZONES.filter(z=>!mgPlayed(z.id)&&mgDecl(z.id)<2&&(P.cd[z.id]||0)<=S.time).sort((a,b)=>dist(P,a.pt)-dist(P,b.pt));return zs[0]||null}
+/* Gợi ý minigame: 5 phút một lần, chỉ cho game chưa từng chơi và chưa bị bấm ĐÓNG 2 lần. Mẹo mã chat: 15 đến 25 phút một lần */
+function updTip(dt){if(!S||mode!=='world'||modalOpen()||S.ended||GUIDE.on||!$('#tip').hidden)return;tipMg-=dt;tipT-=dt;if(tipMg<=0){const z=mgCandidate();if(z){tipMg=300;tipT=Math.max(tipT,120);showPromo(z);return}tipMg=60}if(tipT>0)return;tipT=rnd(900,1500);showTip()}
+function showPromo(z){tipKind='mg';tipZone=z;$('.tipH').textContent='THỬ MINIGAME MỚI';$('#tipText').innerHTML='<b>'+z.name+'</b>: '+ZDESC[z.id]+' Bạn chưa chơi game này. Bấm <b>CHỈ ĐƯỜNG</b> để được dẫn tới đó.';$('#tipTry').textContent='CHỈ ĐƯỜNG';$('#tip').hidden=false;$('#tip').classList.remove('in');void $('#tip').offsetWidth;$('#tip').classList.add('in');beep(880,.05,'triangle',.03);clearTimeout(tipHide);tipHide=setTimeout(()=>{$('#tip').hidden=true},14000)}
 function showTip(){tipKind='code';tipZone=null;$('.tipH').textContent='MẸO HAY';$('#tipTry').textContent='THỬ NGAY';const codes=Object.keys(FX);tipCode=pick(codes);const f=FX[tipCode];$('#tipText').innerHTML='Gõ <b>'+tipCode+'</b> vào khung chat để <b>'+f.n.toLowerCase()+'</b> trong 10 giây! Mỗi lần dùng mã tốn <b>'+VND(CHEAT_FEE)+'</b>.';$('#tip').hidden=false;$('#tip').classList.remove('in');void $('#tip').offsetWidth;$('#tip').classList.add('in');beep(990,.05,'triangle',.03);clearTimeout(tipHide);tipHide=setTimeout(()=>{$('#tip').hidden=true},12000)}
 $('#tipTry').onclick=()=>{$('#tip').hidden=true;clearTimeout(tipHide);if(tipKind==='mg'){const z=tipZone;if(z&&mode==='world'){NAVG={pt:z.pt,name:z.name,t:150};toast('Theo mũi tên xanh tới '+z.name+', đứng trước quầy rồi bấm E.',false,4500)}return}if(tipCode&&mode==='world')handleChat(tipCode)};
-$('#tipClose').onclick=()=>{$('#tip').hidden=true;clearTimeout(tipHide);if(tipKind==='mg'&&tipZone)track('mgp_'+tipZone.id)};
+$('#tipClose').onclick=()=>{$('#tip').hidden=true;clearTimeout(tipHide);if(tipKind==='mg'&&tipZone)track('mgd_'+tipZone.id)};
 
 
 /* ================= new-player guide (non-blocking) ================= */
@@ -3810,7 +3810,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-m';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-n';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
