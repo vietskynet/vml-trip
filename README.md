@@ -554,3 +554,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Âm thanh: bíp đếm ngược, nhạc dồn dập tăng tốc ở vòng 2 và nước rút, tiếng khán giả cổ vũ, fanfare về đích, nhạc thắng/thua; nhạc nền tự hạ nhỏ khi đang đua.
 - Quầy theo dõi (cạnh toà nhà): màn hình LIVE ngoài trời + tên người đang cược; bấm E để xem bảng "đang tham gia" (RPC `rt_turtle_board`). Thoát ra mở lại giữa cuộc đua vẫn thấy đúng vòng đang chạy.
 - Gợi ý phím E: khung lớn hơn, phím nhấp nháy nảy, chữ 2 dòng; trên điện thoại hiện phím A và chạm vào khung để thao tác.
+
+## 10.11.2026-z12 — Sửa lỗi game câu cá
+- **Nguyên nhân chính**: ở màn câu cá cấp 3, cá "Rồng Biển" (`dragon`) tìm sprite `fdragon` nhưng sprite đặt tên `fdrag` → vẽ lỗi, game bị đơ/ngắt giữa chừng. Đã thêm alias + chặn khi thiếu sprite.
+- Câu trên thuyền: cửa sổ "cá cắn" 1,3 s → 2,2 s (mạng/điện thoại trễ hay bị "cá thoát"); `boatAct` bọc try/catch tự hủy lần câu lỗi; `rollFish` chống tier sai; lỗi `boatTick` giờ được ghi vào admin → LỖI GAME (k=`boat.tick`, `boat.act`, `fish.sprite`).
+- Đàn cá trang trí không còn quay đầu ở x=1700 (map đã rộng 2560).
