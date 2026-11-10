@@ -544,3 +544,6 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Thế giới mở rộng thêm 240px phía bắc (`OY`; toạ độ y âm là biển ngoài). Bản vẽ nền, camera, lưới tìm đường đều đã bù offset.
 - Cầu tàu thứ 2 (`PIER2`, y 26–70) nằm ngoài dãy villa cũ, nối với cầu tàu chính bằng cầu giữa (JETTY kéo dài lên bắc). Villa VIP V11–V20 xây phía ngoài cầu này.
 - Vùng biển phía nam cầu tàu chính trả lại nguyên vẹn cho thuyền / bơi.
+
+## 10.11.2026-z9 — Sửa lệch nền biển/bãi cát sau khi mở rộng phía bắc
+- Lớp địa hình (biển, cát, cỏ) bị đặt lệch 240px so với các vật thể; đã dán đúng vị trí.
