@@ -500,3 +500,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 ## 10.11.2026-y — Lưới toạ độ debug
 - Thêm `#grid` vào cuối link (vd `.../index.html#grid`) để bật lưới: ô 160px, cột A-P, hàng 1-13, chia 3x3 kiểu bàn phím số (ô con 7 8 9 / 4 5 6 / 1 2 3). Rê chuột hiện ô + toạ độ pixel, góc phải hiện vị trí nhân vật. Người chơi thường không thấy.
 - Không cần chạy SQL.
+
+## 10.11.2026-z — Đi lại trong phòng + trang trí nội thất ngay trong phòng
+- Trong phòng (villa, bungalow, khách sạn) nhân vật **đi lại tự do**: phím mũi tên / WASD, hoặc **chạm / bấm vào chỗ muốn tới**. Không đi xuyên giường, bàn TV, tủ đèn ngủ, hồ cá villa. Ngủ (E) vẫn dùng được mọi chỗ.
+- Thanh dưới phòng có nút **TRANG TRÍ NỘI THẤT** mở thẳng tab nội thất của phòng đang đứng (cần có giường ở đó).
+- Không cần chạy SQL.
