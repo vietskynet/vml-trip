@@ -602,3 +602,6 @@ Khi ngủ trong bungalow/villa/phòng, tốc độ hồi năng lượng ×(1+B).
 
 ## 10.11.2026-z23 — Sửa bài phản xạ
 Bấm sớm khi chưa có chấm không còn làm chấm xanh không bao giờ hiện (trước đây mỗi lần bấm sớm reset thời gian chờ, bấm liên tục thì không có chấm); phạt tối đa 1 lần/0,6 s. Bấm bằng chuột/chạm phải trúng chấm (phím E vẫn bấm ở bất kỳ đâu). Thêm đồng hồ đếm giờ. Không cần SQL.
+
+## 10.11.2026-z24 — Bài Đạp xe không còn quá dài
+Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40 giây và về đích sớm khi đủ 30 giây trong vùng xanh (điểm = giây đúng vùng / 30). Hiển thị "x/30 giây đúng vùng". Không cần SQL.
