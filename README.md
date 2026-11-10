@@ -593,3 +593,6 @@ Bấm cửa Phòng Gym để vào trong: căn phòng 4 máy (đẩy tạ, chạy
 
 ## 10.11.2026-z20 — Bộ nội thất riêng cho từng giường
 Đèn ngủ, bàn thờ, bùa chống ma, vật treo tường (G1/G2; "Giữa phòng" dùng chung), cùng nệm & gối là đồ riêng của từng người: mỗi phòng có tối đa 2 đèn ngủ… đặt cạnh giường người mua (đèn 2 ở x=292, bàn thờ/bùa phía phải). Giấy dán tường và TV vẫn chung. Dữ liệu cũ (lamp/alt/chm chung) vẫn hiển thị như phía giường 1; mua mới ở giường 1 sẽ thay thế. Chống ma = cộng dồn mọi bàn thờ/bùa trong phòng. Giá trị đồ riêng đi theo giường khi bán. Lưu trong deco/{type}/{i}/in (khoá mới l0,l1,a0,a1,c0,c1) — KHÔNG cần SQL.
+
+## 10.11.2026-z21 — Nội thất tăng tốc hồi năng lượng
+Khi ngủ trong bungalow/villa/phòng, tốc độ hồi năng lượng ×(1+B). B tối đa 50% khi đủ bộ 8 món (giấy dán tường, TV, đèn ngủ, bàn thờ, bùa, vật treo, nệm, gối ở phía giường mình). Mỗi món góp 1/8, món rẻ nhất 40% – xịn nhất 100% (bộ rẻ nhất ≈ +20%). Hiển thị trong tab Nội thất. Không cần SQL.

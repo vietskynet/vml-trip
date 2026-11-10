@@ -1562,7 +1562,7 @@ function updPlayer(dt){P.anim+=dt;if(P.boat){try{boatTick(dt)}catch(e){console.w
  else P.moving=false;
  crTick(dt);
  if(inMini())return;
- if(mode==='room'&&ROOM&&ROOM.sleep)P.energy=Math.min(100,P.energy+CFG.REGEN[ROOM.type]*dt*lmRegen());else P.energy-=(P.moving?CFG.MOVE_DRAIN:CFG.DRAIN)*dt*lmDrain()*(bufOn('xoi')?.5:1);
+ if(mode==='room'&&ROOM&&ROOM.sleep)P.energy=Math.min(100,P.energy+CFG.REGEN[ROOM.type]*dt*lmRegen()*(1+decoRegen(ROOM.type,ROOM.i)));else P.energy-=(P.moving?CFG.MOVE_DRAIN:CFG.DRAIN)*dt*lmDrain()*(bufOn('xoi')?.5:1);
  hpTick(dt);fitTick(dt);lmTick(dt);vehTick(dt);if(mode==='room'&&ROOM&&ROOM.sleep&&P.energy>=90&&!ROOM.slept){ROOM.slept=true;hpAdd('sleep',7)}
  if(P.energy<CFG.PLAY_MIN&&!(mode==='room'&&ROOM&&ROOM.sleep)){P.warnT=(P.warnT||0)-dt;if(P.warnT<=0){P.warnT=P.energy<10?12:P.energy<20?20:30;toast('Năng lượng còn '+Math.round(P.energy)+'%! Dưới '+CFG.PLAY_MIN+'% không chơi game được. Về nhà ngủ (miễn phí) hoặc ăn ở Quầy Ăn Uống.',true,5000);beep(440,.15);setTimeout(()=>beep(330,.2),180)}}else if(P.energy>=CFG.PLAY_MIN)P.warnT=0;
  if(P.energy<=0){P.energy=0;faint();return}
@@ -2603,6 +2603,12 @@ const IC_ALL=[],IC_BY={};IC_KINDS.forEach(([k,,L])=>L.forEach((it,i)=>{it.k=k;it
 const inOf=(type,i)=>(type==='villa'||type==='tent'||type==='room')?(decoOf(type,i).in||{}):{};
 function setIn(type,i,patch,cost,msg,tk){const cur=Object.assign({},inOf(type,i));for(const k in patch){if(patch[k]==null)delete cur[k];else cur[k]=patch[k]}setDeco(type,i,'in',Object.keys(cur).length?cur:null,cost,msg,tk)}
 const HANGK=['h1','h2','h3'];
+/* bộ nội thất đủ 8 món (giấy dán tường, TV + 6 món riêng phía giường mình): mỗi món góp tối đa 1/8 của +50% tốc độ hồi năng lượng, món càng xịn góp càng nhiều (rẻ nhất 40%, xịn nhất 100%) */
+function decoRegenInfo(type,i){if(type!=='villa'&&type!=='tent'&&type!=='room')return{b:0,n:0};const d=inOf(type,i),L=LIST(type)[i]||[],k=Math.max(0,L.indexOf(P)),leg=k===0;
+ const keys=['wp','tv','l'+k,'a'+k,'c'+k,'h'+(k+1),'m'+k,'p'+k],fb={l0:'lamp',a0:'alt',c0:'chm'};let sc=0,n=0;
+ keys.forEach(key=>{const it=IC_BY[d[key]||(leg&&fb[key]?d[fb[key]]:'')];if(!it)return;const arr=IC_KINDS.find(x=>x[0]===it.k)[2],r=arr.length>1?arr.indexOf(it)/(arr.length-1):1;sc+=.4+.6*r;n++});
+ return{b:.5*sc/8,n}}
+const decoRegen=(type,i)=>decoRegenInfo(type,i).b;
 const IC_SIDE={mat:'m',pil:'p',lamp:'l',alt:'a',chm:'c'},IC_LEG={l:'lamp',a:'alt',c:'chm'};
 const icSide=k=>k==='mat'||k==='pil'||k==='lamp'||k==='alt'||k==='chm'||k==='hang';
 const icKey=(it,bed)=>it.k==='hang'?(bed===2?'h3':'h'+(bed+1)):IC_SIDE[it.k]?IC_SIDE[it.k]+bed:it.k;
@@ -2672,7 +2678,7 @@ function marketTick(dt){if(NET.on||!S)return;mktT-=dt;if(mktT>0)return;mktT=rnd(
   giveBeds(P,b,L.type,L.i,L.ks);b.money-=L.price;P.money+=L.price;S.market=S.market.filter(x=>x!==L);coin();toast(b.name+' vừa mua '+lodgeName(L)+' của bạn giá '+VND(L.price)+'!',false,5000);sysLog('Bán '+lodgeName(L)+' cho '+b.name+' được '+VND(L.price));if(!$('#estOv').hidden)renderEst()});
  if(Math.random()<.4){const sellers=S.chars.filter(c=>c!==P&&!c.remote&&c.lodge&&!c.inside&&!S.market.some(L=>L.seller===c));if(sellers.length){const c=pick(sellers),u=c.lodge,ks=LIST(u.type)[u.i].map((o,k)=>o===c?k:-1).filter(k=>k>=0);if(ks.length)S.market.push({id:'b'+Date.now(),seller:c,type:u.type,i:u.i,ks,price:round50k(saleBase(u.type,u.i,ks)*rnd(1.1,1.7)),name:c.name,t0:S.time})}}}
 function renderInterior(type,i){const d=decoOf(type,i),inn=d.in||{};EST.ik=EST.ik||'wp';const own=[0,1].filter(k=>LIST(type)[i][k]===P);if(EST.bed==null||(EST.bed!==2&&!own.includes(EST.bed))||(EST.bed===2&&EST.ik!=='hang'))EST.bed=own[0];
- let h=`<p>Nội thất <b>${lodgeName({type,i})}</b>: giấy dán tường và TV dùng chung; <b>đèn ngủ, bàn thờ, bùa, vật treo, nệm, gối là bộ riêng của từng người</b>, đặt ở phía giường của bạn. Mua món mới cùng hạng mục sẽ <b>thay</b> món cũ (không hoàn tiền). Nội thất nằm trong <b>gói bán</b>: khi bán nhà hoặc giường, giá trị đồ trong và ngoài nhà được cộng vào. Đồ riêng đi theo giường khi bán.</p>`;
+ let h=`<p>Nội thất <b>${lodgeName({type,i})}</b>: giấy dán tường và TV dùng chung; <b>đèn ngủ, bàn thờ, bùa, vật treo, nệm, gối là bộ riêng của từng người</b>, đặt ở phía giường của bạn. Mua món mới cùng hạng mục sẽ <b>thay</b> món cũ (không hoàn tiền). Nội thất nằm trong <b>gói bán</b>: khi bán nhà hoặc giường, giá trị đồ trong và ngoài nhà được cộng vào. Đồ riêng đi theo giường khi bán.</p><p>Đủ bộ 8 món (giấy dán tường, TV + đèn, bàn thờ, bùa, vật treo, nệm, gối ở phía giường bạn) giúp <b>hồi năng lượng khi ngủ nhanh hơn tối đa +50%</b>; món càng xịn càng nhiều. Hiện tại: <b style="color:#ffd23f">+${Math.round(decoRegenInfo(type,i).b*1000)/10}%</b> (${decoRegenInfo(type,i).n}/8 món).</p>`;
  const eq=[];[['wp','Giấy dán tường'],['h1','Treo G1'],['h2','Treo G2'],['h3','Treo giữa'],['tv','TV'],['lamp','Đèn ngủ (cũ)'],['alt','Bàn thờ (cũ)'],['chm','Bùa (cũ)'],['l0','Đèn ngủ G1'],['l1','Đèn ngủ G2'],['a0','Bàn thờ G1'],['a1','Bàn thờ G2'],['c0','Bùa G1'],['c1','Bùa G2'],['m0','Nệm G1'],['p0','Gối G1'],['m1','Nệm G2'],['p1','Gối G2']].forEach(([k,lb])=>{const it=IC_BY[inn[k]];if(it)eq.push(`<button class="chip" data-rmi="${k}" title="Bấm để gỡ">${lb}: ${it.n} ✕</button>`)});
  h+='<div style="display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 10px"><small style="width:100%;color:var(--muted)">Đang có (bấm để gỡ):</small>'+(eq.join('')||'<em>Chưa có nội thất</em>')+'</div>';
  h+='<div class="dtabs">'+IC_KINDS.map(([k,lb])=>`<button class="${EST.ik===k?'on':''}" data-ik="${k}">${lb}</button>`).join('')+'</div>';
@@ -4628,7 +4634,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z20';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z21';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
