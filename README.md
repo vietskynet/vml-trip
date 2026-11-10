@@ -590,3 +590,6 @@ Tổng tài sản = tiền mặt + gốc tiết kiệm ngân hàng + giường/v
 
 ## 10.11.2026-z19 — Phòng Gym có nội thất bên trong
 Bấm cửa Phòng Gym để vào trong: căn phòng 4 máy (đẩy tạ, chạy bộ, xe đạp, trụ phản xạ) với nhân vật đi lại (bấm sàn / mũi tên / WASD). Bấm vào máy hoặc đứng gần + E để chọn bài, rồi bấm TẬP. Máy ngoài sân đã bỏ. Không cần SQL.
+
+## 10.11.2026-z20 — Bộ nội thất riêng cho từng giường
+Đèn ngủ, bàn thờ, bùa chống ma, vật treo tường (G1/G2; "Giữa phòng" dùng chung), cùng nệm & gối là đồ riêng của từng người: mỗi phòng có tối đa 2 đèn ngủ… đặt cạnh giường người mua (đèn 2 ở x=292, bàn thờ/bùa phía phải). Giấy dán tường và TV vẫn chung. Dữ liệu cũ (lamp/alt/chm chung) vẫn hiển thị như phía giường 1; mua mới ở giường 1 sẽ thay thế. Chống ma = cộng dồn mọi bàn thờ/bùa trong phòng. Giá trị đồ riêng đi theo giường khi bán. Lưu trong deco/{type}/{i}/in (khoá mới l0,l1,a0,a1,c0,c1) — KHÔNG cần SQL.
