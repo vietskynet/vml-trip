@@ -605,3 +605,11 @@ Bấm sớm khi chưa có chấm không còn làm chấm xanh không bao giờ h
 
 ## 10.11.2026-z24 — Bài Đạp xe không còn quá dài
 Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40 giây và về đích sớm khi đủ 30 giây trong vùng xanh (điểm = giây đúng vùng / 30). Hiển thị "x/30 giây đúng vùng". Không cần SQL.
+
+## Bản tiếng Anh /en (giai đoạn 1)
+- `/en/` là bản sao của `index.html` được SINH TỰ ĐỘNG bằng `python3 tools/make-en.py` (CHẠY LẠI sau mỗi lần phát hành index.html; đã sửa đường dẫn `../config.js`, `../supabase-shim.js`, `../techcombank.png`). **Không sửa tay file trong `en/`.**
+- Logic game giữ nguyên 100%. Chỉ thêm lớp dịch hiển thị `tools/en-runtime.js` (→ `en/en.js`) chạy trước game: bọc `fillText/strokeText/measureText` của canvas và một `MutationObserver` cho DOM (text, placeholder, title). Dùng chung server/tài khoản với bản Việt (cùng origin nên cùng localStorage).
+- Từ điển: `tools/en-dict.json` `{ "cụm tiếng Việt": "English" }` (hiện ~990 mục: nhãn nút, HUD, nhiều thông báo thường gặp, tên một số vật phẩm). Tên riêng không dịch được (cửa hàng…) ghi dạng `Tên gốc (English)`.
+- Quy tắc khớp: khớp nguyên cụm → tách theo " · " → thay các cụm dài (≥8 ký tự, có dấu cách). Nếu sau khi thay vẫn còn nhiều tiếng Việt thì giữ nguyên câu gốc (tránh câu nửa Anh nửa Việt). Chuỗi động có số/tên ghép (`'Bạn có '+n+' giường'`) chưa khớp được, cần thêm quy tắc mẫu ở giai đoạn sau.
+- `python3 tools/make-en.py --missing` liệt kê cụm chưa dịch → `tools/en-missing.txt`.
+- Hạn chế: chat của người chơi không bị dịch trong khung chat (DOM) nhưng bóng chat trên canvas có thể bị thay cụm trùng từ điển; admin.html, avatar.html, HUONG-DAN.html chưa có bản EN.
