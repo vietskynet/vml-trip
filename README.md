@@ -530,3 +530,7 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Kết quả do máy chủ bốc ngẫu nhiên ngay khi hết giờ cược; thưởng chốt qua `rt_turtle_settle` (mỗi cược chỉ trả 1 lần, tự chốt cả khi người chơi thoát game rồi quay lại).
 - Admin: tab **ĐUA RÙA** — lịch sử mọi lượt cược (thời gian, người chơi, vòng, rùa chọn, tiền cược, tỉ lệ, top 3, tiền thắng, lời/lỗ nhà cái), lọc theo tên / thắng / thua / chưa chốt / cược lớn.
 - **Cần chạy SQL**: `sql-cu/supabase-update-turtle.sql` (đã gộp vào `supabase-setup.sql`).
+
+## 10.11.2026-z6 — Sửa Thách Đấu bị kẹt sau khi trừ tiền
+- Khi cả hai bên đã trả cược mà một máy chưa vào được trận (đang trong phòng, đang ăn/bận, đang ở tiệm tóc, còn mở cửa sổ…), game giờ tự thoát các trạng thái đó sau 1,5 s rồi vào trận, thay vì chờ 45 s rồi xử thua.
+- Nếu khởi động trận bị lỗi, tự thử lại và ghi lỗi vào errlog (k='duel') để admin xem ở tab LỖI GAME.
