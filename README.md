@@ -534,3 +534,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 ## 10.11.2026-z6 — Sửa Thách Đấu bị kẹt sau khi trừ tiền
 - Khi cả hai bên đã trả cược mà một máy chưa vào được trận (đang trong phòng, đang ăn/bận, đang ở tiệm tóc, còn mở cửa sổ…), game giờ tự thoát các trạng thái đó sau 1,5 s rồi vào trận, thay vì chờ 45 s rồi xử thua.
 - Nếu khởi động trận bị lỗi, tự thử lại và ghi lỗi vào errlog (k='duel') để admin xem ở tab LỖI GAME.
+
+## 10.11.2026-z7 — Admin chỉnh tỉ lệ thắng / tỉ lệ thưởng Đua Rùa
+- Admin → tab ĐUA RÙA → CÀI ĐẶT TỈ LỆ: trọng số thắng của 10 rùa (tự quy ra %), hệ số trả thưởng (% tiền cược trả lại người chơi, mặc định 90), thưởng tối đa cược đơn / đôi. Có xem trước % thắng và ×thưởng.
+- Lưu ở `config/turtle`; máy chủ dùng đúng cấu hình này để bốc kết quả và tính tỉ lệ khi đặt cược. Chỉ áp dụng cho cược đặt sau khi lưu.
+- **Cần chạy lại** `sql-cu/supabase-update-turtle.sql` (an toàn chạy lại nhiều lần, đã gộp vào `supabase-setup.sql`).

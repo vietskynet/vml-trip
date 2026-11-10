@@ -181,6 +181,12 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
   <section data-p="tr" class="card" hidden>
    <h2>TRUNG TÂM ĐUA RÙA · GIÁM SÁT CÁ CƯỢC</h2>
    <p>Mọi lượt cược đều ghi ở máy chủ: người chơi, vòng đua, rùa đã chọn, tiền cược, tỉ lệ, kết quả và tiền thắng. Luật: tối đa 20 triệu / lượt, 5 lượt / 24 giờ / người, hai lượt cách nhau 3 phút (máy chủ tự chặn). Tỉ lệ có lợi thế nhà ~10%.</p>
+   <div class="card" style="margin:8px 0"><h3 style="margin:0 0 6px">CÀI ĐẶT TỈ LỆ</h3>
+    <p>Nhập <b>tỉ lệ thắng</b> (trọng số) của từng rùa; hệ thống tự quy về %. <b>Hệ số trả thưởng</b> là phần trăm tiền cược trả lại người chơi về lâu dài (90% = nhà cái lời 10%). Tỉ lệ thưởng = hệ số ÷ xác suất thắng, bị chặn ở mức tối đa bên dưới. Chỉ áp dụng cho các lượt cược đặt SAU khi lưu.</p>
+    <div id="trW" class="row" style="flex-wrap:wrap;gap:6px"></div>
+    <div class="row" style="flex-wrap:wrap;gap:8px;margin:8px 0"><label>Hệ số trả thưởng (%) <input id="trPay" type="number" min="10" max="300" step="1" style="width:90px"></label><label>Thưởng tối đa cược đơn (×) <input id="trM1" type="number" min="1.05" step="1" style="width:80px"></label><label>Thưởng tối đa cược đôi (×) <input id="trM2" type="number" min="1.05" step="1" style="width:80px"></label></div>
+    <div id="trPrev" style="margin:6px 0"></div>
+    <div class="row"><button id="trSave">LƯU CÀI ĐẶT</button><button class="ghost" id="trDef">VỀ MẶC ĐỊNH</button></div><p class="msg" id="trCm"></p></div>
    <div class="row" style="margin-bottom:8px"><input id="trQ" placeholder="Lọc theo tên người chơi…" aria-label="Lọc theo tên" style="flex:1 1 220px"><select id="trF" aria-label="Lọc kết quả"><option value="all">Tất cả</option><option value="win">Chỉ thắng</option><option value="lose">Chỉ thua</option><option value="open">Chưa chốt</option><option value="big">Cược từ 10tr</option></select><button class="ghost" id="trGo">TẢI LẠI</button></div>
    <p id="trSum" style="margin:6px 0"></p>
    <div class="tbl"><table><thead><tr><th>THỜI GIAN</th><th>NGƯỜI CHƠI</th><th>VÒNG</th><th>CHỌN</th><th>CƯỢC</th><th>TỈ LỆ</th><th>VỀ ĐÍCH (TOP 3)</th><th>THẮNG</th><th>NHÀ CÁI</th></tr></thead><tbody id="trBody"></tbody></table></div>
@@ -373,7 +379,7 @@ function ecoRender(){if(!$('#ecoKpi'))return;const {rows,bedTypes,hp}=ecoCalc(),
 setInterval(()=>{if(started||admin)try{ecoRender()}catch(e){}},5000);
 function renderErr(){const el=$('#errList');if(!el)return;const rows=Object.entries(errs).map(([id,e])=>Object.assign({id},e)).filter(e=>e&&e.m).sort((p,q)=>(q.t||0)-(p.t||0)).slice(0,300);$('#errCount').textContent=rows.length+' lỗi';el.innerHTML=rows.map(e=>`<tr><td>${new Date(e.t||0).toLocaleString('vi-VN')}</td><td>${esc(e.n||'?')}</td><td>${esc(e.k||'')}</td><td><b>${esc(e.m)}</b><details><summary>stack</summary><pre style="white-space:pre-wrap;font-size:11px">${esc(e.s||'')}</pre></details></td><td>${e.x},${e.y} · ${esc(e.md||'')} · ${esc(e.vw||'')}</td><td>${esc(e.v||'')}</td><td><small>${esc((e.ua||'').slice(0,90))}</small></td></tr>`).join('')||'<tr><td colspan="7">Chưa có lỗi nào.</td></tr>'}
 $('#errClr').onclick=()=>{if(!confirm('Xoá toàn bộ nhật ký lỗi?'))return;db.ref('errlog').remove().then(()=>say('#errMsg','Đã xoá.')).catch(e=>say('#errMsg','Lỗi: '+e.message,1))};
-function tab(t){if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}if(t==='tr')setTimeout(trLoad,0);$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices();if(t==='lim')limCatRender()}
+function tab(t){if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}if(t==='tr'){setTimeout(trLoad,0);trCfgFill()}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices();if(t==='lim')limCatRender()}
 const now=()=>Date.now()+off;
 function clock(){const NF=(VC&&VC.game&&VC.game.nightMinutes!=null)?Math.min(.9,Math.max(.05,VC.game.nightMinutes/((VC.game.dayMinutes)||60))):.25,A=(1-NF)*11/14,t=(now()-EPOCH)/1000,p=((t/DAY)%1+1)%1,o=p<A?11*p/A:p<A+NF?11+10*(p-A)/NF:21+3*(p-A-NF)/(1-A-NF),h=(8+o)%24,m=Math.floor(h*60);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function bedsOf(u){let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(un=>Object.values(un||{}).forEach(x=>{if(x===u)n++})));return n}
@@ -615,6 +621,16 @@ function trRender(){const q=$('#trQ').value.trim().toLowerCase(),f=$('#trF').val
  $('#trSum').innerHTML=`Toàn bộ: <b>${S.bets||0}</b> lượt · <b>${S.players||0}</b> người · tổng cược <b>${VND(S.stake)}</b> · đã trả <b>${VND(S.paid)}</b> · nhà cái lời <b class="${(S.stake-S.paid)>=0?'on':''}">${VND((S.stake||0)-(S.paid||0))}</b> · chưa chốt ${S.open||0}<br>Đang lọc: ${rows.length} dòng · cược ${VND(st)} · trả ${VND(pd)}`;
  $('#trBody').innerHTML=rows.map(r=>{const d=new Date(+r.ts),ts=d.toLocaleDateString('vi-VN')+' '+d.toLocaleTimeString('vi-VN'),pk=(r.picks||[]).map(i=>'#'+(i+1)+' '+TRN[i]).join(' + '),o=(r.ord||[]).slice(0,3).map(i=>'#'+(i+1)).join(' › ');
   const net=r.settled?r.amount-r.payout:0;return`<tr><td>${ts}</td><td>${esc(r.name||'?')}</td><td>${r.rnd}</td><td>${esc(pk)}${(r.picks||[]).length===2?' <small>(cặp)</small>':''}</td><td>${VND(r.amount)}</td><td>×${(+r.odds).toFixed(2)}</td><td>${r.settled?o:'<em>chưa chốt</em>'}</td><td class="${r.win?'on':''}">${r.settled?(r.win?'+'+VND(r.payout):'—'):''}</td><td class="${net<0?'':'on'}">${r.settled?(net>=0?'+':'−')+VND(Math.abs(net)):''}</td></tr>`}).join('');}
+const TRD=[16,14,12,10,9,8,7,6,5,4];
+function trCfgFill(){const c=(config&&config.turtle)||{};const w=TRD.map((d,i)=>{const v=c.w?+(c.w[i]!=null?c.w[i]:c.w[String(i)]):NaN;return v>0?v:d});
+ if(!document.activeElement||!['trW','trPay','trM1','trM2'].some(id=>document.activeElement.closest&&document.activeElement.closest('#'+id)||document.activeElement.id===id)){
+ $('#trW').innerHTML=w.map((v,i)=>`<label style="display:inline-flex;gap:4px;align-items:center">#${i+1} ${TRN[i]} <input class="trw" data-i="${i}" type="number" min="0.1" step="0.5" value="${v}" style="width:70px"></label>`).join('');
+ $('#trPay').value=Math.round((+c.pay>0?+c.pay:.9)*100);$('#trM1').value=+c.m1>0?+c.m1:30;$('#trM2').value=+c.m2>0?+c.m2:60}trCfgPrev()}
+function trCfgRead(){const w=[...document.querySelectorAll('.trw')].map(e=>Math.max(.1,+e.value||0.1));return{w,pay:Math.min(3,Math.max(.1,(+$('#trPay').value||90)/100)),m1:Math.max(1.05,+$('#trM1').value||30),m2:Math.max(1.05,+$('#trM2').value||60)}}
+function trCfgPrev(){const c=trCfgRead(),S=c.w.reduce((a,b)=>a+b,0);$('#trPrev').innerHTML='<small>'+c.w.map((v,i)=>`#${i+1}: thắng <b>${(v/S*100).toFixed(1)}%</b> · thưởng <b>×${Math.round(Math.min(c.m1,Math.max(1.01,c.pay/(v/S)))*100)/100}</b>`).join(' &nbsp;|&nbsp; ')+'</small>'}
+$('#trW').addEventListener('input',trCfgPrev);['#trPay','#trM1','#trM2'].forEach(i=>$(i).addEventListener('input',trCfgPrev));
+$('#trSave').onclick=()=>db.ref('config/turtle').set(trCfgRead()).then(()=>say('#trCm','Đã lưu. Áp dụng cho các lượt cược mới.')).catch(e=>say('#trCm','Lỗi: '+e.message,1));
+$('#trDef').onclick=()=>db.ref('config/turtle').remove().then(()=>{say('#trCm','Đã về mặc định.');$('#trW').innerHTML='';trCfgFill()}).catch(e=>say('#trCm','Lỗi: '+e.message,1));
 $('#trGo').onclick=trLoad;$('#trQ').addEventListener('input',trRender);$('#trF').onchange=trRender;
 $('#lgUser').onchange=lgLoad;$('#lgGo').onclick=lgLoad;$('#lgQ').addEventListener('input',lgRender);$('#lgDir').onchange=lgRender;
 /* ===== CỬA HÀNG: giá + phân loại + lượt mua ===== */

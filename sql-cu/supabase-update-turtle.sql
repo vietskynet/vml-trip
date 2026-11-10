@@ -31,21 +31,41 @@ create index if not exists turtle_bets_ts_idx on public.turtle_bets(ts desc);
 alter table public.turtle_rounds enable row level security;
 alter table public.turtle_bets enable row level security;
 
--- sức mạnh 10 con rùa (cùng bảng với client: TW trong index.html)
+-- cấu hình do admin đặt ở config/turtle: w = 10 trọng số thắng, pay = hệ số trả thưởng (0.9 = 90%), m1/m2 = tỉ lệ tối đa cược đơn/đôi
+create or replace function public.turtle_cfg() returns jsonb
+language plpgsql stable security definer set search_path = public as $$
+declare v jsonb; w numeric[] := array[16,14,12,10,9,8,7,6,5,4]; pay numeric := 0.9; m1 numeric := 30; m2 numeric := 60; i int; x numeric;
+begin
+  select val into v from public.rtdb where path = 'config/turtle';
+  if v is not null and jsonb_typeof(v) = 'object' then
+    if jsonb_typeof(v -> 'w') in ('array', 'object') then
+      for i in 0..9 loop
+        begin x := coalesce(v -> 'w' ->> i, v -> 'w' ->> (i::text))::numeric; exception when others then x := null; end;
+        if x is not null and x > 0 then w[i + 1] := x; end if;
+      end loop;
+    end if;
+    begin pay := least(greatest(coalesce(nullif(v ->> 'pay', '')::numeric, pay), 0.1), 3); exception when others then null; end;
+    begin m1 := least(greatest(coalesce(nullif(v ->> 'm1', '')::numeric, m1), 1.05), 1000); exception when others then null; end;
+    begin m2 := least(greatest(coalesce(nullif(v ->> 'm2', '')::numeric, m2), 1.05), 1000); exception when others then null; end;
+  end if;
+  return jsonb_build_object('w', to_jsonb(w), 'pay', pay, 'm1', m1, 'm2', m2);
+end $$;
+
 create or replace function public.turtle_w() returns numeric[]
-language sql immutable as $$ select array[16,14,12,10,9,8,7,6,5,4]::numeric[] $$;
+language sql stable as $$ select array(select value::numeric from jsonb_array_elements_text(public.turtle_cfg() -> 'w')) $$;
 
 create or replace function public.turtle_odds(picks int[]) returns numeric
-language plpgsql immutable as $$
-declare w numeric[] := public.turtle_w(); s numeric := 0; x numeric; pa numeric; pb numeric; q numeric; o numeric;
+language plpgsql stable as $$
+declare c jsonb := public.turtle_cfg(); w numeric[] := public.turtle_w(); s numeric := 0; x numeric; pa numeric; pb numeric; q numeric;
+  pay numeric := (c ->> 'pay')::numeric; m1 numeric := (c ->> 'm1')::numeric; m2 numeric := (c ->> 'm2')::numeric;
 begin
   foreach x in array w loop s := s + x; end loop;
   if array_length(picks, 1) = 1 then
-    x := w[picks[1] + 1] / s; o := 0.9 / x; return round(least(greatest(o, 1.2), 30), 2);
+    return round(least(greatest(pay / (w[picks[1] + 1] / s), 1.01), m1), 2);
   end if;
   pa := w[picks[1] + 1] / s; pb := w[picks[2] + 1] / s;
   q := pa * pb / (1 - pa) + pb * pa / (1 - pb);
-  return round(least(greatest(0.9 / q, 1.5), 60), 2);
+  return round(least(greatest(pay / q, 1.01), m2), 2);
 end $$;
 
 -- bốc thứ tự về đích (chỉ gọi khi vòng đã hết giờ cược)
@@ -146,5 +166,5 @@ begin
       from (select * from public.turtle_bets order by id desc limit least(greatest(coalesce(lim, 500), 1), 3000)) x), '[]'::jsonb));
 end $$;
 
-revoke all on function public.turtle_round_ord(bigint), public.turtle_draw(), public.rt_turtle_bet(int[], bigint), public.rt_turtle_round(bigint), public.rt_turtle_settle(), public.rt_turtle_me(), public.admin_turtle(int) from public, anon;
+revoke all on function public.turtle_cfg(), public.turtle_round_ord(bigint), public.turtle_draw(), public.rt_turtle_bet(int[], bigint), public.rt_turtle_round(bigint), public.rt_turtle_settle(), public.rt_turtle_me(), public.admin_turtle(int) from public, anon;
 grant execute on function public.rt_turtle_bet(int[], bigint), public.rt_turtle_round(bigint), public.rt_turtle_settle(), public.rt_turtle_me(), public.admin_turtle(int) to authenticated;
