@@ -521,3 +521,12 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Villa biển VIP V11–V20: mọc ra phía nam cầu tàu, có cầu dẫn riêng, lối đi trước nhà, hồ bơi vô cực, mái lá 2 tầng. Giá = villa thường × 1.5 (hàm `uprice(type,i)`), hoàn 50% / giá bán / chợ BĐS đều theo giá từng căn.
 - Thuyền chỉ đi được trong các khe giữa các villa VIP (`inVipBox`).
 - Không cần chạy SQL.
+
+## 10.11.2026-z5 — Trung tâm ĐUA RÙA
+- Toà nhà "TRUNG TÂM ĐUA RÙA" ở bờ đông (cạnh VINH PHÁT Automobile), đứng trước cửa bấm E.
+- Vòng đua chung cho mọi người chơi, 150 giây: 40 s mở cược → đua 2 vòng hồ tròn (mỗi vòng ~45 s, tổng ~90–97 s) → nghỉ, rồi vòng mới.
+- 10 rùa, mỗi rùa một tỉ lệ (có lợi thế nhà ~10%). Cược **1 con** (thắng nếu về nhất) hoặc **2 trên 10 con** (thắng nếu cả hai về nhất–nhì).
+- Giới hạn do **máy chủ** kiểm: mỗi lượt cược 100.000₫ – 20.000.000₫; tối đa 5 lượt / 24 giờ / người; hai lượt cách nhau ≥ 3 phút.
+- Kết quả do máy chủ bốc ngẫu nhiên ngay khi hết giờ cược; thưởng chốt qua `rt_turtle_settle` (mỗi cược chỉ trả 1 lần, tự chốt cả khi người chơi thoát game rồi quay lại).
+- Admin: tab **ĐUA RÙA** — lịch sử mọi lượt cược (thời gian, người chơi, vòng, rùa chọn, tiền cược, tỉ lệ, top 3, tiền thắng, lời/lỗ nhà cái), lọc theo tên / thắng / thua / chưa chốt / cược lớn.
+- **Cần chạy SQL**: `sql-cu/supabase-update-turtle.sql` (đã gộp vào `supabase-setup.sql`).
