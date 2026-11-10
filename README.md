@@ -429,3 +429,16 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 ## 10.11.2026-n — Popup gợi ý minigame chỉnh lại
 - Gợi ý minigame mới cách nhau **5 phút**; chỉ giới thiệu game **chưa từng chơi** và người chơi **chưa bấm ĐÓNG 2 lần** cho game đó (không bấm gì, popup tự tắt sau 14 giây, không tính). Chơi game đó rồi thì không gợi ý nữa.
 - Mẹo mã chat vẫn 15 đến 25 phút một lần, tách riêng; không hiện chồng với gợi ý minigame.
+
+## 10.11.2026-o — VINH PHÁT Automobile (xe điện trong resort)
+- **Cửa hàng** VINH PHÁT Automobile (xám đỏ futuristic, biển neon) ở phía đông, gần Thương Xá Tắc, có trên BẢN ĐỒ. Đứng gần bấm E mở: CỬA HÀNG, GARAGE & Ổ SẠC, BẰNG LÁI.
+- **10 mẫu xe, mua đứt, sở hữu vĩnh viễn**: V1 (2 đến 5 triệu: Củ Chuối, Thùng Carton, Vịt Vàng, Bồn Tắm), V2 (10 đến 20 triệu: Pod Tương Lai, Chuột Chũi có súng, Tên Lửa R2 có súng), V3 (50 đến 100 triệu: Bò Tót Hyper, Tia Chớp GT, F1 RS-1, đều có súng, hiệu ứng đèn, vệt neon, lửa phun).
+- **Tốc độ**: ×1,5 (xe rẻ nhất) đến ×3 (F1) so với đi bộ; F1 bằng đúng tốc độ mã VMLTIEN (×3). Khi lái xe, hệ số xe thay thế tăng tốc F1/mã tốc độ (không nhân chồng). Hết pin chỉ còn ×0,6.
+- **Pin**: mỗi xe có dung lượng riêng (120 đến 360 giây chạy). Chỉ tiêu hao khi di chuyển. Hết pin phải dắt về cửa hàng.
+- **Sạc**: 5 ổ sạc dùng chung toàn server, sạc đầy từ 0 trong 2 phút, phí theo tỉ lệ pin cần sạc và theo cấp xe (V1 3%, V2 4%, V3 5% giá xe cho một lần sạc đầy). Hết ổ phải CẤT xe vào kho. Xe sạc đầy mà chủ không lấy sau 3 phút thì ổ nhường cho người khác, xe tự về kho với pin đầy.
+- **Bằng lái 3 cấp**, thi bằng minigame "Thực Tập Lái" (3 làn, tránh nón, V2 thêm người đi bộ tính 2 lỗi, V3 4 làn và vệt dầu trơn). Phí thi 0,5 triệu, 2 triệu, 5 triệu, rớt mất phí thi lại phải đóng lại. Bằng cấp nào lái xe cấp đó trở xuống.
+- **An toàn giao thông**: lần lái đầu hiện cảnh báo. Tông trúng người chơi khác: phạt 5 đến 20 triệu (theo cấp xe), tiền chuyển cho người bị tông. Không đủ tiền thì có 2 phút để kiếm, quá hạn xe bị thu hồi (mất xe). Có tiền lại là tự đóng.
+- **Súng**: xe có súng đánh quái mạnh hơn (sát thương ×2 đến ×5) và từ xa (tầm 200 đến 380, chuẩn đi bộ là 54).
+- Vẫn dọn phân, bắt gián, đưa ông cụ như bình thường. Người chơi khác thấy xe của bạn (gói vị trí có trường `vh`).
+- **Chạy SQL**: `sql-cu/supabase-update-auto.sql` (đã gộp vào `supabase-setup.sql`) để bật 5 ổ sạc dùng chung. Chưa chạy thì mua, lái, thi bằng vẫn dùng được, chỉ phần ĐỖ SẠC báo lỗi.
+- Giá, pin, phí sạc nằm trong hằng số `VEHS` trong code (chưa chỉnh được ở admin).
