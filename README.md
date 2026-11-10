@@ -559,3 +559,7 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - **Nguyên nhân chính**: ở màn câu cá cấp 3, cá "Rồng Biển" (`dragon`) tìm sprite `fdragon` nhưng sprite đặt tên `fdrag` → vẽ lỗi, game bị đơ/ngắt giữa chừng. Đã thêm alias + chặn khi thiếu sprite.
 - Câu trên thuyền: cửa sổ "cá cắn" 1,3 s → 2,2 s (mạng/điện thoại trễ hay bị "cá thoát"); `boatAct` bọc try/catch tự hủy lần câu lỗi; `rollFish` chống tier sai; lỗi `boatTick` giờ được ghi vào admin → LỖI GAME (k=`boat.tick`, `boat.act`, `fish.sprite`).
 - Đàn cá trang trí không còn quay đầu ở x=1700 (map đã rộng 2560).
+
+## 10.11.2026-z13 — Team Building nhẹ hơn
+- Số thành viên tối thiểu 5 → **3** (tối đa vẫn 8). Mục tiêu điểm vẫn tính theo số người nên không đổi độ khó mỗi người.
+- Thưởng giảm 20%: Level 1–5 = 1,8 / 2,4 / 3,24 / 4,32 / 5,76 triệu mỗi người. Biển booth và hướng dẫn đã cập nhật chữ. Không cần chạy SQL.
