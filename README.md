@@ -613,3 +613,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Quy tắc khớp: khớp nguyên cụm → tách theo " · " → thay các cụm dài (≥8 ký tự, có dấu cách). Nếu sau khi thay vẫn còn nhiều tiếng Việt thì giữ nguyên câu gốc (tránh câu nửa Anh nửa Việt). Chuỗi động có số/tên ghép (`'Bạn có '+n+' giường'`) chưa khớp được, cần thêm quy tắc mẫu ở giai đoạn sau.
 - `python3 tools/make-en.py --missing` liệt kê cụm chưa dịch → `tools/en-missing.txt`.
 - Hạn chế: chat của người chơi không bị dịch trong khung chat (DOM) nhưng bóng chat trên canvas có thể bị thay cụm trùng từ điển; admin.html, avatar.html, HUONG-DAN.html chưa có bản EN.
+
+## EN: dịch câu ghép / thông báo
+- `tools/en-rules.json`: 236 mẫu thông báo có chỗ trống `{n}` (tên, số tiền...) → bản tiếng Anh; runtime khớp bằng regex rồi dịch từng phần chèn vào.
+- Thêm 85 đoạn ghép trong bảng/hộp thoại vào `en-dict.json` (1225 mục); cụm thay thế nhận từ 6 ký tự.
+- Không đổi index.html nên không cần chạy SQL. Sau mỗi bản phát hành chạy `python3 tools/make-en.py`.

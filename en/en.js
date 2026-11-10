@@ -6,12 +6,16 @@
 var D=window.EN_D||{},VI=/[ăâđêôơưàáạảãèéẹẻẽìíịỉĩòóọỏõùúụủũỳýỵỷỹĂÂĐÊÔƠƯÀÁẠẢÃÈÉẸẺẼÌÍỊỈĨÒÓỌỎÕÙÚỤỦŨỲÝỴỶỸ]/;
 var M=new Map(Object.keys(D).map(function(k){return[k,D[k]]})),cache=new Map(),phr=null;
 function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-function phrases(){if(phr)return phr;var ks=Object.keys(D).filter(function(k){return k.length>=8&&k.indexOf(' ')>0}).sort(function(a,b){return b.length-a.length});phr=ks.length?new RegExp(ks.map(esc).join('|'),'g'):/$^/;return phr}
+function phrases(){if(phr)return phr;var ks=Object.keys(D).filter(function(k){return k.length>=6&&k.indexOf(' ')>0}).sort(function(a,b){return b.length-a.length});phr=ks.length?new RegExp(ks.map(esc).join('|'),'g'):/$^/;return phr}
+var RL=null;
+function rules(){if(RL)return RL;var R=window.EN_R||{};RL=Object.keys(R).map(function(k){var parts=k.trim().split(/\{\d+\}/),n=0;var re=new RegExp('^'+parts.map(esc).join('(.+?)')+'$');return{re:re,en:R[k],len:parts.join('').length}}).sort(function(a,b){return b.len-a.len});return RL}
+function rule(s){var t=s.trim(),L=rules();for(var i=0;i<L.length;i++){var m=L[i].re.exec(t);if(m){var c=m;return s.replace(t,function(){return L[i].en.replace(/\{(\d+)\}/g,function(_,n){var v=c[+n];return v==null?'':tr(v)})})}}return null}
 function one(s){var t=s.trim();if(!t)return s;var e=M.get(t);if(e!=null)return s.replace(t,function(){return e});return null}
 function tr(s){
  if(typeof s!=='string'||s.length<2||!VI.test(s))return s;
  var c=cache.get(s);if(c!==undefined)return c;
  var r=one(s);
+ if(r==null)r=rule(s);
  if(r==null){
   /* tách theo " · " rồi dịch từng đoạn đủ khớp, sau đó thay các cụm dài */
   if(s.indexOf(' · ')>0)r=s.split(' · ').map(function(p){var o=one(p);return o==null?p.replace(phrases(),function(m){return D[m]}):o}).join(' · ');
