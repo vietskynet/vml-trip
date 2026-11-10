@@ -599,3 +599,6 @@ Khi ngủ trong bungalow/villa/phòng, tốc độ hồi năng lượng ×(1+B).
 
 ## 10.11.2026-z22 — Sửa game Chạy nước rút
 Đủ 95 bước là kết thúc ngay (trước đây vẫn chạy tiếp đến hết giờ, hiện 112/95). Sửa thêm lỗi `GY.endAt` không được reset giữa các lần tập (có thể làm bài sau kết thúc sớm). Không cần SQL.
+
+## 10.11.2026-z23 — Sửa bài phản xạ
+Bấm sớm khi chưa có chấm không còn làm chấm xanh không bao giờ hiện (trước đây mỗi lần bấm sớm reset thời gian chờ, bấm liên tục thì không có chấm); phạt tối đa 1 lần/0,6 s. Bấm bằng chuột/chạm phải trúng chấm (phím E vẫn bấm ở bất kỳ đâu). Thêm đồng hồ đếm giờ. Không cần SQL.
