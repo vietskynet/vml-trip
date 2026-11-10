@@ -480,3 +480,14 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 ## 10.11.2026-v — Admin huỷ/hạ bằng lái
 - Trong bảng chi tiết người chơi (admin), thêm mục **BẰNG LÁI XE**: hiện bằng hiện tại (V1/V2/V3 hay chưa có), chọn **Huỷ toàn bộ**, **Hạ xuống V1** hoặc **Hạ xuống V2**, bấm 2 lần để xác nhận. Lệnh gửi qua `gifts/{uid}/R…` (`rl` = mức mới, `from:'admin'`), người chơi nhận ngay khi online hoặc lần vào game kế tiếp, có thông báo; đang lái xe cấp cao hơn thì bị dừng xe. Xe đã mua giữ nguyên, muốn lái lại phải thi lại bằng ở VINH PHÁT (mất phí thi).
 - Không cần chạy SQL.
+
+## 10.11.2026-w — Nội thất phòng, bàn thờ + bùa chống ma, gói bán nhà, đồ ngoài nhà mới
+- **Nội thất phòng** (villa, bungalow, phòng khách sạn): trong khung TRANG TRÍ có thêm tab **NỘI THẤT PHÒNG** với 8 hạng mục: giấy dán tường ×8, vật treo tường ×12 (3 vị trí: tường trái, tường phải, giữa trên cửa sổ), đèn ngủ ×10 (mỗi loại một màu sáng và hiệu ứng riêng: nhấp nháy sấm chớp, đổi màu cầu vồng, nhịp neon...), TV LED ×5 (5 cảnh động: hoàng hôn, vũ trụ, mưa rừng, bể cá, pháo hoa thành phố), **màu nệm ×8** và **loại gối ×8** (riêng từng giường), **bàn thờ ×3**, **bùa ×3**.
+- **Bàn thờ + bùa chống ma**: ma hù trong phòng giảm theo bảng: bàn thờ gỗ 35%, sơn son 55%, thếp vàng 75%; bùa giấy 50%, gỗ đào 80%, Bát Quái ngọc 100%. Bàn thờ và bùa **cộng dồn** (có cả hai gần như hết ma).
+- **Giá nội thất**: bộ full rẻ nhất (2 giường, 12 món) đúng **20 triệu**, bộ full đắt nhất đúng **200 triệu**. Mua món mới cùng hạng mục là thay món cũ (không hoàn tiền); vật treo không trùng món.
+- **Gói bán**: giá trị toàn bộ đồ trang trí (ngoài + trong nhà) được **cộng vào giá rao bán nhà/giường** (giá gợi ý = (giá nhà + trang trí) × hệ số). Bán 1 giường: đồ chung tính theo nửa, nệm và gối tính theo giường bán. Chợ nhà hiện "nhà X + N món trang trí Y" và danh sách món kèm theo. Tab TÀI SẢN hiện tổng giá trị trang trí từng căn.
+- **Đồ ngoài nhà**: thêm 14 món mới (lâu đài cát, võng dừa, BBQ, dù ghế, tượng Tiki, giá ván lướt, bồn sục ★, diều rồng, dây cờ, chong chóng, dây đèn sao, chuông gió vỏ sò, giàn hoa giấy, rèm hạt ngọc). **Đặt lại giá toàn bộ** để full 4 chỗ (2 sân + mái + cửa): rẻ nhất **10 triệu**; đắt nhất **200 triệu** ở villa (đồ ★ villa ×2) và 100 triệu ở bungalow. Phòng khách sạn (ban công + cửa sổ, chỉ đồ thường) 4,5 đến 12 triệu.
+- **Layout ngoài nhà**: đồ sân của villa dời sát hiên nhà hơn (từ đường đi y=236 lên y=216, vào gần 8px mỗi bên), bungalow vào gần thêm 2 đến 4px.
+- Villa: thêm 2 mảng tường hai bên cửa sổ biển để treo đồ và dán giấy (khung nhìn biển hẹp lại còn 200px như bungalow).
+- Admin: bảng giá "Trang trí nhà" liệt kê thêm 57 món nội thất và 14 món ngoài nhà (dùng chung khoá giá `deco.<id>`), lượt mua tính vào bộ đếm `deco.<id>`.
+- **Cần chạy SQL**: `sql-cu/supabase-update-interior.sql` (đã gộp vào `supabase-setup.sql`) để server cho lưu nội thất. Chưa chạy thì mua nội thất báo "Máy chủ chưa bật trang trí", đồ ngoài nhà vẫn mua bình thường.

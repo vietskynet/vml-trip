@@ -137,8 +137,8 @@ begin
   if s[1] = 'market' then return s[2] = u; end if;          -- chỉ đăng/huỷ tin rao của mình
   if s[1] = 'deco' then                                     -- ai có giường trong căn đó mới được trang trí
     if s[2] = 'castle' then return n = 4 and s[4] in ('top', 'base', 'plate') and public.rt_castle_member(u, s[3]); end if;
-    return n = 4 and ((s[2] in ('villa', 'tent') and s[4] in ('g1', 'g2', 'top', 'door', 'plate'))
-                   or (s[2] = 'room' and s[4] in ('bal', 'win', 'plate'))) and public.rt_owns(u, s[2], s[3]);
+    return n = 4 and ((s[2] in ('villa', 'tent') and s[4] in ('g1', 'g2', 'top', 'door', 'plate', 'in'))
+                   or (s[2] = 'room' and s[4] in ('bal', 'win', 'plate', 'in'))) and public.rt_owns(u, s[2], s[3]);
   end if;
   return false;
 end $$;
