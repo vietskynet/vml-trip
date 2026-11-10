@@ -563,3 +563,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 ## 10.11.2026-z13 — Team Building nhẹ hơn
 - Số thành viên tối thiểu 5 → **3** (tối đa vẫn 8). Mục tiêu điểm vẫn tính theo số người nên không đổi độ khó mỗi người.
 - Thưởng giảm 20%: Level 1–5 = 1,8 / 2,4 / 3,24 / 4,32 / 5,76 triệu mỗi người. Biển booth và hướng dẫn đã cập nhật chữ. Không cần chạy SQL.
+
+## 10.11.2026-z14 — 6 xe mới, súng xe V2 khác nhau, sửa lỗi Team Building
+- Xe mới (thêm vào cuối danh sách VEHS để không lệch chỉ số đồng bộ vị trí): V1 **Xe Bánh Kem Dâu** (nữ, 4,5tr), **Tàu Hơi Nước Mini** (nam, 3,5tr); V2 **Hồ Điệp Pha Lê** (nữ, 12tr), **Kẹo Bông Kỳ Lân** (nữ, 13tr), **Cá Mập Chiến Hạm** (nam, 16tr), **Xe Tăng Tím Phantom** (18tr). Vẽ pixel đủ 4 hướng, animation bánh/cánh/khói/bánh xích.
+- Súng V2 (mỗi xe một bộ tầm / sát thương / hồi đạn): Pod 190·×2·0,20s, Chuột Chũi 200·×3·0,36s, Tên Lửa 240·×3·0,30s, Hồ Điệp 210·×2·0,18s, Kỳ Lân 220·×2·0,22s, Cá Mập 230·×4·0,40s, Xe Tăng 260·×5·0,55s. Pod điện nay cũng có súng. V3 giữ nguyên (hồi 0,22s).
+- Fix Team Building (trò nhớ dãy mũi tên): sau dãy 2 có 0,7s render đọc dãy thứ 3 không tồn tại → "Cannot read properties of undefined (reading 'length')". Đã chặn.
