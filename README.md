@@ -515,3 +515,9 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Giá mặc định mọi kiểu tóc và mọi phụ kiện tóc giảm **50%** (ví dụ Pompadour Sóng Thần 1,2tr → 600k). Nhuộm màu tính +30% giá kiểu nên cũng giảm theo. Bảng giá admin hiển thị mặc định mới.
 - Lưu ý: giá nào admin đã tự chỉnh riêng trong bảng giá thì vẫn giữ giá admin đặt, không bị giảm thêm.
 - Không cần chạy SQL.
+
+## 10.11.2026-z4 — Dãy bungalow mới + dãy villa biển VIP
+- Bungalow: thêm hàng thứ 3 bên phải (B21–B25); đồng thời mở bán hàng B16–B20 vốn đã vẽ sẵn nhưng chưa có chỗ → tổng 25 bungalow.
+- Villa biển VIP V11–V20: mọc ra phía nam cầu tàu, có cầu dẫn riêng, lối đi trước nhà, hồ bơi vô cực, mái lá 2 tầng. Giá = villa thường × 1.5 (hàm `uprice(type,i)`), hoàn 50% / giá bán / chợ BĐS đều theo giá từng căn.
+- Thuyền chỉ đi được trong các khe giữa các villa VIP (`inVipBox`).
+- Không cần chạy SQL.

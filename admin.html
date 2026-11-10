@@ -350,8 +350,8 @@ function ecoRender(){if(!$('#ecoKpi'))return;const {rows,bedTypes,hp}=ecoCalc(),
  $('#ecoDist').innerHTML=B.map(([l,a,b])=>{const c=ms.filter(v=>v>=a&&v<b).length;return`<div style="display:flex;gap:8px;align-items:center;margin:3px 0"><span style="width:90px">${l}</span><div style="background:var(--sea);height:16px;width:${Math.round(c/mx*60)+(c?2:0)}%"></div><b>${c}</b></div>`}).join('');
  const A=[['Giường phòng KS',hp.room],['Giường bungalow',hp.tent],['Giường villa',hp.villa],['Đất thường (45tr)',45e6],['Đất vàng (90tr)',90e6],['Lâu đài thấp nhất',2e7],['Lâu đài cao nhất',1e8]];
  $('#ecoAfford').innerHTML='<table><thead><tr><th>Món</th><th>Giá</th><th>Đủ tiền</th></tr></thead><tbody>'+A.map(([l,p])=>{const c=rows.filter(r=>r.m>=p).length;return`<tr><td>${l}</td><td>${VND(p)}</td><td>${c}/${n} (${n?Math.round(c/n*100):0}%)</td></tr>`}).join('')+'</tbody></table>';
- const cnt={villa:20,tent:30,room:40};const bt=bedTypes;
- $('#ecoAsset').innerHTML=`<table><tbody><tr><td>Giường villa đã bán</td><td>${bt.villa}/20</td></tr><tr><td>Giường bungalow đã bán</td><td>${bt.tent}/30</td></tr><tr><td>Giường khách sạn đã bán</td><td>${bt.room}/40</td></tr><tr><td>Người có lâu đài</td><td>${rows.filter(r=>r.cr).length}</td></tr><tr><td>Thú cưng đang sở hữu</td><td>${rows.reduce((a,r)=>a+r.petN,0)} con, giá trị ${VND(rows.reduce((a,r)=>a+r.petV,0))}</td></tr><tr><td>Bộ đồ đã mua</td><td>${rows.reduce((a,r)=>a+r.skN,0)} bộ</td></tr><tr><td>Giá trị nhà (theo giá hiện tại)</td><td>${VND(rows.reduce((a,r)=>a+r.houseV,0))}</td></tr></tbody></table>`;
+ const cnt={villa:40,tent:50,room:40};const bt=bedTypes;
+ $('#ecoAsset').innerHTML=`<table><tbody><tr><td>Giường villa đã bán</td><td>${bt.villa}/40</td></tr><tr><td>Giường bungalow đã bán</td><td>${bt.tent}/50</td></tr><tr><td>Giường khách sạn đã bán</td><td>${bt.room}/40</td></tr><tr><td>Người có lâu đài</td><td>${rows.filter(r=>r.cr).length}</td></tr><tr><td>Thú cưng đang sở hữu</td><td>${rows.reduce((a,r)=>a+r.petN,0)} con, giá trị ${VND(rows.reduce((a,r)=>a+r.petV,0))}</td></tr><tr><td>Bộ đồ đã mua</td><td>${rows.reduce((a,r)=>a+r.skN,0)} bộ</td></tr><tr><td>Giá trị nhà (theo giá hiện tại)</td><td>${VND(rows.reduce((a,r)=>a+r.houseV,0))}</td></tr></tbody></table>`;
  $('#ecoTop').innerHTML=rows.slice().sort((a,b)=>b.tot-a.tot).slice(0,10).map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${VND(r.m)}</td><td>${VND(r.asset)}</td><td>${VND(r.tot)}</td></tr>`).join('')||'<tr><td colspan="5">Chưa có dữ liệu.</td></tr>';
  const adv=[];if(!n)adv.push('Chưa có người chơi để phân tích.');else{const vp=hp.villa,ab=rows.filter(r=>r.m>=vp).length/n;
   if(med<1e6)adv.push('Ví trung vị dưới 1tr: người chơi đang thiếu tiền, nên giảm giá hoặc tăng thưởng minigame.');
@@ -359,7 +359,7 @@ function ecoRender(){if(!$('#ecoKpi'))return;const {rows,bedTypes,hp}=ecoCalc(),
   if(ab>.5)adv.push('Hơn nửa người chơi đã đủ tiền mua villa: villa đang quá rẻ so với thu nhập.');
   if(ab===0&&n>=5)adv.push('Chưa ai đủ tiền mua villa: có thể giá đang quá cao hoặc người chơi chưa có đường kiếm đủ nhanh.');
   if(g>.65)adv.push('Chênh lệch ví rất lớn (Gini '+g.toFixed(2)+'): người mới khó đuổi kịp, nên thêm thưởng cho người ít tiền hoặc chỗ tiêu cho người giàu.');
-  if(bt.villa+bt.tent+bt.room>=85)adv.push('Gần hết giường: cân nhắc thêm nhà hoặc tăng giá để người đến sau còn chỗ.');
+  if(bt.villa+bt.tent+bt.room>=125)adv.push('Gần hết giường: cân nhắc thêm nhà hoặc tăng giá để người đến sau còn chỗ.');
   if(!adv.length)adv.push('Chưa thấy dấu hiệu mất cân bằng. Tiếp tục theo dõi khi có thêm người chơi.')}
  $('#ecoAdvice').innerHTML=adv.map(t=>'<li>'+t+'</li>').join('')}
 setInterval(()=>{if(started||admin)try{ecoRender()}catch(e){}},5000);
