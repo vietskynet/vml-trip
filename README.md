@@ -491,3 +491,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Villa: thêm 2 mảng tường hai bên cửa sổ biển để treo đồ và dán giấy (khung nhìn biển hẹp lại còn 200px như bungalow).
 - Admin: bảng giá "Trang trí nhà" liệt kê thêm 57 món nội thất và 14 món ngoài nhà (dùng chung khoá giá `deco.<id>`), lượt mua tính vào bộ đếm `deco.<id>`.
 - **Cần chạy SQL**: `sql-cu/supabase-update-interior.sql` (đã gộp vào `supabase-setup.sql`) để server cho lưu nội thất. Chưa chạy thì mua nội thất báo "Máy chủ chưa bật trang trí", đồ ngoài nhà vẫn mua bình thường.
+
+## 10.11.2026-x — Chợ BĐS
+- Menu có thêm mục **CHỢ BĐS** mở thẳng danh sách mọi nhà/giường đang rao bán (kèm số tin).
+- Khung mua giường ở các quầy **Villa, Bungalow, Khách sạn** có thêm nút **CHỢ BĐS** (và nút TÀI SẢN CỦA TÔI).
+- Không cần chạy SQL.
