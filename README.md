@@ -454,3 +454,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - **Biểu tượng vô lăng oval** neon trên mặt tiền, có đốm sáng chạy quanh vòng.
 - **2 PG nữ** đứng trước cửa hàng (váy hồng bạc, váy đen hồng), đung đưa và vẫy tay.
 - Bục xoay F1 bên phải. Không cần chạy SQL mới.
+
+## 10.11.2026-r — Hướng dẫn lấy xe sau khi mua
+- Mua hoặc thuê xe xong tự chuyển sang tab tiếp theo: chưa có bằng thì sang BẰNG LÁI, có bằng rồi thì sang GARAGE.
+- Tab GARAGE có khung "CÁCH LÁI XE" 4 bước; thêm nút CHỈ ĐƯỜNG VỀ CỬA HÀNG (mũi tên xanh) khi đang đứng xa.
+- Không cần chạy SQL.
