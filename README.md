@@ -459,3 +459,9 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Mua hoặc thuê xe xong tự chuyển sang tab tiếp theo: chưa có bằng thì sang BẰNG LÁI, có bằng rồi thì sang GARAGE.
 - Tab GARAGE có khung "CÁCH LÁI XE" 4 bước; thêm nút CHỈ ĐƯỜNG VỀ CỬA HÀNG (mũi tên xanh) khi đang đứng xa.
 - Không cần chạy SQL.
+
+## 10.11.2026-s — Chặn F5 né tiểu/ị, xe tông có mức chấn thương
+- **Fix cheat F5**: trạng thái "mắc tiểu/đau bụng" (đồng hồ đếm), "bốc mùi" (chưa tắm) và việc bảo vệ đã phạt hay chưa nay **lưu lên server** (`state.nd`, `state.ac`). F5 hoặc thoát vào lại vẫn còn nguyên: đang mắc thì đồng hồ trừ cả thời gian offline, hết giờ khi offline thì tính là đã đi bậy; đang bốc mùi thì bảo vệ lại xuất hiện (không phạt lần 2 nếu đã phạt) và phải vào phòng tắm mới hết. Lưu ngay lúc phát sinh, lúc tắm xong và khi đóng tab.
+- **Xe tông có 4 mức chấn động**: Va chạm nhẹ (nằm 5s, đền 5 triệu), Chấn thương (7s, 10 triệu), Gãy xương (8,5s, 15 triệu), Chấn động não nguy kịch (10s, 20 triệu). Xe V1 hay gây mức 1 đến 2, V2 mức 2 đến 3, V3 mức 3 đến 4.
+- Người bị tông bất động đúng thời gian đó (ngã nằm ngang, sao quay trên đầu, nhãn mức thương tật cho mọi người thấy), không bị tông tiếp. Cả hai bên đều có banner lớn nháy đỏ báo mức chấn động; tiền đền chuyển cho nạn nhân như cũ (không đủ tiền thì có 2 phút, quá hạn xe bị thu hồi).
+- Không cần chạy SQL.
