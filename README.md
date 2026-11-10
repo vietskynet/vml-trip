@@ -447,3 +447,10 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - **Thuê xe**: mỗi xe có thêm nút "THUÊ 1 NGÀY" bằng **10% giá mua** (V1 0,2 đến 0,5 triệu, V2 1 đến 2 triệu, V3 5 đến 10 triệu). 1 ngày game = `CFG.DAY` = 3600 giây (1 giờ thật). Thuê **vẫn cần bằng lái** cùng cấp, vẫn tốn pin và phí sạc như xe mua. Hết hạn xe tự trả (kể cả đang lái hay đang sạc: ổ sạc được giải phóng). Đang thuê vẫn bấm MUA ĐỨT được (giữ nguyên mức pin). Thời gian thuê còn lại hiện ở cửa hàng và garage.
 - **Vẽ lại V2 và V3** chi tiết hơn: vỏ có đổ bóng, mâm xe quay, kính, đèn pha và đèn LED, khe gió, cánh gió, ống xả; Pod bong bóng kính, Chuột Chũi có tháp súng và mũi khoan xoay, Tên Lửa có vây đuôi và lửa phản lực, Bò Tót và Tia Chớp là siêu xe thấp có cánh gió, F1 mở bánh có halo, cánh trước và sau. Có đủ góc nhìn ngang, trước, sau.
 - Không cần chạy SQL mới.
+
+## 10.11.2026-q — Thiết kế lại cửa hàng VINH PHÁT Automobile
+- Kiến trúc futuristic nhiều tầng mái vát (không vuông vức), vỏ bạc vân đá, kính đen, **viền neon tím hồng** quanh mái, tầng giữa và gara, gara trưng 2 siêu xe, nền sàn phát sáng tím.
+- **Hộp đèn "VINH PHÁT"** trên nóc: xoay, nhún lên xuống (popup), đèn viền chớp.
+- **Biểu tượng vô lăng oval** neon trên mặt tiền, có đốm sáng chạy quanh vòng.
+- **2 PG nữ** đứng trước cửa hàng (váy hồng bạc, váy đen hồng), đung đưa và vẫy tay.
+- Bục xoay F1 bên phải. Không cần chạy SQL mới.
