@@ -4414,7 +4414,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z2';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z3';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -5312,7 +5312,7 @@ HSTY.push(
   u:[[4,2,10,9,0],[3,4,12,8,0],[4,12,10,2,1],[7,4,1,8,1],[11,4,1,8,2],...hdTower(9,-15,2)],
   s:[[5,2,9,3,0],[4,3,4,8,0],[11,4,2,2,0],[3,6,3,8,0],[3,13,3,2,1],...hdTower(8,-15,2)]}
 );
-const HSTY_BY={};HSTY.forEach(h=>{HSTY_BY[h.id]=h;h.p0=h.p});
+const HSTY_BY={};HSTY.forEach(h=>{HSTY_BY[h.id]=h;h.p=Math.round(h.p/2);h.p0=h.p});
 const HCOLS=[['nat','Màu gốc','#8a6a50'],['#ff4fa8','Hồng neon','#ff4fa8'],['#9b59ff','Tím mộng mơ','#9b59ff'],['#1fd1c8','Xanh ngọc','#1fd1c8'],['#2f7bff','Xanh dương','#2f7bff'],['#f4e08a','Bạch kim','#f4e08a'],['#cfd8e6','Bạc ánh trăng','#cfd8e6'],['#c8102e','Đỏ rượu','#c8102e'],['#ff8a3d','Cam hoàng hôn','#ff8a3d'],['#4fd36a','Xanh lá','#4fd36a'],['#f6f6f6','Trắng tuyết','#f6f6f6'],['#a8693a','Caramel','#a8693a'],['rainbow','Cầu vồng','rainbow']];
 const DYE_PCT=.3;
 /* phụ kiện: dùng chung nam nữ, lấp lánh */
@@ -5330,7 +5330,7 @@ const HACC=[
  {id:'a6',n:'Cánh bướm ánh sáng',p:1000000,
   d:(r,G,B,P,W)=>{r(11,1,3,2,B);r(12,0,2,1,W);r(11,3,2,1,P);r(13,3,1,1,B);r(12,2,1,1,W);r(10,2,1,1,G)}}
 ];
-const HACC_BY={};HACC.forEach(a=>{HACC_BY[a.id]=a;a.p0=a.p});
+const HACC_BY={};HACC.forEach(a=>{HACC_BY[a.id]=a;a.p=Math.round(a.p/2);a.p0=a.p});
 function hdShade(c,k){return k===1?shade(c,.7):k===2?shade(c,1.45):c}
 function drawHairdo(g,H,dir,f){const st=HSTY_BY[H.s];if(!st)return;const by=f%2,col=H.c&&H.c!=='nat'?H.c:st.nat,rb=col==='rainbow',key=dir==='down'?'d':dir==='up'?'u':'s';
  const put=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(x+1,y+1,w,h)};

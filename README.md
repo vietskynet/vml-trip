@@ -510,3 +510,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Thêm popup thông báo "PHÒNG NGỦ ĐÃ CÓ TRANG TRÍ TUYỆT ĐẸP" dùng hệ thống thông báo sẵn có (`ANN`): chỉ hiện khi đang ở ngoài map, không có cửa sổ nào mở, sau 15 giây chơi; đã xem là ghi `P.an` (lưu lên server) nên **không hiện lại**. Nút ĐI TỚI ĐÓ dẫn về cửa nhà của bạn (nếu chưa có nhà thì không làm gì).
 - Nút ĐI TỚI ĐÓ bọc try/catch để lỗi không ảnh hưởng game.
 - Không cần chạy SQL.
+
+## 10.11.2026-z3 — Giảm 50% giá làm tóc
+- Giá mặc định mọi kiểu tóc và mọi phụ kiện tóc giảm **50%** (ví dụ Pompadour Sóng Thần 1,2tr → 600k). Nhuộm màu tính +30% giá kiểu nên cũng giảm theo. Bảng giá admin hiển thị mặc định mới.
+- Lưu ý: giá nào admin đã tự chỉnh riêng trong bảng giá thì vẫn giữ giá admin đặt, không bị giảm thêm.
+- Không cần chạy SQL.
