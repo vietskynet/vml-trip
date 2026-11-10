@@ -496,3 +496,7 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Menu có thêm mục **CHỢ BĐS** mở thẳng danh sách mọi nhà/giường đang rao bán (kèm số tin).
 - Khung mua giường ở các quầy **Villa, Bungalow, Khách sạn** có thêm nút **CHỢ BĐS** (và nút TÀI SẢN CỦA TÔI).
 - Không cần chạy SQL.
+
+## 10.11.2026-y — Lưới toạ độ debug
+- Thêm `#grid` vào cuối link (vd `.../index.html#grid`) để bật lưới: ô 160px, cột A-P, hàng 1-13, chia 3x3 kiểu bàn phím số (ô con 7 8 9 / 4 5 6 / 1 2 3). Rê chuột hiện ô + toạ độ pixel, góc phải hiện vị trí nhân vật. Người chơi thường không thấy.
+- Không cần chạy SQL.

@@ -2249,6 +2249,18 @@ function guideNext(){GUIDE.flash=1.6;coin();setTimeout(()=>beep(1320,.06,'square
   if(GUIDE.s>=3){GUIDE.on=false;GUIDE.doneT=9;tipT=Math.max(tipT,300)}saveGuide();guideKey='';renderGuide()},1500)}
 function guideTick(dt){if(GUIDE.doneT>0){GUIDE.doneT-=dt;if(GUIDE.doneT<=0)guideKey=''}if(GUIDE.flash>0)GUIDE.flash-=dt;guideAcc+=dt;if(guideAcc<.4)return;guideAcc=0;
  if(GUIDE.on&&GUIDE.flash<=0){if(GUIDE.s===0&&(P.guideGame||P.lodge))guideNext();else if(GUIDE.s===1&&P.lodge)guideNext();else if(GUIDE.s===2)guideNext()}renderGuide()}
+/* lưới debug: mở bằng cách thêm #grid vào cuối link (vd .../index.html#grid). Ô 160px: cột A-P, hàng 1-13, chia 3x3 kiểu bàn phím số */
+const DBG={mx:-1,my:-1,cs:160};
+cv.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();DBG.mx=(e.clientX-r.left)/r.width*VW;DBG.my=(e.clientY-r.top)/r.height*VH});
+cv.addEventListener('mouseleave',()=>{DBG.mx=-1});
+const dbgCell=(x,y)=>{const c=Math.floor(x/DBG.cs),r=Math.floor(y/DBG.cs),sx=Math.floor((x-c*DBG.cs)/(DBG.cs/3)),sy=Math.floor((y-r*DBG.cs)/(DBG.cs/3));return String.fromCharCode(65+c)+(r+1)+'-'+(7+sx-3*sy)};
+function drawDbgGrid(cx,cy){const cs=DBG.cs;ctx.save();ctx.lineWidth=1;ctx.font='12px monospace';ctx.textBaseline='top';
+ for(let gx=Math.floor(cx/(cs/3))*(cs/3);gx<cx+VW+1;gx+=cs/3){const x=Math.round(gx-cx)+.5,main=Math.round(gx)%cs===0;ctx.strokeStyle=main?'rgba(255,220,60,.75)':'rgba(255,255,255,.16)';ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,VH);ctx.stroke()}
+ for(let gy=Math.floor(cy/(cs/3))*(cs/3);gy<cy+VH+1;gy+=cs/3){const y=Math.round(gy-cy)+.5,main=Math.round(gy)%cs===0;ctx.strokeStyle=main?'rgba(255,220,60,.75)':'rgba(255,255,255,.16)';ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(VW,y);ctx.stroke()}
+ for(let c=Math.floor(cx/cs);c*cs<cx+VW;c++)for(let r=Math.floor(cy/cs);r*cs<cy+VH;r++){if(c<0||r<0||c*cs>=MW||r*cs>=MH)continue;const t=String.fromCharCode(65+c)+(r+1),x=c*cs-cx+3,y=r*cs-cy+3;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(x-1,y-1,ctx.measureText(t).width+4,15);ctx.fillStyle='#ffd23f';ctx.fillText(t,x+1,y)}
+ {const t='Bạn: '+dbgCell(P.x,P.y)+' ('+Math.round(P.x)+','+Math.round(P.y)+')';ctx.fillStyle='rgba(0,0,0,.7)';ctx.fillRect(VW-190,56,188,18);ctx.fillStyle='#7fffa0';ctx.fillText(t,VW-186,58)}
+ if(DBG.mx>=0){const wx=DBG.mx+cx,wy=DBG.my+cy,t=dbgCell(wx,wy)+' ('+Math.round(wx)+','+Math.round(wy)+')',w=ctx.measureText(t).width+8,x=Math.min(VW-w-2,DBG.mx+10),y=Math.min(VH-18,DBG.my+10);ctx.fillStyle='rgba(0,0,0,.8)';ctx.fillRect(x,y,w,16);ctx.fillStyle='#fff';ctx.fillText(t,x+4,y+1);ctx.strokeStyle='#ff4fd8';ctx.strokeRect(DBG.mx-4,DBG.my-4,8,8)}
+ ctx.restore()}
 function drawGuideArrow(t,cx,cy){if(NAVG&&(mode!=='world'||dist(P,NAVG.pt)<40||(NAVG.t-=.016)<=0))NAVG=null;if((!GUIDE.on&&!NAVG)||GUIDE.flash>0||P.need||mode!=='world'||P.hidden)return;const tg=GUIDE.on?guideTarget():NAVG;if(!tg)return;const dd=dist(P,tg.pt);if(dd<26)return;
  const px=P.x-cx,py=P.y-cy-14,ang=Math.atan2(tg.pt.y-P.y,tg.pt.x-P.x),r2=26+Math.sin(t*5)*3,ax=px+Math.cos(ang)*r2,ay=py+Math.sin(ang)*r2;
  ctx.save();ctx.translate(Math.round(ax),Math.round(ay));ctx.rotate(ang);ctx.fillStyle='#000';ctx.beginPath();ctx.moveTo(10,0);ctx.lineTo(-6,-7);ctx.lineTo(-6,7);ctx.closePath();ctx.fill();ctx.fillStyle='#5fd36a';ctx.beginPath();ctx.moveTo(7,0);ctx.lineTo(-4,-5);ctx.lineTo(-4,5);ctx.closePath();ctx.fill();ctx.restore();
@@ -4249,7 +4261,7 @@ if(vis(BANKZ.bx,BANKZ.by,90))label(BK.due&&Math.floor(t*3)%2?'CÓ SỔ ĐẾN H�
   drawLimGlow(cx,cy,t,a);
   ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over'}
  drawShine(t,cx,cy,vis);drawGood(t,cx,cy,vis);
- drawGuideArrow(t,cx,cy);
+ drawGuideArrow(t,cx,cy);if(location.hash.indexOf('grid')>=0)drawDbgGrid(cx,cy);
  drawMonArrow(t,cx,cy);drawMonFx(cx,cy,t);drawVehHud();drawBanner();drawJobOverlay(t,cx,cy);drawFloatHud(cx,cy);drawBathArrow(t,cx,cy);drawVendFx(cx,cy);drawMoneyFx(cx,cy,t);
  // toilet warning: red edge pulse, guide arrow, big flash
  if(P.need&&mode==='world'&&!P.hidden){const u=P.need.cd,pulse=(Math.sin(t*(u<10?14:7))*.5+.5),a=(u<10?.55:.32)*pulse+.1,th=u<10?10:6;
@@ -4393,7 +4405,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-x';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-y';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
