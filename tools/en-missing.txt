@@ -1,15 +1,12 @@
-! Chạy nhanh vào PHÒNG TẮM để thoát.
 ! Còn
 ! Cùng nhau đánh bại để chia
 ! Phần thưởng của bạn
 ! Theo mũi tên tới lễ tân.
 ! Ví hiện có
-" không đúng. Bấm LUẬT để xem danh sách mã.
 ">TRANG TRÍ (T)
 "Giá đó thì thôi, mình giữ nguyên
 "Thôi được, chốt giá này nhé!"
 % giá kiểu)
-% hao năng lượng khi đứng/đi, hồi khi ngủ nhanh hơn +
 % không chơi game được. Về nhà ngủ (miễn phí) hoặc ăn ở Quầy Ăn Uống.
 % mới chơi Team Building được.
 % mới chơi game được. Hãy ngủ hoặc ăn.
@@ -24,7 +21,6 @@
 (bạn có
 (bạn đang có
 (chia theo số phát bắn)
-(chuyển thẳng cho nạn nhân).
 (chưa có nhà 55 · Bungalow 65 · Khách sạn 75 · Villa 85 · Lâu đài 90).
 (có hiệu lực 24 giờ).
 (có thể tham gia nhiều tháp khác nhau). Chủ lâu đài có
@@ -33,7 +29,6 @@
 (gốc + lãi
 (lãi
 (lãi +
-(mua một lần, không có thuế đất) · cây tối đa
 (mỗi thành viên +5 đến
 (nút NV).
 (nút góc phải) để xem vị trí mọi nơi và bấm để tự đi tới.
@@ -109,7 +104,6 @@
 1 chỗ trong mỗi tháp
 1 giường ở
 1 liên minh
-1 phút nữa có bữa ăn tập thể miễn phí ở bàn dài cạnh Quầy Ăn Uống!
 1 · ĐI LẠI
 2 phút
 2 viên song song
@@ -127,15 +121,11 @@
 : khi tháp đã hoạt động, trả chỗ chỉ hoàn
 : tất cả nhà và giường đang được rao bán (
 >LÀM TÓC ·
-Admin vừa tặng riêng bạn
 Admin đã hạ bằng lái của bạn xuống V
-Ai chỉ đường giúp ông với!
 Ai đó
 Anh Đào
-Anh ơi mua dùm em tờ vé số!
 Art Deco Vàng Đen
 Ban công đã có 1 món. Gỡ trước nhé.
-Ban ngày · nhịp chậm, ít bẫy
 Bay lượn cùng bụi tiên, tốc độ x3
 Bay theo chủ, không ai dám động vào
 Biến thành đống phân biết đi
@@ -143,16 +133,8 @@ Biết nói "VML!"
 Biển neon "NHÀ GIÀU"
 Bob Pha Lê Bất Đối
 Bungalow gỗ ngoài trời, toilet riêng, trang trí được sân nhà. Giá
-Bungalow thì không có toilet. Kiếm đủ
-Buộc băng đô, chạy marathon mỗi sáng
-Bàn Thờ Sơn Son Hoa Sen
-Bàn Thờ Thếp Vàng Mái Ngói
-Bàn ăn tập thể · mở lúc
-Bàn đầy chỗ, chờ một chút.
 Bán chỗ
 Bánh kem 7 tầng
-Bánh kem dâu có nến lung linh, anh đào đỏ trên đỉnh.
-Bánh xích, nòng pháo dài: tầm xa, sát thương lớn, hồi đạn chậm.
 Bão Táp
 Bé Út
 Bít tết bò Wagyu
@@ -162,7 +144,6 @@ Bóng Sương Lặng
 Bóng Đá Xanh Dương
 Bóng Đá Áo Đỏ
 Bùa Giấy Vàng Chu Sa
-Bùa Gỗ Đào Chuông Đồng
 Búi
 Băng đô ngọc trai
 Bướm Đêm Kim Cương
@@ -175,14 +156,11 @@ Bạn bị kẹt, đã được đưa ra chỗ trống gần nhất.
 Bạn bị ma hù ở
 Bạn bị mời ra ngoài vì bốc mùi.
 Bạn chưa chơi game này. Bấm
-Bạn chưa có xe nào. Sang tab CỬA HÀNG để mua xe.
 Bạn chỉ lái, cất hoặc sạc xe khi đang
 Bạn chọn
 Bạn cần có giường ở đây mới trang trí được.
 Bạn cần sở hữu giường ở đây mới trang trí được.
-Bạn không còn ở chỗ này nữa.
 Bạn không vào trận kịp nên bị xử thua.
-Bạn là người thứ 3! Liên minh
 Bạn mua
 Bạn nhận BẰNG V
 Bạn nhận quà
@@ -200,73 +178,38 @@ Bạn đã có chỗ trong tháp này.
 Bạn đã mua Lô
 Bạn đã rời liên minh. Thuế đã đóng không được hoàn lại.
 Bạn đã trả lại lô đất (không hoàn tiền).
-Bạn đã tỉnh lại với 50% năng lượng. Đi ăn ngay nhé!
-Bạn đã tỉnh lại, đứng dậy được rồi.
-Bạn đã xuống xe. Xe ngựa tự quay về chỗ cũ.
-Bạn đã ở trong một liên minh, mỗi người chỉ có một.
 BẢNG HƯỚNG DẪN Ở BÊN TRÁI CỔNG
-Bản online · người chơi thật · ví khởi đầu
-Bảng Vườn Liên Minh · câu chuyện & hướng dẫn
-Bảng giới thiệu Lâu Đài Tình Báo · câu chuyện & cách mua phòng
 Bảo L.
 Bảo vệ
-Bảo vệ đang chạy tới phạt bạn
 BẤM E / SPACE / CHẠM LIÊN TỤC ĐỂ KỲ CỌ NHANH
-BẤM E / SPACE / CHẠM LIÊN TỤC ĐỂ RẶN NHANH
-BẤM LẦN NỮA ĐỂ XOÁ VÀ TẠO MỚI
-Bấm VÀO chấm XANH · đừng bấm ĐỎ · chờ chấm hiện rồi mới bấm
-Bấm vào cua, hoặc phím Q W E / A S D / Z X C
 Bấm vào từng
 Bầu Trời Sao Đêm
 Bậc Thầy Đa Cấp
 Bắt đầu sau
 BẰNG LÁI V
 Bến Thuyền Bãi Trái · thuê thuyền câu cá
-Bến đang dọn thuyền, thuê lại sau
-Bếp nướng BBQ thơm lừng
 Bị
-Bị quái vật húc văng! −4 năng lượng
 Bọ Cạp Đeo Kính
 Bọ Hung Lăn Phân
-Bốc hoả, chạy nhanh x2
 Bồ Đề
 Bồn cầu bơm hơi
 Bồn cầu dát vàng
-Bồn sục nước nóng ánh sáng
 Bộ Khố Rách Áo Ôm
 Bộ Kim Ngân Tụ Bảo
-Bộ Thuỷ Long Ngự Phong
 Bờm Ngựa Phi Nước Đại
-Bụng bắt đầu cồn cào… khoảng 1 phút nữa sẽ phải đi ị.
-Bữa lớn, hồi một nửa năng lượng
-Bữa ăn tập thể đã kết thúc. Quầy Ăn Uống vẫn bán đồ ăn.
 CHOÁNG!
-CHÚC MỪNG! BẠN ĐÃ ĐẸP LÊN!
-CHẤN ĐỘNG NÃO · NGUY KỊCH
-CHẾ ĐỘ THỬ NGHIỆM: mọi thay đổi chỉ trong máy bạn.
 Cam hoàng hôn
-Cheat: nhân vật toả sáng 3 phút!
-Cheat: toả sáng 3 phút! (−
 Chiếp chiếp cả ngày
 Cho mình ly này nhé:
-Chong chóng gió khổng lồ
-Chuyển tiền cho người khác
-Chuyển từ shop sang Túi
 Chuông gió vỏ sò
 Chàng Thơ Cánh Hồng
 Châu Chấu Võ Sư
-Chín ngà, chín may mắn
 Chùm Nho Khổng Lồ
 Chú lùn vẫy tay
 Chúc mừng lòng tốt của con đã được đền đáp!
 Chưa có ai đặt cược vòng này.
-Chưa có cá cắn. Thu cần câu / lưới.
-Chưa có hồ sơ. Nhân vật và thành tích sẽ được lưu trên máy này.
 Chưa có lịch sử. Hãy ra bản đồ tìm Đống Phân và Trứng nhé!
-Chưa có người chơi nào khác.
-Chưa có phòng nào. Hãy tạo phòng rồi mời đồng nghiệp đang online.
 Chưa có quầy nào bày hàng.
-Chưa có sổ tiết kiệm nào. Gửi tiền để tiền tự sinh lời!
 Chưa có tài khoản? Tạo mới
 Chưa đủ
 Chạm hoặc bấm phím bất kỳ để bắt đầu
@@ -275,19 +218,11 @@ Chạy nhanh hơn 10% trong 5 phút
 Chảo bắt sóng ngoài hành tinh
 Chấm Bi Bạc Hà
 Chậm mà chắc
-Chậm tay rồi! Giường vừa có người lấy.
-Chỉ hút máu người có thẻ vàng
-Chỉ người có giường ở đây mới treo được.
-Chỉ số được cập nhật cuối ngày game.
 Chị chọn số đi, số đẹp lắm!
-Chị ơi mua dùm em vé số!
-Chọn bộ để mặc. Cởi ra để về trang phục gốc.
 Chọn một giường của bạn trước.
 Chọn số rồi bấm MUA. Mở thưởng ngay tại chỗ!
 Chỗ này cá bắt đầu sợ rồi. Chèo sang chỗ khác để có cá đắt tiền!
 Chỗ này không còn người giữ.
-Chỗ này đã có đồ, gỡ trước nhé.
-Chợ bất động sản: nhà đang bán
 Chủ Lâu Đài: +
 Con Lười
 Con Ong Cháu Cha
@@ -313,29 +248,13 @@ Cá Rồng Biển Bạch Kim
 Cá Thu
 Cá Voi Phun Nước
 Cá Vàng Thần Tài
-Cá nhỏ +30k · Cá xanh +70k · Cá vàng +150k · Ủng -50k · Sứa -80k
 Cá sấu há mồm
-Cá thoát mất rồi! Lần sau bấm E nhanh hơn.
 Cá Đuối Ma Quái
-Cá ở đây chỉ còn đồ rẻ. Tìm bãi cá động (nước sủi bọt, cá búng lên)!
-Cái gì cũng làm nó giận
-Cánh Xe Ngựa Hoàng Gia
-Cánh bướm pha lê vỗ nhịp, đũa phép bắn tia sáng nhanh nhẹ.
 Cánh bướm ánh sáng
-Cánh lấp lánh như đính đá
 Cáo Lửa
 Cân đẩu vân
-Câu bị trượt, thử lại nhé!
-Cây Liên Minh (đóng thuế, bón cây, góp quỹ)
-Cây Liên Minh vừa nâng cấp
-Cây Liên Minh đã được trồng! Thành viên bắt đầu đóng thuế.
-Cây bền bỉ. Rễ phụ rủ xuống như râu
 Cây kiếm tiền. Quả dừa vàng lấp lánh
-Cây may mắn. Hoa hồng nở quanh năm
 Cây nhanh nhẹn. Tán nhọn, hương thơm mát
-Cây to xác. Thân sồi vạm vỡ
-Cây đã đạt giới hạn của lô đất.
-Có người bắn trượt bạn, nhưng thuyền nhỏ được bảo vệ.
 Công Chúa Thiên Nga
 Công Chúa Tình Yêu
 Công Nương Hoa Hồng
@@ -345,11 +264,6 @@ Cương Thi Nhảy
 Cược đôi
 Cược đơn
 Cả 10 rùa đang khởi động ở vạch xuất phát…
-Cảm ơn anh chị, chúc may mắn lần sau!
-Cảm ơn cháu! Nhà ông ở
-Cần kết nối máy chủ để dùng mã đồng bộ.
-Cần mẫn lăn "tài sản" khắp resort
-Cần thêm thành viên để cây lên tiếp.
 Cầu Plasma Tia Tím
 Cầu Vồng & Mây
 Cầu Vồng Đổi Màu
@@ -357,11 +271,9 @@ Cặp hồng hạc nhựa
 Cặp sư tử vàng
 Cổ thụ
 Cổng Dịch Chuyển Mini
-Cổng dịch chuyển ma thuật
 Cổng vòm cẩm thạch
 Cục Phân Đôi Tình Bạn
 Cứu tôi!
-Cửa sổ đã có 1 món. Gỡ trước nhé.
 Da giòn, nhưng vẫn đi theo chủ
 Donut dâu khổng lồ
 Dreamcatcher Lông Vũ
@@ -370,7 +282,6 @@ Dài Lê Thê Quét Đất
 Dây cờ hội ngũ sắc
 Dây đèn sao lung linh
 Dây ớt may mắn
-Dò và đào kho báu, tránh bom.
 Dùng toilet riêng (
 Dũng
 DƯỠNG TÓC LẤP LÁNH
@@ -389,9 +300,6 @@ E: thả lưới · mũi tên: chèo
 Eo ôi!
 F để bắn:
 F1 Vinh Phát RS-1
-GIÓ MẠNH! khối chạy nhanh
-Game VIP chỉ có ở Lâu Đài Tình Báo. 3 cấp độ như minigame,
-Ghé tai lại gần, nó đang kể bí mật
 Giao Long Con Thuỷ Triều
 Giàn hoa giấy rực rỡ
 Giá phải từ 10.000₫ đến 2.000.000.000₫.
@@ -419,10 +327,6 @@ Gỗ Óc Chó Sang Trọng
 HUỶ ĐẶT
 HUỶ ĐẶT (HOÀN
 Hai Búi Mèo Con
-Hai bên hoà điểm, hoàn lại cược
-Hai lượt chơi phải cách nhau 3 phút.
-Hai lần nhập mật khẩu chưa giống nhau.
-Hai đuôi quạt gió, chạy nhanh như chớp
 Hair Salon Tóc Thề · 12 kiểu tóc, nhuộm màu & phụ kiện lấp lánh
 Hiện chưa có ai khác online để mời.
 Hiện chưa có ai khác đang online chưa vào liên minh để mời.
@@ -436,20 +340,14 @@ Hoàng Tử Nhí
 Hoàng hôn · nhanh hơn 20%, nhiều bẫy hơn
 Hoạ Sĩ Sáng Tạo
 Hoạ Tiết Graffiti
-Huyền thoại, toả cầu vồng
-Hypercar vòng bánh phát sáng, vệt neon.
 Hàm răng sắc, pháo trên lưng: chậm nhưng đau.
 Hàng của bạn
 Hào quang NGƯỜI TỐT toả sáng quanh bạn trong 5 phút!
 Hào quang Người Tốt đã tắt. Cảm ơn bạn đã giúp ông Bụt!
 Hào quang thần thánh
-Hát lạc tông nhưng cả resort vẫn vỗ tay
 Hân N.
-Hãy là người đầu tiên: vào
 Hãy lên bờ rồi hãy lên xe ngựa.
-Hãy nhường chức hoặc mời bớt thành viên trước khi rời.
 Hãy về lại khu vực chính rồi nhờ đối thủ thách lại.
-Hãy xuống xe ngựa hoặc thuyền trước.
 Hình như có ai làm rơi ví tiền đâu đó trong resort...
 Hôm nay bạn đã dùng hết 10 phút xe ngựa. Ngày mai quay lại nhé.
 Hôm qua mới mua rồi em
@@ -459,7 +357,6 @@ Hạ gục gián ngoài hành tinh! +
 Hạt hiếm. Cân bằng cả 5 kênh, không ưa không kỵ
 Hải tặc
 Hải Âu Cướp Đồ Ăn
-Hết 10 phút xe ngựa hôm nay. Xe ngựa đã tự quay về.
 Hết 15 giây! Bạn bị gõ cửa mời ra.
 Hết 2 phút mà chưa đóng phạt
 Hết giờ thuê phao. Ghé quầy THUÊ PHAO cạnh hồ bơi để thuê tiếp!
@@ -468,7 +365,6 @@ Hết lượt tập bài này hôm nay.
 Hết ổ sạc (5/5). Hãy cất xe vào kho.
 Hồ Ly Lướt Gió
 Hồ bơi vô cực mini
-Hồ bơi · cứ đi xuống nước là bơi
 Hồ sơ +110k · Cặp vàng +330k · Bị đèn rọi -150k, khoá tay 1 giây
 Hồ sơ trên máy này:
 Hồ Điệp Pha Lê
@@ -476,24 +372,15 @@ Hồi sinh từ tro, đuôi lửa không bao giờ tắt
 Hồng hạc hồng chóe
 KHAI TRƯƠNG VƯỜN LIÊN MINH!
 KHAI TRƯƠNG · VƯỜN LIÊN MINH
-KHÔNG BÁN · CHỈ NHẶT HOẶC MUA Ở THƯƠNG XÁ
 KIỂU TÓC
 Kem dừa béo ngậy
-Khi buồn vệ sinh được chờ 60 giây (thay vì 30) · hiệu lực 1 ngày game
-Khinh khí cầu cầu vồng
-Khiêng nặng gấp 50 lần mình, trừ deadline
-Khoang kính, đèn LED chạy dọc thân.
-Khu VIP nhất resort. Mỗi tháp ở được
-Khu trò chơi · Vòng trắng là bạn
 Khung Cá Heo Hologram
 Khung Ảnh Gỗ Hoàng Hôn
 Không kết nối được máy chủ, đang chạy bản offline. Chi tiết:
 Không kết nối được máy chủ:
 Không kịp rồi! Ruồi bu đầy người.
-Không kịp rồi! Vũng nước tiểu theo bạn.
 Không lưu được Túi Thần Kỳ lên máy chủ:
 Không mất tiền. Thử lại sau
-Không đủ tiền cược nên huỷ thách đấu.
 Không đủ tiền sạc (
 Khỉ Đột Say Rượu
 Khổng Lồ (kích thước/sức mạnh)
@@ -512,18 +399,12 @@ Liên minh này đang đóng đăng ký, cần Gốc Chủ mời.
 Liên minh đang đóng đăng ký. Cần Gốc Chủ mời bạn.
 Long Đ.
 Làm trong
-Lái mô tô nước nhặt vỏ sò, né đá và cá mập.
-Lái thuyền thả câu bắt cá, tránh ủng và sứa.
 Lát pizza khổng lồ
-Lâu Đài Tình Báo · xem 5 tháp & đặt chỗ
 Lão Quy
 Lính hoàng gia
 Lô đất vừa có người khác mua hoặc máy chủ chưa cho ghi. Đã hoàn tiền.
 Lưới đánh cá, nhiều máu · kiếm ≥ 3,1 triệu
-Lười nhưng trung thành
 Lạch bạch dễ thương
-Lại gần quái vật hơn để đánh!
-Lạnh tê răng, ngọt dịu
 LẦN ĐẦU CHƠI · chạm hoặc bấm E để bắt đầu
 Lặn Biển Đen Xanh
 Lễ Tân Khách Sạn · giữa resort, cạnh hồ bơi
@@ -531,69 +412,44 @@ Lễ Tân Villa · gần cổng, phía bắc
 Lễ tân Khách sạn
 Lọ Lem Xe Bí Ngô
 Lọ Đom Đóm Lấp Lánh
-Mua giúp em một tờ đi chị ơi!
 Mua vé số của
 Mua xong sẽ quá
 Muốn đổi bé khác thì trả bớt một bé (quầy mua lại 70% giá, lỗ 30%).
 Muỗi Hút Máu VIP
 MÁY CHẠY BỘ
-Má phúng phính, chạy lon ton
-Mái/trời đã có 1 món. Gỡ trước nhé.
-Mát lạnh, nhưng sẽ mắc tiểu sớm hơn
 Máy Chiếu Thiên Hà
-Máy chủ chưa bật Lâu Đài (admin cần chạy SQL mới).
 Máy chủ chưa bật VINH PHÁT (admin cần chạy SQL mới).
 Máy chủ chưa bật chuyển tiền (admin cần chạy lại file SQL mới).
 Máy chủ chưa bật chợ (admin cần chạy SQL).
-Máy chủ chưa bật chợ nhà (admin cần chạy SQL mới).
 Máy chủ chưa bật mã đồng bộ (admin cần chạy SQL mới).
 Máy chủ chưa bật trang trí (admin cần chạy SQL mới).
-Máy chủ chưa bật tài khoản (admin cần chạy SQL mới).
-Máy chủ chưa bật Đua Rùa (admin cần chạy SQL mới).
 Máy dò:
 Mây tiên
-Mây đen mưa theo trên đầu
 Mã
 Mã "
 Mã hiệu ứng chỉ dùng được khi đang dạo resort.
-Mã hiệu ứng chỉ dùng được khi đang đi ngoài resort.
-Mã đồng bộ chỉ có ở bản online.
 Mèo Mướp
 Mèo Thần Tài Vẫy Tay
 Mèo béo nằm mái
 Món này chỉ đặt được trên mái villa / bungalow.
 Món này vừa được bán hoặc huỷ.
 Mô tô nước vàng
-Mông phát sáng, dẫn đường trong đêm
-Mông phát sáng, nhảy theo nhạc
 Mông tròn, chân ngắn
 Mùi gì vậy?
 Mũi khoan xoay, có súng bắn quái.
-Mũi tên / WASD hoặc bấm chuột.
-Mật khẩu tối thiểu 6 ký tự.
-Mắt sáng như trăng, mang theo vận may
-Mặt trời đêm chỉ dùng được khi đang đi ngoài resort.
 Mặt trời đêm toả sáng quanh bạn trong 3 phút.
 Mẹo: mở
-Mẹo: nhắm con thấp nhất trước, bắn sai màu bị trừ tiền.
 Mẹo: ăn vòng liên tiếp để được thưởng thêm.
 Mẹo: ưu tiên cặp vàng, đừng chạy vào đèn.
 Mỗi chân bốn, năm cái cựa. Gáy là cả resort phải tỉnh
 Mỗi chỗ có 2 giường. Mỗi người sở hữu tối đa
-Mỗi ly +25k/nguyên liệu + thưởng nhanh · Sai -30k · Khách bỏ đi -20k
-Mỗi người chỉ được 1 chỗ trong
-Mỗi người có một bộ riêng ở phía giường của mình.
-Mỗi quái có một màu: Lửa đỏ, Băng xanh, Độc tím.
 Mục tiêu: bay qua nhiều vòng và sao nhất có thể.
-Mục tiêu: bắn quái trước khi chúng chạm đất.
-Mục tiêu: lấy hồ sơ trong két trước khi két đóng lại.
 NHÀ CỤ ·
 NHÂN VẬT ĐÃ CHUYỂN SANG MÁY KHÁC
 NHÌ
 NHÌ #
 Navy Dải Ngân Hà
 Neon Cyber Hoàng Hôn
-Nghiêm túc ăn rau, tuyệt đối không cắn ai
 Ngon tuyệt cú mèo!
 Người Máy Xanh Lam
 Người Ngoài Hành Tinh
@@ -604,16 +460,10 @@ Ngồi ăn tập thể (miễn phí)
 Ngủ gật quanh năm, mơ thấy mưa
 Ngủ trọn giấc
 Nhai nhóp nhép
-Nhanh hơn, có súng · kiếm ≥ 2,7 triệu
 Nhà Thiết Kế Neon
-Nhà này vừa được bán hoặc huỷ rao.
 Nhân vật ×
-Nhìn ai cũng thấy khó chịu
-Nhảy cò cò, giữ khoảng cách 2 mét
 Nhảy cóc theo chủ
-Nhặt được ví tiền rơi, bên trong có
 No lâu
-NÂNG CẤP DINH DƯỠNG (trừ vào quỹ, mỗi lần mất thời gian)
 Né ra!
 Năng lượng chưa đủ để thách đấu.
 Năng lượng chưa đủ để tập.
