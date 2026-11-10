@@ -505,3 +505,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Trong phòng (villa, bungalow, khách sạn) nhân vật **đi lại tự do**: phím mũi tên / WASD, hoặc **chạm / bấm vào chỗ muốn tới**. Không đi xuyên giường, bàn TV, tủ đèn ngủ, hồ cá villa. Ngủ (E) vẫn dùng được mọi chỗ.
 - Thanh dưới phòng có nút **TRANG TRÍ NỘI THẤT** mở thẳng tab nội thất của phòng đang đứng (cần có giường ở đó).
 - Không cần chạy SQL.
+
+## 10.11.2026-z2 — Thông báo tính năng trang trí phòng ngủ
+- Thêm popup thông báo "PHÒNG NGỦ ĐÃ CÓ TRANG TRÍ TUYỆT ĐẸP" dùng hệ thống thông báo sẵn có (`ANN`): chỉ hiện khi đang ở ngoài map, không có cửa sổ nào mở, sau 15 giây chơi; đã xem là ghi `P.an` (lưu lên server) nên **không hiện lại**. Nút ĐI TỚI ĐÓ dẫn về cửa nhà của bạn (nếu chưa có nhà thì không làm gì).
+- Nút ĐI TỚI ĐÓ bọc try/catch để lỗi không ảnh hưởng game.
+- Không cần chạy SQL.
