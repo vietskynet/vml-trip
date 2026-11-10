@@ -587,3 +587,6 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 
 ## 10.11.2026-z18 — Tổng tài sản đầy đủ
 Tổng tài sản = tiền mặt + gốc tiết kiệm ngân hàng + giường/villa/phòng/lều + chỗ lâu đài (giá đã trả) + đất & hạt Liên Minh (chủ đất) + quần áo shop (giá gốc) + đồ Limited trong Túi (giá niêm yết) + xe sở hữu (bỏ xe thuê có hạn) + thú nuôi thường. Không tính: đồ thuê/có thời hạn (tóc, xe thuê, phao...), lãi chưa nhận, đồ trang trí nhà. Thẻ Thành Viên liệt kê từng khoản. Không cần SQL.
+
+## 10.11.2026-z19 — Phòng Gym có nội thất bên trong
+Bấm cửa Phòng Gym để vào trong: căn phòng 4 máy (đẩy tạ, chạy bộ, xe đạp, trụ phản xạ) với nhân vật đi lại (bấm sàn / mũi tên / WASD). Bấm vào máy hoặc đứng gần + E để chọn bài, rồi bấm TẬP. Máy ngoài sân đã bỏ. Không cần SQL.

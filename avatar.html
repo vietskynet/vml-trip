@@ -662,6 +662,7 @@ body.m-room .pad{display:none!important}
 <div class="modal" id="gymOv" hidden>
   <div class="card wide gym">
     <h2>PHÒNG <b>GYM</b></h2>
+    <div id="gymRoomBox"><canvas id="gymRoom" width="480" height="270"></canvas><p class="gynote" style="margin:4px 0">Di chuyển: bấm lên sàn hoặc dùng phím mũi tên / WASD. Bấm vào máy (hoặc đứng gần + E) để chọn bài tập.</p></div>
     <div id="gymMenu"></div>
     <div id="gymPlay" hidden>
       <h3 id="gymTitle" style="margin:0 0 6px"></h3>
@@ -1589,7 +1590,7 @@ function nearInteract(){if(P.boat)return null;const C=[],add=(pt,r,o)=>{const d=
  add(AUTO.pt,60,{k:'auto',label:'VINH PHÁT Automobile · xe điện, sạc, bằng lái'});
  add(TUR.pt,60,{k:'turtle',label:'Trung tâm ĐUA RÙA · cá cược 2 trên 10 con'});
  add(TSC.pt,50,{k:'tstand',label:'Quầy theo dõi ĐUA RÙA · xem trực tiếp & người tham gia'});
- add(P2(GYM.x+37,GYM.y+14),34,{k:'gym',label:'PHÒNG GYM · xem cả 4 bài tập'});GYM.m.forEach(m=>add(m.pt,30,{k:'gym',ex:m.i,label:GYM_MN[m.i]+' · '+FIT_N[FIT_EX[m.i].s]+' · bấm E để tập'}));
+ add(P2(GYM.x+37,GYM.y+14),44,{k:'gym',label:'PHÒNG GYM · bước vào trong, chọn máy để tập'});
  add(BANKZ.pt,40,{k:'bank',label:'Techcombank · Sinh Lời Tự Động'+(BK.due?' · '+BK.due+' sổ đã đến hạn!':'')});
  add(P2(LMSB.x,LMSB.y+16),46,{k:'lmboard',label:'Bảng Vườn Liên Minh · câu chuyện & hướng dẫn'});
  add(BOATZ.pt,44,{k:'boatr',dock:BOATZ,label:'Thuê Thuyền · câu cá ngoài biển, cá càng to càng nhiều tiền'});add(BOATZ2.pt,44,{k:'boatr',dock:BOATZ2,label:'Bến Thuyền Bãi Trái · thuê thuyền câu cá'});
@@ -4381,7 +4382,7 @@ function renderWorld(t){
  S.puddles.forEach(p=>{if(vis(p.x,p.y))drawPuddle(Math.round(p.x-cx),Math.round(p.y-cy),Math.max(0,.75*(1-p.a/25)),p.poo)});
  S.crabs.forEach(c=>{if(!vis(c.x,c.y))return;const x=Math.round(c.x-cx),y=Math.round(c.y-cy);ctx.fillStyle='#d8402e';ctx.fillRect(x-3,y-2,6,3);ctx.fillRect(x-5,y-4+(Math.floor(t*6)%2),2,2);ctx.fillRect(x+3,y-4+(Math.floor(t*6+1)%2),2,2);ctx.fillStyle='#141414';ctx.fillRect(x-1,y-3,1,1);ctx.fillRect(x+1,y-3,1,1)});
  const list=[];props.forEach(p=>{if(p.fire?vis(p.x,p.y):(p.x<cx+VW+10&&p.x+p.img.width>cx-10&&p.y<cy+VH+10&&p.y+p.img.height>cy-10))list.push(p)});
- decoList(cx,cy,list);lmList(cx,cy,list);crList(cx,cy,list);monList(cx,cy,list);secList(cx,cy,list);jobList(cx,cy,list);vendList(cx,cy,list);butList(cx,cy,list);castleList(cx,cy,list);autoList(cx,cy,list);limList(cx,cy,list);if(TSC.x>cx-70&&TSC.x<cx+VW+70&&TSC.y>cy-20&&TSC.y<cy+VH+130)list.push({tsc:1,base:TSC.y+1});if(GYM.x>cx-90&&GYM.x<cx+VW+90&&GYM.y>cy-20&&GYM.y<cy+VH+150)list.push({gym:1,base:GYM.y+1});GYM.m.forEach(m=>list.push({gymM:m.i,base:m.y}));if(vis(FLOATZ.bx,FLOATZ.by,60))list.push({fk:1,base:FLOATZ.by});if(vis(SALON.x,SALON.y,130))list.push({sal:1,base:SALON.y});
+ decoList(cx,cy,list);lmList(cx,cy,list);crList(cx,cy,list);monList(cx,cy,list);secList(cx,cy,list);jobList(cx,cy,list);vendList(cx,cy,list);butList(cx,cy,list);castleList(cx,cy,list);autoList(cx,cy,list);limList(cx,cy,list);if(TSC.x>cx-70&&TSC.x<cx+VW+70&&TSC.y>cy-20&&TSC.y<cy+VH+130)list.push({tsc:1,base:TSC.y+1});if(GYM.x>cx-90&&GYM.x<cx+VW+90&&GYM.y>cy-20&&GYM.y<cy+VH+150)list.push({gym:1,base:GYM.y+1});if(vis(FLOATZ.bx,FLOATZ.by,60))list.push({fk:1,base:FLOATZ.by});if(vis(SALON.x,SALON.y,130))list.push({sal:1,base:SALON.y});
  S.chars.forEach(c=>{if(!c.hidden&&vis(c.x,c.y))list.push({ch:c,base:c.y});if(c.petOs)c.petOs.forEach(o=>{if(o&&vis(o.x,o.y))list.push({pt:o,base:o.y})})});
  list.sort((a,b2)=>a.base-b2.base);
  for(const o of list){
@@ -4393,7 +4394,7 @@ function renderWorld(t){
   if(o.sc){const c=o.sc.c,x=Math.round(c.x-cx),y=Math.round(c.y-cy);drawChar(c,x,y);ctx.fillStyle='#ffd23f';ctx.fillRect(x-3,y-34,6,2);label(o.sc.fined?'ĐÃ PHẠT!':'ĐỨNG LẠI!',x,y-44,'#fff','rgba(160,20,30,.92)');continue}
   if(o.auto){drawAutoWorld(cx,cy,t);continue}
   if(o.tsc){drawTurtleStand(cx,cy,t);continue}
-  if(o.gym){drawGym(cx,cy,t);continue}if(o.gymM!=null){drawGymM(o.gymM,cx,cy,t);continue}
+  if(o.gym){drawGym(cx,cy,t);continue}
   if(o.autopg!=null){drawPG(o.autopg,cx,cy,t);continue}
   if(o.vd){drawVendor(o.vd,Math.round(o.vd.x-cx),Math.round(o.vd.y-cy),t);continue}
   if(o.bf){drawBut(Math.round(o.bf.butF.x-cx),Math.round(o.bf.butF.y-cy),t,1,true);continue}
@@ -4621,7 +4622,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z18';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z19';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -4748,7 +4749,7 @@ cv.addEventListener('pointerdown',e=>{if(running&&S&&!S.ended&&mode==='room'&&RO
  for(const d of [...WC_DOORS,...BATH_DOORS])if(dist(w,d)<26||dist(w,P2(d.x,d.y-30))<26){target=d;auto=true}
  if(inR({x0:TABLE.x0-10,x1:TABLE.x1+10,y0:TABLE.y0-20,y1:TABLE.y1+20},w.x,w.y)){let bi=0,bd=1e9;SEATS.forEach((s,i)=>{const d=dist(w,s);if(d<bd){bd=d;bi=i}});target=SEATS[bi];auto=true}
  ownUnits(P).forEach(u=>{const hd=unitDoor(u);if(dist(w,hd)<30||(u.type==='tent'&&dist(w,P2(TENTS[u.i].x,TENTS[u.i].y-24))<34)||(u.type==='villa'&&dist(w,P2(hd.x,hd.y-60))<50)){target=hd;auto=true}});
- {const gm=GYM.m.find(m=>inR({x0:m.x-28,x1:m.x+28,y0:m.y-52,y1:m.y+4},w.x,w.y));if(gm){target=gm.pt;auto=true}else if(inR({x0:GYM.x-80,x1:GYM.x+80,y0:GYM.y-130,y1:GYM.y+2},w.x,w.y)){target=P2(GYM.x+37,GYM.y+14);auto=true}}
+ {if(inR({x0:GYM.x-80,x1:GYM.x+80,y0:GYM.y-130,y1:GYM.y+2},w.x,w.y)){target=P2(GYM.x+37,GYM.y+14);auto=true}}
  if(auto&&dist(P,target)<10){act();return}
  const path=findPath(P.x,P.y,target.x,target.y);if(path){P.path=path;P.autoAct=auto}});
 cv.addEventListener('pointermove',e=>{if(mode==='game'&&G){const q=toMg(cpt(e),G.fit);if(G.id==='crab'){G.mx=q.x;G.my=q.y}if(G.id==='dig'&&!G.done&&G.intro<=0){const c=Math.floor((q.x-DG.x0)/DG.tw),r=Math.floor((q.y-DG.y0)/DG.th);if(c>=0&&c<DG.cols&&r>=0&&r<DG.rows)G.dg.cur={c,r}}if(e.buttons||e.pointerType==='mouse'){if(G.id==='coco')G.tx=q.x;if(G.id==='surf')G.ty=q.y}}});
@@ -5179,7 +5180,6 @@ function makeGymB(){const [c,g]=mk(160,130),by=126;
  outline(c,[14,16,28]);return{c}}
 /* máy tập ngoài sân: bấm vào để chọn bài */
 const GYM_MN=['MÁY ĐẨY TẠ','MÁY CHẠY BỘ','XE ĐẠP TẬP','TRỤ PHẢN XẠ'];
-GYM.m=[0,1,2,3].map(i=>{const x=GYM.x-40+(i-1.5)*52,y=GYM.y+50;return{x,y,i,pt:P2(x,y+14)}});
 function makeGymM(i){const [c,g]=mk(52,52),B=48;
  rr(g,2,B-4,48,6,'#00000044');rr(g,2,B-6,48,5,'#262c40');rr(g,2,B-6,48,1,'#2fe0d0');rr(g,2,B-2,48,1,'#12151f');
  if(i===0){rr(g,10,B-22,4,16,'#c9ceda');rr(g,38,B-22,4,16,'#c9ceda');rr(g,8,B-24,36,3,'#9aa3b8');rr(g,4,B-30,5,14,'#ff5fa2');rr(g,2,B-28,3,10,'#c93a7c');rr(g,43,B-30,5,14,'#ff5fa2');rr(g,47,B-28,3,10,'#c93a7c');rr(g,3,B-23,46,2,'#e8ecf4');
@@ -5188,9 +5188,6 @@ function makeGymM(i){const [c,g]=mk(52,52),B=48;
  else if(i===2){ellP(g,14,B-12,9,9,'#12151f');ellP(g,14,B-12,7,7,'#2fe0d0');ellP(g,14,B-12,4,4,'#12151f');ellP(g,38,B-12,9,9,'#12151f');ellP(g,38,B-12,7,7,'#1c2133');lineP(g,14,B-12,24,B-26,'#ff5fa2',3);lineP(g,24,B-26,38,B-12,'#ff5fa2',3);rr(g,21,B-32,10,4,'#12151f');rr(g,36,B-34,10,3,'#9aa3b8');rr(g,43,B-34,3,10,'#9aa3b8')}
  else{rr(g,24,B-34,4,28,'#9aa3b8');rr(g,12,B-48,28,18,'#12151f');rr(g,14,B-46,24,14,'#1c2133');ellP(g,20,B-39,3,3,'#3fbf5a');ellP(g,32,B-39,3,3,'#d33a48');rr(g,16,B-34,6,2,'#2fe0d0');rr(g,30,B-34,6,2,'#ffd23f');rr(g,18,B-10,16,4,'#3a3f52')}
  outline(c,[14,16,28]);return{c}}
-function drawGymM(i,cx,cy,t){const m=GYM.m[i];GYM.ms=GYM.ms||[];if(!GYM.ms[i])GYM.ms[i]=makeGymM(i);const x=Math.round(m.x-cx),y=Math.round(m.y-cy),near=dist(P,m)<38;
- ctx.drawImage(GYM.ms[i].c,x-26,y-48);if(near){ctx.fillStyle='rgba(47,224,208,'+(.25+.2*Math.sin(t*6))+')';ctx.fillRect(x-24,y-6,48,2);label(GYM_MN[i],x,y-54,'#2fe0d0')}}
-GYM.m.forEach(m=>addBlock(m.x-16,m.y-9,m.x+16,m.y));
 function drawGym(cx,cy,t){if(!GYM.spr)GYM.spr=makeGymB();const x=Math.round(GYM.x-cx),y=Math.round(GYM.y-cy);ctx.drawImage(GYM.spr.c,x-80,y-126);
  if(Math.floor(t*2)%2){ctx.fillStyle='rgba(255,227,106,.35)';ctx.fillRect(x-80+26,y-126+8,108,2)}
  label('PHÒNG GYM',x,y-144,'#ffe36a')}
@@ -5198,19 +5195,65 @@ addBlock(GYM.x-66,GYM.y-34,GYM.x+66,GYM.y);
 /* ---------- giao diện ---------- */
 const GY={ex:-1,run:0,raf:0,last:0,st:null,t:0,keyL:0,keyR:0,hold:0};
 function gymMsLeft(){return Math.max(0,CFG.DAY-(nowOnline()%CFG.DAY))}
-function openGym(ex){if(!S||mode!=='world'||modalOpen())return;GY.only=ex==null?-1:ex;fitSettle(false);keys={};gymMenu();$('#gymPlay').hidden=true;$('#gymMenu').hidden=false;$('#gymOv').hidden=false}
-function gymMenu(){$('#gymEn').textContent=Math.round(P.energy)+'%';const f=P.fit,Q=fitQ(f),tot=fitTot(),hpv=Math.round(P.hp==null?50:P.hp),left=Math.ceil(gymMsLeft()/60);
- const rows=FIT_EX.map((e,i)=>{if(GY.only>=0&&i!==GY.only)return'';const s=e.s,p=fitP(s),b=f.t.d===f.d?f.t.b[i]:0,n=f.t.n[i]||0,eff=fitEff(s),nx=clamp(f.F[s]+FIT.A*(Q[s]-f.F[s]),0,1),np=nx>=.99?100:Math.round(20+80*nx),why=P.energy<CFG.PLAY_MIN?'Cần '+CFG.PLAY_MIN+'% năng lượng':n>=FIT.TRY?'Hết lượt hôm nay':'';
+function openGym(){if(!S||mode!=='world'||modalOpen())return;GY.only=-1;GYR.x=240;GYR.y=258;GYR.dir='up';GYR.tx=null;GYR.pend=-1;fitSettle(false);keys={};gymMenu();$('#gymPlay').hidden=true;$('#gymMenu').hidden=false;$('#gymOv').hidden=false}
+function gymMenu(){$('#gymRoomBox').hidden=!!GY.run;if(!GY.run)gymRoomStart();$('#gymEn').textContent=Math.round(P.energy)+'%';const f=P.fit,Q=fitQ(f),tot=fitTot(),hpv=Math.round(P.hp==null?50:P.hp),left=Math.ceil(gymMsLeft()/60);
+ const rows=FIT_EX.map((e,i)=>{if(i!==GY.only)return'';const s=e.s,p=fitP(s),b=f.t.d===f.d?f.t.b[i]:0,n=f.t.n[i]||0,eff=fitEff(s),nx=clamp(f.F[s]+FIT.A*(Q[s]-f.F[s]),0,1),np=nx>=.99?100:Math.round(20+80*nx),why=P.energy<CFG.PLAY_MIN?'Cần '+CFG.PLAY_MIN+'% năng lượng':n>=FIT.TRY?'Hết lượt hôm nay':'';
   const efx=[`+${pctS(eff)} sát thương đánh quái`,`+${pctS(eff)} tốc độ chạy và game cần tốc độ`,`−${pctS(eff)} hao năng lượng`,`game chậm lại ${pctS(eff)} (pha chế, đập cua, câu cá)`][s];
   return`<div class="gyr"><div class="gyh"><b>${e.n}</b><span>${FIT_N[s]}: <b class="gyp">${p}%</b></span></div><div class="gyb"><i style="width:${(p-20)/.8}%"></i></div>
   <small>${e.d}</small><small class="gye">Hiện tại: ${efx}</small>
-  <div class="gyf"><span>Hôm nay: tốt nhất <b>${Math.round(b*100)}%</b> · ${n}/${FIT.TRY} lần${n?' · cuối ngày ~'+np+'%':''}</span><button class="btn sm" data-gx="${i}" ${why?'disabled':''}>${why||'TẬP ('+e.sec+'s · −'+e.en+' NL)'}</button></div></div>`}).join('')+(GY.only>=0?'<button class="btn ghost sm" data-gall="1">XEM CẢ 4 BÀI</button>':'');
+  <div class="gyf"><span>Hôm nay: tốt nhất <b>${Math.round(b*100)}%</b> · ${n}/${FIT.TRY} lần${n?' · cuối ngày ~'+np+'%':''}</span><button class="btn sm" data-gx="${i}" ${why?'disabled':''}>${why||'TẬP ('+e.sec+'s · −'+e.en+' NL)'}</button></div></div>`}).join('')+(GY.only<0?'<p class="gynote" style="text-align:center;font-size:13px;margin:8px 0">Chưa chọn máy nào. Đi tới một máy trong phòng và bấm vào máy để xem bài tập.</p>':'');
  $('#gymMenu').innerHTML=`<div class="gysum"><div><small>THỂ LỰC TỔNG HỢP</small><b>${tot}%</b></div><div><small>HẠNH PHÚC</small><b>${hpv}%</b></div><div><small>NGÀY GAME CÒN</small><b>${left} phút</b></div></div>${rows}
  <p class="gynote">Mỗi ngày game (1 giờ thật) chỉ tính kết quả tốt nhất của mỗi bài, tối đa ${FIT.TRY} lần thử. Cuối ngày, chỉ số tiến dần về mức luyện tập của ngày đó. Ngày không tập thì tụt dần về 20%; khi bạn offline thì tụt chậm hơn. Muốn 100% phải tập đủ 4 bài mỗi ngày trong khoảng 6 tháng game. Hạnh phúc từ 60% giúp điểm tập ×1,1. Các lợi ích tắt trong Thách Đấu 1-1 cho công bằng.</p>`}
-$('#gymMenu').addEventListener('click',e=>{if(e.target.closest('[data-gall]')){GY.only=-1;gymMenu();return}const b=e.target.closest('[data-gx]');if(b&&!b.disabled)gymStart(+b.dataset.gx)});
+$('#gymMenu').addEventListener('click',e=>{const b=e.target.closest('[data-gx]');if(b&&!b.disabled)gymStart(+b.dataset.gx)});
+
+/* ---------- bên trong phòng gym ---------- */
+const GYR={x:240,y:258,dir:'up',anim:0,mv:false,tx:null,ty:null,pend:-1,k:{},raf:0,last:0,t:0,on:0};
+const GYR_M=[0,1,2,3].map(i=>({i,x:78+i*108,y:212,s:1.7,pt:{x:78+i*108,y:238}}));
+function gymRoomHit(q){return GYR_M.find(m=>q.x>=m.x-46&&q.x<=m.x+46&&q.y>=m.y-m.s*48-6&&q.y<=m.y+6)}
+function gymRoomPick(i){GY.only=i;GYR.pend=-1;GYR.tx=null;gymMenu();beep(660,.06,'square',.05)}
+function gymRoomStart(){if(GYR.on)return;GYR.on=1;GYR.last=performance.now();GYR.raf=requestAnimationFrame(gymRoomLoop)}
+function gymRoomNear(){let b=null,bd=70;GYR_M.forEach(m=>{const d=Math.hypot(GYR.x-m.pt.x,GYR.y-m.pt.y);if(d<bd){bd=d;b=m}});return b}
+function gymRoomLoop(ts){if($('#gymOv').hidden||GY.run){GYR.on=0;return}const dt=Math.min(.05,(ts-GYR.last)/1000||0);GYR.last=ts;GYR.t+=dt;const R=GYR;R.mv=false;
+ let dx=(R.k.r?1:0)-(R.k.l?1:0),dy=(R.k.d?1:0)-(R.k.u?1:0);
+ if(dx||dy){R.tx=null;R.pend=-1}else if(R.tx!=null){const ex=R.tx-R.x,ey=R.ty-R.y,d=Math.hypot(ex,ey);if(d<4){R.tx=null;if(R.pend>=0)gymRoomPick(R.pend)}else{dx=ex/d;dy=ey/d}}
+ if(dx||dy){const n=Math.hypot(dx,dy),st=100*dt;R.x=clamp(R.x+dx/n*st,24,456);R.y=clamp(R.y+dy/n*st,176,264);R.mv=true;R.anim+=dt;R.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down')}
+ gymRoomDraw(R.t);GYR.raf=requestAnimationFrame(gymRoomLoop)}
+function gymRoomDraw(t){const g=$('#gymRoom').getContext('2d');g.imageSmoothingEnabled=false;
+ rr(g,0,0,480,150,'#1b2136');for(let x=0;x<480;x+=40)rr(g,x,0,2,150,'#232a44');
+ rr(g,0,0,480,10,'#12151f');rr(g,0,10,480,2,'#2fe0d0');
+ /* gương */
+ rr(g,24,38,432,84,'#0b0f1c');rr(g,26,40,428,80,'#6fc9e0');for(let y=40;y<120;y++)rr(g,26,y,428,1,lerpC('#9be3f2','#4a9cc0',(y-40)/80));
+ for(let x=26;x<454;x+=107)rr(g,x,40,3,80,'#0b0f1c');for(let k=0;k<6;k++)lineP(g,40+k*74,118,70+k*74,42,'#ffffff30');
+ /* bảng neon */
+ rr(g,150,6,180,28,'#0b0f1c');rr(g,152,8,176,24,'#141a30');rr(g,150,6,180,1,'#ff5fa2');rr(g,150,33,180,1,'#ff5fa2');
+ ptext(g,'PHÒNG GYM',240,28,18,'#ff9ccb','center',DFONT,'#a0185a');
+ rr(g,164,16,3,10,'#ff5fa2');rr(g,167,18,6,6,'#ff5fa2');rr(g,173,20,8,2,'#cfd6e8');rr(g,300,16,3,10,'#ff5fa2');rr(g,294,18,6,6,'#ff5fa2');rr(g,286,20,8,2,'#cfd6e8');
+ /* giá tạ */
+ rr(g,24,124,90,5,'#3a3f52');for(let k=0;k<6;k++){rr(g,28+k*14,116,10,8,k%2?'#ff5f6d':'#2f8fe0')}
+ rr(g,366,124,90,5,'#3a3f52');for(let k=0;k<6;k++){rr(g,370+k*14,116,10,8,k%2?'#ffd23f':'#3fbf5a')}
+ /* sàn */
+ for(let y=150;y<270;y+=24)for(let x=0;x<480;x+=24)rr(g,x,y,24,24,((x+y)/24)%2?'#262c40':'#2b3248');
+ rr(g,0,150,480,4,'#2fe0d0');rr(g,0,154,480,2,'#0b0f1c');
+ const near=gymRoomNear();
+ /* máy tập */
+ GYR_M.forEach(m=>{GYM.ms=GYM.ms||[];if(!GYM.ms[m.i])GYM.ms[m.i]=makeGymM(m.i);const sel=GY.only===m.i,hot=near&&near.i===m.i;
+  if(sel||hot||GYR.pend===m.i){g.fillStyle='rgba(47,224,208,'+(sel?.35:.2+.1*Math.sin(t*6))+')';g.fillRect(m.x-48,m.y-4,96,14)}
+  g.drawImage(GYM.ms[m.i].c,m.x-26*m.s,m.y-48*m.s,52*m.s,52*m.s);
+  ptext(g,GYM_MN[m.i],m.x,m.y+22,11,sel?'#ffd23f':hot?'#2fe0d0':'#e8ecf4','center',FONT)});
+ /* nhân vật */
+ const R=GYR,d=R.dir==='left'||R.dir==='right'?'side':R.dir,fi=R.mv?Math.floor(R.anim*8)%4:Math.floor(t*1.5)%2?0:2,img=P.fr&&P.fr[d]&&P.fr[d][fi],x=Math.round(R.x),y=Math.round(R.y);
+ g.fillStyle='rgba(0,0,0,.35)';g.fillRect(x-12,y-2,24,5);
+ if(img){if(R.dir==='left'){g.save();g.translate(x,0);g.scale(-1,1);g.drawImage(img,-20,y-62,40,64);g.restore()}else g.drawImage(img,x-20,y-62,40,64)}
+ if(near&&GY.only!==near.i)ptext(g,'E / bấm máy để chọn',240,262,12,'#a9bde0','center',FONT)}
+$('#gymRoom').addEventListener('pointerdown',e=>{e.preventDefault();const r=e.currentTarget.getBoundingClientRect(),q={x:(e.clientX-r.left)/r.width*480,y:(e.clientY-r.top)/r.height*270},m=gymRoomHit(q);
+ if(m){GYR.pend=m.i;GYR.tx=m.pt.x;GYR.ty=m.pt.y;if(Math.hypot(GYR.x-m.pt.x,GYR.y-m.pt.y)<8)gymRoomPick(m.i)}else{GYR.pend=-1;GYR.tx=clamp(q.x,24,456);GYR.ty=clamp(q.y,176,264)}});
+window.addEventListener('keydown',e=>{if($('#gymOv').hidden||GY.run)return;const c=e.code,mp={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'u',KeyW:'u',ArrowDown:'d',KeyS:'d'};
+ if(mp[c]){GYR.k[mp[c]]=1;e.preventDefault();e.stopImmediatePropagation();return}
+ if(c==='KeyE'||c==='Space'||c==='Enter'){const m=gymRoomNear();if(m){e.preventDefault();e.stopImmediatePropagation();gymRoomPick(m.i)}}},true);
+window.addEventListener('keyup',e=>{const mp={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'u',KeyW:'u',ArrowDown:'d',KeyS:'d'};if(mp[e.code])GYR.k[mp[e.code]]=0},true);
 /* ---------- mini-game ---------- */
 function gymStart(ex){const E=FIT_EX[ex];fitSettle(false);if(P.energy<CFG.PLAY_MIN){toast('Năng lượng chưa đủ để tập.',true);return}const f=P.fit;if((f.t.n[ex]||0)>=FIT.TRY){toast('Hết lượt tập bài này hôm nay.',true);return}
- GY.ex=ex;GY.t=0;GY.run=1;GY.done=0;GY.last=performance.now();GY.hold=0;GY.keyL=GY.keyR=0;
+ $('#gymRoomBox').hidden=true;GY.ex=ex;GY.t=0;GY.run=1;GY.done=0;GY.last=performance.now();GY.hold=0;GY.keyL=GY.keyR=0;
  const S0=[()=>({rep:0,acc:[],zone:.36,pos:.5,flash:0,ly:0,msg:''}),()=>({steps:0,last:'',stum:0,need:95,px:0}),()=>({H:.5,inT:0,zc:.5,zw:.38,ang:0}),()=>({n:0,sc:0,wrong:0,ph:'wait',w:.8,tg:null,rt:0,fl:0,fm:''})][ex]();GY.st=S0;
  $('#gymMenu').hidden=true;$('#gymPlay').hidden=false;$('#gymTitle').textContent=E.n.toUpperCase()+' · '+FIT_N[E.s];
  $('#gymBL').hidden=$('#gymBR').hidden=ex!==1;$('#gymBA').hidden=ex===1;$('#gymBA').textContent=ex===2?'GIỮ ĐỂ ĐẠP (E / SPACE)':ex===3?'BẤM! (E / SPACE)':'ĐẨY! (E / SPACE)';
