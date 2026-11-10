@@ -568,3 +568,11 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Xe mới (thêm vào cuối danh sách VEHS để không lệch chỉ số đồng bộ vị trí): V1 **Xe Bánh Kem Dâu** (nữ, 4,5tr), **Tàu Hơi Nước Mini** (nam, 3,5tr); V2 **Hồ Điệp Pha Lê** (nữ, 12tr), **Kẹo Bông Kỳ Lân** (nữ, 13tr), **Cá Mập Chiến Hạm** (nam, 16tr), **Xe Tăng Tím Phantom** (18tr). Vẽ pixel đủ 4 hướng, animation bánh/cánh/khói/bánh xích.
 - Súng V2 (mỗi xe một bộ tầm / sát thương / hồi đạn): Pod 190·×2·0,20s, Chuột Chũi 200·×3·0,36s, Tên Lửa 240·×3·0,30s, Hồ Điệp 210·×2·0,18s, Kỳ Lân 220·×2·0,22s, Cá Mập 230·×4·0,40s, Xe Tăng 260·×5·0,55s. Pod điện nay cũng có súng. V3 giữ nguyên (hồi 0,22s).
 - Fix Team Building (trò nhớ dãy mũi tên): sau dãy 2 có 0,7s render đọc dãy thứ 3 không tồn tại → "Cannot read properties of undefined (reading 'length')". Đã chặn.
+
+## 10.11.2026-z15 — Hệ thống Sức khoẻ, Phòng Gym, BXH & Thẻ Thành Viên
+- 4 chỉ số: Sức mạnh (+50% sát thương), Tốc độ (+20% tốc độ chạy), Sức bền (−40% tiêu hao năng lượng), Tập trung (−25% tốc độ game câu cá/đập cua/phá chế) — mức 20%→100%.
+- Phòng Gym (bên cạnh Techcombank, phía trên Lâu Đài Tình Báo): 4 minigame miễn phí (đẩy tạ, chạy nước rút, đạp xe bền, phản xạ). Mỗi bài tối đa 3 lần/ngày game, tính lần tốt nhất.
+- Mô hình: F ← F + α(Q − F) mỗi ngày game (α=0.0256 ≈ 6 tháng game để gần 100%); offline tụt chậm (AOFF=0.009/ngày). Hạnh phúc ≥60% nhân liều tập ×1.1. Hiệu ứng tắt trong đấu tay đôi.
+- BXH có 3 tab: Thể lực / Hạnh phúc / Tiền. Bấm tên → Thẻ Thành Viên (tiền, nhà, chỉ số, chỉ số cộng thêm từ sức khoẻ màu vàng, cộng dồn với trang phục/cây xanh).
+- Dữ liệu lưu trong players/{uid}/state.fit — KHÔNG cần chạy SQL. (Client-trusted; có thể thêm RPC chống gian lận sau.)
+- Booth Team Building đổi chữ thành "THƯỞNG CAO".
