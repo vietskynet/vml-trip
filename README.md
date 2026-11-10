@@ -584,3 +584,6 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Vẽ lại Phòng Gym: mặt kính, mái phẳng, bảng neon, cửa kính đôi.
 - 4 máy tập ngoài sân (đẩy tạ, chạy bộ, xe đạp, trụ phản xạ): bấm vào máy (hoặc đứng gần + E) để vào thẳng bài đó; cửa chính mở menu cả 4 bài.
 - Giảm độ khó: vùng xanh rộng hơn/thu hẹp chậm (đẩy tạ), chạy 95 bước & vấp nhẹ (nước rút), vùng nhịp tim rộng, kim phản hồi mượt hơn (đạp xe), mục tiêu hiện lâu hơn, ít bẫy, chấm điểm dễ hơn (phản xạ). Không cần SQL.
+
+## 10.11.2026-z18 — Tổng tài sản đầy đủ
+Tổng tài sản = tiền mặt + gốc tiết kiệm ngân hàng + giường/villa/phòng/lều + chỗ lâu đài (giá đã trả) + đất & hạt Liên Minh (chủ đất) + quần áo shop (giá gốc) + đồ Limited trong Túi (giá niêm yết) + xe sở hữu (bỏ xe thuê có hạn) + thú nuôi thường. Không tính: đồ thuê/có thời hạn (tóc, xe thuê, phao...), lãi chưa nhận, đồ trang trí nhà. Thẻ Thành Viên liệt kê từng khoản. Không cần SQL.
