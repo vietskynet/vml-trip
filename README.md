@@ -547,3 +547,10 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 
 ## 10.11.2026-z9 — Sửa lệch nền biển/bãi cát sau khi mở rộng phía bắc
 - Lớp địa hình (biển, cát, cỏ) bị đặt lệch 240px so với các vật thể; đã dán đúng vị trí.
+
+## 10.11.2026-z11 — Đua Rùa 2.0, quầy theo dõi, gợi ý phím E
+- Cảnh đua thiết kế lại kiểu truyền hình: camera bám đoàn rùa, rùa lớn có cờ + số, bãi biển/đảo cuộn nhiều lớp, cổng xuất phát / vạch vòng 2 / cổng về đích, đếm ngược 5-4-3-2-1, màn vô địch + pháo giấy, thanh tiến độ 10 rùa.
+- Vòng đua: mỗi vòng hồ 30 s (cả cuộc ~65 s), chu kỳ 120 s (40 s cược + đua + nghỉ). **Cần chạy lại** `sql-cu/supabase-update-turtle.sql`.
+- Âm thanh: bíp đếm ngược, nhạc dồn dập tăng tốc ở vòng 2 và nước rút, tiếng khán giả cổ vũ, fanfare về đích, nhạc thắng/thua; nhạc nền tự hạ nhỏ khi đang đua.
+- Quầy theo dõi (cạnh toà nhà): màn hình LIVE ngoài trời + tên người đang cược; bấm E để xem bảng "đang tham gia" (RPC `rt_turtle_board`). Thoát ra mở lại giữa cuộc đua vẫn thấy đúng vòng đang chạy.
+- Gợi ý phím E: khung lớn hơn, phím nhấp nháy nảy, chữ 2 dòng; trên điện thoại hiện phím A và chạm vào khung để thao tác.

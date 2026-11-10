@@ -964,7 +964,7 @@ grant execute on function public.rt_auto_dock(text, numeric, numeric, text) to a
 grant execute on function public.rt_auto_undock() to authenticated;
 -- ============================================================================
 -- ĐUA RÙA — trung tâm cá cược (chạy 1 lần trong Supabase → SQL Editor)
--- Luật: 1 vòng đua = 150 s (40 s đặt cược + ~95 s đua 2 vòng hồ + nghỉ).
+-- Luật: 1 vòng đua = 120 s (40 s đặt cược + ~65 s đua 2 vòng hồ, mỗi vòng 30 s + nghỉ).
 --   · mỗi cược tối đa 20.000.000₫ (tối thiểu 100.000₫)
 --   · tối đa 5 lượt / 24 giờ / người, hai lượt cách nhau ít nhất 3 phút
 --   · chọn 1 con (thắng) hoặc 2 trên 10 con (cả hai về nhất nhì)
@@ -1059,7 +1059,7 @@ end $$;
 -- Đặt cược
 create or replace function public.rt_turtle_bet(picks int[], amount bigint) returns jsonb
 language plpgsql security definer set search_path = public as $$
-declare u uuid := auth.uid(); t bigint := public.now_ms(); r bigint := t / 150000; ph bigint := t - (t / 150000) * 150000;
+declare u uuid := auth.uid(); t bigint := public.now_ms(); r bigint := t / 120000; ph bigint := t - (t / 120000) * 120000;
   n int; lastt bigint; nm text; od numeric; bid bigint; ps int[];
 begin
   if u is null then raise exception 'Chưa đăng nhập'; end if;
@@ -1067,7 +1067,7 @@ begin
   select array_agg(distinct x order by x) into ps from unnest(picks) x;
   if array_length(ps, 1) <> array_length(picks, 1) or ps[1] < 0 or ps[array_length(ps, 1)] > 9 then return jsonb_build_object('ok', false, 'msg', 'Lựa chọn không hợp lệ.'); end if;
   if amount is null or amount < 100000 or amount > 20000000 then return jsonb_build_object('ok', false, 'msg', 'Mỗi lượt cược từ 100.000₫ đến 20.000.000₫.'); end if;
-  if ph > 38000 then return jsonb_build_object('ok', false, 'msg', 'Đã khoá cược vòng này, chờ vòng sau.', 'wait', (150000 - ph + 500) / 1000); end if;
+  if ph > 38000 then return jsonb_build_object('ok', false, 'msg', 'Đã khoá cược vòng này, chờ vòng sau.', 'wait', (120000 - ph + 500) / 1000); end if;
   perform pg_advisory_xact_lock(hashtext('turtle-u/' || u::text));
   select count(*), coalesce(max(ts), 0) into n, lastt from public.turtle_bets where uid = u and ts > t - 86400000;
   if n >= 5 then return jsonb_build_object('ok', false, 'msg', 'Bạn đã chơi đủ 5 lượt trong 24 giờ.'); end if;
@@ -1084,7 +1084,7 @@ language plpgsql security definer set search_path = public as $$
 declare t bigint := public.now_ms();
 begin
   if auth.uid() is null then raise exception 'Chưa đăng nhập'; end if;
-  if r < t / 150000 - 4 or t < r * 150000 + 40000 then return jsonb_build_object('ok', false); end if;
+  if r < t / 120000 - 4 or t < r * 120000 + 40000 then return jsonb_build_object('ok', false); end if;
   return jsonb_build_object('ok', true, 'ord', to_jsonb(public.turtle_round_ord(r)));
 end $$;
 
@@ -1095,7 +1095,7 @@ declare u uuid := auth.uid(); t bigint := public.now_ms(); b record; o int[]; w 
 begin
   if u is null then raise exception 'Chưa đăng nhập'; end if;
   perform pg_advisory_xact_lock(hashtext('turtle-u/' || u::text));
-  for b in select * from public.turtle_bets where uid = u and not settled and t >= rnd * 150000 + 40000 + 98000 order by id loop
+  for b in select * from public.turtle_bets where uid = u and not settled and t >= rnd * 120000 + 40000 + 66000 order by id loop
     o := public.turtle_round_ord(b.rnd);
     if array_length(b.picks, 1) = 1 then w := o[1] = b.picks[1]; else w := b.picks <@ array[o[1], o[2]]; end if;
     pay := case when w then floor(b.amount * b.odds) else 0 end;
@@ -1132,3 +1132,19 @@ end $$;
 
 revoke all on function public.turtle_cfg(), public.turtle_round_ord(bigint), public.turtle_draw(), public.rt_turtle_bet(int[], bigint), public.rt_turtle_round(bigint), public.rt_turtle_settle(), public.rt_turtle_me(), public.admin_turtle(int) from public, anon;
 grant execute on function public.rt_turtle_bet(int[], bigint), public.rt_turtle_round(bigint), public.rt_turtle_settle(), public.rt_turtle_me(), public.admin_turtle(int) to authenticated;
+
+-- Quầy theo dõi: ai đang tham gia vòng hiện tại và vòng trước (ai cũng xem được)
+create or replace function public.rt_turtle_board() returns jsonb
+language plpgsql stable security definer set search_path = public as $$
+declare t bigint := public.now_ms(); r bigint := t / 120000;
+begin
+  if auth.uid() is null then raise exception 'Chưa đăng nhập'; end if;
+  return jsonb_build_object('now', t, 'rnd', r, 'bets', coalesce((
+    select jsonb_agg(jsonb_build_object('name', x.name, 'rnd', x.rnd, 'picks', to_jsonb(x.picks), 'amount', x.amount, 'odds', x.odds,
+      'win', case when o.ord is not null and t >= x.rnd * 120000 + 106000
+                  then (case when array_length(x.picks, 1) = 1 then o.ord[1] = x.picks[1] else x.picks <@ array[o.ord[1], o.ord[2]] end) else null end) order by x.id desc)
+    from (select * from public.turtle_bets where rnd >= r - 1 order by id desc limit 60) x
+    left join public.turtle_rounds o on o.rnd = x.rnd), '[]'::jsonb));
+end $$;
+revoke all on function public.rt_turtle_board() from public, anon;
+grant execute on function public.rt_turtle_board() to authenticated;
