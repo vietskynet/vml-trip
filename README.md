@@ -539,3 +539,8 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Admin → tab ĐUA RÙA → CÀI ĐẶT TỈ LỆ: trọng số thắng của 10 rùa (tự quy ra %), hệ số trả thưởng (% tiền cược trả lại người chơi, mặc định 90), thưởng tối đa cược đơn / đôi. Có xem trước % thắng và ×thưởng.
 - Lưu ở `config/turtle`; máy chủ dùng đúng cấu hình này để bốc kết quả và tính tỉ lệ khi đặt cược. Chỉ áp dụng cho cược đặt sau khi lưu.
 - **Cần chạy lại** `sql-cu/supabase-update-turtle.sql` (an toàn chạy lại nhiều lần, đã gộp vào `supabase-setup.sql`).
+
+## 10.11.2026-z8 — Dãy villa VIP chuyển ra ngoài biển (phía bắc)
+- Thế giới mở rộng thêm 240px phía bắc (`OY`; toạ độ y âm là biển ngoài). Bản vẽ nền, camera, lưới tìm đường đều đã bù offset.
+- Cầu tàu thứ 2 (`PIER2`, y 26–70) nằm ngoài dãy villa cũ, nối với cầu tàu chính bằng cầu giữa (JETTY kéo dài lên bắc). Villa VIP V11–V20 xây phía ngoài cầu này.
+- Vùng biển phía nam cầu tàu chính trả lại nguyên vẹn cho thuyền / bơi.
