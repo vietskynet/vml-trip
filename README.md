@@ -576,3 +576,6 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - BXH có 3 tab: Thể lực / Hạnh phúc / Tiền. Bấm tên → Thẻ Thành Viên (tiền, nhà, chỉ số, chỉ số cộng thêm từ sức khoẻ màu vàng, cộng dồn với trang phục/cây xanh).
 - Dữ liệu lưu trong players/{uid}/state.fit — KHÔNG cần chạy SQL. (Client-trusted; có thể thêm RPC chống gian lận sau.)
 - Booth Team Building đổi chữ thành "THƯỞNG CAO".
+
+## 10.11.2026-z16 — BXH Tổng tài sản
+- Tab "TIỀN" đổi thành "TÀI SẢN": tổng tài sản = tiền + giá giường đang sở hữu (villa/phòng/lều) + chỗ lâu đài đã trả + đất & hạt giống Vườn Liên Minh (chủ đất). Thẻ Thành Viên hiển thị tổng tài sản kèm chi tiết. Không cần SQL.

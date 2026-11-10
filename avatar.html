@@ -589,7 +589,7 @@ body.m-room .pad{display:none!important}
 <div class="modal" id="rankOv" hidden>
   <div class="card">
     <h2>BẢNG XẾP HẠNG</h2>
-    <div class="rktab" id="rkTab"><button data-s="fit" class="on">THỂ LỰC</button><button data-s="hp">HẠNH PHÚC</button><button data-s="money">TIỀN</button></div>
+    <div class="rktab" id="rkTab"><button data-s="fit" class="on">THỂ LỰC</button><button data-s="hp">HẠNH PHÚC</button><button data-s="money">TÀI SẢN</button></div>
     <p style="font-size:11px;color:var(--muted);margin:0 0 6px">Bấm vào tên để xem Thẻ Thành Viên: tiền, nhà và chỉ số sức khoẻ</p>
     <ol class="lb" id="lb"></ol>
     <div class="row"><button class="btn ghost" data-close="rankOv">ĐÓNG</button></div>
@@ -4561,10 +4561,14 @@ $('#acctMusic').onclick=()=>{setMusic(!MUS.on);toast(MUS.on?'Đã bật nhạc.'
 $('#bEst').onclick=()=>{if(S&&mode==='world'&&!modalOpen())openEst('mine')};
 $('#bMkt').onclick=()=>{if(S&&mode==='world'&&!modalOpen()){if(window.closeMainMenu)window.closeMainMenu();openEst('market')}};
 const RK={tab:'fit'},ZF={F:[0,0,0,0]};
-function rkInfo(c){const me=c===P,u=me?NET.uid:c.uid,ps=!me&&NET.on&&u&&NET.players[u]&&NET.players[u].state||null;const fit=me?(P.fit||ZF):(ps&&ps.fit&&Array.isArray(ps.fit.F)?ps.fit:ZF);const hp=me?(P.hp==null?50:P.hp):(ps&&ps.hp&&typeof ps.hp.h==='number'?ps.hp.h:null);return{fit,hp,fitT:fitTot(fit),money:c.money||0}}
-function rkRender(){const key=RK.tab,inf=(window.__rkAll||[]).map(c=>({c,i:rkInfo(c)})),ord={fit:['fitT','hp','money'],hp:['hp','fitT','money'],money:['money','fitT','hp']}[key];
+function assetOf(c){const me=c===P,u=me?NET.uid:c.uid;let house=0,land=0;if(NET.on&&u){const B=NET.beds||{};['villa','room','tent'].forEach(t=>{const bt=B[t]||{};Object.keys(bt).forEach(i=>{const bi=bt[i];if(bi)for(const k in bi)if(bi[k]===u)house+=uprice(t,+i)})});
+ for(let t=0;t<5;t++){const w=ctw(t);w.s.forEach((x,k)=>{if(x&&x.u===u)house+=castlePaid(t,k)})}
+ const r=LMC.u[u];if(r&&r.d.h===u){const sd=LM_SEED_BY[r.d.sd];land=LM_LAND[lmTier(r.n)].p+(sd?sd.p:0)}}
+ const money=c.money||0;return{money,house,land,total:money+house+land}}
+function rkInfo(c){const me=c===P,u=me?NET.uid:c.uid,ps=!me&&NET.on&&u&&NET.players[u]&&NET.players[u].state||null;const fit=me?(P.fit||ZF):(ps&&ps.fit&&Array.isArray(ps.fit.F)?ps.fit:ZF);const hp=me?(P.hp==null?50:P.hp):(ps&&ps.hp&&typeof ps.hp.h==='number'?ps.hp.h:null);const a=assetOf(c);return{fit,hp,fitT:fitTot(fit),money:a.money,asset:a.total,a}}
+function rkRender(){const key=RK.tab,inf=(window.__rkAll||[]).map(c=>({c,i:rkInfo(c)})),ord={fit:['fitT','hp','asset'],hp:['hp','fitT','asset'],money:['asset','fitT','hp']}[key];
  inf.sort((a,b2)=>{for(const k of ord){const x=a.i[k]==null?-1:a.i[k],y=b2.i[k]==null?-1:b2.i[k];if(x!==y)return y-x}return 0});window.__rk=inf.map(o=>o.c);
- const H=v=>v==null?'—':Math.round(v)+'%',val={fit:v=>v.fitT+'%',hp:v=>H(v.hp),money:v=>VND(v.money)},sub={fit:v=>'Hạnh phúc '+H(v.hp)+' · '+VND(v.money),hp:v=>'Thể lực '+v.fitT+'% · '+VND(v.money),money:v=>'Thể lực '+v.fitT+'% · Hạnh phúc '+H(v.hp)};
+ const H=v=>v==null?'—':Math.round(v)+'%',val={fit:v=>v.fitT+'%',hp:v=>H(v.hp),money:v=>VND(v.asset)},sub={fit:v=>'Hạnh phúc '+H(v.hp)+' · Tài sản '+VND(v.asset),hp:v=>'Thể lực '+v.fitT+'% · Tài sản '+VND(v.asset),money:v=>'Tiền '+VND(v.money)+' · Nhà/đất '+VND(v.a.house+v.a.land)};
  $('#lb').innerHTML=inf.map((o,i)=>{const c=o.c;return`<li data-i="${i}" class="${c===P?'me':''}"><span>${i+1}</span><span class="nm" data-u="${c===P?'':esc(c.uid||'')}" data-i="${i}"><i class="dot" style="background:${c.look.shirt}"></i>${esc(c===P?c.name+' (bạn)':c.name)}${c.lodge?' · '+lodgeName(c.lodge):''}<small>${sub[key](o.i)}</small></span><span>${val[key](o.i)}</span></li>`}).join('');
  document.querySelectorAll('#rkTab button').forEach(b2=>b2.classList.toggle('on',b2.dataset.s===key))}
 $('#bRank').onclick=()=>{if(!S)return;window.__rkAll=rankList();rkRender();$('#rankOv').hidden=false;keys={}};
@@ -4590,7 +4594,7 @@ function statShow(c){if(!c)return;const me=c===P,uid=me?lmMe():c.uid,r=uid?LMC.u
  if(me){[['rb','RedBull +10% tốc độ'],['tea','Trà xanh'],['xoi','Xôi no lâu'],['col','Collagen']].forEach(([k,n])=>{if(bufOn(k))rows.push([n,'<span class="up">+ đang bật</span>'])})}
  const hv=inf.hp==null?'—':Math.round(inf.hp)+'%',fh=`<div class="fhp"><div>Thể lực tổng hợp<b>${inf.fitT}%</b></div><div>Hạnh phúc<b>${hv}</b></div>`+[0,1,2,3].map(s=>`<div>${FIT_N[s]}<b>${fitP(s,fit)}%</b><div class="bar"><i style="width:${(fitP(s,fit)-20)/.8}%"></i></div></div>`).join('')+`</div>`;
  $('#statT').textContent='THẺ THÀNH VIÊN';
- $('#statB').innerHTML=`<div class="mcard"><div><b>${esc(me?c.name+' (bạn)':c.name)}</b><small>Nhà: ${esc(lodgeName(c.lodge))}</small></div><div style="text-align:right"><b>${VND(c.money||0)}</b><small>Tiền hiện có</small></div></div>${fh}<table class="stt">${rows.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}</table><p style="font-size:11px;color:var(--muted)">${on?'Liên minh: '+esc(lmName(r.d))+'. ':'Chưa có liên minh nào đang trồng cây. '}<span class="up">+xanh</span> = Liên Minh và trang phục / thú Limited. <span class="upg">+vàng</span> = cộng thêm từ chỉ số sức khoẻ (tập ở Phòng GYM). Các mức cộng dồn với nhau.</p>`;
+ $('#statB').innerHTML=`<div class="mcard"><div><b>${esc(me?c.name+' (bạn)':c.name)}</b><small>Nhà: ${esc(lodgeName(c.lodge))}</small></div><div style="text-align:right"><b>${VND(inf.asset)}</b><small>Tổng tài sản · tiền ${VND(inf.money)}${inf.a.house?' · nhà '+VND(inf.a.house):''}${inf.a.land?' · đất '+VND(inf.a.land):''}</small></div></div>${fh}<table class="stt">${rows.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}</table><p style="font-size:11px;color:var(--muted)">${on?'Liên minh: '+esc(lmName(r.d))+'. ':'Chưa có liên minh nào đang trồng cây. '}<span class="up">+xanh</span> = Liên Minh và trang phục / thú Limited. <span class="upg">+vàng</span> = cộng thêm từ chỉ số sức khoẻ (tập ở Phòng GYM). Các mức cộng dồn với nhau.</p>`;
  $('#rankOv').hidden=true;$('#statOv').hidden=false}
 $('#rbDeco').onclick=()=>{if(!ROOM||ROOM.type==='castle')return;if(!canDeco(ROOM.type,ROOM.i)){toast('Bạn cần có giường ở đây mới trang trí được.');return}EST.dm='in';openDeco(ROOM.type,ROOM.i)};$('#rbSleep').onclick=toggleSleep;$('#rbToilet').onclick=roomToilet;$('#rbExit').onclick=exitRoom;
 const ANN=[
@@ -4606,7 +4610,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z15';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z16';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
