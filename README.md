@@ -412,3 +412,16 @@ Khung nhìn desktop (cửa sổ rộng từ 900px) trước đây dùng hệ s�
 - Admin, tab Sự kiện, mục "QUÁI VẬT TỰ ĐỘNG": bật/tắt, chu kỳ, thưởng thấp nhất và cao nhất, máu, thời gian tồn tại. Lưu ở `config/mon`, áp dụng từ chu kỳ kế tiếp. Hiện giờ quái kế tiếp.
 - Quái thả tay từ admin vẫn có ưu tiên khi đang hoạt động.
 - Không cần chạy SQL.
+
+## 10.11.2026-m — Popup, vệ sinh, bảo vệ, bản đồ, bảng tên, ngân hàng, lâu đài
+- **Popup mã chat** (MẸO HAY) thưa hơn: mỗi 15 đến 25 phút (trước đây 2,5 đến 4 phút).
+- **Popup gợi ý minigame mới**: cùng khung popup, ưu tiên khi còn game chưa chơi (7 khu game), không dồn dập (cùng nhịp 15 đến 25 phút, mỗi game tối đa 2 lần, bấm ĐÓNG tính đã xem). Bấm CHỈ ĐƯỜNG thì hiện mũi tên xanh dẫn tới quầy. Không hiện khi đang làm hướng dẫn người mới, đang mở bảng khác hoặc đang chơi.
+- **Vệ sinh**: thời gian chạy tới WC (đếm ngược trước khi tai nạn) 30 giây tăng lên 60 giây (có Trà thì 90 giây).
+- **Bảo vệ**: ai bị tai nạn vệ sinh sẽ bị bảo vệ áo đen đuổi theo (tốc độ hơi chậm hơn người chạy thẳng). Bị bắt thì phạt **500.000₫** (một lần mỗi tai nạn). Chạy kịp vào phòng tắm thì thoát. Chỉ máy của người đó thấy bảo vệ.
+- **Vé số**: giảm từ 3 người bán xuống 1.
+- **Minigame Lâu Đài** (Tình Báo, Hắc Ám, Đua Chổi): tiền thưởng ×1,5 (hệ số CZMUL), giảm độ khó (tốc độ, tỷ lệ vật xấu, tăng mạng), lần đầu chơi mỗi game có màn hướng dẫn 3 dòng, chờ người chơi chạm hoặc bấm E mới bắt đầu.
+- **Quầy thông tin**: mở ra mặc định ở tab TRÒ CHƠI: bản đồ mini có vòng sáng các khu game, danh sách kèm nút CHỈ ĐƯỜNG. **Bản đồ tổng** cũng có vòng sáng nhấp nháy ở các khu game.
+- **Bảng tên Bungalow và Villa**: đặt giữa mái nhà, chữ to hơn, dễ đọc (hiện tên tuỳ chỉnh nếu chủ nhà đã mua bảng tên, không thì hiện số B01, V1).
+- **Ngân hàng**: trần tổng số dư gửi 300 triệu.
+- Admin: danh sách mua hàng ở thẻ người chơi ẩn các khoá đếm nội bộ (play_, mgp_, czg_).
+- Không cần chạy SQL.
