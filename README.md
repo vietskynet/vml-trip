@@ -642,3 +642,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Mỗi cây chỉ có tối đa 3 kênh đạt 10/10; kênh thứ 4-5 dừng ở 9. Cây cũ trên server giữ nguyên điểm, hiệu ứng tính theo 3 kênh cao nhất (không cần migrate/SQL).
 - Hình cây: trái khác nhau theo kênh (xu vàng, cỏ 4 lá, kim cương xanh, quả cam, chùm nho tím), số trái tỉ lệ điểm kênh; cây càng lớn tán càng rậm.
 - Hiệu ứng lung linh theo cấp: lấp lánh, hào quang, hạt sáng bay lên, đom đóm quay quanh (Cổ thụ).
+
+## z27: Menu gom nhóm + Bước đi
+- Menu còn 6 mục: NHÂN VẬT (tab: Nhân vật · Túi đồ · Bất động sản · Cài đặt), BẢNG XẾP HẠNG, THÔNG TIN & LUẬT, CHỢ (tab: Chợ BĐS · Thương Xá Tắc), CHUYỂN TIỀN, LIÊN MINH. Các popup cũ được tái dùng, thêm thanh tab chuyển nhanh.
+- Tab Nhân vật: ví, năng lượng, thể lực, 4 chỉ số gym, Bước đi, hạnh phúc, tủ đồ.
+- Bước đi: lưu `state.fit.W`; 1 bước = 28px đi bộ thật; mỗi 10.000 bước +0,2% Sức bền, tối đa +20% (1.000.000 bước), cộng chung với gym. Không tính khi đi xe, thuyền, thú cưỡi, tăng tốc, hiệu ứng mã (cheat), nổi, dịch chuyển, chế độ thử nghiệm. Chỉnh trong `FIT` (SP, WSTEP, WB, WMAX).
+- Popup Liên Minh: thêm nút ✕ cố định và hàng ĐÓNG cố định trên mobile.
+- Không cần chạy SQL.

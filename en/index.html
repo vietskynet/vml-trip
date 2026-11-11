@@ -392,6 +392,13 @@ body.m-room .pad{display:none!important}
  .gym .gysum b{font-size:17px}.gym .gym4{padding:5px 6px}
  .gym #gymRoom,.gym #gymCv{max-height:34vh;max-height:34dvh}
 }
+.mtabs{display:flex;gap:4px;margin:0 0 10px;flex-wrap:nowrap;overflow-x:auto;position:sticky;top:0;z-index:15;background:var(--panel);padding:2px 0 4px;-webkit-overflow-scrolling:touch}
+.mtabs button{flex:1 1 0;min-width:0;white-space:normal;line-height:1.1;padding:8px 6px;font-family:inherit;font-size:16px;color:var(--muted);background:#0b1636;border:3px solid #000;cursor:pointer;text-align:center}
+.mtabs button.on{background:var(--sun);color:#1a1200;font-weight:bold}
+.mehead{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6px;margin:0 0 8px}.mehead>div{background:#0b1636;border:3px solid #000;padding:6px 8px;text-align:center}.mehead small{display:block;color:var(--muted);font-size:14px}.mehead b{font-size:22px}
+.mefit{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 10px}.mefit>div{background:#0b1636;border:3px solid #000;padding:5px 8px}.mefit small{display:block;color:var(--muted);font-size:14px}.mefit .gyb{height:8px;background:#000;margin:3px 0}.mefit .gyb i{display:block;height:100%;background:var(--sun)}
+.mename{margin:0 0 8px;font-size:20px}.mestep{margin:0 0 10px}.mestep .gyb{height:10px;background:#000;margin:0 0 4px}.mestep .gyb i{display:block;height:100%;background:#5fd4ff}.mestxt{margin:0;font-size:15px;color:var(--muted)}
+@media (max-width:760px),(pointer:coarse) and (max-height:620px){.mtabs{padding-right:46px}.modal .card .row:has(>[data-act="close"]){position:sticky;bottom:-8px;background:var(--panel);padding:8px 0;margin-top:8px;z-index:20;border-top:2px solid #000}.mtabs button{font-size:12px;padding:8px 3px}.mehead b{font-size:18px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script src="../supabase-shim.js"></script>
@@ -420,17 +427,14 @@ body.m-room .pad{display:none!important}
     <button class="ib" id="bMenu" aria-label="Menu chính" aria-expanded="false">MENU</button>
     <button class="ib" id="bMap" aria-label="Bản đồ resort">BẢN ĐỒ</button>
     <div id="menuPanel" hidden>
-    <button class="ib" id="bEst" aria-label="Tài sản, chợ nhà và trang trí">TÀI SẢN</button>
-    <button class="ib" id="bMkt" aria-label="Chợ bất động sản: nhà đang bán">CHỢ BĐS</button>
-    <button class="ib" id="bBag" aria-label="Túi Thần Kỳ">TÚI</button>
-    <button class="ib" id="bRank" aria-label="Bảng xếp hạng">BXH</button>
-    <button class="ib" id="bPay" aria-label="Chuyển tiền cho người khác" hidden>CHUYỂN</button>
-    <button class="ib" id="bHp">HẠNH PHÚC</button>
+    <button class="ib" id="bMe" aria-label="Nhân vật: ví, chỉ số, túi đồ, bất động sản, cài đặt">NHÂN VẬT</button>
+    <button class="ib" id="bRank" aria-label="Bảng xếp hạng">BẢNG XẾP HẠNG</button>
+    <button class="ib" id="bHelp" aria-label="Thông tin và luật chơi">THÔNG TIN & LUẬT</button>
+    <button class="ib" id="bMkt" aria-label="Chợ: bất động sản và Thương Xá Tắc">CHỢ</button>
+    <button class="ib" id="bPay" aria-label="Chuyển tiền cho người khác" hidden>CHUYỂN TIỀN</button>
     <button class="ib" id="bLm">LIÊN MINH</button>
-    <button class="ib" id="bHelp">LUẬT</button>
     <button class="ib" id="bTest" hidden>THỬ NGHIỆM</button>
-    <button class="ib" id="bMusic" aria-label="Bật tắt nhạc">NHẠC</button>
-    <button class="ib" id="bAcct" aria-label="Nhân vật của bạn">NV</button>
+    <button class="ib" id="bEst" hidden>TÀI SẢN</button><button class="ib" id="bBag" hidden>TÚI</button><button class="ib" id="bHp" hidden>HẠNH PHÚC</button><button class="ib" id="bMusic" hidden>NHẠC</button><button class="ib" id="bAcct" hidden>NV</button>
     </div>
   </div>
   <div id="need" hidden><b id="needTitle">MẮC TIỂU</b><span id="needHint"></span><span class="cd" id="needCd">30</span></div>
@@ -531,7 +535,8 @@ body.m-room .pad{display:none!important}
 
 <div class="modal" id="hpOv" hidden>
   <div class="card">
-    <h2>CHỈ SỐ HẠNH PHÚC</h2>
+    <h2>NHÂN VẬT</h2>
+    <div class="mtabs" data-grp="me"></div>
     <div id="hpBody"></div>
     <div class="row" style="margin-top:10px"><button class="btn ghost" data-close="hpOv">ĐÓNG</button></div>
   </div>
@@ -562,7 +567,8 @@ body.m-room .pad{display:none!important}
 
 <div class="modal" id="bagOv" hidden>
   <div class="card wide fash">
-    <h2>TÚI THẦN KỲ LẠ</h2>
+    <h2>TÚI ĐỒ · TÚI THẦN KỲ</h2>
+    <div class="mtabs" data-grp="me"></div>
     <p id="bagInfo"></p>
     <div class="row" id="bagTabs" style="margin-bottom:8px;flex-wrap:wrap"></div>
     <div class="fgrid" id="bagGrid"></div>
@@ -573,6 +579,7 @@ body.m-room .pad{display:none!important}
   <div class="card wide fash xa">
     <div class="xaawn"></div><div class="xalights"></div>
     <div class="xasign"><i></i><h2>THƯƠNG XÁ TẮC</h2><i></i></div>
+    <div class="mtabs" data-grp="mk"></div>
     <p class="xasub">Chợ vật phẩm Limited của người chơi: mỗi người một quầy, tự đặt giá. Món mua về nằm trong <b>Túi Thần Kỳ</b>.</p>
     <div class="row" id="xaTabs" style="margin-bottom:8px;flex-wrap:wrap"></div>
     <div id="xaBody" style="max-height:min(56vh,560px);overflow-y:auto"></div>
@@ -620,7 +627,7 @@ body.m-room .pad{display:none!important}
 
 <div class="modal" id="helpOv" hidden>
   <div class="card">
-    <h2>LUẬT CHƠI NHANH</h2>
+    <h2>THÔNG TIN &amp; LUẬT CHƠI</h2>
     <div class="qr">
       <div><b>MỤC TIÊU</b>Kiếm tiền, giành giường đẹp, nuôi thú cưng. Ngày và đêm <strong>nối tiếp liên tục</strong>, ban ngày khoảng <strong>45 phút</strong>, ban đêm khoảng <strong>15 phút</strong>.</div>
       <div><b>LÂU ĐÀI TÌNH BÁO</b>Khu VIP phía nam resort (qua cổng sắt). 5 tháp, mỗi tháp 3 người, giá 30 → 150 triệu/người. Phải <strong>đủ 3 người cùng đặt</strong> mới mua được và thành <strong>liên minh</strong>. Chủ lâu đài có vương miện, có người hầu mang đồ ăn. Bạn có thể <strong>bán chỗ</strong> cho người khác hoặc <strong>trả chỗ</strong> (mất 30% giá trị). Chỗ lâu đài tính là 1 giường trong giới hạn 6 giường.</div>
@@ -817,8 +824,9 @@ body.m-room .pad{display:none!important}
 
 <div class="modal" id="estOv" hidden>
   <div class="card wide">
-    <h2>TÀI SẢN &amp; CHỢ NHÀ</h2>
-    <div class="row" id="estTabs" style="margin-bottom:8px"><button class="chip" data-tab="mine">TÀI SẢN CỦA TÔI</button><button class="chip" data-tab="market">CHỢ BĐS</button></div>
+    <h2 id="estH">BẤT ĐỘNG SẢN</h2>
+    <div class="mtabs" data-grp="me" id="estMt"></div>
+    <div class="row" id="estTabs" hidden style="margin-bottom:8px"><button class="chip" data-tab="mine">TÀI SẢN CỦA TÔI</button><button class="chip" data-tab="market">CHỢ BĐS</button></div>
     <div id="estBody"></div>
     <div class="row" style="margin-top:10px"><button class="btn ghost" data-close="estOv">ĐÓNG</button><span style="color:var(--muted)">Ví: <span class="price" id="estMoney">0₫</span></span></div>
   </div>
@@ -837,7 +845,8 @@ body.m-room .pad{display:none!important}
 
 <div class="modal" id="acctOv" hidden>
   <div class="card">
-    <h2>NHÂN VẬT CỦA BẠN</h2>
+    <h2>CÀI ĐẶT &amp; TÀI KHOẢN</h2>
+    <div class="mtabs" data-grp="me"></div>
     <p id="acctInfo"></p>
     <div class="row" style="margin-bottom:12px"><input id="renameIn" maxlength="12" placeholder="Tên mới" aria-label="Tên mới"><button class="btn ok sm" id="renameGo">ĐỔI TÊN</button></div>
     <p id="renameHint" style="margin:-6px 0 12px;font-size:16px;color:var(--muted)"></p>
@@ -2719,7 +2728,7 @@ function renderEst(){if($('#estOv').hidden&&!EST.force)return;$('#estMoney').tex
   h+=Ls.length?'<div class="elist">'+Ls.map((L,ix)=>{const mine=L.seller===P,over=nb+L.ks.length>BED_MAX,pk=decoPack(L.type,L.i,L.ks);return`<div class="erow"><div><b>${lodgeName(L)}</b> · ${L.ks.length>1?'cả căn (2 giường)':'1 giường'}<br><small>Người bán: ${mine?'Bạn':esc(L.name)} · nhà ${VND(uprice(L.type,L.i)*L.ks.length)}${pk.items.length?' + '+pk.items.length+' món trang trí '+VND(pk.sum):''}</small>${pk.items.length?'<br><small style="color:var(--muted)" title="'+esc(pk.items.join(', '))+'">Kèm: '+esc(pk.items.slice(0,4).join(', '))+(pk.items.length>4?'… +'+(pk.items.length-4)+' món':'')+'</small>':''}</div><span class="price">${VND(L.price)}</span>${mine?'<em>Tin của bạn</em>':`<button class="btn ok sm" data-mb="${ix}" ${EST.busy||P.money<L.price||over?'disabled':''}>${over?'QUÁ 6 GIƯỜNG':P.money<L.price?'THIẾU TIỀN':'MUA'}</button>`}</div>`}).join('')+'</div>':'<p><em>Chưa có ai rao bán.</em></p>';EST._ls=Ls}
  else{const us=ownUnits(P);h+=`<p>Bạn đang sở hữu <b>${nb}/${BED_MAX}</b> giường (tối đa 6 căn khác nhau, hoặc 3 căn trọn 2 giường). <b>Nhà chính</b> là nơi bạn về ngủ và dùng toilet mặc định.</p>`;
   myCastles().forEach(me=>{h+=`<div class="elist"><div class="erow ctow mine"><div><b>${CASTLE_N[me.t]}</b> <span class="tag">LÂU ĐÀI</span><br><small>${me.done?'Liên minh: '+me.w.s.map(x=>x&&x.name).filter(Boolean).join(', '):'Đang chờ đủ 3 người ('+me.w.s.filter(Boolean).length+'/3)'} · tính 1 giường</small></div><div class="row"><button class="btn sm" data-castle="1">LÂU ĐÀI</button></div></div></div>`})
-  if(!us.length)h+='<p><em>Chưa có giường nào. Tới lễ tân Villa / Bungalow / Khách sạn để mua, hoặc xem tab CHỢ NHÀ.</em></p>';
+  if(!us.length)h+='<p><em>Chưa có giường nào. Tới lễ tân Villa / Bungalow / Khách sạn để mua, hoặc vào menu CHỢ.</em></p>';
   h+='<div class="elist">'+us.map(u=>{const L=myListing(u.type,u.i),home=sameU(P.lodge,u),full=u.ks.length===CFG.BEDS,canD=true,pk=decoPack(u.type,u.i,u.ks);
    let row=`<div class="erow"><div><b>${lodgeName(u)}</b>${home?' <span class="tag">NHÀ CHÍNH</span>':''}<br><small>${full?'Cả căn · 2/2 giường':'1/2 giường'}${canD?' · '+pk.items.length+' món trang trí'+(pk.sum?' trị giá '+VND(pk.sum):''):''}${L?' · đang rao '+VND(L.price):''}</small></div><div class="row">`;
    if(!home)row+=`<button class="btn ghost sm" data-home="${u.type}:${u.i}">NHÀ CHÍNH</button>`;if(canD)row+=`<button class="btn ghost sm" data-deco="${u.type}:${u.i}">TRANG TRÍ</button>`;
@@ -3999,8 +4008,21 @@ function hpTick(dt){if(!P||!S)return;hpInit();P.hp=Math.max(0,P.hp-dt/480);const
 let hpFx=0;function hpFloat(t){const el=$('#hpFx');if(!el)return;el.textContent=t+' hạnh phúc';el.className=t[0]==='-'?'neg on':'on';clearTimeout(hpFx);hpFx=setTimeout(()=>el.classList.remove('on'),1600)}
 function hpPack(){return{h:Math.round(P.hp*10)/10,d:P.hpd,w:P.hpw,a:P.hpAll,s:P.hpS}}
 function hpLoad(o){if(!o||typeof o.h!=='number')return;P.hp=o.h;P.hpd=o.d&&o.d.c?Object.assign({c:{},to:[],cats:0},o.d):null;P.hpw=o.w||null;P.hpAll=o.a||0;P.hpS=o.s||0}
+/* ===== Menu gom nhóm: NHÂN VẬT (ví/chỉ số · túi đồ · bất động sản · cài đặt) và CHỢ (BĐS · Thương Xá Tắc) ===== */
+const ME_TABS={me:[['char','NHÂN VẬT'],['bag','TÚI ĐỒ'],['est','BẤT ĐỘNG SẢN'],['set','CÀI ĐẶT']],mk:[['mkt','CHỢ BĐS'],['xa','THƯƠNG XÁ TẮC']]};
+const ME_OV=['hpOv','bagOv','estOv','acctOv','xaOv'];
+function meGo(k){if(!S||!P)return;ME_OV.forEach(id=>{const e=$('#'+id);if(e)e.hidden=true});
+ if(k==='char'){hpRender();$('#hpOv').hidden=false}else if(k==='bag')openBag();else if(k==='est')openEst('mine');else if(k==='set')$('#bAcct').onclick();else if(k==='mkt')openEst('market');else if(k==='xa')openXa();keys={};meTabs()}
+function meCur(){if(!$('#hpOv').hidden)return['me','char'];if(!$('#bagOv').hidden)return['me','bag'];if(!$('#acctOv').hidden)return['me','set'];if(!$('#xaOv').hidden)return['mk','xa'];if(!$('#estOv').hidden)return EST.tab==='market'?['mk','mkt']:['me','est'];return null}
+function meTabs(){const c=meCur();document.querySelectorAll('.mtabs').forEach(el=>{let g=el.dataset.grp;if(el.id==='estMt')g=c&&c[0]==='mk'?'mk':'me';const act=c&&c[0]===g?c[1]:'';el.dataset.cur=g+act;el.innerHTML=ME_TABS[g].map(t=>`<button type="button" data-mt="${t[0]}" class="${t[0]===act?'on':''}">${t[1]}</button>`).join('')});const h=$('#estH');if(h)h.textContent=c&&c[1]==='mkt'?'CHỢ · BẤT ĐỘNG SẢN':'BẤT ĐỘNG SẢN CỦA TÔI'}
+document.addEventListener('click',e=>{const b=e.target.closest('.mtabs [data-mt]');if(b){meGo(b.dataset.mt);return}});
+{const ob=new MutationObserver(()=>meTabs());ME_OV.forEach(id=>{const e=$('#'+id);if(e)ob.observe(e,{attributes:true,attributeFilter:['hidden']})})}
+document.addEventListener('click',e=>{if(e.target.closest('#meWard')){$('#hpOv').hidden=true;openFashion('mine')}});
+$('#bMe').onclick=()=>{if(!S||!P||mode!=='world'||modalOpen())return;meGo('char')};
 function hpRender(){const el=$('#hpBody');if(!el||!P)return;hpInit();const h=P.hp,cl=hpCeil(),rows=Object.keys(HP_SRC).map(k=>{const d=HP_SRC[k],n=P.hpd.c[k]||0,full=n>=d[2]&&d[2]<99;return`<div class="erow"><div><b>${d[0]}</b><br><small>+${d[1]} mỗi lần${d[2]<99?' · tối đa '+d[2]+' lần/ngày':''}</small></div><div class="tag">${n}${d[2]<99?'/'+d[2]:''}${full?' ✓':''}</div></div>`}).join('');
- el.innerHTML=`<p class="hpbig"><b>${Math.round(h)}%</b> · ${HP_LV(h)}</p><div class="hpbar"><i style="width:${clamp(h,0,100)}%"></i><u style="left:50%"></u><s style="left:${cl}%"></s></div><p><small>Vạch trắng là mức chuẩn 50%. Vạch vàng là trần hạnh phúc theo chỗ ở của bạn: <b>${cl}%</b> (chưa có nhà 55 · Bungalow 65 · Khách sạn 75 · Villa 85 · Lâu đài 90).</small></p>
+ const ft=fitTot(),W=Math.floor(P.fit&&P.fit.W||0),SB_=fitStepB(),nxt=SB_>=FIT.WMAX?0:FIT.WSTEP-(W%FIT.WSTEP),nf=n=>n.toLocaleString('vi-VN'),stepBox=`<div class="mestep"><div class="mehead" style="margin:0 0 6px"><div><small>BƯỚC ĐI</small><b>${nf(W)}</b></div><div><small>SỨC BỀN TỪ BƯỚC ĐI</small><b>+${String(SB_).replace('.',',')}%</b></div></div><div class="gyb"><i style="width:${SB_/FIT.WMAX*100}%"></i></div><p class="mestxt">${SB_>=FIT.WMAX?'Đã đạt tối đa +'+FIT.WMAX+'% Sức bền từ bước đi.':'Mỗi '+nf(FIT.WSTEP)+' bước +'+String(FIT.WB).replace('.',',')+'% Sức bền (tối đa +'+FIT.WMAX+'%), cộng chung với điểm tập gym. Còn '+nf(nxt)+' bước tới mốc kế tiếp.'}</p></div>`;
+ const head=`<p class="mename"><b>${esc(P.name||'')}</b>${NET.on?'':' · <small>Offline</small>'}</p><div class="mehead"><div><small>VÍ TIỀN</small><b>${VND(P.money)}</b></div><div><small>NĂNG LƯỢNG</small><b>${Math.round(P.energy)}%</b></div><div><small>THỂ LỰC</small><b>${ft}%</b></div></div><div class="mefit">${FIT_EX.map(e=>{const pp=fitP(e.s);return`<div><small>${FIT_N[e.s]}</small><b>${pp}%</b><div class="gyb"><i style="width:${(pp-20)/.8}%"></i></div></div>`}).join('')}</div>${stepBox}<div class="row" style="margin:0 0 10px"><button class="btn ok sm" id="meWard" type="button">TỦ ĐỒ THỜI TRANG</button></div><div class="lbl">HẠNH PHÚC</div>`;
+ el.innerHTML=head+`<p class="hpbig"><b>${Math.round(h)}%</b> · ${HP_LV(h)}</p><div class="hpbar"><i style="width:${clamp(h,0,100)}%"></i><u style="left:50%"></u><s style="left:${cl}%"></s></div><p><small>Vạch trắng là mức chuẩn 50%. Vạch vàng là trần hạnh phúc theo chỗ ở của bạn: <b>${cl}%</b> (chưa có nhà 55 · Bungalow 65 · Khách sạn 75 · Villa 85 · Lâu đài 90).</small></p>
  <p>Chuỗi ngày đều: <b>${P.hpS}</b> ngày${hpMul()>1?' · điểm nhận được ×'+hpMul():''} · Điểm tuần này: <b>${P.hpw.p}</b> · Tổng: <b>${P.hpAll}</b></p><div class="elist">${rows}</div>
  <p><small>Hạnh phúc tụt 1 điểm mỗi 8 phút online. Làm từ 4 loại hoạt động trong một ngày để giữ chuỗi (3 ngày +5%, 7 ngày +10%). Tai nạn vệ sinh −6, ngất −8. <b>Hiện tại chỉ số này chưa ảnh hưởng đến tiền kiếm được.</b></small></p>`}
 $('#bLm').onclick=()=>{if(!S||!P)return;window.closeMainMenu&&window.closeMainMenu();openLm(null)};
@@ -4122,7 +4144,7 @@ function boostTick(dt){const K=skinOf(P),b=$('#boostBtn');if(!K||!K.boost||mode!
  const st=P.bst||(P.bst={t:0,cd:0});if(st.t>0){st.t-=dt;if(st.t<=0){st.t=0;st.cd=5}}else if(st.cd>0)st.cd=Math.max(0,st.cd-dt);
  if(b){b.hidden=false;b.disabled=st.t>0||st.cd>0;b.textContent=st.t>0?'TĂNG TỐC '+st.t.toFixed(1)+'s':st.cd>0?'HỒI '+Math.ceil(st.cd)+'s':'TĂNG TỐC x3 (B)';b.classList.toggle('on',st.t>0)}}
 function boostGo(){const K=skinOf(P);if(!K||!K.boost||mode!=='world'||!S||S.ended||modalOpen()||P.fainted)return;const st=P.bst||(P.bst={t:0,cd:0});if(st.t>0||st.cd>0)return;st.t=2;beep(520,.08,'sawtooth',.05,900);toast('TĂNG TỐC x3 trong 2 giây!',false,1500)}
-function lmTick(dt){if(!P||!S)return;try{annTick(dt)}catch(e){console.warn(e)}boostTick(dt);{const sp=84*(1+lmB('toc'))*(1+crBonus())*(bufOn('rb')?1.1:1)*(1+limB('spd'))*fitSpd()*(vehOn()?vehSpd():(P.bst&&P.bst.t>0?3:1));LIMSW=limFxOf(P).swim;P.speed=Number.isFinite(sp)&&sp>20?sp:84}if(!Number.isFinite(P.busy))P.busy=0;const me=lmMe(),r=LMC.u[me];if(!r)return;const n=r.n,d=lmDoc(n);if(!d)return;LM.t+=dt;
+function lmTick(dt){if(!P||!S)return;try{stepTick(dt)}catch(e){}try{annTick(dt)}catch(e){console.warn(e)}boostTick(dt);{const sp=84*(1+lmB('toc'))*(1+crBonus())*(bufOn('rb')?1.1:1)*(1+limB('spd'))*fitSpd()*(vehOn()?vehSpd():(P.bst&&P.bst.t>0?3:1));LIMSW=limFxOf(P).swim;P.speed=Number.isFinite(sp)&&sp>20?sp:84}if(!Number.isFinite(P.busy))P.busy=0;const me=lmMe(),r=LMC.u[me];if(!r)return;const n=r.n,d=lmDoc(n);if(!d)return;LM.t+=dt;
  if(!NET.on&&d.st==='grow')lmMem(d).forEach(u=>{if(u.startsWith('bot'))lmSet(d,'c/'+u,((d.c&&d.c[u])||0)+lmRate(d)*963*dt)});
  if(d.st==='grow'){LM.hpt+=dt;if(LM.hpt>=1800){LM.hpt=0;hpAdd('lm',1)}
   if(lmUpDone(d)&&LM.seen!==d.up.te){LM.seen=d.up.te;toast('Cây Liên Minh vừa nâng cấp '+LM_CH_BY[d.up.c].n+'!',false,4500);sysLog('Cây Liên Minh nâng cấp '+LM_CH_BY[d.up.c].n+'.')}}
@@ -4609,7 +4631,7 @@ function renderFood(){$('#foodMoney').textContent=VND(P.money);const act=Object.
 $('#foodMenu').addEventListener('click',e=>{const bt=e.target.closest('.food');if(!bt||bt.disabled)return;const f=FOOD[+bt.dataset.i];if(P.eatT>0)return;P.money-=f.price;track('food.'+f.id);eatStart(f)});
 document.querySelectorAll('[data-close]').forEach(bt=>bt.onclick=()=>{$('#'+bt.dataset.close).hidden=true});
 /* nút ✕ dính trên đầu mọi popup (hiện ở màn hình nhỏ), cuộn nội dung vẫn thấy nút đóng */
-document.querySelectorAll('.modal').forEach(m=>{const card=m.querySelector('.card'),bt=card&&card.querySelector('[data-close]');if(!bt||card.querySelector(':scope>.xc2'))return;const x=document.createElement('button');x.type='button';x.className='xc2';x.setAttribute('aria-label','Đóng');x.textContent='✕';x.onclick=()=>{m.hidden=true};card.insertBefore(x,card.firstChild)});
+document.querySelectorAll('.modal').forEach(m=>{const card=m.querySelector('.card'),bt=card&&(card.querySelector('[data-close]')||m.id==='lmOv');if(!bt||card.querySelector(':scope>.xc2'))return;const x=document.createElement('button');x.type='button';x.className='xc2';x.setAttribute('aria-label','Đóng');x.textContent='✕';x.onclick=()=>{m.hidden=true};card.insertBefore(x,card.firstChild)});
 document.querySelectorAll('.modal').forEach(md=>md.addEventListener('click',e=>{if(e.target===md&&!['startOv','endOv','dealOv','inviteOv'].includes(md.id))md.hidden=true}));
 $('#bHelp').onclick=()=>{$('#helpOv').hidden=false;keys={}};
 $('#bMusic').onclick=()=>setMusic(!MUS.on);
@@ -4667,7 +4689,7 @@ function statShow(c){if(!c)return;const me=c===P,uid=me?lmMe():c.uid,r=uid?LMC.u
 $('#rbDeco').onclick=()=>{if(!ROOM||ROOM.type==='castle')return;if(!canDeco(ROOM.type,ROOM.i)){toast('Bạn cần có giường ở đây mới trang trí được.');return}EST.dm='in';openDeco(ROOM.type,ROOM.i)};$('#rbSleep').onclick=toggleSleep;$('#rbToilet').onclick=roomToilet;$('#rbExit').onclick=exitRoom;
 const ANN=[
  {id:'lm',t:'KHAI TRƯƠNG VƯỜN LIÊN MINH!',b:'<p>Cổng <b>Vườn Liên Minh</b> (phía đông khu VIP, qua hàng rào) đã mở cửa! Mua đất (67,5tr / 135tr), góp ít nhất <b>3 người</b> trồng chung một cây, đóng góp quỹ để nâng cấp 5 kênh buff: Tiền, May mắn, Tốc độ, Năng lượng, Khổng Lồ.</p><p>Đọc <b>bảng hướng dẫn</b> trước cổng vườn để nghe câu chuyện và cách chơi.</p>',go:()=>P2(GARD.gx,FENCE_Y-30)},
- {id:'deco1',t:'PHÒNG NGỦ ĐÃ CÓ TRANG TRÍ TUYỆT ĐẸP!',b:'<p>Phòng của bạn giờ có thể <b>đi lại thoải mái</b> và trang trí: giấy dán tường, vật treo, đèn ngủ nhiều màu, TV LED, màu nệm, gối, <b>bàn thờ</b> và <b>bùa chống ma</b>. Có thêm nhiều đồ trang trí ngoài nhà.</p><p>Vào phòng rồi bấm <b>TRANG TRÍ NỘI THẤT</b>, hoặc mở menu <b>TÀI SẢN</b>. Muốn mua nhà đẹp có sẵn đồ thì ghé <b>CHỢ BĐS</b> trong menu.</p>',go:()=>lodgeDoor(P)||P}];
+ {id:'deco1',t:'PHÒNG NGỦ ĐÃ CÓ TRANG TRÍ TUYỆT ĐẸP!',b:'<p>Phòng của bạn giờ có thể <b>đi lại thoải mái</b> và trang trí: giấy dán tường, vật treo, đèn ngủ nhiều màu, TV LED, màu nệm, gối, <b>bàn thờ</b> và <b>bùa chống ma</b>. Có thêm nhiều đồ trang trí ngoài nhà.</p><p>Vào phòng rồi bấm <b>TRANG TRÍ NỘI THẤT</b>, hoặc mở menu <b>NHÂN VẬT</b> › <b>BẤT ĐỘNG SẢN</b>. Muốn mua nhà đẹp có sẵn đồ thì vào menu <b>CHỢ</b>.</p>',go:()=>lodgeDoor(P)||P}];
 function annTick(dt){if(location.hash==='#debug'&&!window.__annOn)return;if(!S||!P||mode!=='world'||!running||modalOpen()||!$('#annOv').hidden)return;ANN_T=(window.ANN_T||0)+dt;window.ANN_T=ANN_T;if(ANN_T<15)return;P.an=P.an||[];const a=ANN.find(x=>!P.an.includes(x.id)&&(!x.own||x.own()));if(!a)return;P.an.push(a.id);window.ANN_T=0;$('#annT').textContent=a.t;$('#annB').innerHTML=a.b;ANN_CUR=a;$('#annOv').hidden=false;if(NET.on)saveState()}
 var ANN_CUR=null,ANN_T=0;
 function walkNear(p){const pa=findPath(P.x,P.y,p.x,p.y);if(pa){P.path=pa;P.autoAct=false}}
@@ -4678,7 +4700,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z26';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z27';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -5180,7 +5202,7 @@ addBlock(TSC.x-46,TSC.y-26,TSC.x+46,TSC.y);
    4 chỉ số 20%..100%: Sức mạnh, Tốc độ, Sức bền, Tập trung/phản xạ. F in [0,1], hiển thị = 20% + 80% F.
    Mỗi ngày game: F += A * (Q - F). Q = liều tập hôm đó (kết quả tốt nhất mỗi bài, bài chính 0,76 + 3 bài kia 0,08).
    Ngày không tập Q = 0 nên F giảm dần; vắng mặt (offline) thì giảm chậm hơn (AOFF). */
-const FIT={G:.05,SETS:2,GRACE:168,DON:.004,DOFF:.0015,EFF:[.5,.2,.4,.25],TW:[.30,.25,.30,.15]};
+const FIT={SP:28,WSTEP:10000,WB:.2,WMAX:20,G:.05,SETS:2,GRACE:168,DON:.004,DOFF:.0015,EFF:[.5,.2,.4,.25],TW:[.30,.25,.30,.15]};
 const FIT_N=['Sức mạnh','Tốc độ','Sức bền','Tập trung / phản xạ'];
 const FIT_EX=[
  {n:'Đẩy tạ',s:0,en:6,sec:60,d:'Thanh lực chạy qua lại. Bấm khi vạch vàng nằm trong vùng xanh để đẩy 1 cái, đủ 8 cái.'},
@@ -5188,18 +5210,25 @@ const FIT_EX=[
  {n:'Đạp xe bền',s:2,en:5,sec:40,d:'Giữ phím để đạp mạnh, thả ra để nghỉ, giữ kim nhịp tim trong vùng xanh. Đủ 30 giây trong vùng xanh là về đích (tối đa 40 giây).'},
  {n:'Luyện phản xạ',s:3,en:4,sec:50,d:'20 chấm xanh lần lượt hiện ra: bấm VÀO chấm càng nhanh càng cao (hoặc phím E). Chấm đỏ là bẫy, bấm sớm khi chưa có chấm bị trừ nhẹ.'}];
 const fitDay=()=>Math.floor(nowOnline()/CFG.DAY);
-const fitNew=()=>({F:[0,0,0,0],d:fitDay(),L:fitDay(),t:{d:fitDay(),b:[0,0,0,0],n:[0,0,0,0]}});
+const fitNew=()=>({W:0,F:[0,0,0,0],d:fitDay(),L:fitDay(),t:{d:fitDay(),b:[0,0,0,0],n:[0,0,0,0]}});
 const fitSets=()=>{const f=P&&P.fit;return f&&f.t&&f.t.d===f.d?f.t.n.reduce((a,b)=>a+(+b||0),0):0};
 const fitIdle=()=>{const f=P&&P.fit;return f?Math.max(0,fitDay()-(Number.isFinite(f.L)?f.L:fitDay())):0};
-function fitInit(){if(!P)return;const f=P.fit;if(!f||!Array.isArray(f.F)||f.F.length!==4||!f.t||!Array.isArray(f.t.b)||!Array.isArray(f.t.n))P.fit=fitNew();else if(!Number.isFinite(P.fit.L))P.fit.L=P.fit.d}
+function fitInit(){if(!P)return;const f=P.fit;if(!f||!Array.isArray(f.F)||f.F.length!==4||!f.t||!Array.isArray(f.t.b)||!Array.isArray(f.t.n))P.fit=fitNew();else{if(!Number.isFinite(P.fit.L))P.fit.L=P.fit.d;if(!Number.isFinite(P.fit.W))P.fit.W=0}}
 /* đóng các ngày đã trôi. after=true: vừa tải lại, các ngày thiếu sau ngày cuối được tính là offline (tụt chậm) */
 function fitSettle(after){if(!P)return;fitInit();const f=P.fit,now=fitDay();if(!Number.isFinite(f.d)||f.d>now)f.d=now;if(!Number.isFinite(f.L)||f.L>now)f.L=f.d;let first=true,n=0;
  while(f.d<now&&n++<4000){f.d++;if(f.d-f.L>FIT.GRACE){const r=(after&&!first)?FIT.DOFF:FIT.DON;for(let s=0;s<4;s++)f.F[s]=clamp(f.F[s]*(1-r),0,1)}f.t={d:f.d,b:[0,0,0,0],n:[0,0,0,0]};first=false}}
 function fitTick(dt){if(!P)return;P.fitT=(P.fitT||0)-dt;if(P.fitT>0)return;P.fitT=4;fitSettle(false)}
-const fitPack=()=>{fitInit();const f=P.fit;return{F:f.F.map(v=>Math.round(v*10000)/10000),d:f.d,L:f.L,t:{d:f.t.d,b:f.t.b.map(v=>Math.round(v*1000)/1000),n:f.t.n.slice()}}};
-function fitLoad(o){if(!o||!Array.isArray(o.F)||o.F.length!==4){P.fit=fitNew();return}const f={F:o.F.map(v=>clamp(+v||0,0,1)),d:Math.floor(+o.d)||fitDay(),L:o.L!=null&&Number.isFinite(+o.L)?Math.floor(+o.L):fitDay(),t:{d:o.t&&o.t.d!=null?Math.floor(+o.t.d):fitDay(),b:[0,0,0,0],n:[0,0,0,0]}};
+const fitPack=()=>{fitInit();const f=P.fit;return{W:Math.floor(f.W||0),F:f.F.map(v=>Math.round(v*10000)/10000),d:f.d,L:f.L,t:{d:f.t.d,b:f.t.b.map(v=>Math.round(v*1000)/1000),n:f.t.n.slice()}}};
+function fitLoad(o){if(!o||!Array.isArray(o.F)||o.F.length!==4){P.fit=fitNew();return}const f={W:Math.max(0,Math.floor(+o.W||0)),F:o.F.map(v=>clamp(+v||0,0,1)),d:Math.floor(+o.d)||fitDay(),L:o.L!=null&&Number.isFinite(+o.L)?Math.floor(+o.L):fitDay(),t:{d:o.t&&o.t.d!=null?Math.floor(+o.t.d):fitDay(),b:[0,0,0,0],n:[0,0,0,0]}};
  if(o.t&&Array.isArray(o.t.b))for(let i=0;i<4;i++){f.t.b[i]=clamp(+o.t.b[i]||0,0,1);f.t.n[i]=clamp(o.t.n&&+o.t.n[i]||0,0,FIT.SETS)}P.fit=f;fitSettle(true)}
-const fitF=(s,f)=>{f=f||(P&&P.fit);return f&&Array.isArray(f.F)?clamp(+f.F[s]||0,0,1):0};
+function fitStepB(f){f=f||(P&&P.fit);const w=f&&+f.W||0;return Math.min(FIT.WMAX,Math.round(Math.floor(w/FIT.WSTEP)*FIT.WB*10)/10)}
+const fitF=(s,f)=>{f=f||(P&&P.fit);if(!f||!Array.isArray(f.F))return 0;let v=clamp(+f.F[s]||0,0,1);if(s===2)v=clamp(v+fitStepB(f)/80,0,1);return v};
+/* Bước đi: đo quãng đường đi bộ thật (không tính xe/thuyền/tốc độ ảo), cộng chung vào Sức bền */
+const STEPL={x:null,y:0};
+function stepTick(dt){if(!P||!S||S.ended||P.fainted||P.boat||P.mount||P.salon||P.hidden||mode!=='world'||vehOn()||fxOf(P)||(P.bst&&P.bst.t>0)||floatOf(P)||(typeof TEST!=='undefined'&&TEST.on)){STEPL.x=null;return}
+ if(STEPL.x==null){STEPL.x=P.x;STEPL.y=P.y;return}
+ let d=Math.hypot(P.x-STEPL.x,P.y-STEPL.y);STEPL.x=P.x;STEPL.y=P.y;if(!(d>0)||!(dt>0))return;if(d>(P.speed||84)*dt*1.6+1)return;
+ fitInit();const f=P.fit,b0=Math.floor(fitStepB(f));f.W=(f.W||0)+d/FIT.SP;if(Math.floor(fitStepB(f))>b0)toast('Mốc bước chân! Sức bền +'+Math.floor(fitStepB(f))+'% nhờ đi bộ.',false,3500)}
 const fitP=(s,f)=>{const v=fitF(s,f);return v>=.99?100:Math.round(20+80*v)};
 const fitTot=f=>{let v=0;for(let s=0;s<4;s++)v+=FIT.TW[s]*fitF(s,f);return v>=.99?100:Math.round((20+80*v)*10)/10};
 const fitDmg=()=>1+FIT.EFF[0]*fitF(0),fitSpd=()=>1+FIT.EFF[1]*fitF(1),fitEnd=()=>1-FIT.EFF[2]*fitF(2),fitFoc=()=>1-FIT.EFF[3]*fitF(3);

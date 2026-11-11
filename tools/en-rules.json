@@ -258,5 +258,8 @@
 "{1}: {2} ({3}%). {4} {5}% → {6}%.": "{1}: {2} ({3}%). {4} {5}% → {6}%.",
 "KẾT QUẢ · {1}": "RESULT · {1}",
 "{1} · hôm nay ×{2}": "{1} · today ×{2}",
-"{1}/{2} (tính {3})": "{1}/{2} ({3} counted)"
+"{1}/{2} (tính {3})": "{1}/{2} ({3} counted)",
+"Mốc bước chân! Sức bền +{1}% nhờ đi bộ.": "Step milestone! Endurance +{1}% from walking.",
+"Mỗi {1} bước +{2}% Sức bền (tối đa +{3}%), cộng chung với điểm tập gym. Còn {4} bước tới mốc kế tiếp.": "Every {1} steps gives +{2}% Endurance (max +{3}%), combined with gym training. {4} steps to the next milestone.",
+"Đã đạt tối đa +{1}% Sức bền từ bước đi.": "Reached the max +{1}% Endurance from steps."
 }
