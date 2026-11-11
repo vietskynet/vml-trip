@@ -637,3 +637,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Chỉ số sức khoẻ chỉ giảm sau 7 ngày thật (FIT.GRACE=168 ngày game) không tập; save cũ được tính lại thời hạn ân hạn.
 - Mobile dọc: popup dùng dvh, nút ✕ sticky và hàng ĐÓNG cố định đáy; layout gym riêng cho mobile.
 - EN: thêm bản dịch các chuỗi gym mới. Không cần chạy SQL.
+
+## z26: Cây Liên Minh đẹp hơn + giới hạn 3 kênh max
+- Mỗi cây chỉ có tối đa 3 kênh đạt 10/10; kênh thứ 4-5 dừng ở 9. Cây cũ trên server giữ nguyên điểm, hiệu ứng tính theo 3 kênh cao nhất (không cần migrate/SQL).
+- Hình cây: trái khác nhau theo kênh (xu vàng, cỏ 4 lá, kim cương xanh, quả cam, chùm nho tím), số trái tỉ lệ điểm kênh; cây càng lớn tán càng rậm.
+- Hiệu ứng lung linh theo cấp: lấp lánh, hào quang, hạt sáng bay lên, đom đóm quay quanh (Cổ thụ).

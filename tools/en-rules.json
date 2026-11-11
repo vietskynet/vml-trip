@@ -257,5 +257,6 @@
 "Hôm nay đã đủ {1} set. Ngày game mới sau {2} phút.": "Already did {1} sets today. New game day in {2} minutes.",
 "{1}: {2} ({3}%). {4} {5}% → {6}%.": "{1}: {2} ({3}%). {4} {5}% → {6}%.",
 "KẾT QUẢ · {1}": "RESULT · {1}",
-"{1} · hôm nay ×{2}": "{1} · today ×{2}"
+"{1} · hôm nay ×{2}": "{1} · today ×{2}",
+"{1}/{2} (tính {3})": "{1}/{2} ({3} counted)"
 }
