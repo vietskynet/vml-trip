@@ -649,3 +649,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Bước đi: lưu `state.fit.W`; 1 bước = 28px đi bộ thật; mỗi 10.000 bước +0,2% Sức bền, tối đa +20% (1.000.000 bước), cộng chung với gym. Không tính khi đi xe, thuyền, thú cưỡi, tăng tốc, hiệu ứng mã (cheat), nổi, dịch chuyển, chế độ thử nghiệm. Chỉnh trong `FIT` (SP, WSTEP, WB, WMAX).
 - Popup Liên Minh: thêm nút ✕ cố định và hàng ĐÓNG cố định trên mobile.
 - Không cần chạy SQL.
+
+## z28: Túi đồ gom trang phục + thú cưng
+- Menu NHÂN VẬT › TÚI ĐỒ: tab TRANG PHỤC (đồ đã mua ở ẾCH&EM + đồ Limited nhặt/mua), tab THÚ CƯNG (thú mua ở quầy + thú Limited), tab LỊCH SỬ. Mặc/cởi, bán lại, trả quầy ngay trong túi. Tủ đồ riêng không còn lối vào từ menu (ẾCH&EM vẫn dùng để mua).
+- Sửa lỗi cũ: dấu phẩy thừa trong SKINS_LIST tạo ô trống, đôi khi làm lỗi khi bot ngẫu nhiên chọn trúng lúc bắt đầu game.
+- Không cần chạy SQL.
