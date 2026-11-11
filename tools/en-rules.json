@@ -262,5 +262,13 @@
 "Mốc bước chân! Sức bền +{1}% nhờ đi bộ.": "Step milestone! Endurance +{1}% from walking.",
 "Mỗi {1} bước +{2}% Sức bền (tối đa +{3}%), cộng chung với điểm tập gym. Còn {4} bước tới mốc kế tiếp.": "Every {1} steps gives +{2}% Endurance (max +{3}%), combined with gym training. {4} steps to the next milestone.",
 "Đã đạt tối đa +{1}% Sức bền từ bước đi.": "Reached the max +{1}% Endurance from steps.",
-"TRẢ QUẦY (+{1})": "RETURN TO COUNTER (+{1})"
+"TRẢ QUẦY (+{1})": "RETURN TO COUNTER (+{1})",
+"Đã mời {1} rời liên minh, hoàn {2} từ quỹ cây.": "Removed {1} from the alliance, refunded {2} from the tree fund.",
+"Bạn đã bị mời khỏi liên minh. Hoàn lại {1} thuế chưa dùng.": "You were removed from the alliance. Refunded {1} of unused tax.",
+"XÁC NHẬN RA · hoàn {1}": "CONFIRM REMOVE · refund {1}",
+"Gốc Chủ mời {1} ra, hoàn {2} từ quỹ.": "Tree owner removed {1}, refunded {2} from the fund.",
+"Gốc Chủ mời {1} ra.": "Tree owner removed {1}.",
+"Mời {1} rời liên minh (hoàn {2})": "Removed {1} from the alliance (refund {2})",
+"Mời {1} rời liên minh": "Removed {1} from the alliance",
+"Bị mời khỏi liên minh, được hoàn {1}": "Removed from the alliance, refunded {1}"
 }

@@ -654,3 +654,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Menu NHÂN VẬT › TÚI ĐỒ: tab TRANG PHỤC (đồ đã mua ở ẾCH&EM + đồ Limited nhặt/mua), tab THÚ CƯNG (thú mua ở quầy + thú Limited), tab LỊCH SỬ. Mặc/cởi, bán lại, trả quầy ngay trong túi. Tủ đồ riêng không còn lối vào từ menu (ẾCH&EM vẫn dùng để mua).
 - Sửa lỗi cũ: dấu phẩy thừa trong SKINS_LIST tạo ô trống, đôi khi làm lỗi khi bot ngẫu nhiên chọn trúng lúc bắt đầu game.
 - Không cần chạy SQL.
+
+## z30: Bồi thường khi Gốc Chủ mời thành viên ra
+- Hoàn = 80% × đóng góp × tỉ lệ quỹ chưa tiêu (làm tròn 1.000đ, tối đa bằng quỹ hiện có); trừ vào quỹ cây (`sp` điều chỉnh, `c/uid` xoá), trả cho người bị kick qua `gifts/{uid}` (cờ `lmk:1`), cộng ví khi họ online.
+- Thành viên mới vào dưới 24 giờ (`jt/uid`, ghi lúc gia nhập) không bị kick. Thành viên cũ chưa có `jt` coi như đã qua thời hạn bảo vệ.
+- Nhật ký liên minh `lg/*` (tối đa 20 mục, hiện 6 mới nhất). Bị kick không phải chờ 12 giờ khi vào liên minh khác.
+- Chỉnh `LM_REFUND`, `LM_KICK_PROT`. Không cần chạy SQL.
