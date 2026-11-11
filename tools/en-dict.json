@@ -152,7 +152,6 @@
 ". Cửa hàng có": ". The shop has",
 ". Giá gốc của tháp là": ". The tower's base price is",
 ". Giờ này mua đồ ăn ở quầy nhé.": ". Buy food at the stall now.",
-". Gốc Chủ mua đất và hạt giống, rủ từ": ". The Root Owner buys the land and seed, invites from",
 ". Hãy rủ đủ": ". Invite enough",
 ". Liên minh tạm dừng, chờ người mới vào đủ 3 người.": ". The alliance is paused, waiting for new people to reach 3.",
 ". Muốn mua nhà đẹp có sẵn đồ thì ghé": ". If you want a nice ready-furnished house, visit",
@@ -2934,5 +2933,6 @@
 "Túi chưa có thú cưng nào. Ghé ẾCH&EM hoặc quầy thú cưng để mua nhé.": "No pets in your bag yet. Visit ẾCH&EM or the pet counter to buy some.",
 "(menu NHÂN VẬT).": "(CHARACTER menu).",
 "Thành viên mới vào dưới 24 giờ, chưa thể mời ra.": "This member joined less than 24 hours ago and cannot be removed yet.",
-"NHẬT KÝ LIÊN MINH": "ALLIANCE LOG"
+"NHẬT KÝ LIÊN MINH": "ALLIANCE LOG",
+". Gốc Chủ mua đất và hạt giống, có thể trồng một mình hoặc rủ tối đa": ". The Root Owner buys the land and seed, can plant alone or invite up to"
 }

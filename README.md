@@ -660,3 +660,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Thành viên mới vào dưới 24 giờ (`jt/uid`, ghi lúc gia nhập) không bị kick. Thành viên cũ chưa có `jt` coi như đã qua thời hạn bảo vệ.
 - Nhật ký liên minh `lg/*` (tối đa 20 mục, hiện 6 mới nhất). Bị kick không phải chờ 12 giờ khi vào liên minh khác.
 - Chỉnh `LM_REFUND`, `LM_KICK_PROT`. Không cần chạy SQL.
+
+## z31: Trồng Cây Liên Minh một mình
+- `LM_MIN` 3 → 1: Gốc Chủ mua đất + hạt xong bấm TRỒNG ngay, không cần thành viên; không còn bị giảm 50% buff vì thiếu người.
+- Giới hạn level vẫn tăng theo số thành viên (mỗi người +5 level; chơi một mình tối đa Lv 5), nên rủ thêm người vẫn có lợi. Cây cũ đang ở trạng thái "ngủ" (dưới 3 người) tự hết bị phạt. Không cần chạy SQL.

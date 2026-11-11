@@ -4056,7 +4056,7 @@ const LM_SEEDS=[
  {id:'the',n:'Thế Giới Thụ',p:30000000,base:{tien:1,may:1,toc:1,nl:1,kl:1},fav:[],bad:'',shape:'world',trunk:'#5a3a7a',leaf:['#5a3aa8','#8a6ad8','#d9c8ff'],note:'Hạt hiếm. Cân bằng cả 5 kênh, không ưa không kỵ'}];
 const LM_SEED_BY={};LM_SEEDS.forEach(k=>LM_SEED_BY[k.id]=k);
 const LM_LAND=[{p:67500000,cap:30,n:'Đất Thường'},{p:135000000,cap:40,n:'Đất Vàng'}];
-const LM_MIN=3,LM_MAXM=10,LM_LVM=8,LM_CHMAX=10,LM_TOPCH=3,LM_BASE=735000,LM_GROW=1.11,LM_JOIN=250000,LM_TX=[.03,.06,.10],LM_TXLV=[0,15,30],LM_DUR0=1800000,LM_DURG=1.12;
+const LM_MIN=1,LM_MAXM=10,LM_LVM=8,LM_CHMAX=10,LM_TOPCH=3,LM_BASE=735000,LM_GROW=1.11,LM_JOIN=250000,LM_TX=[.03,.06,.10],LM_TXLV=[0,15,30],LM_DUR0=1800000,LM_DURG=1.12;
 const lmNm=(v,hn)=>{v=String(v||'').replace(/[<>&"']/g,'').replace(/\s+/g,' ').trim().slice(0,18);return v||'Liên Minh '+cleanName(hn).slice(0,10)};
 const lmName=d=>d.nm||'Liên Minh '+cleanName(d.hn).slice(0,10);
 const lmTier=n=>{const c=(n-1)%4;return c===1||c===2?1:0};
@@ -4107,7 +4107,7 @@ async function lmBuy(n,sid,nm){const me=lmMe(),sd=LM_SEED_BY[sid],T=LM_LAND[lmTi
  P.money-=cost;
  if(NET.on){let r;try{r=await NET.db.ref('lm/'+n).transaction(c=>c==null?doc:undefined)}catch(e){r=null}if(!r||!r.committed){P.money+=cost;toast('Lô đất vừa có người khác mua hoặc máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}NET.lmAll=NET.lmAll||{};NET.lmAll[n]=doc}
  else LM_ALL()[n]=doc;
- coin();lmSync();toast('Bạn đã mua Lô '+n+' và hạt '+sd.n+'. Hãy rủ đủ '+LM_MIN+' thành viên rồi bấm TRỒNG!',false,5000);sysLog('Mua Lô '+n+' Vườn Liên Minh, hạt '+sd.n+'.');if(NET.on)saveState();renderLm()}
+ coin();lmSync();toast('Bạn đã mua Lô '+n+' và hạt '+sd.n+'. Bấm TRỒNG để bắt đầu ngay, hoặc rủ thêm thành viên cho cây mạnh hơn!',false,5000);sysLog('Mua Lô '+n+' Vườn Liên Minh, hạt '+sd.n+'.');if(NET.on)saveState();renderLm()}
 function lmJoin(n){const d=lmDoc(n),me=lmMe();if(!d||LMC.u[me])return;if(lmMem(d).length>=LM_MAXM){toast('Liên minh đã đủ '+LM_MAXM+' thành viên.',true);return}
  if(Date.now()-(P.lmLeaveAt||0)<12*3600e3){toast('Bạn vừa rời một liên minh, cần chờ 12 giờ.',true);return}
  if(!d.op&&!lmInvited(d)){toast('Liên minh này đang đóng đăng ký, cần Gốc Chủ mời.',true);return}
@@ -4210,7 +4210,7 @@ function openLm(n){if(!S||!P)return;LM.n=n==null?(LMC.u[lmMe()]?LMC.u[lmMe()].n:
 function renderLm(){const el=$('#lmBody');if(!el)return;if(document.activeElement&&/^lm(Nm|Rn)$/.test(document.activeElement.id))return;const me=lmMe(),my=LMC.u[me];let h='';
  const bar=(ch,d,n)=>{const v=lmPt(d,ch.id),ev=lmEffPt(d,ch.id),lk=lmMaxed(d)>=LM_TOPCH&&v<LM_CHMAX-0&&v>=LM_CHMAX-1,f=Math.min(1,ev/LM_CHMAX)*(d.st==='grow'?lmFactor(d,n):0);return`<div class="lmrow"><span class="lmic" style="color:${ch.c}">${ch.ic}</span><b>${ch.n}</b><span class="lmbar"><i style="width:${v*10}%;background:${ch.c}"></i></span><span>${v}/${LM_CHMAX}${ev<v?' (tính '+ev+')':lk?' 🔒':''}</span></div><div class="lmeff">${d.st==='grow'?lmEffTxt(ch.id,f):'Chưa trồng, chưa có hiệu ứng'}</div>`};
  if(LM.n==null){
-  h=`<p>Mỗi người chỉ ở <b>1 liên minh</b>. Gốc Chủ mua đất và hạt giống, rủ từ <b>${LM_MIN} đến ${LM_MAXM} thành viên</b>. Thành viên đóng thuế theo % tiền thưởng ván game và Team Building để nuôi cây; cây lớn đem lại buff cho cả liên minh.</p>`
+  h=`<p>Mỗi người chỉ ở <b>1 liên minh</b>. Gốc Chủ mua đất và hạt giống, có thể trồng một mình hoặc rủ tối đa <b>${LM_MAXM} thành viên</b>. Thành viên đóng thuế theo % tiền thưởng ván game và Team Building để nuôi cây; cây lớn đem lại buff cho cả liên minh.</p>`
    +(my?`<div class="detail"><h3>Liên minh của bạn: ${esc(lmName(my.d))}</h3><p>Lô ${my.n} · ${LM_SEED_BY[my.d.sd].n} · ${my.d.st==='grow'?'Lv '+lmPts(my.d):'chưa trồng'} · Gốc Chủ ${esc(cleanName(my.d.hn))}</p><div class="row"><button class="btn ok" data-act="view" data-n="${my.n}">XEM CÂY CỦA TÔI</button></div></div>`:'')
    +(()=>{if(my)return'';const L=[];for(const n in LM_ALL()){const d=LM_ALL()[n];if(d&&d.iv&&lmInvited(d))L.push([n,d])}return L.length?`<div class="lbl">LỜI MỜI DÀNH CHO BẠN</div><div class="offer">${L.map(([n,d])=>`<button class="chip on" data-act="view" data-n="${n}">${esc(lmName(d))} · Lô ${n}</button>`).join('')}</div>`:''})()
    +`<div class="lbl">12 LÔ ĐẤT · BẤM ĐỂ XEM</div><div class="lmgrid">${GPLOTS.map(q=>{const d=lmDoc(q.n),T=LM_LAND[lmTier(q.n)];return`<button class="chip lmplot${d?' own':''}" data-act="view" data-n="${q.n}"><b>${d?esc(lmName(d)):'Lô '+q.n+' · trống'}</b><br>${d?'Lô '+q.n+' · '+LM_SEED_BY[d.sd].n+' · '+(d.st==='grow'?'Lv '+lmPts(d):'chờ trồng')+'<br>'+lmMem(d).length+'/'+LM_MAXM+' người · '+(d.op?'mở đăng ký':'chỉ mời'):T.n+' · '+VND(T.p)}</button>`}).join('')}</div><div class="row"><button class="btn ghost" data-act="close">ĐÓNG</button></div>`}
@@ -4710,7 +4710,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z30';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z31';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

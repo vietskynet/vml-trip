@@ -27,7 +27,6 @@
 "Bạn đã có chỗ trong tháp này.": "You already have a spot in this tower.",
 "Bạn đã dùng hết {1} lượt đổi tên.": "You used up all {1} renames.",
 "Bạn đã gia nhập {1}.": "You joined {1}.",
-"Bạn đã mua Lô {1} và hạt {2}. Hãy rủ đủ {3} thành viên rồi bấm TRỒNG!": "You bought Plot {1} and seed {2}. Invite {3} members then press PLANT!",
 "Bạn đã mua {1} giá {2}!": "You bought {1} for {2}!",
 "Bạn đã mua {1}{2} giá {3}!": "You bought {1}{2} for {3}!",
 "Bạn đã rời hàng chờ WC{1}.": "You left the WC{1} queue.",
@@ -270,5 +269,6 @@
 "Gốc Chủ mời {1} ra.": "Tree owner removed {1}.",
 "Mời {1} rời liên minh (hoàn {2})": "Removed {1} from the alliance (refund {2})",
 "Mời {1} rời liên minh": "Removed {1} from the alliance",
-"Bị mời khỏi liên minh, được hoàn {1}": "Removed from the alliance, refunded {1}"
+"Bị mời khỏi liên minh, được hoàn {1}": "Removed from the alliance, refunded {1}",
+"Bạn đã mua Lô {1} và hạt {2}. Bấm TRỒNG để bắt đầu ngay, hoặc rủ thêm thành viên cho cây mạnh hơn!": "You bought Plot {1} and seed {2}. Press PLANT to start now, or invite more members for a stronger tree!"
 }
