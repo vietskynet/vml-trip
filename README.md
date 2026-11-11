@@ -664,3 +664,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z31: Trồng Cây Liên Minh một mình
 - `LM_MIN` 3 → 1: Gốc Chủ mua đất + hạt xong bấm TRỒNG ngay, không cần thành viên; không còn bị giảm 50% buff vì thiếu người.
 - Giới hạn level vẫn tăng theo số thành viên (mỗi người +5 level; chơi một mình tối đa Lv 5), nên rủ thêm người vẫn có lợi. Cây cũ đang ở trạng thái "ngủ" (dưới 3 người) tự hết bị phạt. Không cần chạy SQL.
+
+## z32: Kiểm tra lưu điểm gym + bước đi
+- Luồng lưu: `state.fit` (F, W, L, d, t) nằm trong `players/{uid}/state`, ghi mỗi 10 giây (netTick), ngay khi xong 1 set gym, khi `pagehide`, và (mới) khi tab bị ẩn (`visibilitychange`) để không mất bước khi chuyển app trên điện thoại.
+- Đã kiểm tra khứ hồi pack → JSON → load giữ nguyên W/F/L/d/t; sau thời gian offline dài chỉ giảm khi quá hạn 7 ngày thật. Không cần chạy SQL.
+- Lưu ý: server chưa kiểm tra giá trị (client tin cậy). Muốn chống gian lận cần RPC giới hạn tăng W/F theo thời gian.
