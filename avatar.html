@@ -4005,7 +4005,7 @@ function hpSub(n,why){if(!P||!S)return;hpInit();P.hp=Math.max(0,P.hp-n);hpFloat(
 function hpTick(dt){if(!P||!S)return;hpInit();P.hp=Math.max(0,P.hp-dt/480);const c=hpCeil();if(P.hp>c)P.hp=Math.max(c,P.hp-dt*.05)}
 let hpFx=0;function hpFloat(t){const el=$('#hpFx');if(!el)return;el.textContent=t+' hạnh phúc';el.className=t[0]==='-'?'neg on':'on';clearTimeout(hpFx);hpFx=setTimeout(()=>el.classList.remove('on'),1600)}
 function hpPack(){return{h:Math.round(P.hp*10)/10,d:P.hpd,w:P.hpw,a:P.hpAll,s:P.hpS}}
-function hpLoad(o){if(!o||typeof o.h!=='number')return;P.hp=o.h;P.hpd=o.d&&o.d.c?Object.assign({c:{},to:[],cats:0},o.d):null;P.hpw=o.w||null;P.hpAll=o.a||0;P.hpS=o.s||0}
+function hpLoad(o){if(!o||typeof o.h!=='number')return;P.hp=o.h;P.hpd=o.d&&o.d.c?Object.assign({c:{},to:[],cats:0},o.d):null;P.hpw=o.w||null;P.hpAll=o.a||0;P.hpS=o.s||0;if(P.hpd&&!Array.isArray(P.hpd.to))P.hpd.to=Object.values(P.hpd.to||{})}
 /* ===== Menu gom nhóm: NHÂN VẬT (ví/chỉ số · túi đồ · bất động sản · cài đặt) và CHỢ (BĐS · Thương Xá Tắc) ===== */
 const ME_TABS={me:[['char','NHÂN VẬT'],['bag','TÚI ĐỒ'],['est','BẤT ĐỘNG SẢN'],['set','CÀI ĐẶT']],mk:[['mkt','CHỢ BĐS'],['xa','THƯƠNG XÁ TẮC']]};
 const ME_OV=['hpOv','bagOv','estOv','acctOv','xaOv'];
@@ -4094,6 +4094,7 @@ function lmEffTxt(ch,f){const m=LM_CH_BY[ch].mx*f,p=x=>(Math.round(x*1000)/10).t
  switch(ch){case'tien':return'+'+p(m)+'% thưởng ván game & Team Building';case'may':return'+'+p(m)+'% thưởng nhặt (gián, ông già, Bụt…) & tỉ lệ trúng vé số';case'toc':return'+'+p(m)+'% tốc độ di chuyển';
   case'nl':return'−'+p(m)+'% hao năng lượng khi đứng/đi, hồi khi ngủ nhanh hơn +'+p(m*25/30)+'%';default:return'Nhân vật ×'+(Math.round((1+m)*100)/100)+', +'+p(m/.25*.3)+'% sát thương quái, nhưng hao năng lượng +'+p(m/.25*.1)+'%'}}
 function lmSync(){LMC.u={};const all=LM_ALL();for(const n in all){const d=all[n];if(!d||!d.h)continue;lmMem(d).forEach(u=>{LMC.u[u]={n:+n,d}});if(!LMC.u[d.h]&&d.m)LMC.u[d.h]={n:+n,d}}
+ if(NET.on&&!lmSync.busy){lmSync.busy=1;try{const me=lmMe();for(const n in all){const d=all[n];if(!d||d.h!==me)continue;const o={};lmMem(d).forEach(u=>{if(u!==me&&!(d.jt&&d.jt[u]))o['jt/'+u]=serverNow()});Object.keys(d.jt||{}).forEach(u=>{if(!(d.m&&d.m[u]))o['jt/'+u]=null});if(Object.keys(o).length)lmUp(+n,o)}}finally{lmSync.busy=0}}
  if(!$('#lmOv').hidden)renderLm()}
 function lmSet(o,rel,val){const k=rel.split('/');let t=o;for(let i=0;i<k.length-1;i++){t=t[k[i]]||(t[k[i]]={})}if(val==null)delete t[k[k.length-1]];else t[k[k.length-1]]=val}
 function lmUp(n,obj){const d=lmDoc(n);if(!d)return;for(const r in obj)lmSet(d,r,obj[r]);if(NET.on){try{NET.db.ref('lm/'+n).update(obj)}catch(e){console.warn(e)}}lmSync()}
@@ -4110,11 +4111,11 @@ function lmJoin(n){const d=lmDoc(n),me=lmMe();if(!d||LMC.u[me])return;if(lmMem(d
  if(!d.op&&!lmInvited(d)){toast('Liên minh này đang đóng đăng ký, cần Gốc Chủ mời.',true);return}
  const fee=d.st==='grow'?LM_JOIN*lmPts(d):0;if(P.money<fee){toast('Cần '+VND(fee)+' phí gia nhập (đưa vào quỹ cây).',true);return}
  if(fee&&LM.arm!=='join'+n){LM.arm='join'+n;renderLm();return}LM.arm=null;
- P.money-=fee;const c0=(d.c&&d.c[me])||0,o={['m/'+me]:P.name,['iv/'+me]:null,['jt/'+me]:serverNow()};if(fee)o['c/'+me]=c0+fee;lmUp(n,o);coin();hpAdd('lm',2);toast('Bạn đã gia nhập '+lmName(d)+'.',false,4000);if(NET.on)saveState();renderLm()}
+ P.money-=fee;const c0=(d.c&&d.c[me])||0,o={['m/'+me]:P.name,['iv/'+me]:null};if(fee)o['c/'+me]=c0+fee;lmUp(n,o);coin();hpAdd('lm',2);toast('Bạn đã gia nhập '+lmName(d)+'.',false,4000);if(NET.on)saveState();renderLm()}
 function lmLeave(n){const d=lmDoc(n),me=lmMe();if(!d||!(d.m&&d.m[me]))return;
  if(d.h===me){if(lmMem(d).length>1){toast('Hãy nhường chức hoặc mời bớt thành viên trước khi rời.',true);return}if(LM.arm!=='disb'){LM.arm='disb';renderLm();return}LM.arm=null;
   lmDel(n);toast('Bạn đã trả lại lô đất (không hoàn tiền).',false,4000);LM.n=null;renderLm();return}
- if(LM.arm!=='leave'){LM.arm='leave';renderLm();return}LM.arm=null;lmUp(n,{['m/'+me]:null,['jt/'+me]:null});P.lmLeaveAt=Date.now();toast('Bạn đã rời liên minh. Thuế đã đóng không được hoàn lại.',false,4000);if(NET.on)saveState();renderLm()}
+ if(LM.arm!=='leave'){LM.arm='leave';renderLm();return}LM.arm=null;lmUp(n,{['m/'+me]:null});P.lmLeaveAt=Date.now();toast('Bạn đã rời liên minh. Thuế đã đóng không được hoàn lại.',false,4000);if(NET.on)saveState();renderLm()}
 const LM_KICK_PROT=24*3600e3,LM_REFUND=.8;
 function lmRefund(d,u){if(!NET.on||String(u).startsWith('bot'))return 0;const cu=Math.max(0,+((d.c||{})[u])||0);let tot=0;for(const k in(d.c||{}))tot+=+d.c[k]||0;if(!(cu>0&&tot>0))return 0;const fund=Math.max(0,lmFund(d)),un=Math.min(1,fund/tot);return Math.min(fund,Math.floor(LM_REFUND*cu*un/1000)*1000)}
 function lmLog(n,txt){const d=lmDoc(n);if(!d)return;const o={['lg/'+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36)]:{t:serverNow(),x:String(txt).slice(0,120)}};const ks=Object.keys(d.lg||{}).sort((a,b)=>((d.lg[a]||{}).t||0)-((d.lg[b]||{}).t||0));ks.slice(0,Math.max(0,ks.length-19)).forEach(k=>o['lg/'+k]=null);lmUp(n,o)}
@@ -4662,7 +4663,7 @@ function assetOf(c){const me=c===P,u=me?NET.uid:c.uid,pl=!me&&NET.on&&u&&NET.pla
  /* thú nuôi thường (giá shop) */
  petList(c).forEach(i=>{if(!PETS[i].lim)pet+=PETS[i].price||0});
  const money=c.money||0,fixed=house+land+bank+cloth+veh+pet;return{money,house,land,bank,cloth,veh,pet,total:money+fixed}}
-function rkInfo(c){const me=c===P,u=me?NET.uid:c.uid,ps=!me&&NET.on&&u&&NET.players[u]&&NET.players[u].state||null;const fit=me?(P.fit||ZF):(ps&&ps.fit&&Array.isArray(ps.fit.F)?ps.fit:ZF);const hp=me?(P.hp==null?50:P.hp):(ps&&ps.hp&&typeof ps.hp.h==='number'?ps.hp.h:null);const a=assetOf(c);return{fit,hp,fitT:fitTot(fit),money:a.money,asset:a.total,a}}
+function rkInfo(c){const me=c===P,u=me?NET.uid:c.uid,ps=!me&&NET.on&&u&&NET.players[u]&&NET.players[u].state||null;const fit=me?(P.fit||ZF):(ps&&ps.fit&&fitA(ps.fit.F)?Object.assign({},ps.fit,{F:fitA(ps.fit.F)}):ZF);const hp=me?(P.hp==null?50:P.hp):(ps&&ps.hp&&typeof ps.hp.h==='number'?ps.hp.h:null);const a=assetOf(c);return{fit,hp,fitT:fitTot(fit),money:a.money,asset:a.total,a}}
 function rkRender(){const key=RK.tab,inf=(window.__rkAll||[]).map(c=>({c,i:rkInfo(c)})),ord={fit:['fitT','hp','asset'],hp:['hp','fitT','asset'],money:['asset','fitT','hp']}[key];
  inf.sort((a,b2)=>{for(const k of ord){const x=a.i[k]==null?-1:a.i[k],y=b2.i[k]==null?-1:b2.i[k];if(x!==y)return y-x}return 0});window.__rk=inf.map(o=>o.c);
  const H=v=>v==null?'—':Math.round(v)+'%',val={fit:v=>v.fitT+'%',hp:v=>H(v.hp),money:v=>VND(v.asset)},sub={fit:v=>'Hạnh phúc '+H(v.hp)+' · Tài sản '+VND(v.asset),hp:v=>'Thể lực '+v.fitT+'% · Tài sản '+VND(v.asset),money:v=>'Tiền mặt '+VND(v.money)+' · Đồ sở hữu '+VND(v.asset-v.money)};
@@ -4707,7 +4708,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z33';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z34';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -5226,10 +5227,11 @@ function fitSettle(after){if(!P)return;fitInit();const f=P.fit,now=fitDay();if(!
  while(f.d<now&&n++<4000){f.d++;if(f.d-f.L>FIT.GRACE){const r=(after&&!first)?FIT.DOFF:FIT.DON;for(let s=0;s<4;s++)f.F[s]=clamp(f.F[s]*(1-r),0,1)}f.t={d:f.d,b:[0,0,0,0],n:[0,0,0,0]};first=false}}
 function fitTick(dt){if(!P)return;P.fitT=(P.fitT||0)-dt;if(P.fitT>0)return;P.fitT=4;fitSettle(false)}
 const fitPack=()=>{fitInit();const f=P.fit;return{W:Math.floor(f.W||0),F:f.F.map(v=>Math.round(v*10000)/10000),d:f.d,L:f.L,t:{d:f.t.d,b:f.t.b.map(v=>Math.round(v*1000)/1000),n:f.t.n.slice()}}};
-function fitLoad(o){if(!o||!Array.isArray(o.F)||o.F.length!==4){P.fit=fitNew();return}const f={W:Math.max(0,Math.floor(+o.W||0)),F:o.F.map(v=>clamp(+v||0,0,1)),d:Math.floor(+o.d)||fitDay(),L:o.L!=null&&Number.isFinite(+o.L)?Math.floor(+o.L):fitDay(),t:{d:o.t&&o.t.d!=null?Math.floor(+o.t.d):fitDay(),b:[0,0,0,0],n:[0,0,0,0]}};
- if(o.t&&Array.isArray(o.t.b))for(let i=0;i<4;i++){f.t.b[i]=clamp(+o.t.b[i]||0,0,1);f.t.n[i]=clamp(o.t.n&&+o.t.n[i]||0,0,FIT.SETS)}P.fit=f;fitSettle(true)}
+function fitLoad(o){const A4=x=>Array.isArray(x)?x:(x&&typeof x==='object'?[0,1,2,3].map(k=>x[k]):null),F=o&&A4(o.F);if(!F||F.length!==4){P.fit=fitNew();return}const f={W:Math.max(0,Math.floor(+o.W||0)),F:F.map(v=>clamp(+v||0,0,1)),d:Math.floor(+o.d)||fitDay(),L:o.L!=null&&Number.isFinite(+o.L)?Math.floor(+o.L):fitDay(),t:{d:o.t&&o.t.d!=null?Math.floor(+o.t.d):fitDay(),b:[0,0,0,0],n:[0,0,0,0]}};
+ {const tb=o.t&&A4(o.t.b),tn=o.t&&A4(o.t.n);if(tb)for(let i=0;i<4;i++){f.t.b[i]=clamp(+tb[i]||0,0,1);f.t.n[i]=clamp(tn&&+tn[i]||0,0,FIT.SETS)}}P.fit=f;fitSettle(true)}
 function fitStepB(f){f=f||(P&&P.fit);const w=f&&+f.W||0;return Math.min(FIT.WMAX,Math.round(Math.floor(w/FIT.WSTEP)*FIT.WB*10)/10)}
-const fitF=(s,f)=>{f=f||(P&&P.fit);if(!f||!Array.isArray(f.F))return 0;let v=clamp(+f.F[s]||0,0,1);if(s===2)v=clamp(v+fitStepB(f)/80,0,1);return v};
+const fitA=x=>Array.isArray(x)?x:(x&&typeof x==='object'?[0,1,2,3].map(k=>x[k]):null);
+const fitF=(s,f)=>{f=f||(P&&P.fit);const FA=f&&fitA(f.F);if(!FA)return 0;let v=clamp(+FA[s]||0,0,1);if(s===2)v=clamp(v+fitStepB(f)/80,0,1);return v};
 /* Bước đi: đo quãng đường đi bộ thật (không tính xe/thuyền/tốc độ ảo), cộng chung vào Sức bền */
 const STEPL={x:null,y:0};
 function stepTick(dt){if(!P||!S||S.ended||P.fainted||P.boat||P.mount||P.salon||P.hidden||mode!=='world'||vehOn()||fxOf(P)||(P.bst&&P.bst.t>0)||floatOf(P)||(typeof TEST!=='undefined'&&TEST.on)){STEPL.x=null;return}

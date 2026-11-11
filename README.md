@@ -673,3 +673,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z33: Cây Liên Minh: trồng một mình, buff chỉ chạy khi có từ 3 thành viên
 - `LM_MIN=1` (được trồng một mình), `LM_ACT=3` (đủ thành viên mới kích hoạt buff). Dưới 3 người: `lmDorm` → hệ số buff = 0 (trước đây 50%); cây vẫn lớn, đóng thuế, nâng cấp và giữ hiệu ứng hình ảnh. Từ 3 người buff chạy đầy đủ như cũ.
 - Popup hiện cảnh báo "Mới có N thành viên…". Không cần chạy SQL.
+
+## z34: Sửa mất điểm bước đi/gym sau F5 + sửa vào/rời liên minh
+- Nguyên nhân: `supabase-shim.js` (`fixLocal`) biến mọi mảng thành object khi nạp dữ liệu từ server, nên `fitLoad` thấy `F` không phải mảng và tạo `fit` mới (mất W, chỉ số gym, số set trong ngày). `fitLoad`, `fitF`, bảng xếp hạng (`rkInfo`) nay chấp nhận cả mảng lẫn object; `hpLoad` chuẩn hoá `hpd.to`.
+- Sửa lỗi z30: thành viên không có quyền ghi `lm/{n}/jt/{uid}` (rt_can chỉ cho `m`, `c`, `iv`) làm vào/rời liên minh bị server từ chối. Nay Gốc Chủ tự ghi `jt` cho thành viên khi thấy họ (và dọn jt thừa); thành viên cũ cũng được bảo vệ 24 giờ kể từ lúc Gốc Chủ thấy lần đầu. Không cần chạy SQL.
