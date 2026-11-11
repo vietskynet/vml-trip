@@ -623,3 +623,11 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Thêm ~1100 mục: tên thú, cá, trang phục, đồ trang trí, xe, mô tả, chỉ dẫn minigame và các đoạn ghép còn lại.
 - Tên riêng không đổi được có chú thích gốc, ví dụ "Tóc Thề Hair Salon (Hair Salon Tóc Thề)", "Tắc Mall".
 - Không đổi index.html, không cần SQL.
+
+### EN: quét toàn bộ tiếng Việt (từ điển 2900+ mục)
+- Sửa lỗi gốc: bộ dịch bỏ qua nhầm các thẻ `p/i/b` (so khớp chuỗi tên thẻ) → popup, bảng hướng dẫn không dịch.
+- Sửa bộ nhận diện chữ Việt (thiếu ắ, ế, ự…) nên nhiều từ như "Ngắn", "Thể thao" bị bỏ sót; cho phép dịch cả chuỗi không dấu như "Trong resort:".
+- Thêm lớp "luật HTML" `tools/en-hrules.json`: dịch nguyên cả khối có thẻ `<b>`/`<strong>` (hướng dẫn người mới, Luật nhanh, nhà đất, hạnh phúc, liên minh…) để đúng trật tự câu tiếng Anh.
+- Placeholder/aria-label của ô nhập cũng được dịch; ô giới tính "Nam" → "Male" chỉ ở màn tạo nhân vật (tránh đổi nhầm tên người chơi tên Nam).
+- Kiểm tra độ phủ: trích toàn bộ chuỗi trong mã bằng acorn rồi chạy qua bộ dịch; còn lại chủ yếu là tên riêng (VINH PHÁT, Tóc Thề, tên nhân viên giả lập).
+- Không đổi index.html, không cần SQL.

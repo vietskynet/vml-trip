@@ -30,7 +30,7 @@ h=h.replace('<html lang="vi">','<html lang="en">')
 tag='<script src="en-dict.js"></script><script src="en.js"></script>'
 i=h.index('<title>');h=h[:i]+tag+h[i:]
 open(out+'/index.html','w',encoding='utf8').write(h)
-RU=json.load(open(R+'/tools/en-rules.json',encoding='utf8'))
-open(out+'/en-dict.js','w',encoding='utf8').write('window.EN_D='+json.dumps(D,ensure_ascii=False,separators=(',',':'))+';window.EN_R='+json.dumps(RU,ensure_ascii=False,separators=(',',':'))+';')
+RU=json.load(open(R+'/tools/en-rules.json',encoding='utf8'));HR=json.load(open(R+'/tools/en-hrules.json',encoding='utf8'))
+open(out+'/en-dict.js','w',encoding='utf8').write('window.EN_D='+json.dumps(D,ensure_ascii=False,separators=(',',':'))+';window.EN_R='+json.dumps(RU,ensure_ascii=False,separators=(',',':'))+';window.EN_H='+json.dumps(HR,ensure_ascii=False,separators=(',',':'))+';')
 open(out+'/en.js','w',encoding='utf8').write(open(R+'/tools/en-runtime.js',encoding='utf8').read())
 print('en/ ok:',len(D),'mục từ điển')
