@@ -669,3 +669,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Luồng lưu: `state.fit` (F, W, L, d, t) nằm trong `players/{uid}/state`, ghi mỗi 10 giây (netTick), ngay khi xong 1 set gym, khi `pagehide`, và (mới) khi tab bị ẩn (`visibilitychange`) để không mất bước khi chuyển app trên điện thoại.
 - Đã kiểm tra khứ hồi pack → JSON → load giữ nguyên W/F/L/d/t; sau thời gian offline dài chỉ giảm khi quá hạn 7 ngày thật. Không cần chạy SQL.
 - Lưu ý: server chưa kiểm tra giá trị (client tin cậy). Muốn chống gian lận cần RPC giới hạn tăng W/F theo thời gian.
+
+## z33: Cây Liên Minh: trồng một mình, buff chỉ chạy khi có từ 3 thành viên
+- `LM_MIN=1` (được trồng một mình), `LM_ACT=3` (đủ thành viên mới kích hoạt buff). Dưới 3 người: `lmDorm` → hệ số buff = 0 (trước đây 50%); cây vẫn lớn, đóng thuế, nâng cấp và giữ hiệu ứng hình ảnh. Từ 3 người buff chạy đầy đủ như cũ.
+- Popup hiện cảnh báo "Mới có N thành viên…". Không cần chạy SQL.

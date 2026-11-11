@@ -270,5 +270,6 @@
 "Mời {1} rời liên minh (hoàn {2})": "Removed {1} from the alliance (refund {2})",
 "Mời {1} rời liên minh": "Removed {1} from the alliance",
 "Bị mời khỏi liên minh, được hoàn {1}": "Removed from the alliance, refunded {1}",
-"Bạn đã mua Lô {1} và hạt {2}. Bấm TRỒNG để bắt đầu ngay, hoặc rủ thêm thành viên cho cây mạnh hơn!": "You bought Plot {1} and seed {2}. Press PLANT to start now, or invite more members for a stronger tree!"
+"Bạn đã mua Lô {1} và hạt {2}. Bấm TRỒNG để có cây ngay. Cây chỉ phát buff khi liên minh có từ {3} thành viên!": "You bought Plot {1} and seed {2}. Press PLANT to get the tree now. It only gives buffs once the alliance has {3}+ members!",
+"Mới có {1} thành viên. Cần từ {2} thành viên trở lên để cây phát buff (cây vẫn lớn và đóng thuế bình thường).": "Only {1} members so far. At least {2} members are needed for the tree to give buffs (it still grows and collects tax as usual)."
 }
