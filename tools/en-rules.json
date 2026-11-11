@@ -253,5 +253,9 @@
 "ĐỦ 3 NGƯỜI! Liên minh {1} thành lập: {2}. Vương miện đã lên đầu!": "3 PEOPLE! Alliance {1} founded: {2}. The crown is on your head!",
 "☀ Mặt trời đêm 3 phút! (−{1})": "☀ Midnight sun for 3 minutes! (−{1})",
 "⚠ QUÁI VẬT XUẤT HIỆN: {1}! Cùng nhau đánh bại để chia {2}.": "⚠ MONSTER APPEARED: {1}! Defeat it together to split {2}.",
-"✨ {1} trong {2} giây! (−{3})": "✨ {1} for {2} seconds! (−{3})"
+"✨ {1} trong {2} giây! (−{3})": "✨ {1} for {2} seconds! (−{3})",
+"Hôm nay đã đủ {1} set. Ngày game mới sau {2} phút.": "Already did {1} sets today. New game day in {2} minutes.",
+"{1}: {2} ({3}%). {4} {5}% → {6}%.": "{1}: {2} ({3}%). {4} {5}% → {6}%.",
+"KẾT QUẢ · {1}": "RESULT · {1}",
+"{1} · hôm nay ×{2}": "{1} · today ×{2}"
 }

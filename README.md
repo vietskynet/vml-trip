@@ -631,3 +631,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Placeholder/aria-label của ô nhập cũng được dịch; ô giới tính "Nam" → "Male" chỉ ở màn tạo nhân vật (tránh đổi nhầm tên người chơi tên Nam).
 - Kiểm tra độ phủ: trích toàn bộ chuỗi trong mã bằng acorn rồi chạy qua bộ dịch; còn lại chủ yếu là tên riêng (VINH PHÁT, Tóc Thề, tên nhân viên giả lập).
 - Không đổi index.html, không cần SQL.
+
+## z25: Luật gym mới + tối ưu popup mobile
+- Gym: tối đa 2 set/ngày game (1 giờ thật), bấm thẳng vào máy để tập (không đi lại trong phòng), chỉ số tăng ngay sau mỗi set, hiện thẻ kết quả + toast.
+- Chỉ số sức khoẻ chỉ giảm sau 7 ngày thật (FIT.GRACE=168 ngày game) không tập; save cũ được tính lại thời hạn ân hạn.
+- Mobile dọc: popup dùng dvh, nút ✕ sticky và hàng ĐÓNG cố định đáy; layout gym riêng cho mobile.
+- EN: thêm bản dịch các chuỗi gym mới. Không cần chạy SQL.

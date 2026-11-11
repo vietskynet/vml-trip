@@ -188,7 +188,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
 .rktab{display:flex;gap:6px;margin:0 0 8px}.rktab button{flex:1;padding:6px 2px;background:#12183a;color:#fff;border:2px solid #000;font:inherit;cursor:pointer}.rktab button.on{background:#ffd23f;color:#000}.lb li small{display:block;color:var(--muted);font-size:11px}
 .gym .gysum{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}.gym .gysum div{background:#12183a;border:2px solid #000;padding:6px 8px;text-align:center}.gym .gysum small{display:block;color:var(--muted);font-size:11px}.gym .gysum b{font-size:20px;color:#ffd23f}
 .gym .gyr{background:#12183a;border:2px solid #000;padding:8px;margin-bottom:6px}.gym .gyh{display:flex;justify-content:space-between}.gym .gyp{color:#ffd23f}.gym .gyb{height:8px;background:#000;margin:4px 0}.gym .gyb i{display:block;height:100%;background:linear-gradient(90deg,#2fd0c8,#ffd23f)}.gym .gyr small{display:block;color:var(--muted);font-size:12px}.gym .gye{color:#9fe6a6!important}.gym .gyf{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px;font-size:12px;flex-wrap:wrap}
-.gym .gynote{font-size:11px;color:var(--muted)}.gym canvas{width:100%;image-rendering:pixelated;border:3px solid #000;background:#000;touch-action:none}.gybtns{margin-top:8px;flex-wrap:wrap}.gybtns .btn{flex:1;min-height:44px}
+.gym .gynote{font-size:12px;color:var(--muted)}.gym .gy4s{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}.gym .gym4{background:#12183a;border:2px solid #000;padding:6px 8px;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:2px 6px;align-items:center}.gym .gym4 .gyb{grid-column:1/3;height:8px;background:#000;margin:2px 0}.gym .gym4 .gyb i{display:block;height:100%;background:linear-gradient(90deg,#2fd0c8,#ffd23f)}.gym .gym4 b{color:#ffd23f}.gym .gym4 small{grid-column:1/3;color:var(--muted);font-size:11px}.gym .gyres{background:#10341f;border:2px solid #3fbf5a;padding:8px;margin-bottom:6px;text-align:center}.gym .gyres b{color:#fff}.gym .gyres .gyl{display:block;font-size:22px;color:#ffd23f;font-family:var(--f-display)}.gym .gyres small{font-size:14px;color:#cfe}.gym #gymRoom{cursor:pointer}.gym canvas{width:100%;image-rendering:pixelated;border:3px solid #000;background:#000;touch-action:none}.gybtns{margin-top:8px;flex-wrap:wrap}.gybtns .btn{flex:1;min-height:44px}
 .lb .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lb .dot{display:inline-block;width:12px;height:12px;border:2px solid #000;margin-right:6px;vertical-align:-1px}
 .qr{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-bottom:14px}
@@ -373,6 +373,25 @@ body.m-room .pad{display:none!important}
 .trchips{flex-wrap:wrap;gap:5px;margin:6px 0}.trchips input{width:120px;padding:5px;font:inherit;border:2px solid #000}.trcalc{font-size:14px;color:#fff;margin:4px 0}.trlim{font-size:13px;color:#cfeff0}.trh3{font-size:15px;color:#ffe36a;margin:8px 0 4px}.trbet{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px;border-bottom:1px dashed rgba(255,255,255,.2);padding:3px 0;color:#fff}.trw{color:#7affa0}.trl{color:#ff9a9a}.trwarn{background:#7a1f1f;color:#fff;padding:6px;border:2px solid #000;font-size:14px}
 #trBoard{margin:4px 0 6px}.trbd{font-size:13px;color:#fff}.trbd h4{margin:6px 0 3px;color:#ffe36a;font-size:14px}.trbr{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;border-bottom:1px dashed rgba(255,255,255,.18);padding:2px 0}.trbr.me{background:rgba(255,227,106,.12)}.trbr i{display:inline-block;width:9px;height:9px;border:1px solid #000;margin-right:3px}
 @media (max-width:520px){.trg{grid-template-columns:repeat(2,1fr)}}
+
+/* ===== mobile popups v3: không mất giao diện, luôn thấy nút đóng ===== */
+.xc2{display:none}
+@media (max-width:760px),(pointer:coarse) and (max-height:620px){
+ .modal{padding:max(6px,env(safe-area-inset-top,0px)) max(6px,env(safe-area-inset-right,0px)) max(6px,env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));align-items:flex-end}
+ .modal .card{max-height:calc(100vh - 12px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;max-height:calc(100dvh - 12px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;padding:12px 12px 8px;border-width:3px;box-shadow:0 0 0 3px var(--sea),0 6px 0 3px rgba(0,0,0,.5);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+ .modal .card h2{padding-right:46px}
+ .xc2{display:flex;position:sticky;top:-4px;z-index:30;margin:-4px -4px -40px auto;width:40px;height:40px;align-items:center;justify-content:center;background:#b3202a;color:#fff;border:3px solid #000;font-family:inherit;font-size:20px;line-height:1;cursor:pointer}
+ .modal .card>.row:has([data-close]){position:sticky;bottom:-8px;background:var(--panel);padding:8px 0;margin-top:8px;z-index:20;border-top:2px solid #000}
+ .modal .card .btn{min-height:40px}
+ .card table{max-width:100%}.card img{max-width:100%}
+}
+@media (max-width:760px) and (orientation:portrait){
+ .modal{align-items:flex-end}
+ .modal .card{width:100%;max-width:none}
+ .gym .gybtns{position:sticky;bottom:0;background:var(--panel);padding:6px 0;z-index:5;gap:6px}.gym .gybtns .btn{min-height:64px;font-size:18px}
+ .gym .gysum b{font-size:17px}.gym .gym4{padding:5px 6px}
+ .gym #gymRoom,.gym #gymCv{max-height:34vh;max-height:34dvh}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script src="supabase-shim.js"></script>
@@ -665,7 +684,7 @@ body.m-room .pad{display:none!important}
 <div class="modal" id="gymOv" hidden>
   <div class="card wide gym">
     <h2>PHÒNG <b>GYM</b></h2>
-    <div id="gymRoomBox"><canvas id="gymRoom" width="480" height="270"></canvas><p class="gynote" style="margin:4px 0">Di chuyển: bấm lên sàn hoặc dùng phím mũi tên / WASD. Bấm vào máy (hoặc đứng gần + E) để chọn bài tập.</p></div>
+    <div id="gymRoomBox"><canvas id="gymRoom" width="480" height="270"></canvas></div>
     <div id="gymMenu"></div>
     <div id="gymPlay" hidden>
       <h3 id="gymTitle" style="margin:0 0 6px"></h3>
@@ -4566,6 +4585,8 @@ function renderFood(){$('#foodMoney').textContent=VND(P.money);const act=Object.
  $('#foodMenu').innerHTML=FOOD.map((f,i)=>{const dis=P.money<f.price||P.eatT>0||(f.fx?bufOn(f.fx):P.energy>=99.5);return`<button class="food${f.fx?' fn':''}" data-i="${i}" ${dis?'disabled':''}><img src="${foodUrl(f.id)}" alt=""><b>${f.name}</b>${VND(f.price)} · ${f.t}s${f.en?' · +'+f.en+'% năng lượng':''}<span>${f.note}</span></button>`}).join('')}
 $('#foodMenu').addEventListener('click',e=>{const bt=e.target.closest('.food');if(!bt||bt.disabled)return;const f=FOOD[+bt.dataset.i];if(P.eatT>0)return;P.money-=f.price;track('food.'+f.id);eatStart(f)});
 document.querySelectorAll('[data-close]').forEach(bt=>bt.onclick=()=>{$('#'+bt.dataset.close).hidden=true});
+/* nút ✕ dính trên đầu mọi popup (hiện ở màn hình nhỏ), cuộn nội dung vẫn thấy nút đóng */
+document.querySelectorAll('.modal').forEach(m=>{const card=m.querySelector('.card'),bt=card&&card.querySelector('[data-close]');if(!bt||card.querySelector(':scope>.xc2'))return;const x=document.createElement('button');x.type='button';x.className='xc2';x.setAttribute('aria-label','Đóng');x.textContent='✕';x.onclick=()=>{m.hidden=true};card.insertBefore(x,card.firstChild)});
 document.querySelectorAll('.modal').forEach(md=>md.addEventListener('click',e=>{if(e.target===md&&!['startOv','endOv','dealOv','inviteOv'].includes(md.id))md.hidden=true}));
 $('#bHelp').onclick=()=>{$('#helpOv').hidden=false;keys={}};
 $('#bMusic').onclick=()=>setMusic(!MUS.on);
@@ -4634,7 +4655,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z24';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z25';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -5136,7 +5157,7 @@ addBlock(TSC.x-46,TSC.y-26,TSC.x+46,TSC.y);
    4 chỉ số 20%..100%: Sức mạnh, Tốc độ, Sức bền, Tập trung/phản xạ. F in [0,1], hiển thị = 20% + 80% F.
    Mỗi ngày game: F += A * (Q - F). Q = liều tập hôm đó (kết quả tốt nhất mỗi bài, bài chính 0,76 + 3 bài kia 0,08).
    Ngày không tập Q = 0 nên F giảm dần; vắng mặt (offline) thì giảm chậm hơn (AOFF). */
-const FIT={A:.0256,AOFF:.009,MAIN:.76,X:.08,EFF:[.5,.2,.4,.25],TW:[.30,.25,.30,.15],TRY:3};
+const FIT={G:.05,SETS:2,GRACE:168,DON:.004,DOFF:.0015,EFF:[.5,.2,.4,.25],TW:[.30,.25,.30,.15]};
 const FIT_N=['Sức mạnh','Tốc độ','Sức bền','Tập trung / phản xạ'];
 const FIT_EX=[
  {n:'Đẩy tạ',s:0,en:6,sec:60,d:'Thanh lực chạy qua lại. Bấm khi vạch vàng nằm trong vùng xanh để đẩy 1 cái, đủ 8 cái.'},
@@ -5144,16 +5165,17 @@ const FIT_EX=[
  {n:'Đạp xe bền',s:2,en:5,sec:40,d:'Giữ phím để đạp mạnh, thả ra để nghỉ, giữ kim nhịp tim trong vùng xanh. Đủ 30 giây trong vùng xanh là về đích (tối đa 40 giây).'},
  {n:'Luyện phản xạ',s:3,en:4,sec:50,d:'20 chấm xanh lần lượt hiện ra: bấm VÀO chấm càng nhanh càng cao (hoặc phím E). Chấm đỏ là bẫy, bấm sớm khi chưa có chấm bị trừ nhẹ.'}];
 const fitDay=()=>Math.floor(nowOnline()/CFG.DAY);
-const fitNew=()=>({F:[0,0,0,0],d:fitDay(),t:{d:fitDay(),b:[0,0,0,0],n:[0,0,0,0]}});
-function fitInit(){if(!P)return;const f=P.fit;if(!f||!Array.isArray(f.F)||f.F.length!==4||!f.t||!Array.isArray(f.t.b)||!Array.isArray(f.t.n))P.fit=fitNew()}
-const fitQ=f=>{const Q=[0,0,0,0];if(f.t&&f.t.d===f.d)for(let s=0;s<4;s++)for(let e=0;e<4;e++)Q[s]+=(e===s?FIT.MAIN:FIT.X)*(+f.t.b[e]||0);return Q};
+const fitNew=()=>({F:[0,0,0,0],d:fitDay(),L:fitDay(),t:{d:fitDay(),b:[0,0,0,0],n:[0,0,0,0]}});
+const fitSets=()=>{const f=P&&P.fit;return f&&f.t&&f.t.d===f.d?f.t.n.reduce((a,b)=>a+(+b||0),0):0};
+const fitIdle=()=>{const f=P&&P.fit;return f?Math.max(0,fitDay()-(Number.isFinite(f.L)?f.L:fitDay())):0};
+function fitInit(){if(!P)return;const f=P.fit;if(!f||!Array.isArray(f.F)||f.F.length!==4||!f.t||!Array.isArray(f.t.b)||!Array.isArray(f.t.n))P.fit=fitNew();else if(!Number.isFinite(P.fit.L))P.fit.L=P.fit.d}
 /* đóng các ngày đã trôi. after=true: vừa tải lại, các ngày thiếu sau ngày cuối được tính là offline (tụt chậm) */
-function fitSettle(after){if(!P)return;fitInit();const f=P.fit,now=fitDay();if(!Number.isFinite(f.d)||f.d>now)f.d=now;let first=true,n=0;
- while(f.d<now&&n++<4000){const Q=fitQ(f),a=(after&&!first)?FIT.AOFF:FIT.A;for(let s=0;s<4;s++)f.F[s]=clamp(f.F[s]+a*(Q[s]-f.F[s]),0,1);f.d++;f.t={d:f.d,b:[0,0,0,0],n:[0,0,0,0]};first=false}}
+function fitSettle(after){if(!P)return;fitInit();const f=P.fit,now=fitDay();if(!Number.isFinite(f.d)||f.d>now)f.d=now;if(!Number.isFinite(f.L)||f.L>now)f.L=f.d;let first=true,n=0;
+ while(f.d<now&&n++<4000){f.d++;if(f.d-f.L>FIT.GRACE){const r=(after&&!first)?FIT.DOFF:FIT.DON;for(let s=0;s<4;s++)f.F[s]=clamp(f.F[s]*(1-r),0,1)}f.t={d:f.d,b:[0,0,0,0],n:[0,0,0,0]};first=false}}
 function fitTick(dt){if(!P)return;P.fitT=(P.fitT||0)-dt;if(P.fitT>0)return;P.fitT=4;fitSettle(false)}
-const fitPack=()=>{fitInit();const f=P.fit;return{F:f.F.map(v=>Math.round(v*10000)/10000),d:f.d,t:{d:f.t.d,b:f.t.b.map(v=>Math.round(v*1000)/1000),n:f.t.n.slice()}}};
-function fitLoad(o){if(!o||!Array.isArray(o.F)||o.F.length!==4){P.fit=fitNew();return}const f={F:o.F.map(v=>clamp(+v||0,0,1)),d:Math.floor(+o.d)||fitDay(),t:{d:o.t&&o.t.d!=null?Math.floor(+o.t.d):fitDay(),b:[0,0,0,0],n:[0,0,0,0]}};
- if(o.t&&Array.isArray(o.t.b))for(let i=0;i<4;i++){f.t.b[i]=clamp(+o.t.b[i]||0,0,1);f.t.n[i]=clamp(o.t.n&&+o.t.n[i]||0,0,FIT.TRY)}P.fit=f;fitSettle(true)}
+const fitPack=()=>{fitInit();const f=P.fit;return{F:f.F.map(v=>Math.round(v*10000)/10000),d:f.d,L:f.L,t:{d:f.t.d,b:f.t.b.map(v=>Math.round(v*1000)/1000),n:f.t.n.slice()}}};
+function fitLoad(o){if(!o||!Array.isArray(o.F)||o.F.length!==4){P.fit=fitNew();return}const f={F:o.F.map(v=>clamp(+v||0,0,1)),d:Math.floor(+o.d)||fitDay(),L:o.L!=null&&Number.isFinite(+o.L)?Math.floor(+o.L):fitDay(),t:{d:o.t&&o.t.d!=null?Math.floor(+o.t.d):fitDay(),b:[0,0,0,0],n:[0,0,0,0]}};
+ if(o.t&&Array.isArray(o.t.b))for(let i=0;i<4;i++){f.t.b[i]=clamp(+o.t.b[i]||0,0,1);f.t.n[i]=clamp(o.t.n&&+o.t.n[i]||0,0,FIT.SETS)}P.fit=f;fitSettle(true)}
 const fitF=(s,f)=>{f=f||(P&&P.fit);return f&&Array.isArray(f.F)?clamp(+f.F[s]||0,0,1):0};
 const fitP=(s,f)=>{const v=fitF(s,f);return v>=.99?100:Math.round(20+80*v)};
 const fitTot=f=>{let v=0;for(let s=0;s<4;s++)v+=FIT.TW[s]*fitF(s,f);return v>=.99?100:Math.round((20+80*v)*10)/10};
@@ -5207,29 +5229,22 @@ addBlock(GYM.x-66,GYM.y-34,GYM.x+66,GYM.y);
 /* ---------- giao diện ---------- */
 const GY={ex:-1,run:0,raf:0,last:0,st:null,t:0,keyL:0,keyR:0,hold:0};
 function gymMsLeft(){return Math.max(0,CFG.DAY-(nowOnline()%CFG.DAY))}
-function openGym(){if(!S||mode!=='world'||modalOpen())return;GY.only=-1;GYR.x=240;GYR.y=258;GYR.dir='up';GYR.tx=null;GYR.pend=-1;fitSettle(false);keys={};gymMenu();$('#gymPlay').hidden=true;$('#gymMenu').hidden=false;$('#gymOv').hidden=false}
-function gymMenu(){$('#gymRoomBox').hidden=!!GY.run;if(!GY.run)gymRoomStart();$('#gymEn').textContent=Math.round(P.energy)+'%';const f=P.fit,Q=fitQ(f),tot=fitTot(),hpv=Math.round(P.hp==null?50:P.hp),left=Math.ceil(gymMsLeft()/60);
- const rows=FIT_EX.map((e,i)=>{if(i!==GY.only)return'';const s=e.s,p=fitP(s),b=f.t.d===f.d?f.t.b[i]:0,n=f.t.n[i]||0,eff=fitEff(s),nx=clamp(f.F[s]+FIT.A*(Q[s]-f.F[s]),0,1),np=nx>=.99?100:Math.round(20+80*nx),why=P.energy<CFG.PLAY_MIN?'Cần '+CFG.PLAY_MIN+'% năng lượng':n>=FIT.TRY?'Hết lượt hôm nay':'';
-  const efx=[`+${pctS(eff)} sát thương đánh quái`,`+${pctS(eff)} tốc độ chạy và game cần tốc độ`,`−${pctS(eff)} hao năng lượng`,`game chậm lại ${pctS(eff)} (pha chế, đập cua, câu cá)`][s];
-  return`<div class="gyr"><div class="gyh"><b>${e.n}</b><span>${FIT_N[s]}: <b class="gyp">${p}%</b></span></div><div class="gyb"><i style="width:${(p-20)/.8}%"></i></div>
-  <small>${e.d}</small><small class="gye">Hiện tại: ${efx}</small>
-  <div class="gyf"><span>Hôm nay: tốt nhất <b>${Math.round(b*100)}%</b> · ${n}/${FIT.TRY} lần${n?' · cuối ngày ~'+np+'%':''}</span><button class="btn sm" data-gx="${i}" ${why?'disabled':''}>${why||'TẬP ('+e.sec+'s · −'+e.en+' NL)'}</button></div></div>`}).join('')+(GY.only<0?'<p class="gynote" style="text-align:center;font-size:13px;margin:8px 0">Chưa chọn máy nào. Đi tới một máy trong phòng và bấm vào máy để xem bài tập.</p>':'');
- $('#gymMenu').innerHTML=`<div class="gysum"><div><small>THỂ LỰC TỔNG HỢP</small><b>${tot}%</b></div><div><small>HẠNH PHÚC</small><b>${hpv}%</b></div><div><small>NGÀY GAME CÒN</small><b>${left} phút</b></div></div>${rows}
- <p class="gynote">Mỗi ngày game (1 giờ thật) chỉ tính kết quả tốt nhất của mỗi bài, tối đa ${FIT.TRY} lần thử. Cuối ngày, chỉ số tiến dần về mức luyện tập của ngày đó. Ngày không tập thì tụt dần về 20%; khi bạn offline thì tụt chậm hơn. Muốn 100% phải tập đủ 4 bài mỗi ngày trong khoảng 6 tháng game. Hạnh phúc từ 60% giúp điểm tập ×1,1. Các lợi ích tắt trong Thách Đấu 1-1 cho công bằng.</p>`}
-$('#gymMenu').addEventListener('click',e=>{const b=e.target.closest('[data-gx]');if(b&&!b.disabled)gymStart(+b.dataset.gx)});
+function openGym(){if(!S||mode!=='world'||modalOpen())return;GY.only=-1;GY.res=null;fitSettle(false);keys={};gymMenu();$('#gymPlay').hidden=true;$('#gymMenu').hidden=false;$('#gymOv').hidden=false}
+function gymMenu(){$('#gymRoomBox').hidden=!!GY.run;if(!GY.run)gymRoomStart();$('#gymEn').textContent=Math.round(P.energy)+'%';const f=P.fit,tot=fitTot(),hpv=Math.round(P.hp==null?50:P.hp),left=Math.ceil(gymMsLeft()/60),used=fitSets(),keep=Math.max(0,Math.ceil((FIT.GRACE-fitIdle())/24));
+ const R=GY.res,res=R?`<div class="gyres"><b>KẾT QUẢ · ${R.n}</b><span class="gyl">${R.lab} · ${R.q}%</span><small>${R.nm}: ${R.b}% → <b>${R.a}%</b> (${R.a>=R.b?'+':''}${R.a-R.b}%)${R.hp?' · Hạnh phúc cao ×1,1':''}</small></div>`:'';
+ const rows=FIT_EX.map((e,i)=>{const p=fitP(e.s),n=f.t.d===f.d?f.t.n[i]||0:0;return`<div class="gym4" data-gx="${i}"><span>${e.n}</span><div class="gyb"><i style="width:${(p-20)/.8}%"></i></div><b>${p}%</b><small>${FIT_N[e.s]}${n?' · hôm nay ×'+n:''}</small></div>`}).join('');
+ $('#gymMenu').innerHTML=`<div class="gysum"><div><small>THỂ LỰC</small><b>${tot}%</b></div><div><small>SET HÔM NAY</small><b>${used}/${FIT.SETS}</b></div><div><small>NGÀY MỚI SAU</small><b>${left} phút</b></div></div>${res}<div class="gy4s">${rows}</div>
+ <p class="gynote"><b>Bấm vào máy để tập ngay.</b> Mỗi ngày game (1 giờ thật) tập tối đa ${FIT.SETS} set, mỗi set là 1 bài trên 1 máy. Chỉ số tăng ngay sau mỗi set (tập càng tốt tăng càng nhiều, càng cao càng khó tăng). Chỉ số chỉ tụt khi bạn ${FIT.GRACE/24} ngày liền không tập${keep<FIT.GRACE/24?' (còn '+keep+' ngày)':''}. Hạnh phúc từ 60% giúp điểm tập ×1,1. Các lợi ích tắt trong Thách Đấu 1-1 cho công bằng.</p>`}
+$('#gymMenu').addEventListener('click',e=>{const b=e.target.closest('[data-gx]');if(b)gymStart(+b.dataset.gx)});
 
 /* ---------- bên trong phòng gym ---------- */
 const GYR={x:240,y:258,dir:'up',anim:0,mv:false,tx:null,ty:null,pend:-1,k:{},raf:0,last:0,t:0,on:0};
 const GYR_M=[0,1,2,3].map(i=>({i,x:78+i*108,y:212,s:1.7,pt:{x:78+i*108,y:238}}));
 function gymRoomHit(q){return GYR_M.find(m=>q.x>=m.x-46&&q.x<=m.x+46&&q.y>=m.y-m.s*48-6&&q.y<=m.y+6)}
-function gymRoomPick(i){GY.only=i;GYR.pend=-1;GYR.tx=null;gymMenu();beep(660,.06,'square',.05)}
+function gymRoomPick(i){beep(660,.06,'square',.05);gymStart(i)}
 function gymRoomStart(){if(GYR.on)return;GYR.on=1;GYR.last=performance.now();GYR.raf=requestAnimationFrame(gymRoomLoop)}
 function gymRoomNear(){let b=null,bd=70;GYR_M.forEach(m=>{const d=Math.hypot(GYR.x-m.pt.x,GYR.y-m.pt.y);if(d<bd){bd=d;b=m}});return b}
-function gymRoomLoop(ts){if($('#gymOv').hidden||GY.run){GYR.on=0;return}const dt=Math.min(.05,(ts-GYR.last)/1000||0);GYR.last=ts;GYR.t+=dt;const R=GYR;R.mv=false;
- let dx=(R.k.r?1:0)-(R.k.l?1:0),dy=(R.k.d?1:0)-(R.k.u?1:0);
- if(dx||dy){R.tx=null;R.pend=-1}else if(R.tx!=null){const ex=R.tx-R.x,ey=R.ty-R.y,d=Math.hypot(ex,ey);if(d<4){R.tx=null;if(R.pend>=0)gymRoomPick(R.pend)}else{dx=ex/d;dy=ey/d}}
- if(dx||dy){const n=Math.hypot(dx,dy),st=100*dt;R.x=clamp(R.x+dx/n*st,24,456);R.y=clamp(R.y+dy/n*st,176,264);R.mv=true;R.anim+=dt;R.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down')}
- gymRoomDraw(R.t);GYR.raf=requestAnimationFrame(gymRoomLoop)}
+function gymRoomLoop(ts){if($('#gymOv').hidden||GY.run){GYR.on=0;return}GYR.t+=.016;gymRoomDraw(GYR.t);GYR.raf=requestAnimationFrame(gymRoomLoop)}
 function gymRoomDraw(t){const g=$('#gymRoom').getContext('2d');g.imageSmoothingEnabled=false;
  rr(g,0,0,480,150,'#1b2136');for(let x=0;x<480;x+=40)rr(g,x,0,2,150,'#232a44');
  rr(g,0,0,480,10,'#12151f');rr(g,0,10,480,2,'#2fe0d0');
@@ -5246,25 +5261,18 @@ function gymRoomDraw(t){const g=$('#gymRoom').getContext('2d');g.imageSmoothingE
  /* sàn */
  for(let y=150;y<270;y+=24)for(let x=0;x<480;x+=24)rr(g,x,y,24,24,((x+y)/24)%2?'#262c40':'#2b3248');
  rr(g,0,150,480,4,'#2fe0d0');rr(g,0,154,480,2,'#0b0f1c');
- const near=gymRoomNear();
+ const near=null;
  /* máy tập */
  GYR_M.forEach(m=>{GYM.ms=GYM.ms||[];if(!GYM.ms[m.i])GYM.ms[m.i]=makeGymM(m.i);const sel=GY.only===m.i,hot=near&&near.i===m.i;
   if(sel||hot||GYR.pend===m.i){g.fillStyle='rgba(47,224,208,'+(sel?.35:.2+.1*Math.sin(t*6))+')';g.fillRect(m.x-48,m.y-4,96,14)}
   g.drawImage(GYM.ms[m.i].c,m.x-26*m.s,m.y-48*m.s,52*m.s,52*m.s);
-  ptext(g,GYM_MN[m.i],m.x,m.y+22,11,sel?'#ffd23f':hot?'#2fe0d0':'#e8ecf4','center',FONT)});
- /* nhân vật */
- const R=GYR,d=R.dir==='left'||R.dir==='right'?'side':R.dir,fi=R.mv?Math.floor(R.anim*8)%4:Math.floor(t*1.5)%2?0:2,img=P.fr&&P.fr[d]&&P.fr[d][fi],x=Math.round(R.x),y=Math.round(R.y);
- g.fillStyle='rgba(0,0,0,.35)';g.fillRect(x-12,y-2,24,5);
- if(img){if(R.dir==='left'){g.save();g.translate(x,0);g.scale(-1,1);g.drawImage(img,-20,y-62,40,64);g.restore()}else g.drawImage(img,x-20,y-62,40,64)}
- if(near&&GY.only!==near.i)ptext(g,'E / bấm máy để chọn',240,262,12,'#a9bde0','center',FONT)}
+  ptext(g,GYM_MN[m.i],m.x,m.y+22,11,sel?'#ffd23f':hot?'#2fe0d0':'#e8ecf4','center',FONT);ptext(g,fitP(FIT_EX[m.i].s)+'%',m.x,m.y+36,12,'#ffd23f','center',FONT)});
+ ptext(g,'BẤM VÀO MÁY ĐỂ TẬP NGAY',240,264,12,'#a9bde0','center',FONT)}
 $('#gymRoom').addEventListener('pointerdown',e=>{e.preventDefault();const r=e.currentTarget.getBoundingClientRect(),q={x:(e.clientX-r.left)/r.width*480,y:(e.clientY-r.top)/r.height*270},m=gymRoomHit(q);
- if(m){GYR.pend=m.i;GYR.tx=m.pt.x;GYR.ty=m.pt.y;if(Math.hypot(GYR.x-m.pt.x,GYR.y-m.pt.y)<8)gymRoomPick(m.i)}else{GYR.pend=-1;GYR.tx=clamp(q.x,24,456);GYR.ty=clamp(q.y,176,264)}});
-window.addEventListener('keydown',e=>{if($('#gymOv').hidden||GY.run)return;const c=e.code,mp={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'u',KeyW:'u',ArrowDown:'d',KeyS:'d'};
- if(mp[c]){GYR.k[mp[c]]=1;e.preventDefault();e.stopImmediatePropagation();return}
- if(c==='KeyE'||c==='Space'||c==='Enter'){const m=gymRoomNear();if(m){e.preventDefault();e.stopImmediatePropagation();gymRoomPick(m.i)}}},true);
-window.addEventListener('keyup',e=>{const mp={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'u',KeyW:'u',ArrowDown:'d',KeyS:'d'};if(mp[e.code])GYR.k[mp[e.code]]=0},true);
+ if(m)gymRoomPick(m.i)});
+window.addEventListener('keydown',e=>{if($('#gymOv').hidden||GY.run)return;const m=/^(Digit|Numpad)([1-4])$/.exec(e.code);if(m){e.preventDefault();e.stopImmediatePropagation();gymRoomPick(+m[2]-1)}},true);
 /* ---------- mini-game ---------- */
-function gymStart(ex){const E=FIT_EX[ex];fitSettle(false);if(P.energy<CFG.PLAY_MIN){toast('Năng lượng chưa đủ để tập.',true);return}const f=P.fit;if((f.t.n[ex]||0)>=FIT.TRY){toast('Hết lượt tập bài này hôm nay.',true);return}
+function gymStart(ex){const E=FIT_EX[ex];fitSettle(false);if(P.energy<CFG.PLAY_MIN){toast('Năng lượng chưa đủ để tập.',true);return}const f=P.fit;if(fitSets()>=FIT.SETS){toast('Hôm nay đã đủ '+FIT.SETS+' set. Ngày game mới sau '+Math.ceil(gymMsLeft()/60)+' phút.',true);return}
  $('#gymRoomBox').hidden=true;GY.ex=ex;GY.t=0;GY.endAt=0;GY.run=1;GY.done=0;GY.last=performance.now();GY.hold=0;GY.keyL=GY.keyR=0;
  const S0=[()=>({rep:0,acc:[],zone:.36,pos:.5,flash:0,ly:0,msg:''}),()=>({steps:0,last:'',stum:0,need:95,px:0}),()=>({H:.5,inT:0,zc:.5,zw:.38,ang:0}),()=>({n:0,sc:0,wrong:0,ph:'wait',w:.8,tg:null,rt:0,fl:0,fm:''})][ex]();GY.st=S0;
  $('#gymMenu').hidden=true;$('#gymPlay').hidden=false;$('#gymTitle').textContent=E.n.toUpperCase()+' · '+FIT_N[E.s];
@@ -5284,10 +5292,12 @@ function gymLoop(ts){if(!GY.run)return;const dt=Math.min(.05,(ts-GY.last)/1000||
  gymDraw();
  if((GY.endAt&&GY.t>=GY.endAt)||GY.t>=E.sec+(ex===3?10:0)){gymFinish();return}
  GY.raf=requestAnimationFrame(gymLoop)}
-function gymFinish(){GY.run=0;const q=clamp(gymQ(),0,1),ex=GY.ex,E=FIT_EX[ex];fitSettle(false);const f=P.fit,q2=Math.min(1,q*((P.hp||0)>=60?1.1:1));
- if(f.t.d!==f.d)f.t={d:f.d,b:[0,0,0,0],n:[0,0,0,0]};f.t.n[ex]=(f.t.n[ex]||0)+1;if(q2>f.t.b[ex])f.t.b[ex]=q2;
+function gymFinish(){GY.run=0;const q=clamp(gymQ(),0,1),ex=GY.ex,E=FIT_EX[ex];fitSettle(false);const f=P.fit,hi=(P.hp||0)>=60,q2=Math.min(1,q*(hi?1.1:1));
+ if(f.t.d!==f.d)f.t={d:f.d,b:[0,0,0,0],n:[0,0,0,0]};f.t.n[ex]=(f.t.n[ex]||0)+1;if(q2>f.t.b[ex])f.t.b[ex]=q2;f.L=f.d;
+ const b=fitP(E.s);f.F[E.s]=clamp(f.F[E.s]+FIT.G*q2*(1-f.F[E.s]),0,1);const a=fitP(E.s);
  P.energy=Math.max(0,P.energy-E.en*lmDrain());const lab=q<.3?'YẾU':q<.6?'KHÁ':q<.85?'TỐT':'XUẤT SẮC';
- toast(E.n+': '+lab+' ('+Math.round(q*100)+'%).'+((P.hp||0)>=60?' Hạnh phúc cao nên ×1,1.':'')+' Chỉ số được cập nhật cuối ngày game.',false,4500);sysLog('Gym '+E.n+' '+Math.round(q*100)+'%');
+ GY.res={n:E.n,lab,q:Math.round(q*100),nm:FIT_N[E.s],b,a,hp:hi};
+ toast(E.n+': '+lab+' ('+Math.round(q*100)+'%). '+FIT_N[E.s]+' '+b+'% → '+a+'%.',false,4500);sysLog('Gym '+E.n+' '+Math.round(q*100)+'%');
  try{saveState()}catch(e){}coin();$('#gymPlay').hidden=true;$('#gymMenu').hidden=false;gymMenu()}
 function gymQuit(){GY.run=0;cancelAnimationFrame(GY.raf);$('#gymPlay').hidden=true;$('#gymMenu').hidden=false;gymMenu()}
 function gymDraw(){const cv=$('#gymCv'),g=cv.getContext('2d'),st=GY.st,ex=GY.ex,t=GY.t;g.imageSmoothingEnabled=false;
