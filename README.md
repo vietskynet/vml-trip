@@ -689,3 +689,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Lừa đảo** (mặc định 2): trông như khách thường (vai ngẫu nhiên). Khi lại gần (120-420px) sẽ lao tới (tốc độ 70, người chơi 84) kèm dấu `!` cam và toast cảnh báo. Chạm trúng (hoặc lỡ bấm vào) mất 100k đến 1tr (làm tròn 50k, không quá số dư), tối đa `scamDay` (3) lần/ngày; sau đó chạy ra cổng, ẩn 60-120s rồi quay lại với vai khác. Chạy thoát >300px hoặc quá 10s thì hắn bỏ cuộc.
 - **Admin**: thẻ "QUẢN LÝ NPC / BOT RESORT" ghi `config/npc` (bật/tắt, số lượng từng loại, hệ số năng lượng, giới hạn/cooldown, khoảng tiền lừa, hệ số thưởng đại gia). Game đọc live, đổi số lượng thì dựng lại NPC trong vài giây. "VỀ MẶC ĐỊNH" xoá `config/npc`.
 - Tiền vẫn do client tự cộng/trừ (giống phần còn lại). Không cần chạy SQL.
+
+## z37: SKY BAR (khu đặc biệt giữa resort)
+- Quán bar tròn lộ thiên tại (1260, 800) gần trung tâm, ngay trên khách sạn: sàn tối + viền neon đổi màu, sân khấu xoay, cột, quả cầu disco. Ban ngày có confetti rơi, ban đêm đèn disco quét, quầng sáng neon và đèn rọi từng vũ công (`skyGlow`, chạy trong pass cộng sáng ban đêm). Chặn đường đi bằng `addBlock`.
+- Vào bằng nút A tại cửa (hoặc chạm vào bar): modal `skyOv`, bấm "VÀO SÂN KHẤU" thì nhân vật lên sân khấu và tự múa quanh cột. Tối đa 3 người (slot 0-2), nhảy `dur` giây (mặc định 180) để nhận thưởng 1/2/3/4/5tr (trọng số 40/30/18/8/4, nhân `mul`). Cần ≥30% năng lượng, tốn thêm năng lượng khi nhảy, rời sớm không có thưởng, tối đa `cap` (3) lần thưởng mỗi ngày game.
+- Đồng bộ: `pos.dn` = slot+1; người khác nhìn thấy dancer (vị trí vẽ tính từ `S.time`, không cần gửi vị trí liên tục). Khi ít hơn 2 người thật đang nhảy, 2 vũ công NPC (Kiki, Rina) lấp chỗ cho bar luôn sống động.
+- Tip: người đứng ngoài mở modal, bấm Tip 50k/100k/200k/500k cho vũ công thật; dùng lại `gifts/{uid}` với cờ `tip:1` (không cần SQL), người nhận có toast riêng, cộng vào HUD.
+- Admin: thẻ "SKY BAR" ghi `config/sky` (mở/đóng, số lần/ngày, thời gian nhảy, hệ số thưởng).

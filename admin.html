@@ -243,6 +243,18 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <p class="msg" id="npcMsg"></p>
    </div>
    <div class="card" style="margin-top:14px">
+    <h2>SKY BAR</h2>
+    <p>Quán bar tròn gần trung tâm resort. Người chơi vào múa cột (tối đa 3 người cùng lúc), nhận thưởng ngẫu nhiên 1tr đến 5tr (nhân hệ số bên dưới) khi nhảy đủ thời gian. Người khác đứng ngoài có thể tip cho vũ công.</p>
+    <div class="mon">
+     <label>Trạng thái<select id="sky_on"><option value="1">MỞ CỬA</option><option value="0">ĐÓNG CỬA</option></select></label>
+     <label>Số lần nhảy có thưởng/ngày game mỗi người<input id="sky_cap" type="number" step="1" min="0"></label>
+     <label>Thời gian nhảy để nhận thưởng (giây)<input id="sky_dur" type="number" step="10" min="30"></label>
+     <label>Hệ số tiền thưởng (1 = 1tr đến 5tr)<input id="sky_mul" type="number" step="any" min="0"></label>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="ok" id="skySave">LƯU SKY BAR</button><button class="ghost" id="skyReset">VỀ MẶC ĐỊNH</button></div>
+    <p class="msg" id="skyMsg"></p>
+   </div>
+   <div class="card" style="margin-top:14px">
     <h2>TẶNG TIỀN CHO TẤT CẢ</h2>
     <p>Cộng tiền cho mọi người chơi đã có nhân vật tính tới lúc bấm. Người offline nhận khi quay lại.</p>
     <div class="row"><input id="bAmt" type="number" min="0" step="100000" value="1000000" aria-label="Số tiền tặng mọi người"><button class="ok" id="bGo">TẶNG TẤT CẢ</button></div>
@@ -356,7 +368,7 @@ db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{pdRender()}catch(e){}});
  db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
- db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{npcFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
+ db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{npcFill()}catch(e){}try{skyFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
 });
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=SB();if(!sb)return;$('#lgo').disabled=true;say('#lmsg','Đang kiểm tra…');
  try{const {data,error}=await sb.rpc('admin_login',{u_name:$('#lu').value,p_word:$('#lp').value});if(error)throw error;if(!data||!data.ok){say('#lmsg',(data&&data.msg)||'Sai username hoặc mật khẩu.',1);$('#lgo').disabled=false;return}
@@ -734,6 +746,11 @@ function npcFill(){const c=config.npc||{};NPC_K.forEach(k=>{const el=$('#npc_'+k
 $('#npcSave').onclick=()=>{const v={};NPC_K.forEach(k=>{const x=+$('#npc_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:NPC_DEF[k]});v.on=v.on?1:0;['staff','guests','rich','scam'].forEach(k=>{v[k]=Math.round(v[k])});v.staff=Math.min(8,v.staff);v.guests=Math.min(14,v.guests);v.rich=Math.min(4,v.rich);v.scam=Math.min(4,v.scam);v.richChance=Math.min(1,v.richChance);v.enMul=Math.min(3,v.enMul);v.richMul=Math.min(3,v.richMul);v.scamMax=Math.min(1e7,v.scamMax);v.scamMin=Math.min(v.scamMin,v.scamMax);
  db.ref('config/npc').set(v).then(()=>say('#npcMsg','Đã lưu. Các máy đang chơi sẽ cập nhật NPC trong vài giây.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
 $('#npcReset').onclick=()=>{db.ref('config/npc').set(null).then(()=>say('#npcMsg','Đã trả NPC về mặc định.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
+const SKY_DEF={on:1,cap:3,dur:180,mul:1},SKY_K=['on','cap','dur','mul'];
+function skyFill(){const c=config.sky||{};SKY_K.forEach(k=>{const el=$('#sky_'+k);if(!el||document.activeElement===el)return;el.value=c[k]!=null&&c[k]!==''?c[k]:SKY_DEF[k]})}
+$('#skySave').onclick=()=>{const v={};SKY_K.forEach(k=>{const x=+$('#sky_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:SKY_DEF[k]});v.on=v.on?1:0;v.cap=Math.min(30,Math.round(v.cap));v.dur=Math.min(900,Math.max(30,Math.round(v.dur)));v.mul=Math.min(3,v.mul);
+ db.ref('config/sky').set(v).then(()=>say('#skyMsg','Đã lưu Sky Bar. Các máy đang chơi cập nhật trong vài giây.')).catch(e=>say('#skyMsg','Lỗi: '+e.message,1))};
+$('#skyReset').onclick=()=>{db.ref('config/sky').set(null).then(()=>say('#skyMsg','Đã trả Sky Bar về mặc định.')).catch(e=>say('#skyMsg','Lỗi: '+e.message,1))};
 $('#mStop').onclick=()=>{db.ref('event/monster').set(null).then(()=>say('#mMsg','Đã thu hồi quái vật.')).catch(e=>say('#mMsg','Lỗi: '+e.message,1))};
 $('#bGo').onclick=()=>{const a=Math.round(+$('#bAmt').value||0);if(a<=0){say('#bMsg','Nhập số tiền lớn hơn 0.',1);return}db.ref('day/bonus').set({id:Date.now(),amount:a,ts:TS}).then(()=>say('#bMsg','Đã tặng '+VND(a)+' cho mọi người.')).catch(e=>say('#bMsg','Lỗi: '+e.message,1))};
 /* system */

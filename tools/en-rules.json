@@ -289,5 +289,13 @@
 "{1}% của {2} cộng {3}% của {4} = ?": "{1}% of {2} plus {3}% of {4} = ?",
 "Tìm x: {1}x + {2} = {3} = ?": "Solve for x: {1}x + {2} = {3}",
 "Tổng các số lẻ liên tiếp từ 1 đến {1} = ?": "Sum of consecutive odd numbers from 1 to {1} = ?",
-"x² − {1}x + {2} = 0, nghiệm lớn hơn của x = ?": "x² − {1}x + {2} = 0, the larger root x = ?"
+"x² − {1}x + {2} = 0, nghiệm lớn hơn của x = ?": "x² − {1}x + {2} = 0, the larger root x = ?",
+"Hôm nay bạn đã nhảy đủ {1} lần ở Sky Bar, mai quay lại nhé!": "You have danced {1} times at Sky Bar today, come back tomorrow!",
+"Bạn lên sân khấu Sky Bar! Nhảy đủ {1} phút để nhận thưởng.": "You are on the Sky Bar stage! Dance for {1} minutes to get your reward.",
+"Sky Bar thưởng bạn {1} cho màn múa cột!": "Sky Bar rewards you {1} for the pole dance!",
+"Sky Bar thưởng bạn {1} cho màn múa cột! (Tip nhận thêm {2})": "Sky Bar rewards you {1} for the pole dance! (Extra tips {2})",
+"{1} vừa tip cho bạn {2} ở Sky Bar!": "{1} just tipped you {2} at Sky Bar!",
+"Đã tip {1} cho {2}!": "Tipped {1} to {2}!",
+"Tip {1}": "Tip {1}",
+"SKY BAR · còn {1}": "SKY BAR · {1} left"
 }
