@@ -757,3 +757,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z48
 - Showroom xe và trung tâm đua rùa trả về kích thước gốc (giữ vị trí mới); chỉ lưới 12 lô vườn còn thu nhỏ 30% (`LS`).
+
+## z49
+- Dời quầy Pha chế và Dừa rơi sang phải 200px để tránh cổng lâu đài (LY.bar, LY.coco).
