@@ -244,12 +244,12 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    </div>
    <div class="card" style="margin-top:14px">
     <h2>SKY BAR</h2>
-    <p>Quán bar tròn gần trung tâm resort. Người chơi vào múa cột (tối đa 3 người cùng lúc), nhận thưởng ngẫu nhiên 1tr đến 5tr (nhân hệ số bên dưới) khi nhảy đủ thời gian. Người khác đứng ngoài có thể tip cho vũ công.</p>
+    <p>Quán bar tròn gần trung tâm resort. Game nhảy nhịp điệu kiểu Audition, 10 level, mỗi lượt 30 giây (tối đa 3 người cùng lúc trên sân khấu). Đạt điểm mục tiêu của level thì nhận thưởng từ 1tr (level 1) đến 20tr (level 10), nhân với hệ số bên dưới. Level mở khóa dần. Người khác đứng ngoài có thể tip cho vũ công.</p>
     <div class="mon">
      <label>Trạng thái<select id="sky_on"><option value="1">MỞ CỬA</option><option value="0">ĐÓNG CỬA</option></select></label>
-     <label>Số lần nhảy có thưởng/ngày game mỗi người<input id="sky_cap" type="number" step="1" min="0"></label>
-     <label>Thời gian nhảy để nhận thưởng (giây)<input id="sky_dur" type="number" step="10" min="30"></label>
-     <label>Hệ số tiền thưởng (1 = 1tr đến 5tr)<input id="sky_mul" type="number" step="any" min="0"></label>
+     <label>Số lượt nhận thưởng/ngày game mỗi người<input id="sky_cap" type="number" step="1" min="0"></label>
+     <label>Tổng tiền thưởng tối đa/ngày game mỗi người (₫)<input id="sky_dayMax" type="number" step="1000000" min="0"></label>
+     <label>Hệ số tiền thưởng (1 = 1tr đến 20tr)<input id="sky_mul" type="number" step="any" min="0"></label>
     </div>
     <div class="row" style="margin-top:12px"><button class="ok" id="skySave">LƯU SKY BAR</button><button class="ghost" id="skyReset">VỀ MẶC ĐỊNH</button></div>
     <p class="msg" id="skyMsg"></p>
@@ -746,9 +746,9 @@ function npcFill(){const c=config.npc||{};NPC_K.forEach(k=>{const el=$('#npc_'+k
 $('#npcSave').onclick=()=>{const v={};NPC_K.forEach(k=>{const x=+$('#npc_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:NPC_DEF[k]});v.on=v.on?1:0;['staff','guests','rich','scam'].forEach(k=>{v[k]=Math.round(v[k])});v.staff=Math.min(8,v.staff);v.guests=Math.min(14,v.guests);v.rich=Math.min(4,v.rich);v.scam=Math.min(4,v.scam);v.richChance=Math.min(1,v.richChance);v.enMul=Math.min(3,v.enMul);v.richMul=Math.min(3,v.richMul);v.scamMax=Math.min(1e7,v.scamMax);v.scamMin=Math.min(v.scamMin,v.scamMax);
  db.ref('config/npc').set(v).then(()=>say('#npcMsg','Đã lưu. Các máy đang chơi sẽ cập nhật NPC trong vài giây.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
 $('#npcReset').onclick=()=>{db.ref('config/npc').set(null).then(()=>say('#npcMsg','Đã trả NPC về mặc định.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
-const SKY_DEF={on:1,cap:3,dur:180,mul:1},SKY_K=['on','cap','dur','mul'];
+const SKY_DEF={on:1,cap:4,dayMax:40000000,mul:1},SKY_K=['on','cap','dayMax','mul'];
 function skyFill(){const c=config.sky||{};SKY_K.forEach(k=>{const el=$('#sky_'+k);if(!el||document.activeElement===el)return;el.value=c[k]!=null&&c[k]!==''?c[k]:SKY_DEF[k]})}
-$('#skySave').onclick=()=>{const v={};SKY_K.forEach(k=>{const x=+$('#sky_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:SKY_DEF[k]});v.on=v.on?1:0;v.cap=Math.min(30,Math.round(v.cap));v.dur=Math.min(900,Math.max(30,Math.round(v.dur)));v.mul=Math.min(3,v.mul);
+$('#skySave').onclick=()=>{const v={};SKY_K.forEach(k=>{const x=+$('#sky_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:SKY_DEF[k]});v.on=v.on?1:0;v.cap=Math.min(30,Math.round(v.cap));v.dayMax=Math.min(1e9,Math.round(v.dayMax));v.mul=Math.min(3,v.mul);
  db.ref('config/sky').set(v).then(()=>say('#skyMsg','Đã lưu Sky Bar. Các máy đang chơi cập nhật trong vài giây.')).catch(e=>say('#skyMsg','Lỗi: '+e.message,1))};
 $('#skyReset').onclick=()=>{db.ref('config/sky').set(null).then(()=>say('#skyMsg','Đã trả Sky Bar về mặc định.')).catch(e=>say('#skyMsg','Lỗi: '+e.message,1))};
 $('#mStop').onclick=()=>{db.ref('event/monster').set(null).then(()=>say('#mMsg','Đã thu hồi quái vật.')).catch(e=>say('#mMsg','Lỗi: '+e.message,1))};

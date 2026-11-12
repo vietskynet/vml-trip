@@ -299,5 +299,14 @@
 "Tip {1}": "Tip {1}",
 "SKY BAR · còn {1}": "SKY BAR · {1} left",
 "Sky Bar chấm hạng {1} ({2} điểm, combo tối đa {3}): thưởng {4}!": "Sky Bar grade {1} ({2} points, max combo {3}): reward {4}!",
-"Sky Bar chấm hạng {1} ({2} điểm, combo tối đa {3}): thưởng {4}! Tip nhận thêm {5}.": "Sky Bar grade {1} ({2} points, max combo {3}): reward {4}! Extra tips {5}."
+"Sky Bar chấm hạng {1} ({2} điểm, combo tối đa {3}): thưởng {4}! Tip nhận thêm {5}.": "Sky Bar grade {1} ({2} points, max combo {3}): reward {4}! Extra tips {5}.",
+"MỤC TIÊU {1}": "TARGET {1}",
+"LV {1}: đạt từ {2} điểm để nhận {3} (xuất sắc từ {4} điểm: +25%). Mỗi lượt tốn {5}% năng lượng, hàng {6} mũi tên.": "LV {1}: reach {2} points to earn {3} (excellent from {4} points: +25%). Each run costs {5}% energy, rows of {6} arrows.",
+"Hôm nay còn {1} lượt nhận thưởng.": "{1} rewards left today.",
+"Cần ít nhất {1}% năng lượng cho level này.": "You need at least {1}% energy for this level.",
+"Thưởng {1}!": "Reward {1}!",
+"Thưởng {1}! (Tip nhận thêm {2})": "Reward {1}! (Extra tips {2})",
+"Chưa đạt điểm mục tiêu {1}. Thử lại nhé!": "Target score {1} not reached. Try again!",
+"Sky Bar Dance LV{1} +{2}": "Sky Bar Dance LV{1} +{2}",
+"COMBO x{1}": "COMBO x{1}"
 }

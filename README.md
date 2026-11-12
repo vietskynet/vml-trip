@@ -703,3 +703,13 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Hạng cuối trận (S/A/B/C/D, theo trung bình chất lượng các vòng, cần ≥4 vòng) quyết định bảng trọng số thưởng 1-5tr (`RH_W`): S dễ trúng 4-5tr, D gần như chỉ 1tr. Vẫn áp dụng giới hạn/ngày, hệ số `mul`, admin `config/sky`.
 - Nhạc: chiptune 126 BPM tạo bằng WebAudio (`rhMusStart`: kick, hi-hat, bass vuông, lead tam giác), tự dừng khi rời sân khấu.
 - Không cần chạy SQL.
+
+## z39 (12.11.2026) – Sky Bar Dance (popup minigame) + nút nhạc
+
+- Sky Bar chuyển thành popup minigame riêng (`#sgOv`) kiểu Audition: tối ưu PC (ưu tiên) và mobile dọc (safe-area, 4 nút mũi tên + NHẢY!). Có hướng dẫn 3 bước khi vào, thanh nhịp Perfect, nhạc WebAudio theo BPM (tôn trọng nút tắt nhạc).
+- 10 level, mỗi lượt 30 giây. Mục tiêu điểm [1800,1900,1900,1800,1750,1700,1650,1600,1600,1600]; thưởng 1 / 1.5 / 2 / 3 / 4 / 6 / 8 / 11 / 15 / 20 triệu (xuất sắc +25%). Mở khóa dần (`st.skc`), tốn năng lượng 5+L%, cần ≥30%.
+- Chống lạm phát: tối đa 4 lượt thưởng/ngày game và 40tr/ngày (admin `config/sky`: on, cap, dayMax, mul).
+- Hạng Miss/Cool/Wow/Perfect → điệu nhảy kết thúc khác nhau; đồng bộ `dm` qua sendPos để người chơi bên ngoài thấy nhân vật nhảy tương ứng.
+- Bot/NPC không còn lên sàn nhảy (chỉ người chơi thật).
+- Thêm lại nút ♪ tắt/bật nhạc cạnh MENU (`#bMus2`).
+- Không cần chạy SQL.
