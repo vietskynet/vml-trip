@@ -399,7 +399,8 @@ body.m-room .pad{display:none!important}
 .mefit{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 10px}.mefit>div{background:#0b1636;border:3px solid #000;padding:5px 8px}.mefit small{display:block;color:var(--muted);font-size:14px}.mefit .gyb{height:8px;background:#000;margin:3px 0}.mefit .gyb i{display:block;height:100%;background:var(--sun)}
 .mename{margin:0 0 8px;font-size:20px}.lmlog{font-size:15px;margin:0 0 8px}.lmlog small{color:var(--muted)}.mestep{margin:0 0 10px}.mestep .gyb{height:10px;background:#000;margin:0 0 4px}.mestep .gyb i{display:block;height:100%;background:#5fd4ff}.mestxt{margin:0;font-size:15px;color:var(--muted)}
 @media (max-width:760px),(pointer:coarse) and (max-height:620px){.mtabs{padding-right:46px}.modal .card .row:has(>[data-act="close"]){position:sticky;bottom:-8px;background:var(--panel);padding:8px 0;margin-top:8px;z-index:20;border-top:2px solid #000}.mtabs button{font-size:12px;padding:8px 3px}.mehead b{font-size:18px}}
-#skyHud{position:fixed;left:50%;bottom:calc(210px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:45;background:rgba(24,10,56,.94);border:3px solid #ff4fa0;color:#fff;padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:14px;white-space:nowrap;max-width:96vw}#skyHud[hidden]{display:none}#skyHud button{background:#3a2a6a;color:#fff;border:2px solid #000;padding:6px 8px;font:inherit;cursor:pointer}.skrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}.skrow>span{display:flex;flex-wrap:wrap;gap:6px}
+#skyHud{position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:rgba(24,10,56,.95);border:3px solid #ff4fa0;color:#fff;padding:8px 10px;display:flex;flex-direction:column;gap:6px;align-items:stretch;width:min(96vw,430px);font-size:14px}#skyHud[hidden]{display:none}#skyHud button{background:#3a2a6a;color:#fff;border:2px solid #000;padding:8px 6px;font:inherit;cursor:pointer;touch-action:manipulation;user-select:none}#skyHud .skh1{display:flex;justify-content:space-between;gap:8px;white-space:nowrap}#skyHud .skh2{display:grid;grid-template-columns:repeat(4,1fr) 1.6fr;gap:6px}#skyHud .skh2 button{font-size:22px;min-height:50px;background:#4a2f8f}#skyHud #rhGo{font-size:15px;background:#d8327f}#rhMsg{height:20px;text-align:center;font-size:18px;color:#ffd23f}#rhMsg[data-g=P]{color:#7dffb0}#rhMsg[data-g=M]{color:#ff8a8a}#rhSeq{display:flex;justify-content:center;gap:4px;min-height:38px;flex-wrap:wrap}#rhSeq span{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:#241a52;border:2px solid #000;font-size:20px;color:#9fb4ff}#rhSeq span.cu{background:#ffd23f;color:#201000}#rhSeq span.dn{background:#2fe39a;color:#06301e}#rhT{height:6px;background:rgba(255,255,255,.14)}#rhT i{display:block;height:100%;background:#ff4fa0;width:0}#rhBar{position:relative;height:18px;background:#1a1438;border:2px solid #000;visibility:hidden}#rhBar u{position:absolute;left:24%;width:52%;top:0;bottom:0;background:rgba(255,210,63,.25)}#rhBar u:after{content:'';position:absolute;left:38%;width:24%;top:0;bottom:0;background:rgba(47,227,154,.55)}#rhCur{position:absolute;top:-3px;width:6px;height:20px;margin-left:-3px;background:#fff}#skyHud #skyLeave{font-size:12px;padding:5px;background:#2a2050}
+.skrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}.skrow>span{display:flex;flex-wrap:wrap;gap:6px}
 </style>
 </head>
 <body>
@@ -787,7 +788,15 @@ body.m-room .pad{display:none!important}
     <div class="row"><button class="btn ok" id="skyGo">VÀO SÂN KHẤU MÚA CỘT</button><button class="btn ghost" data-close="skyOv">ĐÓNG</button></div>
   </div>
 </div>
-<div id="skyHud" hidden><span>SKY BAR · còn <b id="skyTime">3:00</b><span id="skyTips"></span></span><button id="skyLeave">RỜI SÂN KHẤU</button></div>
+<div id="skyHud" hidden>
+  <div class="skh1"><span>SKY BAR · còn <b id="skyTime">3:00</b></span><span>Điểm <b id="rhScore">0</b></span><span>Combo <b id="rhCombo">0</b></span><span id="skyTips"></span></div>
+  <div id="rhMsg"></div>
+  <div id="rhSeq"></div>
+  <div id="rhT"><i></i></div>
+  <div id="rhBar"><u></u><b id="rhCur"></b></div>
+  <div class="skh2"><button data-rh="L" aria-label="Trái">◀</button><button data-rh="U" aria-label="Lên">▲</button><button data-rh="D" aria-label="Xuống">▼</button><button data-rh="R" aria-label="Phải">▶</button><button data-rh="S" id="rhGo">NHẢY!</button></div>
+  <button id="skyLeave">RỜI SÂN KHẤU</button>
+</div>
 <div class="modal" id="mathOv" hidden>
   <div class="card">
     <h2>ĐẠI GIA ĐỐ TOÁN</h2>
@@ -1457,7 +1466,7 @@ function newGame(){
  P=mkChar(cleanName($('#nameIn').value.trim().slice(0,12)||'Bạn'),myLook,{isPlayer:true,speed:84,peeNext:CFG.PEE*rnd(.8,1),pooNext:CFG.POO*rnd(.65,.85),money:CFG.TEST_MONEY,energy:100,preWarn:false});P.bag=limLoad();P.lg=[];P.skins=mySkins();if(P.skins.on)applySkin(P,P.skins.on);P.hair=myHair();{const hd0=hdOf(P.hair);if(hd0){P.look.hd=hd0;P.fr=makeFrames(P.look)}}P.x=880;P.y=712;S.chars.push(P);S.newest=P.name;if(NET.on)netAfterNewGame();setMeal(S.time);setTimeout(guideInit,0);
  for(let i=0;i<CFG.BOTS;i++)S.pending.push(mkChar(BOTNAMES[i%BOTNAMES.length],(()=>{const L=Object.assign(randLook(),Math.random()<.25?{cos:pick(SKINS_LIST).id}:{});if(Math.random()<.22)L.hd=randHd(L);return L})(),{pets:Math.random()<.35?[Math.random()*14|0]:[]}));
  P.pets=myPets();limMigrate();
- mode='world';G=null;CAB=null;ROOM=null;running=true;VEND=null;SKYB.day=-1;SKYB.rd=0;{const h=$('#skyHud');if(h)h.hidden=true}AMB=null;AMBS={cd:0,n:0,day:-1,rd:0,rc:0,sn:0,sig:''};VCONF=[];$('#toasts').innerHTML='';$('#roomBar').hidden=true;
+ mode='world';G=null;CAB=null;ROOM=null;running=true;VEND=null;SKYB.day=-1;SKYB.rd=0;rhMusStop();{const h=$('#skyHud');if(h)h.hidden=true}AMB=null;AMBS={cd:0,n:0,day:-1,rd:0,rc:0,sn:0,sig:''};VCONF=[];$('#toasts').innerHTML='';$('#roomBar').hidden=true;
  cam.x=P.x-VW/2;cam.y=P.y-VH/2}
 
 /* ================= messages ================= */
@@ -3026,25 +3035,58 @@ function skXY(i,tm){const a=skAng()+i*2.0944;return{x:SKB.cx+Math.cos(a)*27,y:SK
 function skReal(){const o=[];if(!S)return o;S.chars.forEach(c=>{const d=skDn(c);if(d>0&&d<=3)o.push({c,slot:d-1})});return o}
 function skNpc(){if(!SKYB.npc){const mk=(n,sh)=>{const L=ambLook(false);L.shirt=sh;L.pat=sh;L.shorts='#14141c';return mkChar(n,L,{remote:true,amb:'npcd'})};SKYB.npc=[mk('Kiki','#ff4fa0'),mk('Rina','#3ad1ff')]}return SKYB.npc}
 function skDancers(){const real=skReal(),used=real.map(r=>r.slot),out=real.map(r=>({c:r.c,slot:r.slot,npc:false}));if(!S)return out;let need=2-real.length,k=0;const nc=skNpc();for(let s=2;s>=0&&need>0;s--){if(used.includes(s))continue;out.push({c:nc[k++%2],slot:s,npc:true});need--}return out}
+/* ===== Sky Bar: game nhịp điệu kiểu Audition (nhấn mũi tên theo hàng, rồi canh thanh nhịp). Nhạc chiptune bằng WebAudio ===== */
+const RH_SYM={L:'◀',U:'▲',D:'▼',R:'▶'},RH_AR=['L','U','D','R'],RH_W={S:[5,15,30,30,20],A:[15,25,30,20,10],B:[40,30,18,8,4],C:[60,28,9,2,1],D:[85,15,0,0,0]};
+let RHM={on:false,id:0,s:0,nt:0,noise:null};
+function rhNew(){return{round:0,seq:[],idx:0,ph:'pause',t:1.2,tMax:1,cur:0,dir:1,score:0,combo:0,best:0,q:0,n:0,msg:'',msgT:0}}
+function rhStart(r){const n=Math.min(9,4+Math.floor(r.round/3));r.seq=[];for(let i=0;i<n;i++)r.seq.push(RH_AR[Math.floor(Math.random()*4)]);r.idx=0;r.ph='seq';r.tMax=Math.max(n*.42+1,n*.66+1.7-r.round*.06);r.t=r.tMax;rhSeqDom(r)}
+function rhSeqDom(r){const el=$('#rhSeq');el.innerHTML=r.seq.map((k,i)=>`<span class="${i<r.idx?'dn':i===r.idx?'cu':''}">${RH_SYM[k]}</span>`).join('');$('#rhBar').style.visibility=r.ph==='bar'?'visible':'hidden'}
+function rhGrade(r){if(r.n<4)return'D';const a=r.q/r.n;return a>=.85?'S':a>=.7?'A':a>=.5?'B':a>=.3?'C':'D'}
+function rhResult(r,g){const pts={P:100,C:70,G:40,B:10,M:0}[g],q={P:1,C:.75,G:.5,B:.25,M:0}[g];r.score+=Math.round(pts*(1+Math.min(r.combo,20)*.1));r.q+=q;r.n++;
+ if(g==='P'||g==='C'||g==='G'){r.combo++;r.best=Math.max(r.best,r.combo)}else r.combo=0;
+ r.msg={P:'HOÀN HẢO!',C:'TUYỆT!',G:'TỐT',B:'TẠM',M:'HỤT!'}[g];r.msgT=1;r.mg=g;r.ph='pause';r.t=.55;r.round++;$('#rhBar').style.visibility='hidden';
+ if(g==='P'){beep(1046,.08,'square',.05);setTimeout(()=>beep(1568,.14,'triangle',.05),70);for(let k=0;k<14;k++)VCONF.push({x:SKB.cx,y:SKB.cy-10,vx:rnd(-100,100),vy:rnd(-170,-60),t:rnd(0,.3),k:k%2?'b':'c',r:Math.random()*6})}
+ else if(g==='C')beep(880,.1,'triangle',.05);else if(g==='G')beep(660,.08,'triangle',.04);else beep(200,.15,'sawtooth',.04,-80)}
+function rhKey(k){const d=P.dance;if(!d||!d.rh)return;const r=d.rh;
+ if(r.ph==='seq'){if(!RH_AR.includes(k))return;if(k===r.seq[r.idx]){r.idx++;beep(520+r.idx*60,.05,'square',.04);if(r.idx>=r.seq.length){r.ph='bar';r.cur=0;r.dir=1;r.t=2.5}rhSeqDom(r)}else{r.combo=0;r.idx=0;r.msg='SAI!';r.msgT=.7;r.mg='M';beep(180,.12,'sawtooth',.04,-60);rhSeqDom(r)}}
+ else if(r.ph==='bar'&&k==='S'){const dd=Math.abs(r.cur-.5);rhResult(r,dd<.06?'P':dd<.14?'C':dd<.26?'G':'B')}}
+function rhTick(dt){const d=P.dance;if(!d||!d.rh)return;const r=d.rh;if(r.msgT>0)r.msgT-=dt;
+ if(r.ph==='pause'){r.t-=dt;if(r.t<=0)rhStart(r)}
+ else if(r.ph==='seq'){r.t-=dt;if(r.t<=0){rhResult(r,'M');rhSeqDom(r)}}
+ else if(r.ph==='bar'){r.cur+=r.dir*dt*(1.5+Math.min(1,r.round*.06));if(r.cur>=1){r.cur=1;r.dir=-1}if(r.cur<=0){r.cur=0;r.dir=1}r.t-=dt;if(r.t<=0)rhResult(r,'M')}
+ $('#rhScore').textContent=r.score;$('#rhCombo').textContent=r.combo;$('#rhMsg').textContent=r.msgT>0?r.msg:'';$('#rhMsg').dataset.g=r.mg||'';
+ $('#rhT').firstElementChild.style.width=(r.ph==='seq'?Math.max(0,r.t/r.tMax)*100:r.ph==='bar'?Math.max(0,r.t/2.5)*100:0)+'%';$('#rhCur').style.left=(r.cur*100)+'%'}
+function rhMusStart(){if(!audio||RHM.on)return;RHM.on=true;RHM.s=0;RHM.nt=audio.currentTime+.1;if(!RHM.noise){const b=audio.createBuffer(1,audio.sampleRate*.2,audio.sampleRate),a=b.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;RHM.noise=b}
+ RHM.id=setInterval(()=>{if(!audio||!RHM.on)return;const st=60/126/4,B=[110,110,131,98,110,110,147,131],L=[440,523,659,784,659,523,587,698];while(RHM.nt<audio.currentTime+.15){const t=RHM.nt,s=RHM.s%16,bar=Math.floor(RHM.s/16)%4;
+  const tone=(f,type,v,dur)=>{const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+dur)};
+  const nz=(v,dur,hp)=>{const n=audio.createBufferSource(),g=audio.createGain(),f=audio.createBiquadFilter();n.buffer=RHM.noise;f.type='highpass';f.frequency.value=hp;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);n.connect(f);f.connect(g);g.connect(audio.destination);n.start(t);n.stop(t+dur)};
+  if(s%4===0){const o=audio.createOscillator(),g=audio.createGain();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(40,t+.12);g.gain.setValueAtTime(.16,t);g.gain.exponentialRampToValueAtTime(.0001,t+.14);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.15)}
+  if(s%8===4)nz(.07,.12,1200);if(s%2===1)nz(.03,.04,6000);
+  if(s%2===0)tone(B[(Math.floor(s/2)+bar*2)%8],'square',.035,.14);
+  if(s%2===1||s%8===0)tone(L[(s+bar*3)%8]*(bar%2?1:.5)*(s%6===0?2:1),'triangle',.03,.11);
+  RHM.s++;RHM.nt+=st}},40)}
+function rhMusStop(){RHM.on=false;clearInterval(RHM.id)}
+document.querySelectorAll('#skyHud [data-rh]').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();rhKey(b.dataset.rh)})});
+window.addEventListener('keydown',e=>{if(!P||!P.dance||!P.dance.rh)return;const m={ArrowLeft:'L',ArrowUp:'U',ArrowDown:'D',ArrowRight:'R',a:'L',A:'L',w:'U',W:'U',s:'D',S:'D',d:'R',D:'R',' ':'S',Enter:'S'}[e.key];if(m){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)rhKey(m)}},true);
 function skEnter(){const C=skCfg();if(!C.on){toast('Sky Bar đang đóng cửa.');return}if(!S||mode!=='world'||P.dance||P.hidden||P.boat)return;
  const day=Math.floor(S.time/CFG.DAY);if(SKYB.day!==day){SKYB.day=day;SKYB.rd=0}
  if(SKYB.rd>=C.cap){toast('Hôm nay bạn đã nhảy đủ '+C.cap+' lần ở Sky Bar, mai quay lại nhé!',true,4000);return}
  if(P.energy<30){toast('Cần ít nhất 30% năng lượng để lên sân khấu.',true,3500);return}
  const used=skReal().map(r=>r.slot);let sl=-1;for(let i=0;i<3;i++)if(!used.includes(i)){sl=i;break}
  if(sl<0){toast('Sân khấu đã đủ 3 vũ công, hãy chờ một chút!',true,3500);return}
- P.dance={slot:sl,el:0,dur:C.dur,mul:C.mul,tip:0};P.path=[];P.autoAct=false;keys={};P.x=SKB.cx+(sl-1)*16;P.y=SKB.cy+12;P.moving=false;NET.lastPos='';$('#skyOv').hidden=true;$('#skyHud').hidden=false;beep(660,.08,'triangle',.05);setTimeout(()=>beep(880,.1,'triangle',.05),90);toast('Bạn lên sân khấu Sky Bar! Nhảy đủ '+Math.round(C.dur/60*10)/10+' phút để nhận thưởng.',false,4000)}
-function skLeave(reward){const d=P.dance;if(!d)return;P.dance=null;$('#skyHud').hidden=true;P.x=SKB.door.x+(Math.random()*20-10);P.y=SKB.door.y+4;P.path=[];NET.lastPos='';
- if(reward){const C=skCfg();let r=Math.random()*100,amt=SKYB_R[0][0];for(const [v,w] of SKYB_R){r-=w;if(r<0){amt=v;break}}amt=Math.max(50000,round50k(amt*d.mul));SKYB.rd++;P.money+=amt;P.bubble='Bar bùng nổ!';P.bubbleT=4;P.sayId=(P.sayId||0)+1;hpAdd('dance',3);try{coin();setTimeout(coin,180)}catch(e){}toast('Sky Bar thưởng bạn '+VND(amt)+' cho màn múa cột!'+(d.tip?' (Tip nhận thêm '+VND(d.tip)+')':''),false,6000);try{sysLog('Múa cột Sky Bar +'+VND(amt))}catch(e){}for(let k=0;k<50;k++)VCONF.push({x:SKB.cx,y:SKB.cy-20,vx:rnd(-120,120),vy:rnd(-220,-80),t:rnd(0,.4),k:k%3?'b':'c',r:Math.random()*6});if(NET.on)saveState()}
+ P.dance={slot:sl,el:0,dur:C.dur,mul:C.mul,tip:0,rh:rhNew()};$('#rhSeq').innerHTML='';$('#rhBar').style.visibility='hidden';rhMusStart();P.path=[];P.autoAct=false;keys={};P.x=SKB.cx+(sl-1)*16;P.y=SKB.cy+12;P.moving=false;NET.lastPos='';$('#skyOv').hidden=true;$('#skyHud').hidden=false;beep(660,.08,'triangle',.05);setTimeout(()=>beep(880,.1,'triangle',.05),90);toast('Bạn lên sân khấu Sky Bar! Nhảy đủ '+Math.round(C.dur/60*10)/10+' phút để nhận thưởng.',false,4000)}
+function skLeave(reward){const d=P.dance;if(!d)return;P.dance=null;rhMusStop();$('#skyHud').hidden=true;P.x=SKB.door.x+(Math.random()*20-10);P.y=SKB.door.y+4;P.path=[];NET.lastPos='';
+ if(reward){const C=skCfg();const gr=rhGrade(d.rh),W=RH_W[gr];let r=Math.random()*100,amt=SKYB_R[0][0];SKYB_R.forEach(([v],i)=>{if(r>=0){r-=W[i];if(r<0)amt=v}});amt=Math.max(50000,round50k(amt*d.mul));SKYB.rd++;P.money+=amt;P.bubble='Bar bùng nổ!';P.bubbleT=4;P.sayId=(P.sayId||0)+1;hpAdd('dance',3);try{coin();setTimeout(coin,180)}catch(e){}toast('Sky Bar chấm hạng '+gr+' ('+d.rh.score+' điểm, combo tối đa '+d.rh.best+'): thưởng '+VND(amt)+'!'+(d.tip?' Tip nhận thêm '+VND(d.tip)+'.':''),false,7000);try{sysLog('Múa cột Sky Bar +'+VND(amt))}catch(e){}for(let k=0;k<50;k++)VCONF.push({x:SKB.cx,y:SKB.cy-20,vx:rnd(-120,120),vy:rnd(-220,-80),t:rnd(0,.4),k:k%3?'b':'c',r:Math.random()*6});if(NET.on)saveState()}
  else toast('Bạn rời sân khấu sớm nên không có thưởng.',false,3000)}
 function skTick(dt){if(!P||!S)return;const d=P.dance;if(!d)return;
- if(P.fainted||S.ended||mode!=='world'){P.dance=null;$('#skyHud').hidden=true;return}
+ if(P.fainted||S.ended||mode!=='world'){P.dance=null;rhMusStop();$('#skyHud').hidden=true;return}
  d.el+=dt;P.energy-=dt*.08;P.moving=false;P.path=[];
- $('#skyTime').textContent=mmss(Math.max(0,d.dur-d.el));$('#skyTips').textContent=d.tip?' · Tip '+VND(d.tip):'';
+ rhTick(dt);$('#skyTime').textContent=mmss(Math.max(0,d.dur-d.el));$('#skyTips').textContent=d.tip?' · Tip '+VND(d.tip):'';
  if(P.energy<6){toast('Kiệt sức rồi, bạn rời sân khấu!',true,3500);skLeave(false);return}
  if(d.el>=d.dur)skLeave(true)}
 function skOpen(){if(!S||mode!=='world'||modalOpen()||P.dance)return;const C=skCfg();const real=skReal();
  const day=Math.floor(S.time/CFG.DAY);if(SKYB.day!==day){SKYB.day=day;SKYB.rd=0}
- $('#skyInfo').innerHTML='Quán bar tròn giữa resort: bước lên sân khấu xoay, tự múa cột <b>'+Math.round(C.dur/60*10)/10+' phút</b> để nhận thưởng ngẫu nhiên <b>'+VND(Math.max(50000,round50k(1000000*C.mul)))+' đến '+VND(Math.max(50000,round50k(5000000*C.mul)))+'</b>. Tối đa 3 người cùng lúc, mỗi ngày game nhảy được <b>'+C.cap+'</b> lần (đã nhảy '+SKYB.rd+'). Cần ≥30% năng lượng. Rời sớm sẽ không có thưởng. Người đứng ngoài có thể tip cho vũ công.';
+ $('#skyInfo').innerHTML='Lên sân khấu xoay và chơi game nhịp điệu kiểu Audition <b>'+Math.round(C.dur/60*10)/10+' phút</b>: nhấn đúng hàng mũi tên (phím mũi tên/WASD hoặc nút trên màn hình), rồi bấm NHẢY! (phím Space) đúng lúc con trỏ ở giữa thanh nhịp. Hạng S đến D càng cao càng dễ trúng thưởng lớn, từ <b>'+VND(Math.max(50000,round50k(1000000*C.mul)))+' đến '+VND(Math.max(50000,round50k(5000000*C.mul)))+'</b>. Tối đa 3 người cùng lúc, mỗi ngày game nhảy được <b>'+C.cap+'</b> lần (đã nhảy '+SKYB.rd+'). Cần ≥30% năng lượng. Rời sớm sẽ không có thưởng. Người đứng ngoài có thể tip cho vũ công.';
  const others=real.filter(r=>r.c!==P);
  $('#skyList').innerHTML=others.length?others.map(r=>`<div class="skrow"><b>${esc(r.c.name)}</b> ♪<span>`+SKYB_TIPS.map(v=>`<button class="chip" data-tu="${r.c.uid}" data-v="${v}" ${v>P.money||!NET.on?'disabled':''}>Tip ${kfmt(v)}</button>`).join('')+`</span></div>`).join(''):'<div style="color:var(--muted)">Chưa có người chơi nào đang nhảy. '+(real.length?'':'Hãy là người đầu tiên!')+'</div>';
  $('#skyMsg').textContent=!C.on?'Sky Bar đang đóng cửa.':real.length>=3?'Sân khấu đã đủ 3 người.':'';
@@ -4927,7 +4969,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='12.11.2026-z37';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='12.11.2026-z38';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

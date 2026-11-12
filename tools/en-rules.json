@@ -297,5 +297,7 @@
 "{1} vừa tip cho bạn {2} ở Sky Bar!": "{1} just tipped you {2} at Sky Bar!",
 "Đã tip {1} cho {2}!": "Tipped {1} to {2}!",
 "Tip {1}": "Tip {1}",
-"SKY BAR · còn {1}": "SKY BAR · {1} left"
+"SKY BAR · còn {1}": "SKY BAR · {1} left",
+"Sky Bar chấm hạng {1} ({2} điểm, combo tối đa {3}): thưởng {4}!": "Sky Bar grade {1} ({2} points, max combo {3}): reward {4}!",
+"Sky Bar chấm hạng {1} ({2} điểm, combo tối đa {3}): thưởng {4}! Tip nhận thêm {5}.": "Sky Bar grade {1} ({2} points, max combo {3}): reward {4}! Extra tips {5}."
 }

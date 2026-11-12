@@ -696,3 +696,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Đồng bộ: `pos.dn` = slot+1; người khác nhìn thấy dancer (vị trí vẽ tính từ `S.time`, không cần gửi vị trí liên tục). Khi ít hơn 2 người thật đang nhảy, 2 vũ công NPC (Kiki, Rina) lấp chỗ cho bar luôn sống động.
 - Tip: người đứng ngoài mở modal, bấm Tip 50k/100k/200k/500k cho vũ công thật; dùng lại `gifts/{uid}` với cờ `tip:1` (không cần SQL), người nhận có toast riêng, cộng vào HUD.
 - Admin: thẻ "SKY BAR" ghi `config/sky` (mở/đóng, số lần/ngày, thời gian nhảy, hệ số thưởng).
+
+## z38: Sky Bar thành game nhịp điệu kiểu Audition
+- Khi lên sân khấu, HUD đáy màn hình trở thành bảng chơi: mỗi vòng hiện một hàng 4-9 mũi tên (nhấn đúng thứ tự, sai thì làm lại từ đầu), sau đó canh thanh nhịp, bấm NHẢY! (Space) khi con trỏ ở giữa để được HOÀN HẢO/TUYỆT/TỐT/TẠM/HỤT. Combo nhân điểm tới x3. Vòng càng về sau càng dài và nhanh.
+- Điều khiển: phím mũi tên hoặc WASD + Space/Enter, hoặc nút trên màn hình (pointerdown). Khi đang nhảy các phím này bị bắt riêng, không đi chung với di chuyển.
+- Hạng cuối trận (S/A/B/C/D, theo trung bình chất lượng các vòng, cần ≥4 vòng) quyết định bảng trọng số thưởng 1-5tr (`RH_W`): S dễ trúng 4-5tr, D gần như chỉ 1tr. Vẫn áp dụng giới hạn/ngày, hệ số `mul`, admin `config/sky`.
+- Nhạc: chiptune 126 BPM tạo bằng WebAudio (`rhMusStart`: kick, hi-hat, bass vuông, lead tam giác), tự dừng khi rời sân khấu.
+- Không cần chạy SQL.
