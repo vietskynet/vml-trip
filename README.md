@@ -734,3 +734,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z43 (12.11.2026)
 - Bỏ panel tường nền (poster/loa/spotlight) của Sky Bar ngoài map cho gọn; giữ sân khấu, mèo, alien, đĩa bay, đồ lót bay. Panel kiểu đó chỉ còn trong popup game. Không cần SQL.
+
+## z44 (12.11.2026)
+- Giảm độ khó Sky Bar Dance ~20%: bóng chạy chậm hơn 20%, thời gian nhấn hàng mũi tên +20%, vùng Perfect/Wow/Cool rộng hơn 20%, điểm mục tiêu mỗi level giảm ~17% (1500…1350). Thưởng giữ nguyên, vẫn giới hạn cap/dayMax. Không cần SQL.
