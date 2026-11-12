@@ -720,3 +720,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - 4 người ngoài hành tinh nhún nhảy quanh bar, 2 mèo dancer múa phụ họa hai bên sân khấu, đĩa bay lượn phía trên (đêm có chùm sáng).
 - Đồ lót (quần, áo) hoạt hình bay lơ lửng quanh sân khấu.
 - Khối chắn mở rộng theo tường nền. Không cần chạy SQL.
+
+## z41 (12.11.2026) – Dời Sky Bar
+- Sky Bar dời từ (1260,800) sang (1054,752): nằm ngay bên phải Cổng Chào, bên trái quầy Đập Cua (rồi tới Team Building), không còn chắn lối đi/boardwalk.
+- Thu hẹp tường nền (4 poster, 2 loa mỗi bên) và vùng chắn để vừa khoảng trống giữa cổng và quầy đập cua. Không cần chạy SQL.
