@@ -743,3 +743,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Ghi bằng `alog(cat,key,{w,l,v,n,x})`; nhóm: minigame (Sky Bar, gym, cua, đua rùa, lotto…), ngân hàng, xe & phao, biển & tàu (kể cả chìm tàu), rủi ro (tai nạn, phạt, lừa đảo, ngất), kinh tế & xã hội, hệ thống (lượt vào game, thời gian chơi).
 - Game: menu "LỊCH SỬ HOẠT ĐỘNG" (tổng quan / theo nhóm / nhật ký).
 - Admin: tab HOẠT ĐỘNG (KPI, gợi ý tối ưu tự động, bảng theo hoạt động, top người chơi) + tab "Hoạt động" trong hồ sơ người chơi.
+
+## z46 — Trình sắp xếp layout (`layout.html`)
+- Mở từ admin (nút "SẮP XẾP MAP") hoặc `/layout.html`. Nền là ảnh chụp toàn map (`layout-bg.jpg`, tạo bằng `__vml.mapShot()` ở `index.html#debug`).
+- Kéo-thả từng khu (bungalow, khách sạn, khu trò chơi, dịch vụ, lâu đài, vườn…), snap lưới, phím mũi tên, hoàn tác, cảnh báo chồng lấn, tự lưu localStorage.
+- "Copy JSON" xuất `{items:{id:{x,y,dx,dy}}}`; bước sau: game đọc layout này để đặt vị trí (chưa áp dụng vào game).
