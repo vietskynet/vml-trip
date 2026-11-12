@@ -767,3 +767,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Hải Âu Vượt Cột** và **Cá Nuốt Cá** (2 booth cạnh Đập cua, có hoạt ảnh nhỏ trên quầy), có trong trang sắp xếp map và bảng hoạt động.
 - Khung chat giữ 10 tin trong 3 phút.
 - `/lato nội dung`: thông báo to cho cả resort, 1.000.000₫/lần, tối đa 3 lần/ngày game.
+
+## z51 · Sky Bar Dance: thưởng giảm còn 30%, tối đa 12 level
+- Tiền thưởng cơ bản mỗi level giảm còn 30% (LV 1 = 300k, LV 10 = 6tr, LV 12 = 10,5tr); hệ số trong admin vẫn nhân thêm bên trên.
+- Thêm LV 11 và LV 12 (mục tiêu 1350 và 1400 điểm). Không cần SQL.

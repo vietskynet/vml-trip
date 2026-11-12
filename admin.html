@@ -256,12 +256,12 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    </div>
    <div class="card" style="margin-top:14px">
     <h2>SKY BAR</h2>
-    <p>Quán bar tròn gần trung tâm resort. Game nhảy nhịp điệu kiểu Audition: mỗi lượt chơi chạy liên tục từ level 1 đến level 10, mỗi level 30 giây (tối đa 3 người cùng lúc trên sân khấu). Đạt điểm mục tiêu thì nhận thưởng ngay từ 1tr (level 1) đến 20tr (level 10), nhân với hệ số bên dưới, rồi tự sang level kế; không đạt thì kết thúc lượt chơi. Người khác đứng ngoài có thể tip cho vũ công.</p>
+    <p>Quán bar tròn gần trung tâm resort. Game nhảy nhịp điệu kiểu Audition: mỗi lượt chơi chạy liên tục từ level 1 đến level 12, mỗi level 30 giây (tối đa 3 người cùng lúc trên sân khấu). Đạt điểm mục tiêu thì nhận thưởng ngay từ 0,3tr (level 1) đến 10,5tr (level 12), nhân với hệ số bên dưới, rồi tự sang level kế; không đạt thì kết thúc lượt chơi. Người khác đứng ngoài có thể tip cho vũ công.</p>
     <div class="mon">
      <label>Trạng thái<select id="sky_on"><option value="1">MỞ CỬA</option><option value="0">ĐÓNG CỬA</option></select></label>
      <label>Số lượt chơi nhận thưởng/ngày game mỗi người<input id="sky_cap" type="number" step="1" min="0"></label>
      <label>Tổng tiền thưởng tối đa/ngày game mỗi người (₫)<input id="sky_dayMax" type="number" step="1000000" min="0"></label>
-     <label>Hệ số tiền thưởng (1 = 1tr đến 20tr)<input id="sky_mul" type="number" step="any" min="0"></label>
+     <label>Hệ số tiền thưởng (1 = 0,3tr đến 10,5tr)<input id="sky_mul" type="number" step="any" min="0"></label>
     </div>
     <div class="row" style="margin-top:12px"><button class="ok" id="skySave">LƯU SKY BAR</button><button class="ghost" id="skyReset">VỀ MẶC ĐỊNH</button></div>
     <p class="msg" id="skyMsg"></p>
@@ -748,7 +748,7 @@ function acInsights(g){const {A,rows,N}=g,L=[],get=k=>A[k]||{u:0,n:0,w:0,l:0,m:0
  const av=minis.filter(k=>get(k).w>0&&get(k).n>=5).map(k=>[k,get(k).w/get(k).n]).sort((a,b)=>b[1]-a[1]);
  if(av.length>=3){const med=av[Math.floor(av.length/2)][1];if(av[0][1]>med*3)L.push('<b>'+ACT_N[av[0][0]][0]+'</b> trả trung bình '+VND(av[0][1])+'/lượt, gấp '+(av[0][1]/med).toFixed(1)+' lần mức trung vị ('+VND(med)+'). Người chơi sẽ dồn vào đây, xem lại thưởng hoặc giới hạn.')}
  const sk=get('mini.sky'),ok=get('mini.skyok');if(sk.n>=10){const r=ok.n/sk.n;L.push('Sky Bar Dance: tỉ lệ đạt mục tiêu <b>'+pct(r)+'</b> ('+ok.n+'/'+sk.n+' level), thưởng đã trả '+VND(sk.w)+'.'+(r>.85?' Có vẻ quá dễ.':r<.35?' Có vẻ quá khó.':' Mức độ khó ổn.'))}
- const sr=get('mini.skyrun');if(sr.n>=5)L.push('Sky Bar Dance: số level kỷ lục trong một lượt chơi là <b>'+sr.m+'</b>/10.');
+ const sr=get('mini.skyrun');if(sr.n>=5)L.push('Sky Bar Dance: số level kỷ lục trong một lượt chơi là <b>'+sr.m+'</b>/12.');
  let src=0,snk=0;Object.keys(A).forEach(k=>{if(ACT_N[k]&&ACT_N[k][2])return;if(k==='bank.dep'||k==='bank.wd'||k==='bank.early'||k==='sea.trip'||k==='sea.rent')return;src+=A[k].w;snk+=A[k].l});
  if(src+snk>0)L.push('Dòng tiền ghi nhận (không tính ngân hàng và câu cá): nguồn thu <b>'+VND(src)+'</b>, nguồn chi <b>'+VND(snk)+'</b>'+(snk>0?' (thu/chi = '+(src/snk).toFixed(1)+'×)':'')+'.'+(snk>0&&src/snk>4?' Tiền đang vào nhanh hơn ra nhiều, nguy cơ lạm phát: cân nhắc thêm nơi tiêu tiền.':''));
  const dep=get('bank.dep');if(dep.n>0)L.push('Ngân hàng: '+dep.u+'/'+rows.length+' người từng gửi, trung bình '+VND(dep.l/dep.n)+'/sổ, lãi đã trả '+VND(get('bank.int').w)+'. Rút trước hạn '+get('bank.early').n+' lần so với đúng hạn '+get('bank.wd').n+' lần.');
