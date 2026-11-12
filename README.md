@@ -677,3 +677,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z34: Sửa mất điểm bước đi/gym sau F5 + sửa vào/rời liên minh
 - Nguyên nhân: `supabase-shim.js` (`fixLocal`) biến mọi mảng thành object khi nạp dữ liệu từ server, nên `fitLoad` thấy `F` không phải mảng và tạo `fit` mới (mất W, chỉ số gym, số set trong ngày). `fitLoad`, `fitF`, bảng xếp hạng (`rkInfo`) nay chấp nhận cả mảng lẫn object; `hpLoad` chuẩn hoá `hpd.to`.
 - Sửa lỗi z30: thành viên không có quyền ghi `lm/{n}/jt/{uid}` (rt_can chỉ cho `m`, `c`, `iv`) làm vào/rời liên minh bị server từ chối. Nay Gốc Chủ tự ghi `jt` cho thành viên khi thấy họ (và dọn jt thừa); thành viên cũ cũng được bảo vệ 24 giờ kể từ lúc Gốc Chủ thấy lần đầu. Không cần chạy SQL.
+
+## z35: NPC sinh động: nhân viên resort + khách nghỉ dưỡng
+- Khối `AMB` (gần `drawBut`): NPC chạy cục bộ trên máy từng người, không đồng bộ, không tính xếp hạng/minimap, nên không tốn băng thông online (`CFG.BOTS` vẫn 0 online).
+- 4 nhân viên áo trắng (2 mời nước, 2 mời finger food): đi tuần quanh Quầy Ăn Uống/lễ tân; khi bạn dưới 92% năng lượng sẽ tự tới mời. Chạm hoặc bấm A để nhận: +2…+5 năng lượng. Giới hạn: chờ 120 giây giữa 2 lần, tối đa 8 lần mỗi ngày game (`AMB_CAP`, `AMB_CD`).
+- 9 khách với 8 vai: hay kể chuyện (tip game), nhiếp ảnh (flash), cặp đôi (2 người đi cùng), mua sắm (ghé lễ tân, xách túi), thực khách (Quầy Ăn Uống), game thủ (khu minigame), bơi lội (hồ), tập gym. Chạm vào để nói chuyện. Từ 22:30 đến 6:00 khách "đi ngủ" (ẩn). Offline (đã có 16 bot) chỉ spawn 4 khách.
+- Đã thêm chuỗi EN vào en-dict/en-rules. Không cần chạy SQL.

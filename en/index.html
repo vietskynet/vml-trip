@@ -1440,7 +1440,7 @@ function newGame(){
  P=mkChar(cleanName($('#nameIn').value.trim().slice(0,12)||'Bạn'),myLook,{isPlayer:true,speed:84,peeNext:CFG.PEE*rnd(.8,1),pooNext:CFG.POO*rnd(.65,.85),money:CFG.TEST_MONEY,energy:100,preWarn:false});P.bag=limLoad();P.lg=[];P.skins=mySkins();if(P.skins.on)applySkin(P,P.skins.on);P.hair=myHair();{const hd0=hdOf(P.hair);if(hd0){P.look.hd=hd0;P.fr=makeFrames(P.look)}}P.x=880;P.y=712;S.chars.push(P);S.newest=P.name;if(NET.on)netAfterNewGame();setMeal(S.time);setTimeout(guideInit,0);
  for(let i=0;i<CFG.BOTS;i++)S.pending.push(mkChar(BOTNAMES[i%BOTNAMES.length],(()=>{const L=Object.assign(randLook(),Math.random()<.25?{cos:pick(SKINS_LIST).id}:{});if(Math.random()<.22)L.hd=randHd(L);return L})(),{pets:Math.random()<.35?[Math.random()*14|0]:[]}));
  P.pets=myPets();limMigrate();
- mode='world';G=null;CAB=null;ROOM=null;running=true;VEND=null;VCONF=[];$('#toasts').innerHTML='';$('#roomBar').hidden=true;
+ mode='world';G=null;CAB=null;ROOM=null;running=true;VEND=null;AMB=null;AMBS={cd:0,n:0,day:-1};VCONF=[];$('#toasts').innerHTML='';$('#roomBar').hidden=true;
  cam.x=P.x-VW/2;cam.y=P.y-VH/2}
 
 /* ================= messages ================= */
@@ -1608,6 +1608,7 @@ function nearInteract(){if(P.boat)return null;const C=[],add=(pt,r,o)=>{const d=
  add(TEAMB.pt,46,{k:'team',label:'Team Building · tối thiểu 3 người, thưởng cao hơn chơi một mình'});
  {const m=curMon();if(m&&monState(m)==='live'){const mp=monPos(m);if(dist(P,mp)<Math.max(54,vehGunR()))C.push([-100,{k:'monster',label:'ĐÁNH QUÁI VẬT! (nhấn liên tục)'}])}}
  {const j=jobNear();if(j)C.push([-50,{k:'job',j,label:jobLabel(j)}])}
+ {const a=ambNear();if(a)C.push([-45,{k:'amb',c:a,label:ambLabel(a)}])}
  {const v=vendNear();if(v)C.push([-40,{k:'lotto',v,label:'Mua vé số của '+v.name+' · '+VND(LOTTO_PRICE)+' / tờ'}])}
  add(PETZ.pt,40,{k:'pet',label:'Quầy Thú Cưng · 19 bé đi theo bạn'});
  add(P2(CIB.x,CIB.y+14),30,{k:'cintro',label:'Bảng giới thiệu Lâu Đài Tình Báo · câu chuyện & cách mua phòng'});
@@ -1666,6 +1667,7 @@ function act(){if(!running||S.ended||modalOpen())return;
  else if(it.k==='monster')hitMonster();
  else if(it.k==='job')jobAct(it.j);
  else if(it.k==='lotto')openLotto(it.v);
+ else if(it.k==='amb')ambAct(it.c);
  else if(it.k==='carr')crMount(it.t);
  else if(it.k==='cdis')crDismount(false);
  else if(it.k==='garden')openLm(null);
@@ -2855,7 +2857,7 @@ function updSec(dt){if(!SEC)return;const c=SEC.c;
  if(dist(c,P)<16){if(!SEC.fined){SEC.fined=true;P.acFined=true;const f=Math.min(P.money,SEC_FINE);P.money-=f;SEC.say=3;toast('Bảo vệ phạt bạn '+VND(f)+' vì đi vệ sinh bừa bãi!',true,5000);sysLog('Bị bảo vệ phạt −'+VND(f));beep(160,.3,'sawtooth',.06,-60);if(NET.on)saveState()}SEC.leave=4;return}
  secStep(c,P,SEC_SP,dt)}
 function secList(cx,cy,list){if(!SEC)return;const c=SEC.c;if(c.x>cx-40&&c.x<cx+VW+40&&c.y>cy-40&&c.y<cy+VH+60)list.push({sc:SEC,base:c.y})}
-function updVendors(dt){updSec(dt);if(!S||!P||!running||S.ended)return;if(!VEND)vendInit();VCONF.forEach(c=>{c.t+=dt;c.x+=c.vx*dt;c.y+=c.vy*dt;c.vy+=120*dt;c.vx*=.99});VCONF=VCONF.filter(c=>c.t<2.6);
+function updVendors(dt){updSec(dt);if(!S||!P||!running||S.ended)return;if(!VEND)vendInit();try{updAmb(dt)}catch(e){console.warn('amb',e)}VCONF.forEach(c=>{c.t+=dt;c.x+=c.vx*dt;c.y+=c.vy*dt;c.vy+=120*dt;c.vx*=.99});VCONF=VCONF.filter(c=>c.t<2.6);
  const free=mode==='world'&&!P.hidden&&!modalOpen();
  if(S.time>=VEND.next&&free&&!VEND.list.some(v=>v.st==='toP'||v.st==='ask')){VEND.next=S.time+rnd(70,140);const cand=VEND.list.filter(v=>v.st==='wander'&&v.but<=0).sort((a,b)=>dist(a,P)-dist(b,P))[0];if(cand&&dist(cand,P)<900){cand.st='toP';cand.t=25;cand.re=0}}
  VEND.list.forEach(v=>{if(v.say>0)v.say-=dt;
@@ -2877,6 +2879,74 @@ function drawVendor(v,x,y,t){const g=ctx;g.fillStyle='rgba(20,30,60,.25)';g.fill
  rr(g,3,-17,9,11,'#6e4423');rr(g,4,-16,7,9,'#f4ecd8');[['#ff5f6d',0],['#2fb8e8',3],['#7ad151',6]].forEach(([c,o])=>rr(g,5,-15+o,5,2,c));rr(g,2,-14,2,2,'#d8a878');
  g.restore();
  if(v.say>0&&v.bub)label(v.bub,x,y-36,'#1a1020','#ffffff');else if(dist(P,v)<110)label('VÉ SỐ · '+v.name,x,y-36,'#ffd23f')}
+/* ===== NPC sinh động: nhân viên resort (mời nước / finger food) + khách nghỉ dưỡng nhiều vai. Chạy cục bộ trên máy từng người, KHÔNG đồng bộ, KHÔNG tính vào xếp hạng/minimap ===== */
+const AMB_CAP=8,AMB_CD=120;
+const AMB_DR=[['Nước dừa tươi',3],['Cocktail không cồn',3],['Trà đá chanh',2],['Sinh tố xoài',4]],AMB_SN=[['Gỏi cuốn mini',4],['Tôm chiên giòn',5],['Bánh mì que',4],['Trái cây cắt',3]];
+const AMB_STAFF=[['Lan','drink'],['Hải','snack'],['Nhi','drink'],['Tín','snack']];
+const AMB_GNAME=['Anna','Mike','Yuki','Sofia','Tom','Mina','Leo','Chloe','Ben'];
+const AMB_ROLES=['gossip','photo','couple','couple','shop','diner','gamer','swim','gym'];
+const AMB_RN={photo:'Nhiếp ảnh du lịch',swim:'Khách bơi lội',diner:'Thực khách',shop:'Khách mua sắm',gamer:'Game thủ',gym:'Khách tập gym',couple:'Cặp đôi nghỉ dưỡng',gossip:'Khách hay kể chuyện'};
+const AMB_SAY={photo:['Tách! Đẹp quá!','Cười lên nào!','Góc này ăn ảnh ghê.'],swim:['Nước mát quá!','Lặn thử nào!','Đã quá đi!'],diner:['Ngon quá!','Món này đỉnh!','Cho thêm một phần nữa!'],shop:['Xinh quá, lấy luôn!','Quà cho cả nhà đây!','Hôm nay tiêu hơi nhiều rồi.'],gamer:['Sắp thắng rồi!','Thua rồi huhu...','Một ván nữa thôi!'],gym:['Thêm 1 rep!','Hộc... hộc...','Mai đau người cho xem.'],couple:['Ở đây đẹp ghê.','Chụp chung nhé?','Mình ở thêm một đêm nữa nha.']};
+const AMB_TIPS=['Tập gym mỗi ngày 2 set là đủ rồi đó!','Đi bộ nhiều sẽ tăng Sức bền, tối đa +20% đó.','Về nhà nghỉ ngủ là hồi năng lượng miễn phí đó.','Dưới 30% năng lượng là không chơi game được, nhớ ăn uống nhé!','Vườn Liên Minh trồng một mình được, đủ 3 người mới có buff.','Nhân viên resort hay mời nước, cứ nhận cho đỡ mệt nhé.','Đừng đi vệ sinh bừa bãi, bảo vệ phạt 500.000₫ đó!','Gặp bé bán vé số thì ủng hộ em nó một tờ nhé.'];
+let AMB=null,AMBS={cd:0,n:0,day:-1};
+function ambLook(staff){const L=randLook();if(staff){L.shirt='#ffffff';L.pat='#ffffff';L.shorts='#1d2a44';L.hs=L.gender==='m'?'short':'bun';L.acc='none'}return L}
+function ambInit(){AMB={staff:[],guests:[]};
+ AMB_STAFF.forEach(([n,m],i)=>{const c=mkChar(n,ambLook(true),{remote:true,amb:'staff',menu:m,st:'pat',ts:rnd(1,5),re:0,next:S.time+rnd(15,50)+i*12,path:[],speed:50});const p=i%2?P2(FOODS.bx,FOODS.by+40):wanderPt();c.x=p.x;c.y=p.y;if(!canStand(c.x,c.y)){const q=wanderPt();c.x=q.x;c.y=q.y}AMB.staff.push(c)});
+ const nG=CFG.BOTS>=8?4:AMB_ROLES.length;let lead=null;
+ for(let i=0;i<nG;i++){const role=AMB_ROLES[i],c=mkChar(AMB_GNAME[i%AMB_GNAME.length],ambLook(false),{remote:true,amb:'guest',role,state:'idle',ts:rnd(1,4),re:0,path:[],speed:rnd(40,52)});const p=wanderPt();c.x=p.x;c.y=p.y;
+  if(role==='couple'){if(lead){c.lead=lead;c.name='Linh';lead=null}else lead=c}
+  if(role==='couple'&&c.lead){c.x=c.lead.x+14;c.y=c.lead.y+2}AMB.guests.push(c)}}
+const ambGo=(c,x,y)=>{const p=findPath(c.x,c.y,x,y);c.path=p?p.slice():[];return !!p};
+function ambMove(c,dt){if(c.path.length){if(stepTo(c,c.path[0],dt))c.path.shift()}else c.moving=false;if(!c.path.length)c.moving=false}
+const ambSay=(c,t,s)=>{c.bubble=t;c.bubbleT=s||3};
+const ambReady=()=>AMBS.cd<=S.time&&AMBS.n<AMB_CAP;
+function updAmb(dt){if(!S||!P)return;if(!AMB)ambInit();if(mode!=='world')return;
+ const day=Math.floor(S.time/CFG.DAY);if(AMBS.day!==day){AMBS.day=day;AMBS.n=0}
+ const free=!P.hidden&&!modalOpen()&&!P.fainted&&!P.boat,night=hour()>=22.5||hour()<6;
+ AMB.staff.forEach(c=>ambStaff(c,dt,free));AMB.guests.forEach(c=>ambGuest(c,dt,night))}
+function ambStaff(c,dt,free){c.anim+=dt;if(c.bubbleT>0)c.bubbleT-=dt;c.ts-=dt;
+ if(c.st==='toP'){if(!free||c.ts<=0||!ambReady()){c.st='pat';c.path=[];c.ts=rnd(4,8);return}
+  c.re-=dt;if(c.re<=0){c.re=1.2;ambGo(c,P.x+(c.x<P.x?-22:22),P.y+4)}ambMove(c,dt);
+  if(dist(c,P)<34){c.st='offer';c.ts=16;c.path=[];c.moving=false;c.item=pick(c.menu==='drink'?AMB_DR:AMB_SN);ambSay(c,'Mời anh chị dùng '+c.item[0]+' nhé!',5);beep(660,.06,'triangle',.03)}return}
+ if(c.st==='offer'){c.moving=false;c.dir=P.x>c.x?'right':'left';if(c.bubbleT<=0&&c.ts>0)ambSay(c,'Mời anh chị dùng '+c.item[0]+' nhé!',4);
+  if(c.ts<=0||dist(c,P)>140||!ambReady()){c.st='pat';c.ts=rnd(6,12);if(dist(c,P)<200&&ambReady())ambSay(c,'Dạ, cần gì anh chị cứ gọi em nhé!',3)}return}
+ if(free&&ambReady()&&S.time>=c.next&&dist(c,P)<900&&P.energy<92&&!AMB.staff.some(s=>s.st!=='pat')){c.next=S.time+rnd(90,160);c.st='toP';c.ts=25;c.re=0;return}
+ if(c.path.length)ambMove(c,dt);else{c.moving=false;if(c.ts<=0){c.ts=rnd(5,12);const r=Math.random(),p=r<.3?P2(FOODS.bx+rnd(-50,50),FOODS.by+rnd(30,60)):r<.45?pick(Object.values(REC)).pt:wanderPt();ambGo(c,p.x,p.y)}}}
+function ambDest(c){switch(c.role){
+  case'swim':for(let k=0;k<10;k++){const p=P2(rnd(POOL.x0+12,POOL.x1-12),rnd(POOL.y0+16,POOL.y1-8));if(inPool(p.x,p.y))return p}return wanderPt();
+  case'diner':return P2(FOODS.bx+rnd(-40,40),FOODS.by+rnd(34,60));
+  case'shop':return pick(Object.values(REC)).pt;
+  case'gamer':{const z=pick(ZONES);for(let k=0;k<12;k++){const p=P2(z.bx+rnd(-60,60),z.by+rnd(26,70));if(canStand(p.x,p.y))return p}return wanderPt()}
+  case'gym':return P2(GYM.pt.x+rnd(-30,30),GYM.pt.y+rnd(-6,10));
+  default:return wanderPt()}}
+function ambSayRole(c,force){if(!force&&Math.random()>.65)return;const l=c.role==='gossip'?AMB_TIPS:AMB_SAY[c.role];if(l)ambSay(c,pick(l),3.5)}
+function ambGuest(c,dt,night){
+ if(night){if(!c.hidden){c.hidden=true;c.path=[]}return}
+ if(c.hidden){c.hidden=false;const p=wanderPt();c.x=p.x;c.y=p.y;c.state='idle';c.ts=1}
+ c.anim+=dt;if(c.bubbleT>0)c.bubbleT-=dt;if(c.fl>0)c.fl-=dt;
+ if(c.lead){const L=c.lead;if(dist(c,L)>26){c.state='walk';c.re-=dt;if(c.re<=0||!c.path.length){c.re=1;ambGo(c,L.x+(L.dir==='left'?16:-16),L.y+3)}ambMove(c,dt)}else{c.state='idle';c.moving=false;c.dir=L.dir;if(L.bubbleT>0&&c.bubbleT<=0&&Math.random()<.01)ambSay(c,pick(AMB_SAY.couple),3)}return}
+ c.ts-=dt;
+ if(c.state==='walk'){if(!c.path.length){c.moving=false;c.state=c.role==='diner'?'eat':'do';c.ts=c.role==='diner'?rnd(7,12):c.role==='swim'?rnd(10,18):rnd(4,9);if(c.role==='photo'||c.role==='couple')c.fl=0;ambSayRole(c,c.role==='gossip'&&dist(c,P)<160);return}ambMove(c,dt);return}
+ c.moving=false;
+ if(c.state==='do'||c.state==='eat'){if(c.role==='gamer')c.dir=Math.sin(c.anim*3)>0?'left':'right';if(c.role==='photo'&&c.ts<2.5&&c.ts>2.2&&!c.fl){c.fl=.35;ambSay(c,'Tách!',1.5)}if(c.ts<=0){c.state='idle';c.ts=rnd(.5,2)}return}
+ if(c.ts<=0){const d=ambDest(c);if(ambGo(c,d.x,d.y))c.state='walk';else c.ts=2}}
+function ambNear(){if(!AMB)return null;let b=null,bd=40;AMB.staff.concat(AMB.guests).forEach(c=>{if(c.hidden)return;const d=dist(P,c)-(c.st==='offer'?25:0);if(d<bd){bd=d;b=c}});return b}
+function ambClick(w){if(!AMB)return null;return AMB.staff.concat(AMB.guests).find(c=>!c.hidden&&Math.abs(w.x-c.x)<14&&w.y<c.y+6&&w.y>c.y-36)||null}
+function ambLabel(c){if(c.amb==='guest')return 'Trò chuyện với '+c.name+' · '+AMB_RN[c.role];if(!ambReady())return AMBS.n>=AMB_CAP?'Nhân viên '+c.name+' · hôm nay bạn đã dùng đủ '+AMB_CAP+' lần':'Nhân viên '+c.name+' · mời lần sau sau '+mmss(AMBS.cd-S.time);const it=c.item||(c.menu==='drink'?AMB_DR[0]:AMB_SN[0]);return 'Nhận '+it[0]+' từ '+c.name+' · +'+it[1]+' năng lượng (miễn phí)'}
+function ambAct(c){c.dir=P.x>c.x?'right':'left';
+ if(c.amb==='guest'){ambSayRole(c,true);return}
+ if(P.energy>=97){ambSay(c,'Anh chị còn rất khỏe, lát em mời sau nhé!',3);toast('Bạn còn rất nhiều năng lượng, lát nữa hãy nhận nhé.',false,2500);return}
+ if(!ambReady()){ambSay(c,AMBS.n>=AMB_CAP?'Hôm nay em mời đủ rồi ạ, mai nhé!':'Anh chị chờ em chút nhé!',3);return}
+ const it=c.item||pick(c.menu==='drink'?AMB_DR:AMB_SN);P.energy=Math.min(100,P.energy+it[1]);AMBS.cd=S.time+AMB_CD;AMBS.n++;c.item=null;c.st='pat';c.ts=rnd(6,12);c.path=[];
+ ambSay(c,'Chúc anh chị ngon miệng!',3);toast('Bạn nhận '+it[0]+' từ nhân viên '+c.name+': +'+it[1]+' năng lượng.',false,3500);beep(740,.08,'triangle',.04);setTimeout(()=>beep(988,.1,'triangle',.04),90);
+ P.bubble='Cảm ơn em!';P.bubbleT=2.5;P.sayId=(P.sayId||0)+1}
+function ambList(cx,cy,list){if(!AMB)return;AMB.staff.concat(AMB.guests).forEach(c=>{if(!c.hidden&&c.x>cx-40&&c.x<cx+VW+40&&c.y>cy-40&&c.y<cy+VH+60)list.push({am:c,base:c.y})})}
+function drawAmb(c,x,y,t){drawChar(c,x,y);const g=ctx,r=c.dir==='left'?-1:1;
+ if(c.amb==='staff'){rr(g,x+r*7-4,y-14,9,2,'#c8c8d0');if(c.menu==='drink'){rr(g,x+r*7-3,y-20,3,6,'#7fe0ff');rr(g,x+r*7+1,y-18,2,4,'#ff8a5c')}else{rr(g,x+r*7-3,y-17,6,3,'#f4ecd8');rr(g,x+r*7-2,y-19,2,2,'#e8a040');rr(g,x+r*7+1,y-19,2,2,'#7ad151')}}
+ else if(c.role==='shop'){rr(g,x-r*9-3,y-12,7,9,'#ff5f9a');rr(g,x-r*9-3,y-12,7,2,'#ffd23f')}
+ else if(c.role==='photo'){rr(g,x+r*8-3,y-17,6,4,'#222');rr(g,x+r*8-1,y-16,2,2,'#7fb8ff');if(c.fl>0){g.globalAlpha=Math.min(1,c.fl*3);g.fillStyle='#fff';g.fillRect(x+r*8-8,y-26,16,14);g.globalAlpha=1}}
+ if(c.bubbleT>0&&c.bubble)label(c.bubble,x,y-44,'#1a1020','#ffffff');
+ else if(dist(P,c)<110)label(c.amb==='staff'?'NHÂN VIÊN · '+c.name:AMB_RN[c.role],x,y-44,c.amb==='staff'?'#9fe8ff':'#ffd23f')}
 function drawBut(x,y,t,a,sign){const g=ctx,fl=Math.round(Math.sin(t*3+x*.01)*2);g.save();g.globalAlpha=.35*a;ellP(g,x,y-26+fl,20,20,'#fff6a0');g.restore();
   ellP(g,x,y+2+fl,16,4,'#ffffff');ellP(g,x-8,y+fl,7,3,'#f0f4ff');ellP(g,x+8,y+fl,7,3,'#f0f4ff');
   rr(g,x-6,y-20+fl,12,20,'#fffaf0');rr(g,x-7,y-4+fl,14,4,'#fffaf0');rr(g,x-6,y-20+fl,1,20,'#ffd23f');rr(g,x+5,y-20+fl,1,20,'#ffd23f');rr(g,x-2,y-12+fl,4,1,'#ffd23f');
@@ -4469,7 +4539,7 @@ function renderWorld(t){
  S.puddles.forEach(p=>{if(vis(p.x,p.y))drawPuddle(Math.round(p.x-cx),Math.round(p.y-cy),Math.max(0,.75*(1-p.a/25)),p.poo)});
  S.crabs.forEach(c=>{if(!vis(c.x,c.y))return;const x=Math.round(c.x-cx),y=Math.round(c.y-cy);ctx.fillStyle='#d8402e';ctx.fillRect(x-3,y-2,6,3);ctx.fillRect(x-5,y-4+(Math.floor(t*6)%2),2,2);ctx.fillRect(x+3,y-4+(Math.floor(t*6+1)%2),2,2);ctx.fillStyle='#141414';ctx.fillRect(x-1,y-3,1,1);ctx.fillRect(x+1,y-3,1,1)});
  const list=[];props.forEach(p=>{if(p.fire?vis(p.x,p.y):(p.x<cx+VW+10&&p.x+p.img.width>cx-10&&p.y<cy+VH+10&&p.y+p.img.height>cy-10))list.push(p)});
- decoList(cx,cy,list);lmList(cx,cy,list);crList(cx,cy,list);monList(cx,cy,list);secList(cx,cy,list);jobList(cx,cy,list);vendList(cx,cy,list);butList(cx,cy,list);castleList(cx,cy,list);autoList(cx,cy,list);limList(cx,cy,list);if(TSC.x>cx-70&&TSC.x<cx+VW+70&&TSC.y>cy-20&&TSC.y<cy+VH+130)list.push({tsc:1,base:TSC.y+1});if(GYM.x>cx-90&&GYM.x<cx+VW+90&&GYM.y>cy-20&&GYM.y<cy+VH+150)list.push({gym:1,base:GYM.y+1});if(vis(FLOATZ.bx,FLOATZ.by,60))list.push({fk:1,base:FLOATZ.by});if(vis(SALON.x,SALON.y,130))list.push({sal:1,base:SALON.y});
+ decoList(cx,cy,list);lmList(cx,cy,list);crList(cx,cy,list);monList(cx,cy,list);secList(cx,cy,list);jobList(cx,cy,list);vendList(cx,cy,list);ambList(cx,cy,list);butList(cx,cy,list);castleList(cx,cy,list);autoList(cx,cy,list);limList(cx,cy,list);if(TSC.x>cx-70&&TSC.x<cx+VW+70&&TSC.y>cy-20&&TSC.y<cy+VH+130)list.push({tsc:1,base:TSC.y+1});if(GYM.x>cx-90&&GYM.x<cx+VW+90&&GYM.y>cy-20&&GYM.y<cy+VH+150)list.push({gym:1,base:GYM.y+1});if(vis(FLOATZ.bx,FLOATZ.by,60))list.push({fk:1,base:FLOATZ.by});if(vis(SALON.x,SALON.y,130))list.push({sal:1,base:SALON.y});
  S.chars.forEach(c=>{if(!c.hidden&&vis(c.x,c.y))list.push({ch:c,base:c.y});if(c.petOs)c.petOs.forEach(o=>{if(o&&vis(o.x,o.y))list.push({pt:o,base:o.y})})});
  list.sort((a,b2)=>a.base-b2.base);
  for(const o of list){
@@ -4483,6 +4553,7 @@ function renderWorld(t){
   if(o.tsc){drawTurtleStand(cx,cy,t);continue}
   if(o.gym){drawGym(cx,cy,t);continue}
   if(o.autopg!=null){drawPG(o.autopg,cx,cy,t);continue}
+  if(o.am){drawAmb(o.am,Math.round(o.am.x-cx),Math.round(o.am.y-cy),t);continue}
   if(o.vd){drawVendor(o.vd,Math.round(o.vd.x-cx),Math.round(o.vd.y-cy),t);continue}
   if(o.bf){drawBut(Math.round(o.bf.butF.x-cx),Math.round(o.bf.butF.y-cy),t,1,true);continue}
   if(o.sal){drawSalonWorld(Math.round(SALON.x-cx),Math.round(SALON.y-cy),t);continue}
@@ -4711,7 +4782,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='10.11.2026-z34';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='12.11.2026-z35';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -4828,6 +4899,7 @@ cv.addEventListener('pointerdown',e=>{if(running&&S&&!S.ended&&mode==='room'&&RO
  {const m=curMon();if(m&&monState(m)==='live'){const mp=monPos(m);if(Math.abs(w.x-mp.x)<42&&w.y<mp.y+10&&w.y>mp.y-90){if(dist(P,mp)<Math.max(54,vehGunR())){hitMonster();return}const path=findPath(P.x,P.y,mp.x,mp.y+14);if(path){P.path=path;P.autoAct=false}return}}}
  if(inR({x0:CIB.x-38,x1:CIB.x+38,y0:CIB.y-74,y1:CIB.y+4},w.x,w.y)){if(dist(P,CIB)<60){openCastleIntro();return}const pa=findPath(P.x,P.y,CIB.x,CIB.y+14);if(pa){P.path=pa;P.autoAct=true}return}
  if(inR({x0:CCX-210,x1:CCX+210,y0:CB-365,y1:CB},w.x,w.y)){if(dist(P,CGATE)<40){act();return}openCastle();return}
+ {const a=ambClick(w);if(a){if(dist(P,a)<40){ambAct(a);return}const path=findPath(P.x,P.y,a.x,a.y+4);if(path){P.path=path;P.autoAct=true}return}}
  {const v=vendClick(w);if(v){if(dist(P,v)<40){openLotto(v);return}const path=findPath(P.x,P.y,v.x,v.y+4);if(path){P.path=path;P.autoAct=true}return}}
  {const j=jobClick(w);if(j){if(dist(P,j)<(j.k==='roach'?40:j.k==='elder'?34:30)){jobAct(j);return}const path=findPath(P.x,P.y,j.x,j.y+4);if(path){P.path=path;P.autoAct=true}return}}
  {const hu=ownUnits(P).find(u=>u.type==='tent'?inR({x0:TENTS[u.i].x-36,x1:TENTS[u.i].x+36,y0:TENTS[u.i].y-66,y1:TENTS[u.i].y-12},w.x,w.y):u.type==='villa'?inR({x0:VILLA_X[u.i]-64,x1:VILLA_X[u.i]+40,y0:58+vdy(u.i),y1:196+vdy(u.i)},w.x,w.y):u.type==='room'?inR({x0:ROOM_WIN(u.i).x-22,x1:ROOM_WIN(u.i).x+22,y0:ROOM_WIN(u.i).y-12,y1:ROOM_WIN(u.i).y+44},w.x,w.y):false);

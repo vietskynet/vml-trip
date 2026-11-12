@@ -271,5 +271,12 @@
 "Mời {1} rời liên minh": "Removed {1} from the alliance",
 "Bị mời khỏi liên minh, được hoàn {1}": "Removed from the alliance, refunded {1}",
 "Bạn đã mua Lô {1} và hạt {2}. Bấm TRỒNG để có cây ngay. Cây chỉ phát buff khi liên minh có từ {3} thành viên!": "You bought Plot {1} and seed {2}. Press PLANT to get the tree now. It only gives buffs once the alliance has {3}+ members!",
-"Mới có {1} thành viên. Cần từ {2} thành viên trở lên để cây phát buff (cây vẫn lớn và đóng thuế bình thường).": "Only {1} members so far. At least {2} members are needed for the tree to give buffs (it still grows and collects tax as usual)."
+"Mới có {1} thành viên. Cần từ {2} thành viên trở lên để cây phát buff (cây vẫn lớn và đóng thuế bình thường).": "Only {1} members so far. At least {2} members are needed for the tree to give buffs (it still grows and collects tax as usual).",
+"Mời anh chị dùng {1} nhé!": "Care for some {1}?",
+"Trò chuyện với {1} · {2}": "Chat with {1} · {2}",
+"Nhân viên {1} · hôm nay bạn đã dùng đủ {2} lần": "Staff {1} · you used all {2} offers today",
+"Nhân viên {1} · mời lần sau sau {2}": "Staff {1} · next offer in {2}",
+"Nhận {1} từ {2} · +{3} năng lượng (miễn phí)": "Take {1} from {2} · +{3} energy (free)",
+"Bạn nhận {1} từ nhân viên {2}: +{3} năng lượng.": "You took {1} from staff {2}: +{3} energy.",
+"NHÂN VIÊN · {1}": "STAFF · {1}"
 }
