@@ -3046,7 +3046,7 @@ function drawAmb(c,x,y,t){drawChar(c,x,y);const g=ctx,r=c.dir==='left'?-1:1;
  if(c.bubbleT>0&&c.bubble)label(c.bubble,x,y-44,'#1a1020','#ffffff');
  else if(dist(P,c)<110)label(c.amb==='staff'?'NHÂN VIÊN · '+c.name:c.role==='rich'?'ĐẠI GIA · '+c.name:AMB_RN[c.role],x,y-44,c.amb==='staff'?'#9fe8ff':c.role==='rich'?'#ffe066':'#ffd23f')}
 /* ===== SKY BAR: quán bar tròn lộ thiên gần trung tâm, sân khấu xoay + cột + quả cầu disco. Tối đa 3 người múa cột cùng lúc (đồng bộ qua pos.dn), người ngoài tip qua gifts ===== */
-const SKB={x:1150,y:700,cx:1150,cy:660,rx:86,ry:36};SKB.door=P2(SKB.x,SKB.y+20);addBlock(SKB.x-92,SKB.cy-118,SKB.x+92,SKB.y+2);
+const SKB={x:1150,y:700,cx:1150,cy:660,rx:86,ry:36};SKB.door=P2(SKB.x,SKB.y+20);addBlock(SKB.x-86,SKB.cy-42,SKB.x+86,SKB.y+2);
 const SKYB_TIPS=[50000,100000,200000,500000],SKYB_R=[[1000000,40],[2000000,30],[3000000,18],[4000000,8],[5000000,4]];
 let SKYB={rd:0,paid:0,day:-1,npc:null,tip:0,paying:false};
 function skCfg(){const c=(NET.config&&NET.config.sky)||{},g=(k,d,lo,hi)=>{const v=c[k];if(v==null||v==='')return d;const x=+v;return Number.isFinite(x)?Math.min(hi,Math.max(lo,x)):d};return{on:g('on',1,0,1),cap:Math.round(g('cap',4,0,30)),dayMax:Math.round(g('dayMax',40000000,0,1e9)),mul:g('mul',1,0,3)}}
@@ -3312,12 +3312,12 @@ function skUnder(g,x,y,t,i){const c=['#ff4fa0','#3ad1ff','#ffe066','#b07aff','#2
 function skDeco(g,ox,oy,t,nf){
  skCat(g,ox-66,oy-2,t,0,'#f0a030','#ffe066');skCat(g,ox+66,oy-2,t,1.6,'#9a9ab8','#ff4fa0');
  skAlien(g,ox-86,oy+22,t,.4,'#5be07a');skAlien(g,ox+86,oy+24,t,2.2,'#b07aff');skAlien(g,ox-46,oy+52,t,3.1,'#3ad1ff');skAlien(g,ox+44,oy+54,t,4.4,'#ffb43a');
- const ux=ox+Math.round(Math.sin(t*.6)*60),uy=oy-142+Math.round(Math.sin(t*1.7)*4);
+ const ux=ox+Math.round(Math.sin(t*.6)*60),uy=oy-108+Math.round(Math.sin(t*1.7)*4);
  if(nf>.05){g.save();g.globalAlpha=.16*nf;g.fillStyle='#8affc0';g.beginPath();g.moveTo(ux-5,uy+4);g.lineTo(ux+5,uy+4);g.lineTo(ux+22,uy+60);g.lineTo(ux-22,uy+60);g.closePath();g.fill();g.restore()}
  ellP(g,ux,uy,17,5,'#6a6a8a');ellP(g,ux,uy-1,16,4,'#b8b8d8');ellP(g,ux,uy-5,7,5,'#8affe0');ellP(g,ux-2,uy-6,2,2,'#fff');for(let k=0;k<5;k++)rr(g,ux-12+k*6,uy,2,2,(k+Math.floor(t*5))%2?'#ff4fa0':'#ffe066');
  for(let i=0;i<7;i++){const a=t*(.5+(i%3)*.12)+i*0.9,R=(i%2?96:120)+Math.sin(t+i)*8;skUnder(g,ox+Math.cos(a)*R,oy-30+Math.sin(a*1.3)*44-Math.abs(Math.sin(t*1.5+i))*8,t,i)}}
 function drawSkyBar(cx,cy,t){const g=ctx,ox=Math.round(SKB.cx-cx),oy=Math.round(SKB.cy-cy),rx=SKB.rx,ry=SKB.ry,nf=nightF(),hue=(t*50)%360,neon=`hsl(${hue},100%,62%)`,neon2=`hsl(${(hue+150)%360},100%,62%)`;
- g.save();skWall(g,ox,oy,t,nf);g.fillStyle='rgba(10,10,30,.28)';ellP(g,ox+5,oy+14,rx+14,ry+9,'rgba(10,10,30,.28)');
+ g.save();g.fillStyle='rgba(10,10,30,.28)';ellP(g,ox+5,oy+14,rx+14,ry+9,'rgba(10,10,30,.28)');
  ellP(g,ox,oy+8,rx+10,ry+8,'#8a7a66');ellP(g,ox,oy+7,rx+8,ry+6,'#b8a58a');
  ellP(g,ox,oy+12,rx,ry,'#17142c');ellP(g,ox,oy+9,rx,ry,'#221d40');
  for(let a=0;a<6.2832;a+=.07){const px=ox+Math.cos(a)*(rx-1),py=oy+10+Math.sin(a)*(ry-1)+ (Math.sin(a)>0?1:0);if(Math.sin(a)>-.15){g.fillStyle=((Math.floor(a*9)%2)?neon:neon2);g.fillRect(Math.round(px),Math.round(py),2,2)}}
@@ -3344,7 +3344,7 @@ function drawSkyBar(cx,cy,t){const g=ctx,ox=Math.round(SKB.cx-cx),oy=Math.round(
  rr(g,px2-25,py2-45,52,1,neon2);rr(g,px2-25,py2-58,52,1,neon);
  if(nf<.55){g.globalAlpha=1-nf*1.5;for(let i=0;i<34;i++){const sd=i*37.7,xx=ox+((sd*13)%(rx*2+20))-rx-10,yy=oy-88+((t*(28+i%5*6)+sd*9)%136),cc=['#ff4fa0','#3ad1ff','#ffd23f','#8a5cff','#2fe39a','#ff7a3a'][i%6];g.fillStyle=cc;const w=2+(Math.floor(t*4+i)%2);g.fillRect(Math.round(xx+Math.sin(t*2+i)*4),Math.round(yy),w,2)}g.globalAlpha=1}
  skDeco(g,ox,oy,t,nf);
- label('SKY BAR · NHẢY NHẬN 1-20TR',ox,oy-150+Math.round(Math.sin(t*3)*2),'#ffe066','rgba(70,20,110,.9)');
+ label('SKY BAR · NHẢY NHẬN 1-20TR',ox,oy-122+Math.round(Math.sin(t*3)*2),'#ffe066','rgba(70,20,110,.9)');
  g.restore()}
 function skyGlow(cx,cy,t,nf){if(nf<.03||!SKB.dl)return;const ox=SKB.cx-cx,oy=SKB.cy-cy;if(ox<-240||ox>VW+240||oy<-220||oy>VH+220)return;const g=ctx;g.save();const bx=ox,by=oy+8-86+13,C=['255,60,160','60,200,255','255,220,80','140,90,255','80,255,170','255,120,60'];
  for(let k=0;k<6;k++){const a=t*1.1+k*1.047,tx=ox+Math.cos(a)*72,ty=oy+10+Math.sin(a)*30;g.globalAlpha=.3*nf;g.fillStyle=`rgb(${C[k]})`;g.beginPath();g.moveTo(bx,by);g.lineTo(tx-10,ty);g.lineTo(tx+10,ty);g.closePath();g.fill();g.globalAlpha=.55*nf;g.beginPath();g.ellipse(tx,ty,13,5,0,0,6.283);g.fill()}
@@ -5189,7 +5189,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='12.11.2026-z42';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='12.11.2026-z43';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

@@ -731,3 +731,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Bỏ chọn level: vào là chơi LV1, đạt mục tiêu tự động sang level kế đến LV10, không đạt thì kết thúc. Thưởng nhận ngay mỗi level (SG_RW), `cap` tính theo lượt chơi/ngày, `dayMax` vẫn giới hạn tổng tiền. Năng lượng trừ mỗi level (3–7%), cần ≥30% để vào.
 - Layout ngoài map: Sky Bar (1150,700) cách xa Cổng Chào và không đè boardwalk; Đập Cua dời sang bx=1360 (bãi cua theo), Team Building dời sang bx=1600 (RING, đuốc, cây, dù dời theo).
 - Không cần chạy SQL.
+
+## z43 (12.11.2026)
+- Bỏ panel tường nền (poster/loa/spotlight) của Sky Bar ngoài map cho gọn; giữ sân khấu, mèo, alien, đĩa bay, đồ lót bay. Panel kiểu đó chỉ còn trong popup game. Không cần SQL.
