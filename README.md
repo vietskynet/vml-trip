@@ -713,3 +713,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Bot/NPC không còn lên sàn nhảy (chỉ người chơi thật).
 - Thêm lại nút ♪ tắt/bật nhạc cạnh MENU (`#bMus2`).
 - Không cần chạy SQL.
+
+## z40 (12.11.2026) – Sky Bar đổi style neon retro
+- Tường nền sau sân khấu theo ảnh tham khảo: giàn đèn spotlight có chùm sáng, 5 poster (đĩa than, tai nghe, DJ, nốt nhạc), loa chồng, bàn DJ có equalizer nhấp nháy.
+- Sàn sân khấu lát ô hồng/cam/tím nhấp nháy theo nhịp.
+- 4 người ngoài hành tinh nhún nhảy quanh bar, 2 mèo dancer múa phụ họa hai bên sân khấu, đĩa bay lượn phía trên (đêm có chùm sáng).
+- Đồ lót (quần, áo) hoạt hình bay lơ lửng quanh sân khấu.
+- Khối chắn mở rộng theo tường nền. Không cần chạy SQL.
