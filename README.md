@@ -724,3 +724,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z41 (12.11.2026) – Dời Sky Bar
 - Sky Bar dời từ (1260,800) sang (1054,752): nằm ngay bên phải Cổng Chào, bên trái quầy Đập Cua (rồi tới Team Building), không còn chắn lối đi/boardwalk.
 - Thu hẹp tường nền (4 poster, 2 loa mỗi bên) và vùng chắn để vừa khoảng trống giữa cổng và quầy đập cua. Không cần chạy SQL.
+
+## z42 (12.11.2026) – Popup Sky Bar Dance chạy liên tục + dàn lại layout khu cổng
+- Popup: nền sân khấu theo ảnh tham khảo (giàn spotlight, poster, loa chồng, bàn DJ, sân khấu xanh, sàn nhảy ô hồng/cam phối cảnh). Dải tối sau hàng mũi tên để dễ nhìn.
+- Thanh canh nhịp có quả cầu sáng chạy qua lại liên tục (kể cả lúc nhấn mũi tên, giữa các lượt, qua level) nên game không bị ngắt; nhấn NHẢY! khi quả cầu qua vùng xanh.
+- Bỏ chọn level: vào là chơi LV1, đạt mục tiêu tự động sang level kế đến LV10, không đạt thì kết thúc. Thưởng nhận ngay mỗi level (SG_RW), `cap` tính theo lượt chơi/ngày, `dayMax` vẫn giới hạn tổng tiền. Năng lượng trừ mỗi level (3–7%), cần ≥30% để vào.
+- Layout ngoài map: Sky Bar (1150,700) cách xa Cổng Chào và không đè boardwalk; Đập Cua dời sang bx=1360 (bãi cua theo), Team Building dời sang bx=1600 (RING, đuốc, cây, dù dời theo).
+- Không cần chạy SQL.
