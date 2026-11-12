@@ -754,3 +754,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Lâu đài dời `-324` (hằng `CDX`); bãi xe ngựa chuyển sang phía đông tường lâu đài (cửa xe ngựa nằm ở tường đông).
 - Showroom xe, trung tâm đua rùa + màn hình, lưới 12 lô vườn liên minh thu nhỏ 30% quanh tâm (`LS=.7`): sprite scale bằng `addPropS`/`ctx.scale`; cây trong lô giữ nguyên kích thước.
 - `layout.html` giờ lấy layout đang dùng làm nền, xuất `dx,dy` so với toạ độ gốc (khối thu nhỏ: so với tâm).
+
+## z48
+- Showroom xe và trung tâm đua rùa trả về kích thước gốc (giữ vị trí mới); chỉ lưới 12 lô vườn còn thu nhỏ 30% (`LS`).
