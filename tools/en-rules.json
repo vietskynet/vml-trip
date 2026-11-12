@@ -278,5 +278,16 @@
 "Nhân viên {1} · mời lần sau sau {2}": "Staff {1} · next offer in {2}",
 "Nhận {1} từ {2} · +{3} năng lượng (miễn phí)": "Take {1} from {2} · +{3} energy (free)",
 "Bạn nhận {1} từ nhân viên {2}: +{3} năng lượng.": "You took {1} from staff {2}: +{3} energy.",
-"NHÂN VIÊN · {1}": "STAFF · {1}"
+"NHÂN VIÊN · {1}": "STAFF · {1}",
+"ĐẠI GIA · {1}": "TYCOON · {1}",
+"Đố toán với {1} · thưởng {2} đến {3}": "Math quiz with {1} · reward {2} to {3}",
+"{1} đố bạn, đúng sẽ thưởng {2} (chỉ được trả lời một lần):": "{1} challenges you, a correct answer wins {2} (one attempt only):",
+"Đúng rồi! {1} thưởng bạn {2}.": "Correct! {1} rewards you {2}.",
+"Tiếc quá, đáp án là {1}.": "Too bad, the answer is {1}.",
+"Chưa đúng rồi. Đáp án là {1}.": "Not right. The answer is {1}.",
+"Bạn bị lừa mất {1}! Kẻ lừa đảo đã bỏ chạy.": "You lost {1} to a scam! The scammer ran away.",
+"{1}% của {2} cộng {3}% của {4} = ?": "{1}% of {2} plus {3}% of {4} = ?",
+"Tìm x: {1}x + {2} = {3} = ?": "Solve for x: {1}x + {2} = {3}",
+"Tổng các số lẻ liên tiếp từ 1 đến {1} = ?": "Sum of consecutive odd numbers from 1 to {1} = ?",
+"x² − {1}x + {2} = 0, nghiệm lớn hơn của x = ?": "x² − {1}x + {2} = 0, the larger root x = ?"
 }

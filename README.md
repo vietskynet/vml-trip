@@ -683,3 +683,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - 4 nhân viên áo trắng (2 mời nước, 2 mời finger food): đi tuần quanh Quầy Ăn Uống/lễ tân; khi bạn dưới 92% năng lượng sẽ tự tới mời. Chạm hoặc bấm A để nhận: +2…+5 năng lượng. Giới hạn: chờ 120 giây giữa 2 lần, tối đa 8 lần mỗi ngày game (`AMB_CAP`, `AMB_CD`).
 - 9 khách với 8 vai: hay kể chuyện (tip game), nhiếp ảnh (flash), cặp đôi (2 người đi cùng), mua sắm (ghé lễ tân, xách túi), thực khách (Quầy Ăn Uống), game thủ (khu minigame), bơi lội (hồ), tập gym. Chạm vào để nói chuyện. Từ 22:30 đến 6:00 khách "đi ngủ" (ẩn). Offline (đã có 16 bot) chỉ spawn 4 khách.
 - Đã thêm chuỗi EN vào en-dict/en-rules. Không cần chạy SQL.
+
+## z36: Đại gia đố toán, khách lừa đảo, quản lý NPC trong admin
+- **Đại gia** (mặc định 2): chạm/bấm A, có xác suất `richChance` (55%) chịu đố; câu toán 4 mức khó (trọng số 48/30/16/6) thưởng 100k / 300k / 1tr / 3tr (nhân `richMul`). Chỉ được trả lời 1 lần; đúng/sai/bỏ qua đều chờ `richCd` (600s), tối đa `richDay` (3) lần thưởng mỗi ngày game. Mỗi đại gia có thêm cooldown riêng. Modal `mathOv`.
+- **Lừa đảo** (mặc định 2): trông như khách thường (vai ngẫu nhiên). Khi lại gần (120-420px) sẽ lao tới (tốc độ 70, người chơi 84) kèm dấu `!` cam và toast cảnh báo. Chạm trúng (hoặc lỡ bấm vào) mất 100k đến 1tr (làm tròn 50k, không quá số dư), tối đa `scamDay` (3) lần/ngày; sau đó chạy ra cổng, ẩn 60-120s rồi quay lại với vai khác. Chạy thoát >300px hoặc quá 10s thì hắn bỏ cuộc.
+- **Admin**: thẻ "QUẢN LÝ NPC / BOT RESORT" ghi `config/npc` (bật/tắt, số lượng từng loại, hệ số năng lượng, giới hạn/cooldown, khoảng tiền lừa, hệ số thưởng đại gia). Game đọc live, đổi số lượng thì dựng lại NPC trong vài giây. "VỀ MẶC ĐỊNH" xoá `config/npc`.
+- Tiền vẫn do client tự cộng/trừ (giống phần còn lại). Không cần chạy SQL.

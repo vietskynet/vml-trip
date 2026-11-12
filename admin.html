@@ -219,6 +219,30 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <p class="msg" id="mMsg"></p>
    </div>
    <div class="card" style="margin-top:14px">
+    <h2>QUẢN LÝ NPC / BOT RESORT</h2>
+    <p>NPC chạy trên máy từng người chơi (không đồng bộ). Thay đổi áp dụng cho mọi máy đang online trong vài giây. <b>Nhân viên</b> mời nước/finger food tặng nhẹ năng lượng. <b>Đại gia</b> đố toán, đúng được thưởng 100k đến 3tr (4 mức độ khó), có xác suất không đố và giới hạn mỗi ngày để tránh lạm phát. <b>Lừa đảo</b> trông như khách thường, lao tới người chơi; không chạy kịp hoặc lỡ chạm vào sẽ mất tiền rồi hắn bỏ chạy.</p>
+    <div class="mon">
+     <label>Trạng thái NPC<select id="npc_on"><option value="1">BẬT</option><option value="0">TẮT TOÀN BỘ</option></select></label>
+     <label>Nhân viên mời nước/finger food (0-8)<input id="npc_staff" type="number" step="any" min="0"></label>
+     <label>Khách nghỉ dưỡng thường (0-14)<input id="npc_guests" type="number" step="any" min="0"></label>
+     <label>Khách đại gia đố toán (0-4)<input id="npc_rich" type="number" step="any" min="0"></label>
+     <label>Khách lừa đảo (0-4)<input id="npc_scam" type="number" step="any" min="0"></label>
+     <label>Hệ số năng lượng nhân viên tặng (1 = mặc định)<input id="npc_enMul" type="number" step="any" min="0"></label>
+     <label>Số lần nhận/ngày game mỗi người<input id="npc_cap" type="number" step="any" min="0"></label>
+     <label>Chờ giữa 2 lần nhận (giây)<input id="npc_cd" type="number" step="any" min="0"></label>
+     <label>Hệ số tiền thưởng đại gia (1 = 100k đến 3tr)<input id="npc_richMul" type="number" step="any" min="0"></label>
+     <label>Xác suất đại gia chịu đố (0-1)<input id="npc_richChance" type="number" step="any" min="0"></label>
+     <label>Số lần được thưởng/ngày game mỗi người<input id="npc_richDay" type="number" step="any" min="0"></label>
+     <label>Chờ giữa 2 câu đố (giây)<input id="npc_richCd" type="number" step="any" min="0"></label>
+     <label>Tiền bị lừa thấp nhất (₫)<input id="npc_scamMin" type="number" step="any" min="0"></label>
+     <label>Tiền bị lừa cao nhất (₫)<input id="npc_scamMax" type="number" step="any" min="0"></label>
+     <label>Số lần bị lừa tối đa/ngày game<input id="npc_scamDay" type="number" step="any" min="0"></label>
+     <label>Chu kỳ mỗi kẻ lừa thử lại (giây)<input id="npc_scamCd" type="number" step="any" min="0"></label>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="ok" id="npcSave">LƯU CÀI ĐẶT NPC</button><button class="ghost" id="npcReset">VỀ MẶC ĐỊNH</button></div>
+    <p class="msg" id="npcMsg"></p>
+   </div>
+   <div class="card" style="margin-top:14px">
     <h2>TẶNG TIỀN CHO TẤT CẢ</h2>
     <p>Cộng tiền cho mọi người chơi đã có nhân vật tính tới lúc bấm. Người offline nhận khi quay lại.</p>
     <div class="row"><input id="bAmt" type="number" min="0" step="100000" value="1000000" aria-label="Số tiền tặng mọi người"><button class="ok" id="bGo">TẶNG TẤT CẢ</button></div>
@@ -332,7 +356,7 @@ db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{pdRender()}catch(e){}});
  db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
- db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
+ db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{npcFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
 });
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=SB();if(!sb)return;$('#lgo').disabled=true;say('#lmsg','Đang kiểm tra…');
  try{const {data,error}=await sb.rpc('admin_login',{u_name:$('#lu').value,p_word:$('#lp').value});if(error)throw error;if(!data||!data.ok){say('#lmsg',(data&&data.msg)||'Sai username hoặc mật khẩu.',1);$('#lgo').disabled=false;return}
@@ -705,6 +729,11 @@ $('#maSave').onclick=()=>{const g=id=>+$(id).value,v={on:$('#maOn').value==='1'?
  if(v.min>v.max){const x=v.min;v.min=v.max;v.max=x}
  if(v.dur>v.every*60-10){say('#maMsg','Thời gian tồn tại phải ngắn hơn chu kỳ.',1);return}
  db.ref('config/mon').set(v).then(()=>say('#maMsg','Đã lưu. Áp dụng từ chu kỳ kế tiếp trên mọi máy.')).catch(e=>say('#maMsg','Lỗi: '+e.message,1))};
+const NPC_DEF={on:1,staff:4,guests:9,rich:2,scam:2,enMul:1,cap:8,cd:120,richMul:1,richChance:.55,richDay:3,richCd:600,scamMin:100000,scamMax:1000000,scamDay:3,scamCd:240},NPC_K=['on', 'staff', 'guests', 'rich', 'scam', 'enMul', 'cap', 'cd', 'richMul', 'richChance', 'richDay', 'richCd', 'scamMin', 'scamMax', 'scamDay', 'scamCd'];
+function npcFill(){const c=config.npc||{};NPC_K.forEach(k=>{const el=$('#npc_'+k);if(!el||document.activeElement===el)return;el.value=c[k]!=null&&c[k]!==''?c[k]:NPC_DEF[k]})}
+$('#npcSave').onclick=()=>{const v={};NPC_K.forEach(k=>{const x=+$('#npc_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:NPC_DEF[k]});v.on=v.on?1:0;['staff','guests','rich','scam'].forEach(k=>{v[k]=Math.round(v[k])});v.staff=Math.min(8,v.staff);v.guests=Math.min(14,v.guests);v.rich=Math.min(4,v.rich);v.scam=Math.min(4,v.scam);v.richChance=Math.min(1,v.richChance);v.enMul=Math.min(3,v.enMul);v.richMul=Math.min(3,v.richMul);v.scamMax=Math.min(1e7,v.scamMax);v.scamMin=Math.min(v.scamMin,v.scamMax);
+ db.ref('config/npc').set(v).then(()=>say('#npcMsg','Đã lưu. Các máy đang chơi sẽ cập nhật NPC trong vài giây.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
+$('#npcReset').onclick=()=>{db.ref('config/npc').set(null).then(()=>say('#npcMsg','Đã trả NPC về mặc định.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
 $('#mStop').onclick=()=>{db.ref('event/monster').set(null).then(()=>say('#mMsg','Đã thu hồi quái vật.')).catch(e=>say('#mMsg','Lỗi: '+e.message,1))};
 $('#bGo').onclick=()=>{const a=Math.round(+$('#bAmt').value||0);if(a<=0){say('#bMsg','Nhập số tiền lớn hơn 0.',1);return}db.ref('day/bonus').set({id:Date.now(),amount:a,ts:TS}).then(()=>say('#bMsg','Đã tặng '+VND(a)+' cho mọi người.')).catch(e=>say('#bMsg','Lỗi: '+e.message,1))};
 /* system */
