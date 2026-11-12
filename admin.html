@@ -48,6 +48,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
 .sbuy{display:block;font-size:17px;color:var(--muted)}.sbuy.hot{color:var(--leaf)}.sbuy b{display:inline;font-size:inherit;color:var(--sun)}
 .sin input{width:150px;font-size:20px}.stfix{color:var(--sun);text-align:right;font-size:20px}.stfix small{font-size:13px;color:var(--muted)}
 .sitem.ro{opacity:.9;border-style:dashed}
+.acttbl{width:100%;border-collapse:collapse;font-size:15px}.acttbl th,.acttbl td{padding:5px 8px;border-bottom:2px solid var(--line,#1c2a5c);text-align:right;vertical-align:top}.acttbl th:first-child,.acttbl td:first-child{text-align:left}.acttbl.lg td:nth-child(2),.acttbl.lg th:nth-child(2),.acttbl.lg td:last-child,.acttbl.lg th:last-child{text-align:left}.acttbl th{color:var(--muted);font-weight:normal;font-size:13px}.acttbl tr.gh td{background:var(--ink);color:var(--sun);text-align:left;font-weight:bold}
 .stsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:8px 0}.stsum div{background:var(--ink);border:3px solid var(--line);padding:6px 10px}.stsum small{display:block;font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted)}.stsum b{font-weight:400;font-size:26px;color:var(--sun);font-variant-numeric:tabular-nums}
 .sttop{display:flex;gap:6px 14px;flex-wrap:wrap;margin:6px 0 10px;font-size:18px;color:var(--text)}.sttop small{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted)}.sttop span b{color:var(--sun)}
 .stnav{position:sticky;top:0;z-index:5;background:var(--panel);padding:6px 0 8px;margin-bottom:8px;border-bottom:3px solid var(--line)}
@@ -111,7 +112,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
 
  <div id="app" hidden>
   <div class="top"><h1>VML TRIP · QUẢN TRỊ</h1><div class="row"><span class="who">Admin: <b id="whoName">—</b></span><button class="ghost sm" id="logout">ĐĂNG XUẤT</button></div></div>
-  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">CỬA HÀNG</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="tr">ĐUA RÙA</button><button data-t="ev">SỰ KIỆN</button><button data-t="lim">LIMITED</button><button data-t="eco">KINH TẾ</button><button data-t="err">LỖI GAME</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button></nav>
+  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">CỬA HÀNG</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ac">HOẠT ĐỘNG</button><button data-t="tr">ĐUA RÙA</button><button data-t="ev">SỰ KIỆN</button><button data-t="lim">LIMITED</button><button data-t="eco">KINH TẾ</button><button data-t="err">LỖI GAME</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button></nav>
 
   <section data-p="ov" class="card">
    <h2>TỔNG QUAN RESORT</h2>
@@ -135,11 +136,12 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    <div class="tbl"><table><thead><tr><th data-s="name">TÊN</th><th data-s="user">USERNAME</th><th data-s="money">VÍ ▾</th><th data-s="beds">GIƯỜNG</th><th data-s="pets">THÚ CƯNG</th><th data-s="en">NĂNG LƯỢNG</th><th data-s="on">TRẠNG THÁI</th></tr></thead><tbody id="plist"></tbody></table></div>
    <div class="pmod" id="pSide" hidden role="dialog" aria-modal="true" aria-labelledby="pTitle"><div class="pbox">
     <div class="phd"><div class="pav" id="pAv"></div><div class="pid"><h2 id="pTitle">NGƯỜI CHƠI</h2><p id="pInfo"></p><div id="pPets" class="prow"></div></div><button class="ghost" id="pClose" aria-label="Đóng">ĐÓNG ✕</button></div>
-    <div class="ptabs" id="pTabs"><button data-pt="tq" class="on">TỔNG QUAN</button><button data-pt="tu">TÚI &amp; TỦ ĐỒ</button><button data-pt="li">ITEM ĐẶC BIỆT</button><button data-pt="bd">TÀI SẢN</button><button data-pt="tien">LỊCH SỬ TIỀN</button><button data-pt="qt">QUẢN TRỊ</button></div>
+    <div class="ptabs" id="pTabs"><button data-pt="tq" class="on">TỔNG QUAN</button><button data-pt="tu">TÚI &amp; TỦ ĐỒ</button><button data-pt="li">ITEM ĐẶC BIỆT</button><button data-pt="bd">TÀI SẢN</button><button data-pt="tien">LỊCH SỬ TIỀN</button><button data-pt="hd">HOẠT ĐỘNG</button><button data-pt="qt">QUẢN TRỊ</button></div>
     <div data-pp="tq"><div id="pWealth"></div><h3 class="ph3">CHỈ SỐ CÁ NHÂN</h3><p class="plg"><span class="sp g">+</span> chỉ số từ liên minh · <span class="sp v">+</span> chỉ số từ trang phục và thú cưng đang trang bị</p><div id="pCards" class="scards"></div></div>
     <div data-pp="tu" hidden><h3 class="ph3">TÚI THẦN KỲ (VẬT PHẨM LIMITED ĐANG GIỮ)</h3><div id="pBagI" class="pgrid2"></div><h3 class="ph3">TỦ ĐỒ: TRANG PHỤC ĐANG SỞ HỮU</h3><div id="pSkins" class="pgrid2"></div><h3 class="ph3">THÚ CƯNG ĐANG NUÔI</h3><div id="pPetsI" class="pgrid2"></div></div>
     <div data-pp="li" hidden><div id="pLimSum"></div><div id="pLimGrid" class="pgrid2"></div><h3 class="ph3">LỊCH SỬ ITEM (MỚI NHẤT TRƯỚC)</h3><div id="pLimHist"></div></div>
     <div data-pp="bd" hidden><div id="pEstate"></div></div>
+    <div data-pp="hd" hidden><div id="pAct"></div></div>
     <div data-pp="tien" hidden><div class="row"><select id="pmDir" aria-label="Lọc"><option value="all">Tất cả</option><option value="in">Chỉ tiền vào</option><option value="out">Chỉ tiền ra</option></select><input id="pmQ" placeholder="Tìm theo lý do" style="flex:1 1 160px"><button class="ghost sm" id="pmGo">TẢI LẠI</button></div><p class="msg" id="pmMsg"></p><div id="pmSum" style="margin:6px 0"></div><div class="tbl" style="max-height:420px;overflow:auto"><table><thead><tr><th>THỜI GIAN</th><th>VÀO</th><th>RA</th><th>SỐ DƯ</th><th>LÝ DO</th></tr></thead><tbody id="pmBody"></tbody></table></div></div>
     <div data-pp="qt" hidden>
     <div class="chips"><button data-v="500000">500.000₫</button><button data-v="1000000">1.000.000₫</button><button data-v="5000000">5.000.000₫</button><button data-v="9000000">9.000.000₫</button></div>
@@ -169,6 +171,16 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    <div class="stsave"><button class="ok" id="prSave">LƯU GIÁ</button><button class="ghost" id="prReset">MẶC ĐỊNH</button><button class="ghost" id="prX">x1.5</button><button class="ghost" id="prH">x0.5</button><span class="msg" id="prMsg"></span></div>
   </section>
 
+  <section data-p="ac" class="card" hidden>
+   <h2>THỐNG KÊ HOẠT ĐỘNG</h2>
+   <p>Tổng hợp từ nhật ký hoạt động do máy người chơi gửi lên (minigame, ngân hàng, xe và tàu, tai nạn, tip, quà…). Dữ liệu tính từ ngày bật tính năng và đi theo tài khoản. Bấm vào một người chơi ở tab NGƯỜI CHƠI → HOẠT ĐỘNG để xem chi tiết từng người.</p>
+   <div id="acKpi" class="stsum"></div>
+   <h3 class="ph3">GỢI Ý TỐI ƯU</h3><ul id="acAdv" style="margin:0 0 10px;padding-left:20px;line-height:1.5"></ul>
+   <div class="tbl" id="acTbl"></div>
+   <h3 class="ph3">TOP NGƯỜI CHƠI THEO HOẠT ĐỘNG</h3>
+   <div class="row" style="margin-bottom:6px"><select id="acSel" aria-label="Chọn hoạt động"></select><select id="acBy" aria-label="Xếp theo"><option value="1">Xếp theo tiền nhận</option><option value="0">Xếp theo số lượt</option><option value="2">Xếp theo tiền chi</option><option value="3">Xếp theo kỷ lục</option></select></div>
+   <div class="tbl" id="acTop"></div>
+  </section>
   <section data-p="lg" class="card" hidden>
    <h2>LỊCH SỬ TIỀN VÀO / RA</h2>
    <p>Mỗi dòng là một lần số dư của người chơi thay đổi, kèm lý do ghi theo thông báo trong game. Dữ liệu do máy người chơi gửi lên, giữ tối đa 1.500 dòng gần nhất mỗi người và đi theo tài khoản khi đổi máy. Giao dịch từ trước ngày bật tính năng này không có.</p>
@@ -361,7 +373,7 @@ firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously(
  db.ref('admins/'+uid).on('value',s=>{admin=s.val()===true;if(admin&&sessionStorage.getItem(SKEY))showApp(true);else if(!admin)showApp(false)});
  if(started)return;started=true;
  db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
- db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{trkRender()}catch(e){}try{limRep()}catch(e){}try{ecoRender()}catch(e){}try{stUpdate()}catch(e){}});
+ db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{if(!$("[data-p=ac]").hidden)acRender()}catch(e){}try{trkRender()}catch(e){}try{limRep()}catch(e){}try{ecoRender()}catch(e){}try{stUpdate()}catch(e){}});
  db.ref('pos').on('value',s=>{pos=s.val()||{}});
 db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{pdRender()}catch(e){}});
  db.ref('beds').on('value',s=>{beds=s.val()||{}});
@@ -415,7 +427,7 @@ function ecoRender(){if(!$('#ecoKpi'))return;const {rows,bedTypes,hp}=ecoCalc(),
 setInterval(()=>{if(started||admin)try{ecoRender()}catch(e){}},5000);
 function renderErr(){const el=$('#errList');if(!el)return;const rows=Object.entries(errs).map(([id,e])=>Object.assign({id},e)).filter(e=>e&&e.m).sort((p,q)=>(q.t||0)-(p.t||0)).slice(0,300);$('#errCount').textContent=rows.length+' lỗi';el.innerHTML=rows.map(e=>`<tr><td>${new Date(e.t||0).toLocaleString('vi-VN')}</td><td>${esc(e.n||'?')}</td><td>${esc(e.k||'')}</td><td><b>${esc(e.m)}</b><details><summary>stack</summary><pre style="white-space:pre-wrap;font-size:11px">${esc(e.s||'')}</pre></details></td><td>${e.x},${e.y} · ${esc(e.md||'')} · ${esc(e.vw||'')}</td><td>${esc(e.v||'')}</td><td><small>${esc((e.ua||'').slice(0,90))}</small></td></tr>`).join('')||'<tr><td colspan="7">Chưa có lỗi nào.</td></tr>'}
 $('#errClr').onclick=()=>{if(!confirm('Xoá toàn bộ nhật ký lỗi?'))return;db.ref('errlog').remove().then(()=>say('#errMsg','Đã xoá.')).catch(e=>say('#errMsg','Lỗi: '+e.message,1))};
-function tab(t){if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}if(t==='tr'){setTimeout(trLoad,0);trCfgFill()}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices();if(t==='lim')limCatRender()}
+function tab(t){if(t==='ac')acRender();if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}if(t==='tr'){setTimeout(trLoad,0);trCfgFill()}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices();if(t==='lim')limCatRender()}
 const now=()=>Date.now()+off;
 function clock(){const NF=(VC&&VC.game&&VC.game.nightMinutes!=null)?Math.min(.9,Math.max(.05,VC.game.nightMinutes/((VC.game.dayMinutes)||60))):.25,A=(1-NF)*11/14,t=(now()-EPOCH)/1000,p=((t/DAY)%1+1)%1,o=p<A?11*p/A:p<A+NF?11+10*(p-A)/NF:21+3*(p-A-NF)/(1-A-NF),h=(8+o)%24,m=Math.floor(h*60);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function bedsOf(u){let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(un=>Object.values(un||{}).forEach(x=>{if(x===u)n++})));return n}
@@ -572,7 +584,7 @@ function pdRender(){const u=sel;if(!u||$('#pSide').hidden)return;const p=players
  if(lm){const d=lm.d,mem=Object.entries(d.m||{}).map(([x,n])=>(players[x]||{}).name||n||'?');h+='<div>🌳 <b>'+esc(d.nm||('Liên Minh '+lm.n))+'</b> (Lô '+lm.n+') · '+(d.h===u?'<span class="on">chủ liên minh</span>':'thành viên')+' · trạng thái: '+esc(d.st||'?')+'<br>Thành viên ('+mem.length+'): '+mem.map(esc).join(', ')+'</div>'}else h+='<small>Không thuộc liên minh nào.</small>';
  h+='<h3 class="ph3">SỐ LƯỢT MUA THEO BỘ ĐẾM</h3><div style="font-size:16px">'+(bus.length?bus.map(([k,v])=>{let n=k;const m=k.match(/^skins\.(.+)$/),m2=k.match(/^pets\.(\d+)$/),m3=k.match(/^c?deco\.(.+)$/);if(m)n='Trang phục '+((AVM.sk[m[1]]||{}).n||m[1]);else if(m2)n='Thú '+((AVM.pet[+m2[1]]||{}).n||m2[1]);else if(m3)n='Trang trí '+((AVM.deco[m3[1]]||{}).n||m3[1]);return'<span class="lchip">'+esc(n)+' ×'+v+'</span>'}).join(''):'<small>Chưa có dữ liệu.</small>')+'</div>';
  $('#pEstate').innerHTML=h}
-function pdTab(t){$$('#pTabs button').forEach(b=>b.classList.toggle('on',b.dataset.pt===t));$$('#pSide [data-pp]').forEach(d=>d.hidden=d.dataset.pp!==t);if(t==='tien')pmLoad(false)}
+function pdTab(t){$$('#pTabs button').forEach(b=>b.classList.toggle('on',b.dataset.pt===t));$$('#pSide [data-pp]').forEach(d=>d.hidden=d.dataset.pp!==t);if(t==='tien')pmLoad(false);if(t==='hd')pdAct()}
 async function pmLoad(force){const u=sel;if(!u)return;if(!force&&pmU===u&&pmRows[u]){pmRender();return}say('#pmMsg','Đang tải…');
  try{const {data,error}=await SB().rpc('admin_mlog',{target:u,lim:1500});if(error)throw error;pmRows[u]=data||[];pmU=u;say('#pmMsg','');pmRender()}
  catch(e){say('#pmMsg',/admin_mlog|schema|function/i.test(e.message||'')?'Máy chủ chưa bật tính năng này (chạy supabase-update-admin-log.sql).':'Lỗi: '+(e.message||e),1)}}
@@ -696,6 +708,49 @@ function storeItems(){if(STORE_ITEMS)return STORE_ITEMS;const A=[];
  [['boat.1','Thuyền nhỏ (80k)',80000,'⛵'],['boat.2','Thuyền vừa (350k)',350000,'🚤'],['boat.3','Thuyền lớn (1,5tr)',1500000,'🛳️']].forEach(([k,n,d,ic])=>add('boat','Thuê thuyền',ic,k,n,d,{edit:false}));
  JOB_DATA.forEach(([k,n,d])=>add('job','Thu nhập (không tính lượt mua)','💼','jobs.'+k,n,d,{nobuy:true}));
  return STORE_ITEMS=A}
+const ACT_G=[['mini','MINIGAME'],['bank','NGÂN HÀNG'],['veh','XE & PHAO'],['sea','BIỂN & TÀU'],['risk','TAI NẠN & RỦI RO'],['eco','KINH TẾ & XÃ HỘI']];
+const ACT_N={'mini.sky':['Sky Bar Dance (mỗi level)','🕺'],'mini.skyok':['Sky Bar · level đạt mục tiêu','✅',1],'mini.skyrun':['Sky Bar · lượt chơi liên tục (kỷ lục = số level)','🔁',1],'mini.gym':['Phòng Gym (kỷ lục = % chất lượng)','🏋️'],'mini.coco':['Dừa rơi','🥥'],'mini.surf':['Lướt sóng','🏄'],'mini.crab':['Đập cua','🦀'],'mini.fish':['Câu cá (minigame)','🎣'],'mini.bar':['Pha chế','🍹'],'mini.dig':['Săn kho báu','💎'],'mini.cast':['Lâu đài cát','🏰'],'mini.spy':['Tình báo','🕵️'],'mini.dark':['Pháp thuật hắc ám','🔮'],'mini.broom':['Đua chổi','🧹'],'mini.team':['Team Building','🤝'],'mini.duel':['Thách đấu','⚔️'],'mini.math':['Đại gia đố toán','🧮'],'mini.turtle':['Đua rùa (đặt cược)','🐢'],'mini.lotto':['Trúng vé số','🎟️'],'mini.mon':['Đánh quái vật','👹'],
+'bank.dep':['Gửi tiết kiệm','🏦'],'bank.wd':['Rút đúng hạn (kỷ lục = lãi)','💰'],'bank.early':['Rút trước hạn','⏪'],'bank.int':['Tiền lãi nhận được','📈'],
+'veh.rent':['Thuê xe','🚗'],'veh.buy':['Mua xe','🚙'],'veh.charge':['Sạc xe','🔌'],'veh.fine':['Đóng phạt xe','🧾'],'veh.lic':['Thi bằng lái (đậu)','🪪'],'veh.licf':['Thi bằng lái (trượt)','❌'],'veh.float':['Thuê phao','🛟'],
+'sea.rent':['Thuê thuyền','⛵'],'sea.trip':['Chuyến thuyền hoàn tất (kỷ lục = số cá)','🚤'],'sea.fish':['Cá câu được (kỷ lục = giá cá to nhất)','🐟'],'sea.pirate':['Bắn chìm tàu hải tặc','🏴‍☠️'],
+'risk.acc':['Tai nạn vệ sinh','🚽'],'risk.fine':['Bị bảo vệ phạt','👮'],'risk.ghost':['Bị ma hù','👻'],'risk.scam':['Bị lừa đảo','🦹'],'risk.hit':['Tông người (đền bù)','💥'],'risk.knocked':['Bị xe tông','🚑'],'risk.comp':['Nhận đền bù tai nạn','🩹'],'risk.sunk':['Thuyền bị bắn chìm (mất cá)','🌊'],'risk.faint':['Ngất xỉu','😵'],
+'eco.job':['Công việc kiếm tiền','💼'],'soc.tipout':['Tip cho vũ công','🎁'],'soc.tipin':['Nhận tip','🎀'],'soc.giftout':['Tặng tiền người khác','💸'],'soc.admin':['Quà từ admin','🎉'],'sys.login':['Lượt vào game','🚪',1],'sys.play':['Thời gian chơi','⏱️',1]};
+const actGrp=k=>{const p=k.split('.')[0];return p==='soc'||p==='sys'?'eco':p};
+const actFmt=(k,v)=>k==='sys.play'?(v>=3600?Math.floor(v/3600)+'g '+Math.floor(v%3600/60)+'p':Math.floor(v/60)+'p'):String(v);
+function actTbl(stat,g){const rows=Object.keys(ACT_N).filter(k=>actGrp(k)===g&&stat[k]&&(stat[k][0]>0||stat[k][1]>0||stat[k][2]>0));if(!rows.length)return'<p style="opacity:.7;margin:6px 0">Chưa có dữ liệu.</p>';
+ return'<table class="acttbl"><thead><tr><th>Hoạt động</th><th>Lượt</th><th>Nhận</th><th>Chi</th><th>Kỷ lục</th></tr></thead><tbody>'+rows.map(k=>{const r=stat[k],N=ACT_N[k];return'<tr><td>'+N[1]+' '+N[0]+'</td><td>'+(k==='sys.play'?actFmt(k,r[3]):r[0])+'</td><td>'+(r[1]?VND(r[1]):'')+'</td><td>'+(r[2]?VND(r[2]):'')+'</td><td>'+(k==='sys.play'||!r[3]?'':r[3])+'</td></tr>'}).join('')+'</tbody></table>'}
+function actLogHtml(acts,g){const rows=(acts||[]).slice().reverse().filter(a=>a&&ACT_N[a[1]]&&(!g||g==='all'||actGrp(a[1])===g));if(!rows.length)return'<p style="opacity:.7;margin:6px 0">Chưa có nhật ký.</p>';
+ return'<table class="acttbl lg"><thead><tr><th>Thời gian</th><th>Hoạt động</th><th>Nhận</th><th>Chi</th><th>Ghi chú</th></tr></thead><tbody>'+rows.map(a=>{const N=ACT_N[a[1]],d=new Date(a[0]*1000);return'<tr><td>'+d.toLocaleDateString('vi-VN')+' '+d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})+'</td><td>'+N[1]+' '+N[0].replace(/ \(.*\)$/,'')+'</td><td>'+(a[2]?VND(a[2]):'')+'</td><td>'+(a[3]?VND(a[3]):'')+'</td><td>'+(a[5]?esc(a[5]):'')+(a[4]?' ('+a[4]+')':'')+'</td></tr>'}).join('')+'</tbody></table>'}
+
+function acAgg(){const rows=Object.entries(players||{}).map(([u,p])=>({u,name:p.name||'?',st:(p.state&&p.state.sx&&typeof p.state.sx==='object')?p.state.sx:null})).filter(r=>r.st);const A={};
+ rows.forEach(r=>{for(const k in r.st){const v=r.st[k];if(!Array.isArray(v))continue;const o=A[k]||(A[k]={u:0,n:0,w:0,l:0,m:0});if(v[0]>0||v[1]>0||v[2]>0||v[3]>0)o.u++;o.n+=v[0]|0;o.w+=v[1]|0;o.l+=v[2]|0;if((v[3]|0)>o.m)o.m=v[3]|0}});return{rows,A,N:Object.keys(players||{}).length}}
+function acInsights(g){const {A,rows,N}=g,L=[],get=k=>A[k]||{u:0,n:0,w:0,l:0,m:0},pct=x=>Math.round(x*100)+'%';if(!rows.length)return['Chưa có dữ liệu. Người chơi cần vào game bản mới để bắt đầu ghi nhận.'];
+ const minis=Object.keys(ACT_N).filter(k=>k.startsWith('mini.')&&!ACT_N[k][2]&&get(k).n>0);
+ minis.forEach(k=>{const o=get(k),sh=o.u/rows.length;if(rows.length>=3&&sh<.25)L.push('<b>'+ACT_N[k][0]+'</b>: chỉ '+pct(sh)+' người chơi từng dùng ('+o.u+'/'+rows.length+'). Cân nhắc quảng bá, đặt gần lối đi hoặc tăng động lực.')});
+ const av=minis.filter(k=>get(k).w>0&&get(k).n>=5).map(k=>[k,get(k).w/get(k).n]).sort((a,b)=>b[1]-a[1]);
+ if(av.length>=3){const med=av[Math.floor(av.length/2)][1];if(av[0][1]>med*3)L.push('<b>'+ACT_N[av[0][0]][0]+'</b> trả trung bình '+VND(av[0][1])+'/lượt, gấp '+(av[0][1]/med).toFixed(1)+' lần mức trung vị ('+VND(med)+'). Người chơi sẽ dồn vào đây, xem lại thưởng hoặc giới hạn.')}
+ const sk=get('mini.sky'),ok=get('mini.skyok');if(sk.n>=10){const r=ok.n/sk.n;L.push('Sky Bar Dance: tỉ lệ đạt mục tiêu <b>'+pct(r)+'</b> ('+ok.n+'/'+sk.n+' level), thưởng đã trả '+VND(sk.w)+'.'+(r>.85?' Có vẻ quá dễ.':r<.35?' Có vẻ quá khó.':' Mức độ khó ổn.'))}
+ const sr=get('mini.skyrun');if(sr.n>=5)L.push('Sky Bar Dance: số level kỷ lục trong một lượt chơi là <b>'+sr.m+'</b>/10.');
+ let src=0,snk=0;Object.keys(A).forEach(k=>{if(ACT_N[k]&&ACT_N[k][2])return;if(k==='bank.dep'||k==='bank.wd'||k==='bank.early'||k==='sea.trip'||k==='sea.rent')return;src+=A[k].w;snk+=A[k].l});
+ if(src+snk>0)L.push('Dòng tiền ghi nhận (không tính ngân hàng và câu cá): nguồn thu <b>'+VND(src)+'</b>, nguồn chi <b>'+VND(snk)+'</b>'+(snk>0?' (thu/chi = '+(src/snk).toFixed(1)+'×)':'')+'.'+(snk>0&&src/snk>4?' Tiền đang vào nhanh hơn ra nhiều, nguy cơ lạm phát: cân nhắc thêm nơi tiêu tiền.':''));
+ const dep=get('bank.dep');if(dep.n>0)L.push('Ngân hàng: '+dep.u+'/'+rows.length+' người từng gửi, trung bình '+VND(dep.l/dep.n)+'/sổ, lãi đã trả '+VND(get('bank.int').w)+'. Rút trước hạn '+get('bank.early').n+' lần so với đúng hạn '+get('bank.wd').n+' lần.');
+ const rk=['risk.acc','risk.ghost','risk.scam','risk.fine','risk.knocked','risk.sunk','risk.faint'].map(k=>[k,get(k).n]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
+ if(rk.length)L.push('Rủi ro hay gặp nhất: '+rk.slice(0,3).map(x=>ACT_N[x[0]][0]+' ('+x[1]+')').join(', ')+'.');
+ const pt=get('sys.play'),lg=get('sys.login');if(lg.n>0)L.push('Trung bình mỗi người chơi '+actFmt('sys.play',Math.round(pt.m?pt.m:0))+' ở lượt cao nhất · tổng '+lg.n+' lượt vào game.');
+ const tp=(get('risk.hit').n+get('risk.knocked').n);if(tp>0)L.push('Tai nạn xe: '+get('risk.hit').n+' lần tông người, '+get('risk.knocked').n+' lần bị tông, đền bù tổng '+VND(get('risk.hit').l)+'.');
+ return L}
+function acRender(){const g=acAgg(),{A,rows,N}=g,get=k=>A[k]||{u:0,n:0,w:0,l:0,m:0};
+ const mp=Object.keys(A).filter(k=>k.startsWith('mini.')&&!(ACT_N[k]&&ACT_N[k][2])).reduce((s,k)=>s+A[k].n,0),mw=Object.keys(A).filter(k=>k.startsWith('mini.')).reduce((s,k)=>s+A[k].w,0),ml=Object.keys(A).filter(k=>k.startsWith('mini.')).reduce((s,k)=>s+A[k].l,0);
+ $('#acKpi').innerHTML=[['NGƯỜI CÓ DỮ LIỆU',rows.length+'/'+N],['LƯỢT MINIGAME',mp],['TIỀN TRÚNG',VND(mw)],['TIỀN CƯỢC/THUA',VND(ml)],['ĐÃ GỬI TIẾT KIỆM',VND(get('bank.dep').l)],['TAI NẠN & RỦI RO',Object.keys(A).filter(k=>k.startsWith('risk.')&&k!=='risk.comp').reduce((s,k)=>s+A[k].n,0)]].map(([t,v])=>'<div><small>'+t+'</small><b>'+v+'</b></div>').join('');
+ $('#acAdv').innerHTML=acInsights(g).map(x=>'<li>'+x+'</li>').join('');
+ let h='<table class="acttbl"><thead><tr><th>Hoạt động</th><th>Người chơi</th><th>Lượt</th><th>Tổng nhận</th><th>Tổng chi</th><th>TB nhận/lượt</th><th>Kỷ lục</th></tr></thead><tbody>';
+ ACT_G.forEach(([gk,gn])=>{const ks=Object.keys(ACT_N).filter(k=>actGrp(k)===gk&&A[k]&&(A[k].n||A[k].w||A[k].l||A[k].m));if(!ks.length)return;h+='<tr class="gh"><td colspan="7">'+gn+'</td></tr>';ks.forEach(k=>{const o=A[k],N0=ACT_N[k];h+='<tr><td>'+N0[1]+' '+N0[0]+'</td><td>'+o.u+'</td><td>'+(k==='sys.play'?'':o.n)+'</td><td>'+(o.w?VND(o.w):'')+'</td><td>'+(o.l?VND(o.l):'')+'</td><td>'+(o.w&&o.n?VND(o.w/o.n):'')+'</td><td>'+(k==='sys.play'?actFmt(k,o.m):(o.m||''))+'</td></tr>'})});
+ $('#acTbl').innerHTML=h+'</tbody></table>';
+ const sel=$('#acSel');if(!sel.options.length)sel.innerHTML=Object.keys(ACT_N).map(k=>'<option value="'+k+'">'+ACT_N[k][1]+' '+ACT_N[k][0]+'</option>').join('');sel.onchange=$('#acBy').onchange=acRender;
+ const k=sel.value||Object.keys(ACT_N)[0],by=+$('#acBy').value,top=rows.filter(r=>r.st[k]).map(r=>({name:r.name,v:r.st[k]})).sort((x,y)=>(y.v[by]|0)-(x.v[by]|0)).slice(0,10);
+ $('#acTop').innerHTML=top.length?'<table class="acttbl"><thead><tr><th>#</th><th>Người chơi</th><th>Lượt</th><th>Nhận</th><th>Chi</th><th>Kỷ lục</th></tr></thead><tbody>'+top.map((t,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(t.name)+'</td><td>'+(k==='sys.play'?'':t.v[0])+'</td><td>'+(t.v[1]?VND(t.v[1]):'')+'</td><td>'+(t.v[2]?VND(t.v[2]):'')+'</td><td>'+(k==='sys.play'?actFmt(k,t.v[3]):(t.v[3]||''))+'</td></tr>').join('')+'</tbody></table>':'<p style="color:var(--muted)">Chưa có ai.</p>'}
+function pdAct(){const p=players[sel]||{},st=(p.state&&p.state.sx)||null,ax=(p.state&&p.state.ax)||[];if(!st){$('#pAct').innerHTML='<p style="color:var(--muted)">Người chơi này chưa có dữ liệu hoạt động (cần vào game bản mới).</p>';return}
+ $('#pAct').innerHTML=ACT_G.map(([k,n])=>'<h3 class="ph3">'+n+'</h3>'+actTbl(st,k)).join('')+'<h3 class="ph3">NHẬT KÝ GẦN NHẤT (80)</h3>'+actLogHtml(ax,'all')}
 function buyCounts(){const m={};Object.values(players||{}).forEach(p=>{const b=p&&p.state&&p.state.bu;if(b&&typeof b==='object')Object.entries(b).forEach(([k,v])=>{m[k]=(m[k]||0)+(+v||0)})});return m}
 const ckey=k=>k.replace(/[.\/#$\[\]]/g,'_');
 let stSel='house',stSub='';
