@@ -267,6 +267,24 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <p class="msg" id="skyMsg"></p>
    </div>
    <div class="card" style="margin-top:14px">
+    <h2>MÙA GIẢI SKY BAR</h2>
+    <p>Tạo mùa thi cho Sky Bar Dance. Trong thời gian mùa, điểm tốt nhất của mỗi người (tổng điểm các level trong một lượt chơi liên tục) được ghi lên bảng xếp hạng, và người chơi thấy bảng này ngay khi vào game. Khi mùa kết thúc, bấm TRAO THƯỞNG để chuyển tiền cho top.</p>
+    <div class="mon">
+     <label>Tên mùa<input id="ss_name" type="text" maxlength="40" placeholder="Mùa 1 · Vũ công Tháng 11"></label>
+     <label>Bắt đầu<input id="ss_start" type="datetime-local"></label>
+     <label>Kết thúc<input id="ss_end" type="datetime-local"></label>
+     <label>Thưởng Top 1 (₫)<input id="ss_p1" type="number" step="1000000" min="0"></label>
+     <label>Thưởng Top 2 (₫)<input id="ss_p2" type="number" step="1000000" min="0"></label>
+     <label>Thưởng Top 3 (₫)<input id="ss_p3" type="number" step="1000000" min="0"></label>
+     <label>Thưởng Top 4 (₫)<input id="ss_p4" type="number" step="1000000" min="0"></label>
+     <label>Thưởng Top 5 (₫)<input id="ss_p5" type="number" step="1000000" min="0"></label>
+    </div>
+    <p id="ssState" style="color:#ffd23f"></p>
+    <div class="row" style="margin-top:12px"><button class="ok" id="ssSave">LƯU MÙA</button><button class="ghost" id="ssNew">MÙA MỚI (XOÁ MÙA CŨ)</button><button class="ghost" id="ssEnd">KẾT THÚC NGAY</button><button class="ok" id="ssPay">TRAO THƯỞNG</button></div>
+    <p class="msg" id="ssMsg"></p>
+    <div id="ssBoard" style="margin-top:8px"></div>
+   </div>
+   <div class="card" style="margin-top:14px">
     <h2>TẶNG TIỀN CHO TẤT CẢ</h2>
     <p>Cộng tiền cho mọi người chơi đã có nhân vật tính tới lúc bấm. Người offline nhận khi quay lại.</p>
     <div class="row"><input id="bAmt" type="number" min="0" step="100000" value="1000000" aria-label="Số tiền tặng mọi người"><button class="ok" id="bGo">TẶNG TẤT CẢ</button></div>
@@ -380,7 +398,7 @@ db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{pdRender()}catch(e){}});
  db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
- db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{npcFill()}catch(e){}try{skyFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
+ db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{npcFill()}catch(e){}try{skyFill()}catch(e){}try{ssFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
 });
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=SB();if(!sb)return;$('#lgo').disabled=true;say('#lmsg','Đang kiểm tra…');
  try{const {data,error}=await sb.rpc('admin_login',{u_name:$('#lu').value,p_word:$('#lp').value});if(error)throw error;if(!data||!data.ok){say('#lmsg',(data&&data.msg)||'Sai username hoặc mật khẩu.',1);$('#lgo').disabled=false;return}
@@ -709,12 +727,12 @@ function storeItems(){if(STORE_ITEMS)return STORE_ITEMS;const A=[];
  JOB_DATA.forEach(([k,n,d])=>add('job','Thu nhập (không tính lượt mua)','💼','jobs.'+k,n,d,{nobuy:true}));
  return STORE_ITEMS=A}
 const ACT_G=[['mini','MINIGAME'],['bank','NGÂN HÀNG'],['veh','XE & PHAO'],['sea','BIỂN & TÀU'],['risk','TAI NẠN & RỦI RO'],['eco','KINH TẾ & XÃ HỘI']];
-const ACT_N={'mini.sky':['Sky Bar Dance (mỗi level)','🕺'],'mini.skyok':['Sky Bar · level đạt mục tiêu','✅',1],'mini.skyrun':['Sky Bar · lượt chơi liên tục (kỷ lục = số level)','🔁',1],'mini.gym':['Phòng Gym (kỷ lục = % chất lượng)','🏋️'],'mini.coco':['Dừa rơi','🥥'],'mini.surf':['Lướt sóng','🏄'],'mini.crab':['Đập cua','🦀'],'mini.fish':['Câu cá (minigame)','🎣'],'mini.bar':['Pha chế','🍹'],'mini.dig':['Săn kho báu','💎'],'mini.cast':['Lâu đài cát','🏰'],'mini.spy':['Tình báo','🕵️'],'mini.dark':['Pháp thuật hắc ám','🔮'],'mini.broom':['Đua chổi','🧹'],'mini.team':['Team Building','🤝'],'mini.duel':['Thách đấu','⚔️'],'mini.math':['Đại gia đố toán','🧮'],'mini.turtle':['Đua rùa (đặt cược)','🐢'],'mini.lotto':['Trúng vé số','🎟️'],'mini.mon':['Đánh quái vật','👹'],
+const ACT_N={'mini.sky':['Sky Bar Dance (mỗi level)','🕺'],'mini.skyok':['Sky Bar · level đạt mục tiêu','✅',1],'mini.gull':['Hải Âu Vượt Cột','🕊️'],'mini.bigf':['Cá Nuốt Cá','🐟'],'mini.skylb':['Sky Bar · kỷ lục mùa (kỷ lục = điểm)','🏆',1],'mini.skyrun':['Sky Bar · lượt chơi liên tục (kỷ lục = số level)','🔁',1],'mini.gym':['Phòng Gym (kỷ lục = % chất lượng)','🏋️'],'mini.coco':['Dừa rơi','🥥'],'mini.surf':['Lướt sóng','🏄'],'mini.crab':['Đập cua','🦀'],'mini.fish':['Câu cá (minigame)','🎣'],'mini.bar':['Pha chế','🍹'],'mini.dig':['Săn kho báu','💎'],'mini.cast':['Lâu đài cát','🏰'],'mini.spy':['Tình báo','🕵️'],'mini.dark':['Pháp thuật hắc ám','🔮'],'mini.broom':['Đua chổi','🧹'],'mini.team':['Team Building','🤝'],'mini.duel':['Thách đấu','⚔️'],'mini.math':['Đại gia đố toán','🧮'],'mini.turtle':['Đua rùa (đặt cược)','🐢'],'mini.lotto':['Trúng vé số','🎟️'],'mini.mon':['Đánh quái vật','👹'],
 'bank.dep':['Gửi tiết kiệm','🏦'],'bank.wd':['Rút đúng hạn (kỷ lục = lãi)','💰'],'bank.early':['Rút trước hạn','⏪'],'bank.int':['Tiền lãi nhận được','📈'],
 'veh.rent':['Thuê xe','🚗'],'veh.buy':['Mua xe','🚙'],'veh.charge':['Sạc xe','🔌'],'veh.fine':['Đóng phạt xe','🧾'],'veh.lic':['Thi bằng lái (đậu)','🪪'],'veh.licf':['Thi bằng lái (trượt)','❌'],'veh.float':['Thuê phao','🛟'],
 'sea.rent':['Thuê thuyền','⛵'],'sea.trip':['Chuyến thuyền hoàn tất (kỷ lục = số cá)','🚤'],'sea.fish':['Cá câu được (kỷ lục = giá cá to nhất)','🐟'],'sea.pirate':['Bắn chìm tàu hải tặc','🏴‍☠️'],
 'risk.acc':['Tai nạn vệ sinh','🚽'],'risk.fine':['Bị bảo vệ phạt','👮'],'risk.ghost':['Bị ma hù','👻'],'risk.scam':['Bị lừa đảo','🦹'],'risk.hit':['Tông người (đền bù)','💥'],'risk.knocked':['Bị xe tông','🚑'],'risk.comp':['Nhận đền bù tai nạn','🩹'],'risk.sunk':['Thuyền bị bắn chìm (mất cá)','🌊'],'risk.faint':['Ngất xỉu','😵'],
-'eco.job':['Công việc kiếm tiền','💼'],'soc.tipout':['Tip cho vũ công','🎁'],'soc.tipin':['Nhận tip','🎀'],'soc.giftout':['Tặng tiền người khác','💸'],'soc.admin':['Quà từ admin','🎉'],'sys.login':['Lượt vào game','🚪',1],'sys.play':['Thời gian chơi','⏱️',1]};
+'eco.job':['Công việc kiếm tiền','💼'],'soc.tipout':['Tip cho vũ công','🎁'],'soc.lato':['La làng (/lato)','📢'],'soc.tipin':['Nhận tip','🎀'],'soc.giftout':['Tặng tiền người khác','💸'],'soc.admin':['Quà từ admin','🎉'],'sys.login':['Lượt vào game','🚪',1],'sys.play':['Thời gian chơi','⏱️',1]};
 const actGrp=k=>{const p=k.split('.')[0];return p==='soc'||p==='sys'?'eco':p};
 const actFmt=(k,v)=>k==='sys.play'?(v>=3600?Math.floor(v/3600)+'g '+Math.floor(v%3600/60)+'p':Math.floor(v/60)+'p'):String(v);
 function actTbl(stat,g){const rows=Object.keys(ACT_N).filter(k=>actGrp(k)===g&&stat[k]&&(stat[k][0]>0||stat[k][1]>0||stat[k][2]>0));if(!rows.length)return'<p style="opacity:.7;margin:6px 0">Chưa có dữ liệu.</p>';
@@ -801,6 +819,30 @@ function npcFill(){const c=config.npc||{};NPC_K.forEach(k=>{const el=$('#npc_'+k
 $('#npcSave').onclick=()=>{const v={};NPC_K.forEach(k=>{const x=+$('#npc_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:NPC_DEF[k]});v.on=v.on?1:0;['staff','guests','rich','scam'].forEach(k=>{v[k]=Math.round(v[k])});v.staff=Math.min(8,v.staff);v.guests=Math.min(14,v.guests);v.rich=Math.min(4,v.rich);v.scam=Math.min(4,v.scam);v.richChance=Math.min(1,v.richChance);v.enMul=Math.min(3,v.enMul);v.richMul=Math.min(3,v.richMul);v.scamMax=Math.min(1e7,v.scamMax);v.scamMin=Math.min(v.scamMin,v.scamMax);
  db.ref('config/npc').set(v).then(()=>say('#npcMsg','Đã lưu. Các máy đang chơi sẽ cập nhật NPC trong vài giây.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
 $('#npcReset').onclick=()=>{db.ref('config/npc').set(null).then(()=>say('#npcMsg','Đã trả NPC về mặc định.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
+
+/* ===== Mùa giải Sky Bar ===== */
+let SSALL={};const SS_DEF=[20e6,10e6,5e6,3e6,2e6];
+const ssLoc=ms=>{const d=new Date(ms-new Date(ms).getTimezoneOffset()*6e4);return d.toISOString().slice(0,16)};
+function ssCur(){const c=config.skyseason;return c&&c.id?c:null}
+function ssFill(){const c=ssCur()||{},pz=Array.isArray(c.prizes)?c.prizes:Object.values(c.prizes||{}),now=Date.now();
+ [['name',c.name||''],['start',ssLoc(c.start||now)],['end',ssLoc(c.end||now+7*864e5)]].forEach(([k,v])=>{const el=$('#ss_'+k);if(el&&document.activeElement!==el)el.value=v});
+ for(let i=0;i<5;i++){const el=$('#ss_p'+(i+1));if(el&&document.activeElement!==el)el.value=pz[i]!=null?pz[i]:SS_DEF[i]}
+ const s=+c.start||0,e=+c.end||0;$('#ssState').textContent=!c.id?'Chưa có mùa nào. Điền thông tin rồi bấm LƯU MÙA.':(now<s?'Mùa chưa bắt đầu.':now>e?'Mùa đã kết thúc.':'Mùa đang diễn ra.')+(c.paid?' Đã trao thưởng.':'');ssBoard()}
+function ssRows(){const c=ssCur(),B=(c&&SSALL[c.id])||{};return Object.keys(B).map(u=>({u,n:B[u].n||'?',s:+B[u].s||0,lv:+B[u].lv||0})).filter(r=>r.s>0).sort((a,b)=>b.s-a.s)}
+function ssBoard(){const r=ssRows(),c=ssCur(),pz=c?(Array.isArray(c.prizes)?c.prizes:Object.values(c.prizes||{})):[];
+ $('#ssBoard').innerHTML=r.length?'<table><tr><th>#</th><th>Người chơi</th><th>Level</th><th>Điểm</th><th>Thưởng</th></tr>'+r.slice(0,20).map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+String(x.n).replace(/[<>&]/g,'')+'</td><td>'+x.lv+'</td><td>'+x.s+'</td><td>'+(pz[i]>0?VND(pz[i]):'')+'</td></tr>').join('')+'</table>':'<p>Chưa có ai lên bảng.</p>'}
+function ssRead(){const g=id=>$(id).value,s=new Date(g('#ss_start')).getTime(),e=new Date(g('#ss_end')).getTime();if(!Number.isFinite(s)||!Number.isFinite(e)||e<=s){say('#ssMsg','Thời gian không hợp lệ: kết thúc phải sau bắt đầu.',1);return null}
+ const pz=[1,2,3,4,5].map(i=>Math.max(0,Math.min(1e9,Math.round(+g('#ss_p'+i)||0))));return{name:(g('#ss_name').trim()||'Mùa giải Sky Bar').slice(0,40),start:s,end:e,prizes:pz}}
+$('#ssSave').onclick=()=>{const v=ssRead();if(!v)return;const c=ssCur();if(c){v.id=c.id;v.paid=c.paid?1:0}else{v.id='s'+Date.now().toString(36);v.paid=0}
+ db.ref('config/skyseason').set(v).then(()=>say('#ssMsg','Đã lưu mùa. Người chơi thấy bảng xếp hạng khi vào Sky Bar Dance.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))};
+$('#ssNew').onclick=e=>{const v=ssRead();if(!v)return;arm(e.target,'BẤM LẦN NỮA: TẠO MÙA MỚI, BẢNG CŨ KHÔNG HIỆN NỮA',()=>{v.id='s'+Date.now().toString(36);v.paid=0;db.ref('config/skyseason').set(v).then(()=>say('#ssMsg','Đã tạo mùa mới "'+v.name+'".')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))})};
+$('#ssEnd').onclick=e=>{const c=ssCur();if(!c){say('#ssMsg','Chưa có mùa.',1);return}if(Date.now()>(+c.end||0)){say('#ssMsg','Mùa đã kết thúc rồi.',1);return}
+ arm(e.target,'BẤM LẦN NỮA ĐỂ KẾT THÚC MÙA NGAY',()=>{db.ref('config/skyseason/end').set(Date.now()).then(()=>say('#ssMsg','Đã kết thúc mùa. Bấm TRAO THƯỞNG để chuyển tiền cho top.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))})};
+$('#ssPay').onclick=e=>{const c=ssCur();if(!c){say('#ssMsg','Chưa có mùa.',1);return}if(Date.now()<=(+c.end||0)){say('#ssMsg','Mùa chưa kết thúc. Hãy chờ hết giờ hoặc bấm KẾT THÚC NGAY.',1);return}if(c.paid){say('#ssMsg','Mùa này đã trao thưởng rồi.',1);return}
+ const pz=(Array.isArray(c.prizes)?c.prizes:Object.values(c.prizes||{})).map(v=>+v||0),r=ssRows().slice(0,5).map((x,i)=>({...x,a:pz[i]||0})).filter(x=>x.a>0);if(!r.length){say('#ssMsg','Không có ai nhận thưởng (chưa có điểm hoặc thưởng bằng 0).',1);return}
+ arm(e.target,'BẤM LẦN NỮA: CHI '+VND(r.reduce((t,x)=>t+x.a,0))+' CHO '+r.length+' NGƯỜI',()=>{const ops=r.map((x,i)=>db.ref('gifts/'+x.u+'/S'+c.id+'r'+(i+1)).set({amount:x.a,ts:TS,from:'admin',fromName:'Thưởng '+c.name+' · Top '+(i+1),season:1}));
+  Promise.all(ops).then(()=>db.ref('config/skyseason/paid').set(1)).then(()=>say('#ssMsg','Đã trao thưởng cho '+r.map((x,i)=>'Top '+(i+1)+' '+x.n).join(', ')+'.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))})};
+db.ref('skylb').on('value',s=>{SSALL=s.val()||{};ssBoard()});
 const SKY_DEF={on:1,cap:4,dayMax:40000000,mul:1},SKY_K=['on','cap','dayMax','mul'];
 function skyFill(){const c=config.sky||{};SKY_K.forEach(k=>{const el=$('#sky_'+k);if(!el||document.activeElement===el)return;el.value=c[k]!=null&&c[k]!==''?c[k]:SKY_DEF[k]})}
 $('#skySave').onclick=()=>{const v={};SKY_K.forEach(k=>{const x=+$('#sky_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:SKY_DEF[k]});v.on=v.on?1:0;v.cap=Math.min(30,Math.round(v.cap));v.dayMax=Math.min(1e9,Math.round(v.dayMax));v.mul=Math.min(3,v.mul);

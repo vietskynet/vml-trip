@@ -134,6 +134,9 @@ begin
   if s[1] = 'gifts' then
     return n = 3 and s[2] <> u and cur is null and nv is not null and nv ->> 'from' = u and (nv ->> 'amount')::numeric > 0;
   end if;
+  if s[1] = 'skylb' then                                   -- bảng xếp hạng mùa Sky Bar: mỗi người chỉ ghi dòng của mình, điểm chỉ được tăng
+    return n = 3 and s[3] = u and nv is not null and (cur is null or (nv ->> 's')::numeric >= (cur ->> 's')::numeric);
+  end if;
   if s[1] = 'market' then return s[2] = u; end if;          -- chỉ đăng/huỷ tin rao của mình
   if s[1] = 'deco' then                                     -- ai có giường trong căn đó mới được trang trí
     if s[2] = 'castle' then return n = 4 and s[4] in ('top', 'base', 'plate') and public.rt_castle_member(u, s[3]); end if;

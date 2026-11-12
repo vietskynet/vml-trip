@@ -760,3 +760,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z49
 - Dời quầy Pha chế và Dừa rơi sang phải 200px để tránh cổng lâu đài (LY.bar, LY.coco).
+
+## z50 · Mùa giải Sky Bar · 2 game mới · chat 10 tin · /lato
+- **Sky Bar Dance có mùa giải**: admin (tab Cài đặt, thẻ MÙA GIẢI SKY BAR) đặt tên mùa, giờ bắt đầu/kết thúc và thưởng Top 1-5. Trong mùa, điểm tốt nhất của mỗi người (tổng điểm các level trong một lượt chơi liên tục) được ghi vào `skylb/<mùa>/<uid>`. Bảng xếp hạng hiện ngay khi vào game và trên màn kết thúc lượt. Khi hết giờ, bấm TRAO THƯỞNG để chuyển tiền cho top (quà `season`). Có nút MÙA MỚI và KẾT THÚC NGAY.
+- **Cần chạy lại SQL**: hàm `rt_can` trong `supabase-setup.sql` có thêm nhánh `skylb` (mỗi người chỉ ghi dòng của mình, điểm chỉ tăng). Chưa chạy thì bảng xếp hạng chưa ghi được điểm.
+- **Hải Âu Vượt Cột** và **Cá Nuốt Cá** (2 booth cạnh Đập cua, có hoạt ảnh nhỏ trên quầy), có trong trang sắp xếp map và bảng hoạt động.
+- Khung chat giữ 10 tin trong 3 phút.
+- `/lato nội dung`: thông báo to cho cả resort, 1.000.000₫/lần, tối đa 3 lần/ngày game.
