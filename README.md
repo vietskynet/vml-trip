@@ -748,3 +748,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Mở từ admin (nút "SẮP XẾP MAP") hoặc `/layout.html`. Nền là ảnh chụp toàn map (`layout-bg.jpg`, tạo bằng `__vml.mapShot()` ở `index.html#debug`).
 - Kéo-thả từng khu (bungalow, khách sạn, khu trò chơi, dịch vụ, lâu đài, vườn…), snap lưới, phím mũi tên, hoàn tác, cảnh báo chồng lấn, tự lưu localStorage.
 - "Copy JSON" xuất `{items:{id:{x,y,dx,dy}}}`; bước sau: game đọc layout này để đặt vị trí (chưa áp dụng vào game).
+
+## z47 — Áp dụng layout map mới
+- Toạ độ các khối giờ đọc từ bảng `LY` (id → [dx,dy] so với toạ độ gốc) ở đầu `index.html` (trước `ZONES`); `LYI` = hình chữ nhật dùng để lọc cây/ô/đuốc trang trí bị đè. Dời khối: sửa `LY` (hoặc dán JSON xuất từ `layout.html`).
+- Lâu đài dời `-324` (hằng `CDX`); bãi xe ngựa chuyển sang phía đông tường lâu đài (cửa xe ngựa nằm ở tường đông).
+- Showroom xe, trung tâm đua rùa + màn hình, lưới 12 lô vườn liên minh thu nhỏ 30% quanh tâm (`LS=.7`): sprite scale bằng `addPropS`/`ctx.scale`; cây trong lô giữ nguyên kích thước.
+- `layout.html` giờ lấy layout đang dùng làm nền, xuất `dx,dy` so với toạ độ gốc (khối thu nhỏ: so với tâm).

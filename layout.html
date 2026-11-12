@@ -90,12 +90,12 @@ const ITEMS=[
  ['bank','Techcombank','Dịch vụ',334,1190,130,110],
  ['gym','Phòng gym','Dịch vụ',500,1180,140,120],
  ['fash','Ếch & Em (thời trang)','Dịch vụ',1586,1026,144,118],
- ['salon','Hair Salon Tóc Thề','Dịch vụ',1416,1176,170,138],
+ ['salon','Hair Salon Tóc Thề','Dịch vụ',1416,1176,170,130],
  ['castle','Khu Lâu đài tình báo (vùng tím)','Lâu đài & vườn',384,1400,950,670,'a'],
  ['spy','Nhà Tình báo','Lâu đài & vườn',600,1398,100,80],
  ['dark','Nhà Pháp thuật hắc ám','Lâu đài & vườn',720,1398,100,80],
  ['broom','Nhà Đua chổi','Lâu đài & vườn',940,1398,100,80],
- ['carr','Bãi xe ngựa (5 trạm)','Lâu đài & vườn',160,1450,200,560],
+ ['carr','Bãi xe ngựa (5 trạm)','Lâu đài & vườn',160,1450,200,490],
  ['garden','Khu Vườn liên minh (vùng xanh)','Lâu đài & vườn',1330,1400,1210,670,'a'],
  ['plots','Lưới 12 lô đất vườn','Lâu đài & vườn',1435,1550,990,460],
  ['lmarch','Cổng & cây liên minh','Lâu đài & vườn',1850,1300,160,110],
@@ -104,12 +104,15 @@ const ITEMS=[
  ['road','Đường chính (ngang)','Cố định (tham chiếu)',40,760,2480,34,'l']
 ].map(a=>({id:a[0],name:a[1],g:a[2],x0:a[3],y0:a[4],w:a[5],h:a[6],area:/a/.test(a[7]||''),lock:/l/.test(a[7]||''),x:a[3],y:a[4]}));
 const BY={};ITEMS.forEach(i=>BY[i.id]=i);
+/* Layout hiện tại của game (đã áp dụng). dx,dy so với toạ độ GỐC ban đầu; khối thu nhỏ 30% quanh tâm */
+const CURLY={"recvilla":[210,-16],"boat1":[0,-10],"coco":[392,690],"surf":[-138,-20],"crab":[280,-180],"team":[-130,-20],"food":[-130,-40],"table":[-126,-36],"info":[-50,-46],"fish":[982,-670],"bar":[-288,140],"pet":[-48,230],"campfire":[-210,-50],"recbung":[-60,34],"recbung2":[14,-40],"bungE1":[10,20],"bungE2":[10,20],"bungE3":[10,20],"hotel":[10,44],"pool":[358,16],"bath":[20,50],"wc":[20,60],"auto":[-80,0],"turtle":[-70,-20],"xa":[-30,10],"bank":[-44,0],"gym":[730,90],"fash":[-526,244],"salon":[-356,254],"castle":[-324,0],"spy":[-490,2],"dark":[-470,2],"broom":[-330,2],"carr":[900,112],"plots":[0,-50],"lmarch":[0,0],"lmboard":[0,-10]},SCALED={auto:1,turtle:1,plots:1};
+ITEMS.forEach(i=>{i.w0=i.w;i.h0=i.h;const d=CURLY[i.id]||[0,0];i.bx=i.x0+d[0];i.by=i.y0+d[1];if(SCALED[i.id]){i.w=Math.round(i.w0*.7);i.h=Math.round(i.h0*.7);i.bx+=Math.round((i.w0-i.w)/2);i.by+=Math.round((i.h0-i.h)/2)}i.x=i.bx;i.y=i.by});
 const $=s=>document.querySelector(s),vp=$('#vp'),world=$('#world');
 let Z=.4,PX=0,PY=0,snap=10,sel=null,hist=[],redo=[];
-const LS='vml_layout_v1';
+const LS='vml_layout_v2';
 function saveLS(){try{localStorage.setItem(LS,JSON.stringify(cur()))}catch(e){}}
-function cur(){const o={};ITEMS.forEach(i=>{if(i.x!==i.x0||i.y!==i.y0)o[i.id]={x:i.x,y:i.y}});return o}
-function apply(o){ITEMS.forEach(i=>{const r=o[i.id];if(r&&!i.lock){i.x=+r.x;i.y=+r.y}else{i.x=i.x0;i.y=i.y0}})}
+function cur(){const o={};ITEMS.forEach(i=>{if(i.x!==i.bx||i.y!==i.by)o[i.id]={x:i.x,y:i.y}});return o}
+function apply(o){ITEMS.forEach(i=>{const r=o[i.id];if(r&&!i.lock){i.x=+r.x;i.y=+r.y}else{i.x=i.bx;i.y=i.by}})}
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2200)}
 function pushH(){hist.push(JSON.stringify(cur()));if(hist.length>200)hist.shift();redo=[]}
 /* build DOM */
@@ -123,11 +126,11 @@ function collide(){const bad={};const L=ITEMS.filter(i=>!i.area);for(let a=0;a<L
 let BAD={};
 function render(){BAD=collide();ITEMS.forEach(i=>{const e=i.el;e.style.left=i.x+'px';e.style.top=i.y+'px';e.style.width=i.w+'px';e.style.height=i.h+'px';e.classList.toggle('sel',sel===i);e.classList.toggle('bad',!!BAD[i.id]&&!i.lock)});
  world.style.transform=`translate(${PX}px,${PY}px) scale(${Z})`;
- const o=orig;if(sel&&(sel.x!==sel.x0||sel.y!==sel.y0)){o.style.display='block';o.style.left=sel.x0+'px';o.style.top=sel.y0+'px';o.style.width=sel.w+'px';o.style.height=sel.h+'px'}else o.style.display='none';
+ const o=orig;if(sel&&(sel.x!==sel.bx||sel.y!==sel.by)){o.style.display='block';o.style.left=sel.bx+'px';o.style.top=sel.by+'px';o.style.width=sel.w+'px';o.style.height=sel.h+'px'}else o.style.display='none';
  renderSide();renderInfo();const n=Object.keys(cur()).length,nb=Object.keys(BAD).filter(k=>!BY[k].lock).length;$('#stat').textContent=`Đã dời: ${n} · Chồng lấn: ${nb}`;$('#hud').textContent=`Zoom ${Math.round(Z*100)}%`}
 function renderSide(){let h='';const mv=cur();Object.keys(GC).forEach(g=>{const L=ITEMS.filter(i=>i.g===g);if(!L.length)return;h+=`<h4>${g.toUpperCase()}</h4>`;L.forEach(i=>{h+=`<div class="li${sel===i?' sel':''}${BAD[i.id]&&!i.lock?' bad':''}${mv[i.id]?' mv':''}" style="--c:${GC[g]}" data-id="${i.id}"><span>${i.name}</span></div>`})});if($('#side').dataset.h!==h){const st=$('#side').scrollTop;$('#side').innerHTML=h;$('#side').dataset.h=h;$('#side').scrollTop=st}}
 function renderInfo(){const e=$('#info');if(!sel){e.innerHTML='<div>Chọn một khối để xem toạ độ.<br>Màu đỏ nhấp nháy = đang chồng lên khối khác.</div>';return}
- const k=document.activeElement&&document.activeElement.id;e.innerHTML=`<b style="color:#ffd23f">${sel.name}</b><div style="color:#9fb4ff">Kích thước ${sel.w}×${sel.h}</div>${sel.lock?'<div>🔒 Khối cố định</div>':`<div class="r">X <input id="nx" type="number" value="${sel.x}"> Y <input id="ny" type="number" value="${sel.y}"></div><div class="r" style="color:#9fb4ff">Gốc: ${sel.x0},${sel.y0} · Dời: ${sel.x-sel.x0},${sel.y-sel.y0}</div>`}${BAD[sel.id]&&!sel.lock?'<div style="color:#ff8a8a">⚠ '+[...new Set(BAD[sel.id])].join(', ')+'</div>':''}`;
+ const k=document.activeElement&&document.activeElement.id;e.innerHTML=`<b style="color:#ffd23f">${sel.name}</b><div style="color:#9fb4ff">Kích thước ${sel.w}×${sel.h}</div>${sel.lock?'<div>🔒 Khối cố định</div>':`<div class="r">X <input id="nx" type="number" value="${sel.x}"> Y <input id="ny" type="number" value="${sel.y}"></div><div class="r" style="color:#9fb4ff">Đang dùng trong game: ${sel.bx},${sel.by} · Dời thêm: ${sel.x-sel.bx},${sel.y-sel.by}</div>`}${BAD[sel.id]&&!sel.lock?'<div style="color:#ff8a8a">⚠ '+[...new Set(BAD[sel.id])].join(', ')+'</div>':''}`;
  const nx=$('#nx'),ny=$('#ny');if(nx){nx.onchange=ny.onchange=()=>{pushH();sel.x=+nx.value;sel.y=+ny.value;render();saveLS()}}}
 function drawGrid(){const c=$('#grid'),g=c.getContext('2d');g.clearRect(0,0,MW,MH);if(!$('#bGrid').classList.contains('on'))return;g.lineWidth=1;for(let x=0;x<=MW;x+=100){g.strokeStyle=x%500?'rgba(255,255,255,.12)':'rgba(255,255,255,.35)';g.beginPath();g.moveTo(x,0);g.lineTo(x,MH);g.stroke()}for(let y=0;y<=MH;y+=100){g.strokeStyle=y%500?'rgba(255,255,255,.12)':'rgba(255,255,255,.35)';g.beginPath();g.moveTo(0,y);g.lineTo(MW,y);g.stroke()}g.fillStyle='#fff';g.font='20px monospace';for(let x=0;x<=MW;x+=500)g.fillText(x,x+4,18);for(let y=500;y<=MH;y+=500)g.fillText(y,4,y-4)}
 /* interaction */
@@ -152,12 +155,12 @@ $('#bUndo').onclick=undo;$('#bRedo').onclick=doRedo;$('#bFit').onclick=fit;$('#b
 $('#bBg').onclick=e=>{e.target.classList.toggle('on');$('#bg').style.display=e.target.classList.contains('on')?'block':'none'};
 $('#bGrid').onclick=e=>{e.target.classList.toggle('on');drawGrid()};
 $('#sSnap').onchange=e=>snap=+e.target.value;
-$('#bReset').onclick=()=>{if(!sel||sel.lock)return;pushH();sel.x=sel.x0;sel.y=sel.y0;render();saveLS()};
-$('#bResetAll').onclick=()=>{if(!confirm('Đưa tất cả về vị trí gốc?'))return;pushH();apply({});render();saveLS()};
-function out(){const m=cur(),items={};ITEMS.forEach(i=>{if(i.lock)return;items[i.id]={name:i.name,x:i.x,y:i.y,dx:i.x-i.x0,dy:i.y-i.y0,w:i.w,h:i.h}});return JSON.stringify({vml_layout:1,map:{w:MW,h:MH},moved:Object.keys(m),items},null,1)}
+$('#bReset').onclick=()=>{if(!sel||sel.lock)return;pushH();sel.x=sel.bx;sel.y=sel.by;render();saveLS()};
+$('#bResetAll').onclick=()=>{if(!confirm('Đưa tất cả về layout đang dùng trong game?'))return;pushH();apply({});render();saveLS()};
+function out(){const m=cur(),items={};ITEMS.forEach(i=>{if(i.lock)return;const sc=SCALED[i.id]?1:0,dx=Math.round(i.x+(sc?i.w/2:0)-(i.x0+(sc?i.w0/2:0))),dy=Math.round(i.y+(sc?i.h/2:0)-(i.y0+(sc?i.h0/2:0)));items[i.id]={name:i.name,x:i.x,y:i.y,dx,dy,w:i.w,h:i.h}});return JSON.stringify({vml_layout:2,note:'dx,dy so với toạ độ gốc ban đầu của game (khối thu nhỏ: so tâm)',map:{w:MW,h:MH},moved:Object.keys(m),items},null,1)}
 $('#bCopy').onclick=async()=>{const t=out();try{await navigator.clipboard.writeText(t);toast('Đã copy JSON — dán vào chat gửi Claude')}catch(e){prompt('Copy JSON:',t)}};
 $('#bDown').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out()],{type:'application/json'}));a.download='vml-layout.json';a.click()};
-$('#bImp').onclick=()=>{const t=prompt('Dán JSON layout đã xuất:');if(!t)return;try{const j=JSON.parse(t);pushH();const o={};Object.keys(j.items||{}).forEach(k=>o[k]=j.items[k]);apply(o);render();saveLS();toast('Đã nhập')}catch(e){alert('JSON không hợp lệ')}};
+$('#bImp').onclick=()=>{const t=prompt('Dán JSON layout đã xuất:');if(!t)return;try{const j=JSON.parse(t);pushH();const o={};Object.keys(j.items||{}).forEach(k=>o[k]={x:j.items[k].x,y:j.items[k].y});apply(o);render();saveLS();toast('Đã nhập')}catch(e){alert('JSON không hợp lệ')}};
 try{const s=localStorage.getItem(LS);if(s)apply(JSON.parse(s))}catch(e){}
 drawGrid();addEventListener('resize',()=>{});fit();
 if(location.hash==='#t')window.__L={ITEMS,BY,render,collide};
