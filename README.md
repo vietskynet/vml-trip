@@ -777,3 +777,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z53 · Dời booth Hải Âu (và Cá Nuốt Cá) sang phải 30px
 - Hải Âu bx 1780, Cá Nuốt Cá bx 1920, tách khỏi Đập cua. Không cần SQL.
+
+## z54 · Nút lấy xe nói rõ lý do bị khoá
+- Nút LẤY XE RA LÁI khi bị khoá giờ ghi lý do (đang lái xe khác / đang có xe ở ổ sạc / cần đến gần cửa hàng / cần bằng lái). Không cần SQL.
