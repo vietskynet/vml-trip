@@ -815,3 +815,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Vật cản, vệt dầu, vệt mũi tên tăng tốc giờ nằm sát mặt đường (vẽ dạng hình thang dán xuống đường, thêm bóng đổ), hết cảm giác lơ lửng.
 - Ăn xu / trứng có hiệu ứng: tia sáng bay về ô vật phẩm, chữ "+1 XU" / "NHẬN VẬT PHẨM!", vòng sáng, ô vật phẩm nảy lên.
 - Ô vật phẩm chuyển sang bên trái màn hình (dưới thời gian). Không cần SQL.
+
+## z61 · Chọn xe trong Đường Đua F88
+- Màn chọn xe hiện đủ 16 xe, chia 3 cấp, kèm giá và 4 thanh chỉ số: Tốc độ, Tăng tốc, Bẻ lái, Vững. Xe chưa sở hữu bị khoá (ghi rõ mua ở Vinh Phát), xe mượn F88 luôn dùng được.
+- Chỉ số tính theo giá xe (thang log từ 2tr đến 100tr): tốc độ tối đa ×0,84 → ×1,04 so với mức chuẩn, tăng tốc ×0,8 → ×1,35. Cấp 2 bẻ lái ×1,12, cấp 3 ×1,25; cấp 2/3 bị trúng đòn thì quay vòng ngắn hơn (×0,85 / ×0,7). Không cần SQL.
