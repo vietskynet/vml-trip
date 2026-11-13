@@ -774,3 +774,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z52 · Dời booth Cá Nuốt Cá sang phải 30px
 - Booth Cá Nuốt Cá cách booth Hải Âu thêm 30px (bx 1890). Không cần SQL.
+
+## z53 · Dời booth Hải Âu (và Cá Nuốt Cá) sang phải 30px
+- Hải Âu bx 1780, Cá Nuốt Cá bx 1920, tách khỏi Đập cua. Không cần SQL.
