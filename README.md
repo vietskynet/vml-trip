@@ -780,3 +780,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z54 · Nút lấy xe nói rõ lý do bị khoá
 - Nút LẤY XE RA LÁI khi bị khoá giờ ghi lý do (đang lái xe khác / đang có xe ở ổ sạc / cần đến gần cửa hàng / cần bằng lái). Không cần SQL.
+
+## z55 · Lấy xe khác ra lái khi một xe đang ở ổ sạc
+- Xe đang đỗ ổ sạc không còn chặn việc lấy xe khác trong kho ra lái. Muốn đỗ thêm xe vào ổ sạc thì phải lấy xe cũ ra trước (mỗi người một ổ). Không cần SQL.
