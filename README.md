@@ -793,3 +793,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z57 · Nút tạo nhanh 3 giải 24 giờ
 - Admin có nút TẠO NHANH 3 GIẢI 24 GIỜ: Đua tiền (10tr/5tr/2tr), Đua bước chân (5tr/3tr/1tr), Đua dọn phân (3tr/2tr/1tr), bắt đầu ngay, kết thúc sau 24 giờ. Không cần SQL.
+
+## z58 · Sửa giao diện danh sách giải trong admin
+- Danh sách giải hiển thị dạng thẻ, nút tự xuống dòng, không còn tràn khỏi khung. Không cần SQL.
