@@ -796,3 +796,16 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z58 · Sửa giao diện danh sách giải trong admin
 - Danh sách giải hiển thị dạng thẻ, nút tự xuống dòng, không còn tràn khỏi khung. Không cần SQL.
+
+## z59 · ĐƯỜNG ĐUA F88 (đua xe bắn súng giả 3D · phase 1)
+
+- **Cổng vào**: cổng "ĐƯỜNG ĐUA F88" đặt ngay bên trái garage Vinh Phát (`RCG` trong index.html), bước tới gần bấm E để vào. Mở một màn chơi toàn màn hình riêng (overlay `#rcOv`, bản đồ tạm nghỉ, thoát ra là quay về resort).
+- **Luật**: phí vào 1.000.000₫ + 8% năng lượng. 5 xe (bạn + 4 bot), 3 vòng. Thưởng theo hạng: hạng 1 = 100% mức của đường, hạng 2 = 50%, hạng 3 = 25%, hạng 4 = 10%, hạng 5 = 0.
+- **5 đường đua** (LV 1 → 5): thưởng hạng 1 là 1tr / 3tr / 7tr / 15tr / 30tr. Mở khoá LV kế tiếp khi về top 3 ở LV trước (lưu trong `P.buys.rc_u<LV>`, không cần SQL).
+- **Xe**: dùng xe đang sở hữu trong garage (16 loại, vẽ lại góc nhìn từ phía sau, chi tiết hơn). Tốc độ đua lấy từ `spd`; xe LV2/LV3 bẻ lái tốt hơn; xe có súng xuất phát cầm sẵn Súng Ba Hoa. Chưa có xe thì dùng xe mượn miễn phí.
+- **Vật phẩm** (ăn trứng ? trên đường, hạng càng thấp càng ra đồ mạnh): Thuốc Điên Tăng Tốc, Súng Ba Hoa (3 viên tự ngắm nhẹ), Khiên Bảo Vệ, Sấm Sét Dương Gian, và thêm: Vỏ Chuối Siêu Trơn, Tên Lửa Bám Đuôi, Siêu Sao Bất Tử. Trên đường còn có xu (10 xu = chạy nhanh hơn), vệt mũi tên tăng tốc, vệt dầu, chướng ngại.
+- **Bot**: đua theo luật như người chơi (cũng ăn trứng, dùng đồ, né bẫy, bị bắn), có kéo cân độ khó nhẹ theo khoảng cách.
+- **Điều khiển**: ← → / A D lái, ↓ phanh, Space dùng vật phẩm, Esc tạm dừng; điện thoại có nút cảm ứng.
+- Ghi nhật ký `mini.race` (admin xem được), thêm "Đường Đua F88" vào danh sách game của hệ thống Mùa giải (metric `gbest:race` / `gwin:race`).
+- **Không cần chạy SQL.** Bản tiếng Anh (en/) chưa dịch riêng phần này.
+- Phase 2 (thách đấu 2–5 người thật, realtime) chưa làm: cần kênh realtime nhanh hơn chu kỳ 1,5 giây hiện tại.
