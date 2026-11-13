@@ -771,3 +771,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z51 · Sky Bar Dance: thưởng giảm còn 30%, tối đa 12 level
 - Tiền thưởng cơ bản mỗi level giảm còn 30% (LV 1 = 300k, LV 10 = 6tr, LV 12 = 10,5tr); hệ số trong admin vẫn nhân thêm bên trên.
 - Thêm LV 11 và LV 12 (mục tiêu 1350 và 1400 điểm). Không cần SQL.
+
+## z52 · Dời booth Cá Nuốt Cá sang phải 30px
+- Booth Cá Nuốt Cá cách booth Hải Âu thêm 30px (bx 1890). Không cần SQL.
