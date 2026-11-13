@@ -277,7 +277,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     </div>
     <div id="ss_pz" style="margin-top:8px"></div>
     <p id="ssState" style="color:#ffd23f"></p>
-    <div class="row" style="margin-top:12px"><button class="ok" id="ssNew">TẠO GIẢI MỚI</button><button class="ghost" id="ssSave">LƯU SỬA GIẢI ĐANG CHỌN</button></div>
+    <div class="row" style="margin-top:12px"><button class="ok" id="ssNew">TẠO GIẢI MỚI</button><button class="ghost" id="ssSave">LƯU SỬA GIẢI ĐANG CHỌN</button><button class="ok" id="ssTri">TẠO NHANH 3 GIẢI 24 GIỜ</button></div>
     <p class="msg" id="ssMsg"></p>
     <div id="ssList" style="margin-top:10px"></div>
     <div id="ssBoard" style="margin-top:8px"></div>
@@ -844,6 +844,8 @@ let SSB=null;
 function ssBoard(){const s=SSB&&(config.seasons||{})[SSB];if(!s){$('#ssBoard').innerHTML='';return}const r=ssRows(s.id),pz=ssPrizes(s);
  $('#ssBoard').innerHTML='<h3 style="margin:6px 0">BXH · '+ssEsc(s.name)+'</h3>'+(r.length?'<table><tr><th>#</th><th>Người chơi</th><th>Điểm</th><th>Thưởng</th></tr>'+r.slice(0,30).map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+ssEsc(x.n)+'</td><td>'+ssFmt(s.metric,x.s)+'</td><td>'+(pz[i]&&(pz[i].t==='item'||pz[i].v>0)?ssPrizeLbl(pz[i]):'')+'</td></tr>').join('')+'</table>':'<p>Chưa có ai lên bảng.</p>')}
 $('#ssNew').onclick=()=>{const v=ssRead();if(!v)return;v.id='s'+Date.now().toString(36);v.paid=0;db.ref('config/seasons/'+v.id).set(v).then(()=>{SSEL=v.id;say('#ssMsg','Đã tạo giải "'+v.name+'". Người chơi thấy trong MENU › GIẢI ĐẤU.')}).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))};
+$('#ssTri').onclick=e=>arm(e.target,'BẤM LẦN NỮA: TẠO 3 GIẢI, BẮT ĐẦU NGAY, KẾT THÚC SAU 24 GIỜ',()=>{const n=Date.now(),e24=n+24*36e5,m=v=>({t:'money',v});const T=[['Đua tiền 24h','earn',[10e6,5e6,2e6]],['Đua bước chân 24h','steps',[5e6,3e6,1e6]],['Đua dọn phân 24h','poop',[3e6,2e6,1e6]]];
+ Promise.all(T.map((x,i)=>{const id='s'+(n+i).toString(36);return db.ref('config/seasons/'+id).set({id,name:x[0],metric:x[1],start:n,end:e24,prizes:x[2].map(m),paid:0})})).then(()=>say('#ssMsg','Đã tạo 3 giải: Đua tiền, Đua bước chân, Đua dọn phân. Kết thúc lúc '+new Date(e24).toLocaleString('vi-VN')+'.')).catch(er=>say('#ssMsg','Lỗi: '+er.message,1))});
 $('#ssSave').onclick=()=>{if(!SSEL||!(config.seasons||{})[SSEL]){say('#ssMsg','Chưa chọn giải để sửa (bấm SỬA ở dòng giải).',1);return}const v=ssRead();if(!v)return;const old=config.seasons[SSEL];if(old.metric!==v.metric&&ssRows(SSEL).length){say('#ssMsg','Giải đã có điểm, không đổi loại thi được. Hãy tạo giải mới.',1);return}
  v.id=SSEL;v.paid=old.paid?1:0;db.ref('config/seasons/'+SSEL).set(v).then(()=>say('#ssMsg','Đã lưu giải.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))};
 $('#ssList').onclick=e=>{const b=e.target.closest('button[data-ssa]');if(!b)return;const id=b.dataset.id,s=(config.seasons||{})[id],act=b.dataset.ssa;if(!s)return;

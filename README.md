@@ -790,3 +790,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Người chơi: MENU › GIẢI ĐẤU, tab ĐANG DIỄN RA / ĐÃ KẾT THÚC, bấm vào giải để xem bảng xếp hạng và thưởng. Mùa loại Sky Bar vẫn hiện bảng khi vào Sky Bar Dance.
 - Dữ liệu: cấu hình `config/seasons/<id>`, điểm `skylb/<id>/<uid>` (cùng nhánh đã có từ z50, điểm chỉ tăng). Điểm cộng dồn được gửi mỗi 5 giây. Mùa Sky Bar cũ (`config/skyseason`) vẫn được đọc.
 - SQL: không cần thêm, miễn đã chạy `z50-skylb.sql`.
+
+## z57 · Nút tạo nhanh 3 giải 24 giờ
+- Admin có nút TẠO NHANH 3 GIẢI 24 GIỜ: Đua tiền (10tr/5tr/2tr), Đua bước chân (5tr/3tr/1tr), Đua dọn phân (3tr/2tr/1tr), bắt đầu ngay, kết thúc sau 24 giờ. Không cần SQL.
