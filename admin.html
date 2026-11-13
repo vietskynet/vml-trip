@@ -267,21 +267,19 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <p class="msg" id="skyMsg"></p>
    </div>
    <div class="card" style="margin-top:14px">
-    <h2>MÙA GIẢI SKY BAR</h2>
-    <p>Tạo mùa thi cho Sky Bar Dance. Trong thời gian mùa, điểm tốt nhất của mỗi người (tổng điểm các level trong một lượt chơi liên tục) được ghi lên bảng xếp hạng, và người chơi thấy bảng này ngay khi vào game. Khi mùa kết thúc, bấm TRAO THƯỞNG để chuyển tiền cho top.</p>
+    <h2>MÙA GIẢI TOÀN GAME</h2>
+    <p>Mỗi mùa có một loại thi, thời hạn và thưởng cho Top 1–5 (tiền hoặc vật phẩm Limited). Người chơi xem trong MENU › GIẢI ĐẤU, mùa đã xong nằm ở tab ĐÃ KẾT THÚC. Mùa loại "Sky Bar Dance" cũng hiện bảng ngay khi vào game đó. Hết giờ, bấm TRAO THƯỞNG ở dòng mùa để gửi quà cho top.</p>
     <div class="mon">
-     <label>Tên mùa<input id="ss_name" type="text" maxlength="40" placeholder="Mùa 1 · Vũ công Tháng 11"></label>
+     <label>Tên giải<input id="ss_name" type="text" maxlength="40" placeholder="Đua tiền tuần 1"></label>
+     <label>Loại thi<select id="ss_metric"></select></label>
      <label>Bắt đầu<input id="ss_start" type="datetime-local"></label>
      <label>Kết thúc<input id="ss_end" type="datetime-local"></label>
-     <label>Thưởng Top 1 (₫)<input id="ss_p1" type="number" step="1000000" min="0"></label>
-     <label>Thưởng Top 2 (₫)<input id="ss_p2" type="number" step="1000000" min="0"></label>
-     <label>Thưởng Top 3 (₫)<input id="ss_p3" type="number" step="1000000" min="0"></label>
-     <label>Thưởng Top 4 (₫)<input id="ss_p4" type="number" step="1000000" min="0"></label>
-     <label>Thưởng Top 5 (₫)<input id="ss_p5" type="number" step="1000000" min="0"></label>
     </div>
+    <div id="ss_pz" style="margin-top:8px"></div>
     <p id="ssState" style="color:#ffd23f"></p>
-    <div class="row" style="margin-top:12px"><button class="ok" id="ssSave">LƯU MÙA</button><button class="ghost" id="ssNew">MÙA MỚI (XOÁ MÙA CŨ)</button><button class="ghost" id="ssEnd">KẾT THÚC NGAY</button><button class="ok" id="ssPay">TRAO THƯỞNG</button></div>
+    <div class="row" style="margin-top:12px"><button class="ok" id="ssNew">TẠO GIẢI MỚI</button><button class="ghost" id="ssSave">LƯU SỬA GIẢI ĐANG CHỌN</button></div>
     <p class="msg" id="ssMsg"></p>
+    <div id="ssList" style="margin-top:10px"></div>
     <div id="ssBoard" style="margin-top:8px"></div>
    </div>
    <div class="card" style="margin-top:14px">
@@ -820,29 +818,44 @@ $('#npcSave').onclick=()=>{const v={};NPC_K.forEach(k=>{const x=+$('#npc_'+k).va
  db.ref('config/npc').set(v).then(()=>say('#npcMsg','Đã lưu. Các máy đang chơi sẽ cập nhật NPC trong vài giây.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
 $('#npcReset').onclick=()=>{db.ref('config/npc').set(null).then(()=>say('#npcMsg','Đã trả NPC về mặc định.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
 
-/* ===== Mùa giải Sky Bar ===== */
-let SSALL={};const SS_DEF=[20e6,10e6,5e6,3e6,2e6];
+/* ===== Mùa giải toàn game ===== */
+const SEA_GAMES=[['coco','Dừa Rơi'],['surf','Lướt Sóng'],['crab','Đập Cua'],['gull','Hải Âu Vượt Cột'],['bigf','Cá Nuốt Cá'],['fish','Câu Cá'],['bar','Pha Chế'],['dig','Săn Kho Báu'],['cast','Lâu Đài Cát']];let SSALL={},SSEL=null;
 const ssLoc=ms=>{const d=new Date(ms-new Date(ms).getTimezoneOffset()*6e4);return d.toISOString().slice(0,16)};
-function ssCur(){const c=config.skyseason;return c&&c.id?c:null}
-function ssFill(){const c=ssCur()||{},pz=Array.isArray(c.prizes)?c.prizes:Object.values(c.prizes||{}),now=Date.now();
- [['name',c.name||''],['start',ssLoc(c.start||now)],['end',ssLoc(c.end||now+7*864e5)]].forEach(([k,v])=>{const el=$('#ss_'+k);if(el&&document.activeElement!==el)el.value=v});
- for(let i=0;i<5;i++){const el=$('#ss_p'+(i+1));if(el&&document.activeElement!==el)el.value=pz[i]!=null?pz[i]:SS_DEF[i]}
- const s=+c.start||0,e=+c.end||0;$('#ssState').textContent=!c.id?'Chưa có mùa nào. Điền thông tin rồi bấm LƯU MÙA.':(now<s?'Mùa chưa bắt đầu.':now>e?'Mùa đã kết thúc.':'Mùa đang diễn ra.')+(c.paid?' Đã trao thưởng.':'');ssBoard()}
-function ssRows(){const c=ssCur(),B=(c&&SSALL[c.id])||{};return Object.keys(B).map(u=>({u,n:B[u].n||'?',s:+B[u].s||0,lv:+B[u].lv||0})).filter(r=>r.s>0).sort((a,b)=>b.s-a.s)}
-function ssBoard(){const r=ssRows(),c=ssCur(),pz=c?(Array.isArray(c.prizes)?c.prizes:Object.values(c.prizes||{})):[];
- $('#ssBoard').innerHTML=r.length?'<table><tr><th>#</th><th>Người chơi</th><th>Level</th><th>Điểm</th><th>Thưởng</th></tr>'+r.slice(0,20).map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+String(x.n).replace(/[<>&]/g,'')+'</td><td>'+x.lv+'</td><td>'+x.s+'</td><td>'+(pz[i]>0?VND(pz[i]):'')+'</td></tr>').join('')+'</table>':'<p>Chưa có ai lên bảng.</p>'}
+const ssEsc=t=>String(t).replace(/[<>&"]/g,'');
+function ssMetricName(m){m=String(m||'');if(m==='earn')return'Đua tiền · tổng tiền kiếm được';if(m==='steps')return'Đua bước chân';if(m==='poop')return'Đua dọn phân';if(m==='sky')return'Sky Bar Dance · điểm một lượt';const g=SEA_GAMES.find(x=>m==='gbest:'+x[0]||m==='gwin:'+x[0]);return g?(m.startsWith('gbest')?g[1]+' · điểm cao nhất một ván':g[1]+' · tổng tiền thưởng nhận'):m}
+const ssUnit=m=>m==='earn'||String(m).startsWith('gwin:')?'₫':m==='steps'?'bước':m==='poop'?'lần':'điểm';
+const ssFmt=(m,v)=>ssUnit(m)==='₫'?VND(v):Math.round(v).toLocaleString('vi-VN')+' '+ssUnit(m);
+function ssSeasons(){const o=config.seasons&&typeof config.seasons==='object'?config.seasons:{};return Object.keys(o).map(k=>o[k]).filter(s=>s&&s.id).sort((a,b)=>(+b.start||0)-(+a.start||0))}
+function ssPrizes(s){const a=Array.isArray(s.prizes)?s.prizes:Object.values(s.prizes||{});return a.map(p=>p&&typeof p==='object'?{t:p.t==='item'?'item':'money',v:p.t==='item'?String(p.v||''):Math.max(0,Math.round(+p.v||0))}:{t:'money',v:Math.max(0,Math.round(+p||0))})}
+function ssPrizeLbl(p){return p.t==='item'?((LIMBY[p.v]&&LIMBY[p.v][1])||'Vật phẩm'):VND(p.v)}
+function ssBuildForm(){if($('#ss_metric').options.length)return;$('#ss_metric').innerHTML='<option value="earn">Đua tiền · tổng tiền kiếm được</option><option value="steps">Đua bước chân · số bước đi bộ</option><option value="poop">Đua dọn phân · số đống phân dọn được</option><option value="sky">Sky Bar Dance · điểm một lượt chơi</option>'+SEA_GAMES.map(g=>'<option value="gbest:'+g[0]+'">'+g[1]+' · điểm cao nhất một ván</option><option value="gwin:'+g[0]+'">'+g[1]+' · tổng tiền thưởng nhận</option>').join('');
+ const items=LIMA.map(a=>'<option value="'+a[0]+'">'+(a[3]==='o'?'[Áo] ':'[Thú] ')+ssEsc(a[1])+'</option>').join(''),def=[20e6,10e6,5e6,3e6,2e6];
+ $('#ss_pz').innerHTML=[1,2,3,4,5].map(i=>'<div class="row" style="margin:4px 0"><b style="width:56px;align-self:center">Top '+i+'</b><select id="ss_t'+i+'"><option value="money">Tiền (₫)</option><option value="item">Vật phẩm Limited</option></select><input id="ss_a'+i+'" type="number" min="0" step="1000000" value="'+def[i-1]+'" style="width:130px"><select id="ss_i'+i+'" style="max-width:220px;display:none">'+items+'</select></div>').join('');
+ [1,2,3,4,5].forEach(i=>{$('#ss_t'+i).onchange=()=>{const it=$('#ss_t'+i).value==='item';$('#ss_a'+i).style.display=it?'none':'';$('#ss_i'+i).style.display=it?'':'none'}})}
+function ssLoad(s){ssBuildForm();SSEL=s?s.id:null;const now=Date.now();$('#ss_name').value=s?s.name||'':'';$('#ss_metric').value=s?s.metric||'earn':'earn';$('#ss_start').value=ssLoc(s?+s.start:now);$('#ss_end').value=ssLoc(s?+s.end:now+7*864e5);const pz=s?ssPrizes(s):[];
+ for(let i=1;i<=5;i++){const p=pz[i-1]||{t:'money',v:[20e6,10e6,5e6,3e6,2e6][i-1]};$('#ss_t'+i).value=p.t;$('#ss_t'+i).onchange();if(p.t==='item'){if(LIMBY[p.v])$('#ss_i'+i).value=p.v}else $('#ss_a'+i).value=p.v}
+ $('#ssState').textContent=s?'Đang sửa: '+s.name+' (bấm LƯU SỬA GIẢI ĐANG CHỌN). Muốn tạo giải khác, bấm TẠO GIẢI MỚI.':'Điền thông tin rồi bấm TẠO GIẢI MỚI.'}
 function ssRead(){const g=id=>$(id).value,s=new Date(g('#ss_start')).getTime(),e=new Date(g('#ss_end')).getTime();if(!Number.isFinite(s)||!Number.isFinite(e)||e<=s){say('#ssMsg','Thời gian không hợp lệ: kết thúc phải sau bắt đầu.',1);return null}
- const pz=[1,2,3,4,5].map(i=>Math.max(0,Math.min(1e9,Math.round(+g('#ss_p'+i)||0))));return{name:(g('#ss_name').trim()||'Mùa giải Sky Bar').slice(0,40),start:s,end:e,prizes:pz}}
-$('#ssSave').onclick=()=>{const v=ssRead();if(!v)return;const c=ssCur();if(c){v.id=c.id;v.paid=c.paid?1:0}else{v.id='s'+Date.now().toString(36);v.paid=0}
- db.ref('config/skyseason').set(v).then(()=>say('#ssMsg','Đã lưu mùa. Người chơi thấy bảng xếp hạng khi vào Sky Bar Dance.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))};
-$('#ssNew').onclick=e=>{const v=ssRead();if(!v)return;arm(e.target,'BẤM LẦN NỮA: TẠO MÙA MỚI, BẢNG CŨ KHÔNG HIỆN NỮA',()=>{v.id='s'+Date.now().toString(36);v.paid=0;db.ref('config/skyseason').set(v).then(()=>say('#ssMsg','Đã tạo mùa mới "'+v.name+'".')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))})};
-$('#ssEnd').onclick=e=>{const c=ssCur();if(!c){say('#ssMsg','Chưa có mùa.',1);return}if(Date.now()>(+c.end||0)){say('#ssMsg','Mùa đã kết thúc rồi.',1);return}
- arm(e.target,'BẤM LẦN NỮA ĐỂ KẾT THÚC MÙA NGAY',()=>{db.ref('config/skyseason/end').set(Date.now()).then(()=>say('#ssMsg','Đã kết thúc mùa. Bấm TRAO THƯỞNG để chuyển tiền cho top.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))})};
-$('#ssPay').onclick=e=>{const c=ssCur();if(!c){say('#ssMsg','Chưa có mùa.',1);return}if(Date.now()<=(+c.end||0)){say('#ssMsg','Mùa chưa kết thúc. Hãy chờ hết giờ hoặc bấm KẾT THÚC NGAY.',1);return}if(c.paid){say('#ssMsg','Mùa này đã trao thưởng rồi.',1);return}
- const pz=(Array.isArray(c.prizes)?c.prizes:Object.values(c.prizes||{})).map(v=>+v||0),r=ssRows().slice(0,5).map((x,i)=>({...x,a:pz[i]||0})).filter(x=>x.a>0);if(!r.length){say('#ssMsg','Không có ai nhận thưởng (chưa có điểm hoặc thưởng bằng 0).',1);return}
- arm(e.target,'BẤM LẦN NỮA: CHI '+VND(r.reduce((t,x)=>t+x.a,0))+' CHO '+r.length+' NGƯỜI',()=>{const ops=r.map((x,i)=>db.ref('gifts/'+x.u+'/S'+c.id+'r'+(i+1)).set({amount:x.a,ts:TS,from:'admin',fromName:'Thưởng '+c.name+' · Top '+(i+1),season:1}));
-  Promise.all(ops).then(()=>db.ref('config/skyseason/paid').set(1)).then(()=>say('#ssMsg','Đã trao thưởng cho '+r.map((x,i)=>'Top '+(i+1)+' '+x.n).join(', ')+'.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))})};
-db.ref('skylb').on('value',s=>{SSALL=s.val()||{};ssBoard()});
+ const pz=[1,2,3,4,5].map(i=>$('#ss_t'+i).value==='item'?{t:'item',v:$('#ss_i'+i).value}:{t:'money',v:Math.max(0,Math.min(1e9,Math.round(+g('#ss_a'+i)||0)))});return{name:(g('#ss_name').trim()||'Giải đấu').slice(0,40),metric:g('#ss_metric'),start:s,end:e,prizes:pz}}
+function ssRows(id){const B=SSALL[id]||{};return Object.keys(B).map(u=>({u,n:B[u].n||'?',s:+B[u].s||0})).filter(r=>r.s>0).sort((a,b)=>b.s-a.s)}
+function ssFill(){ssBuildForm();const now=Date.now();if(!$('#ssState').dataset.init){$('#ssState').dataset.init=1;ssLoad(null)}
+ const L=ssSeasons();$('#ssList').innerHTML=L.length?'<table><tr><th>Giải</th><th>Loại</th><th>Thời gian</th><th>Trạng thái</th><th></th></tr>'+L.map(s=>{const st=now<+s.start?'Sắp bắt đầu':now>+s.end?'Đã kết thúc':'Đang diễn ra';return '<tr><td>'+ssEsc(s.name)+'</td><td>'+ssEsc(ssMetricName(s.metric))+'</td><td>'+new Date(+s.start).toLocaleString('vi-VN')+' → '+new Date(+s.end).toLocaleString('vi-VN')+'</td><td>'+st+(s.paid?' · đã trao thưởng':'')+' · '+ssRows(s.id).length+' người</td><td><button class="ghost" data-ssa="edit" data-id="'+s.id+'">SỬA</button> <button class="ghost" data-ssa="board" data-id="'+s.id+'">BXH</button> <button class="ghost" data-ssa="end" data-id="'+s.id+'">KẾT THÚC</button> <button class="ok" data-ssa="pay" data-id="'+s.id+'">TRAO THƯỞNG</button> <button class="ghost" data-ssa="del" data-id="'+s.id+'">XOÁ</button></td></tr>'}).join('')+'</table>':'<p>Chưa có giải nào.</p>';ssBoard()}
+let SSB=null;
+function ssBoard(){const s=SSB&&(config.seasons||{})[SSB];if(!s){$('#ssBoard').innerHTML='';return}const r=ssRows(s.id),pz=ssPrizes(s);
+ $('#ssBoard').innerHTML='<h3 style="margin:6px 0">BXH · '+ssEsc(s.name)+'</h3>'+(r.length?'<table><tr><th>#</th><th>Người chơi</th><th>Điểm</th><th>Thưởng</th></tr>'+r.slice(0,30).map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+ssEsc(x.n)+'</td><td>'+ssFmt(s.metric,x.s)+'</td><td>'+(pz[i]&&(pz[i].t==='item'||pz[i].v>0)?ssPrizeLbl(pz[i]):'')+'</td></tr>').join('')+'</table>':'<p>Chưa có ai lên bảng.</p>')}
+$('#ssNew').onclick=()=>{const v=ssRead();if(!v)return;v.id='s'+Date.now().toString(36);v.paid=0;db.ref('config/seasons/'+v.id).set(v).then(()=>{SSEL=v.id;say('#ssMsg','Đã tạo giải "'+v.name+'". Người chơi thấy trong MENU › GIẢI ĐẤU.')}).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))};
+$('#ssSave').onclick=()=>{if(!SSEL||!(config.seasons||{})[SSEL]){say('#ssMsg','Chưa chọn giải để sửa (bấm SỬA ở dòng giải).',1);return}const v=ssRead();if(!v)return;const old=config.seasons[SSEL];if(old.metric!==v.metric&&ssRows(SSEL).length){say('#ssMsg','Giải đã có điểm, không đổi loại thi được. Hãy tạo giải mới.',1);return}
+ v.id=SSEL;v.paid=old.paid?1:0;db.ref('config/seasons/'+SSEL).set(v).then(()=>say('#ssMsg','Đã lưu giải.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))};
+$('#ssList').onclick=e=>{const b=e.target.closest('button[data-ssa]');if(!b)return;const id=b.dataset.id,s=(config.seasons||{})[id],act=b.dataset.ssa;if(!s)return;
+ if(act==='edit'){ssLoad(s);$('#ssNew').scrollIntoView({block:'center'})}
+ else if(act==='board'){SSB=SSB===id?null:id;ssBoard()}
+ else if(act==='end'){if(Date.now()>(+s.end||0)){say('#ssMsg','Giải đã kết thúc rồi.',1);return}arm(b,'BẤM LẦN NỮA: KẾT THÚC GIẢI NGAY',()=>{db.ref('config/seasons/'+id+'/end').set(Date.now()).then(()=>say('#ssMsg','Đã kết thúc giải. Bấm TRAO THƯỞNG để gửi quà.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))})}
+ else if(act==='del'){arm(b,'BẤM LẦN NỮA: XOÁ GIẢI (không thu hồi)',()=>{db.ref('config/seasons/'+id).remove().then(()=>{if(SSEL===id)SSEL=null;say('#ssMsg','Đã xoá giải.')}).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))})}
+ else if(act==='pay'){if(Date.now()<=(+s.end||0)){say('#ssMsg','Giải chưa kết thúc. Chờ hết giờ hoặc bấm KẾT THÚC.',1);return}if(s.paid){say('#ssMsg','Giải này đã trao thưởng rồi.',1);return}
+  const pz=ssPrizes(s),r=ssRows(id).slice(0,5).map((x,i)=>({...x,p:pz[i]})).filter(x=>x.p&&(x.p.t==='item'?LIMBY[x.p.v]:x.p.v>0));if(!r.length){say('#ssMsg','Không có ai nhận thưởng (chưa có điểm hoặc thưởng bằng 0).',1);return}
+  arm(b,'BẤM LẦN NỮA: TRAO THƯỞNG CHO '+r.length+' NGƯỜI',()=>{const ops=r.map((x,i)=>{const fn='Thưởng '+s.name+' · Top '+(i+1),key='gifts/'+x.u+'/S'+id+'r'+(i+1);return db.ref(key).set(x.p.t==='item'?{lim:x.p.v,amount:0,ts:TS,from:'admin',fromName:fn,season:1}:{amount:x.p.v,ts:TS,from:'admin',fromName:fn,season:1})});
+   Promise.all(ops).then(()=>db.ref('config/seasons/'+id+'/paid').set(1)).then(()=>say('#ssMsg','Đã trao thưởng: '+r.map((x,i)=>'Top '+(i+1)+' '+x.n+' ('+ssPrizeLbl(x.p)+')').join(', ')+'.')).catch(e=>say('#ssMsg','Lỗi: '+e.message,1))})}};
+db.ref('skylb').on('value',s=>{SSALL=s.val()||{};try{ssFill()}catch(e){}});
 const SKY_DEF={on:1,cap:4,dayMax:40000000,mul:1},SKY_K=['on','cap','dayMax','mul'];
 function skyFill(){const c=config.sky||{};SKY_K.forEach(k=>{const el=$('#sky_'+k);if(!el||document.activeElement===el)return;el.value=c[k]!=null&&c[k]!==''?c[k]:SKY_DEF[k]})}
 $('#skySave').onclick=()=>{const v={};SKY_K.forEach(k=>{const x=+$('#sky_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:SKY_DEF[k]});v.on=v.on?1:0;v.cap=Math.min(30,Math.round(v.cap));v.dayMax=Math.min(1e9,Math.round(v.dayMax));v.mul=Math.min(3,v.mul);

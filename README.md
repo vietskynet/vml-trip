@@ -783,3 +783,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z55 · Lấy xe khác ra lái khi một xe đang ở ổ sạc
 - Xe đang đỗ ổ sạc không còn chặn việc lấy xe khác trong kho ra lái. Muốn đỗ thêm xe vào ổ sạc thì phải lấy xe cũ ra trước (mỗi người một ổ). Không cần SQL.
+
+## z56 · Hệ thống mùa giải toàn game
+- Admin (thẻ MÙA GIẢI TOÀN GAME, thay thẻ mùa Sky Bar cũ): tạo nhiều giải cùng lúc, mỗi giải có loại thi, thời hạn, thưởng Top 1–5 (tiền hoặc vật phẩm Limited). Có SỬA, BXH, KẾT THÚC, TRAO THƯỞNG, XOÁ.
+- Loại thi: Đua tiền (tổng `w` của nhật ký hoạt động, trừ ngân hàng), Đua bước chân (đi bộ, không tính xe/thuyền), Đua dọn phân, Sky Bar Dance (điểm một lượt), và từng minigame (điểm cao nhất một ván hoặc tổng tiền thưởng nhận).
+- Người chơi: MENU › GIẢI ĐẤU, tab ĐANG DIỄN RA / ĐÃ KẾT THÚC, bấm vào giải để xem bảng xếp hạng và thưởng. Mùa loại Sky Bar vẫn hiện bảng khi vào Sky Bar Dance.
+- Dữ liệu: cấu hình `config/seasons/<id>`, điểm `skylb/<id>/<uid>` (cùng nhánh đã có từ z50, điểm chỉ tăng). Điểm cộng dồn được gửi mỗi 5 giây. Mùa Sky Bar cũ (`config/skyseason`) vẫn được đọc.
+- SQL: không cần thêm, miễn đã chạy `z50-skylb.sql`.
