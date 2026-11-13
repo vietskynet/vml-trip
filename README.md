@@ -809,3 +809,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Ghi nhật ký `mini.race` (admin xem được), thêm "Đường Đua F88" vào danh sách game của hệ thống Mùa giải (metric `gbest:race` / `gwin:race`).
 - **Không cần chạy SQL.** Bản tiếng Anh (en/) chưa dịch riêng phần này.
 - Phase 2 (thách đấu 2–5 người thật, realtime) chưa làm: cần kênh realtime nhanh hơn chu kỳ 1,5 giây hiện tại.
+
+## z60 · Chỉnh Đường Đua F88
+- Cổng dời sang trái 20px để không che nhà xe.
+- Vật cản, vệt dầu, vệt mũi tên tăng tốc giờ nằm sát mặt đường (vẽ dạng hình thang dán xuống đường, thêm bóng đổ), hết cảm giác lơ lửng.
+- Ăn xu / trứng có hiệu ứng: tia sáng bay về ô vật phẩm, chữ "+1 XU" / "NHẬN VẬT PHẨM!", vòng sáng, ô vật phẩm nảy lên.
+- Ô vật phẩm chuyển sang bên trái màn hình (dưới thời gian). Không cần SQL.
