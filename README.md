@@ -948,3 +948,15 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Mọi thông báo (toast) giờ hiện trong **một popup nhỏ ở góc phải-trên** (tối đa 3 dòng, chữ nhỏ, trượt vào), không còn chiếm giữa màn hình trên mobile.
 - Riêng thông báo **quái vật xuất hiện** vẫn hiện giữa màn hình như cũ.
 - Không cần chạy SQL.
+
+## 14.11.2026-z82 · Khu Villa Riêng (6 lô) — XÂY XONG, ĐANG ĐÓNG
+- **Mặc định ĐÓNG**: có rào chắn "SẮP KHAI TRƯƠNG" trên đại lộ, cổng sắt đóng, bảo vệ nói người chơi quay lại sau. Admin → thẻ **KHU VILLA RIÊNG** → nút **MỞ CỬA** (ghi `config/vhOpen=1`; đóng lại bằng nút đó). Bảng admin cũng hiện chủ từng lô và nút THU HỒI. Test cục bộ không cần admin: thêm `?vh=1` vào URL (chỉ có tác dụng khi chạy offline).
+- **Vị trí**: mở rộng thế giới sang phải (MWX=3560); khu được vẽ trên **canvas riêng 1000×1090** (không phình nền chính, +~4,4MB RAM). Đại lộ lát đá từ khu bungalow phía đông; Vườn Liên Minh giữ nguyên.
+- **Khu**: tường đá + cổng riêng, 2 bảo vệ mặc vest, đài phun nước quảng trường, 6 lô (3×2) cách nhau bởi suối nhỏ có cầu gỗ, đèn đường phát sáng ban đêm. **Không có lừa đảo**: NPC lừa đảo không đuổi theo/lừa người chơi khi người chơi ở trong khu.
+- **Mua đất**: 150tr/lô, mỗi người 1 lô. Điều kiện: đang sở hữu tối đa **2 giường** (hoặc 1 villa/bungalow/phòng khách sạn) bên ngoài.
+- **Nhà**: 10 kiểu (nhà lá nghèo, tiền sử, nhà ống TPHCM, thiên nhiên, Nhật Zen, nhiệt đới, cổ điển, mid-century, hiện đại, futuristic), mỗi kiểu có hình khác nhau cho tầng 1/2/3. Giá: tầng 1 200tr, tầng 2 250tr, tầng 3 300tr + **phí kiểu nhà 50–300tr**. Full 3 tầng + đất ≈ **1,0–1,25 tỷ** (chưa trang trí). Đổi kiểu sau này trả phí kiểu mới.
+- **Tuỳ biến**: 9 loại hàng rào, 6 loại cổng, 20 món vườn/trang trí (cây, hồ koi, đài phun, bể bơi mini, BBQ, đèn…) đặt vào **10 vị trí** quanh vườn. Rào/cổng chỉ để trang trí, đi xuyên được. Có sẵn món "Cây ăn quả" để sau này thêm chức năng.
+- **Trả đất**: đập nhà, hoàn 50% tổng đã đầu tư.
+- Mùa Noel: mái villa tự phủ tuyết như các công trình khác.
+- Dữ liệu lưu ở `vh/{1..6}` (cùng cơ chế Vườn Liên Minh, mua lô dùng transaction chống trùng). Chưa làm: mời bạn về nhà ăn/ngủ/vệ sinh (bản sau), nội thất bên trong.
+- Không cần chạy SQL (cần kiểm tra khi bật thật: quyền ghi đường dẫn `vh` giống `lm`).

@@ -231,6 +231,12 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <p class="msg" id="mMsg"></p>
    </div>
    <div class="card" style="margin-top:14px">
+    <h2>KHU VILLA RIÊNG (6 LÔ ĐẤT)</h2>
+    <p>Khu villa người chơi tự mua đất &amp; xây (tối đa 3 tầng). <b>Mặc định ĐÓNG</b>: cổng có bảo vệ, rào chắn, người chơi không vào được. Bấm MỞ CỬA khi sẵn sàng; người chơi đang online nhận trong vài giây. Điều kiện mua: sở hữu tối đa 2 giường (hoặc 1 villa/bungalow/phòng KS) bên ngoài, mỗi người 1 lô.</p>
+    <div class="row" style="align-items:center"><button class="ok" id="vhGo">MỞ CỬA KHU VILLA</button><span id="vhState"></span><span id="vhMsg"></span></div>
+    <div id="vhList" style="margin-top:8px"></div>
+   </div>
+   <div class="card" style="margin-top:14px">
     <h2>QUẢN LÝ NPC / BOT RESORT</h2>
     <p>NPC chạy trên máy từng người chơi (không đồng bộ). Thay đổi áp dụng cho mọi máy đang online trong vài giây. <b>Nhân viên</b> mời nước/finger food tặng nhẹ năng lượng. <b>Đại gia</b> đố toán, đúng được thưởng 100k đến 3tr (4 mức độ khó), có xác suất không đố và giới hạn mỗi ngày để tránh lạm phát. <b>Lừa đảo</b> trông như khách thường, lao tới người chơi; không chạy kịp hoặc lỡ chạm vào sẽ mất tiền rồi hắn bỏ chạy.</p>
     <div class="mon">
@@ -396,7 +402,7 @@ db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{pdRender()}catch(e){}});
  db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
- db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{npcFill()}catch(e){}try{skyFill()}catch(e){}try{ssFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
+ db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{npcFill()}catch(e){}try{vhAdFill()}catch(e){}try{skyFill()}catch(e){}try{ssFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
 });
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=SB();if(!sb)return;$('#lgo').disabled=true;say('#lmsg','Đang kiểm tra…');
  try{const {data,error}=await sb.rpc('admin_login',{u_name:$('#lu').value,p_word:$('#lp').value});if(error)throw error;if(!data||!data.ok){say('#lmsg',(data&&data.msg)||'Sai username hoặc mật khẩu.',1);$('#lgo').disabled=false;return}
@@ -813,6 +819,13 @@ $('#maSave').onclick=()=>{const g=id=>+$(id).value,v={on:$('#maOn').value==='1'?
  if(v.dur>v.every*60-10){say('#maMsg','Thời gian tồn tại phải ngắn hơn chu kỳ.',1);return}
  db.ref('config/mon').set(v).then(()=>say('#maMsg','Đã lưu. Áp dụng từ chu kỳ kế tiếp trên mọi máy.')).catch(e=>say('#maMsg','Lỗi: '+e.message,1))};
 const NPC_DEF={on:1,staff:4,guests:9,rich:2,scam:2,enMul:1,cap:8,cd:120,richMul:1,richChance:.55,richDay:3,richCd:600,scamMin:100000,scamMax:1000000,scamDay:3,scamCd:240},NPC_K=['on', 'staff', 'guests', 'rich', 'scam', 'enMul', 'cap', 'cd', 'richMul', 'richChance', 'richDay', 'richCd', 'scamMin', 'scamMax', 'scamDay', 'scamCd'];
+
+let vhAll={};
+function vhAdFill(){const on=+(config.vhOpen||0)===1,bt=$('#vhGo');if(!bt)return;bt.textContent=on?'ĐÓNG CỬA KHU VILLA':'MỞ CỬA KHU VILLA';bt.className=on?'warn':'ok';$('#vhState').textContent=on?' Trạng thái: ĐANG MỞ':' Trạng thái: ĐÓNG (sắp khai trương)';
+ const rows=[1,2,3,4,5,6].map(n=>{const d=vhAll[n];return '<tr><td>Lô '+n+'</td><td>'+(d?esc(d.on||'?')+' <small>('+esc(String(d.o||'').slice(0,6))+')</small>':'<i>trống</i>')+'</td><td>'+(d?(d.f||0)+' tầng · kiểu '+(d.s|0):'')+'</td><td>'+(d?Number(d.inv||0).toLocaleString('vi-VN')+'₫':'')+'</td><td>'+(d?'<button class="warn" data-vhdel="'+n+'">THU HỒI</button>':'')+'</td></tr>'}).join('');$('#vhList').innerHTML='<div class="tbl"><table><tr><th>Lô</th><th>Chủ</th><th>Nhà</th><th>Đã đầu tư</th><th></th></tr>'+rows+'</table></div>'}
+$('#vhGo').onclick=()=>{const on=+(config.vhOpen||0)===1;db.ref('config/vhOpen').set(on?0:1).then(()=>say('#vhMsg',on?' Đã đóng cửa khu villa.':' Đã mở cửa khu villa!')).catch(e=>say('#vhMsg','Lỗi: '+e.message,1))};
+$('#vhList').onclick=e=>{const b=e.target.closest('[data-vhdel]');if(!b)return;const n=b.dataset.vhdel;if(!confirm('Thu hồi Lô '+n+'? Chủ nhà mất toàn bộ nhà và KHÔNG được hoàn tiền tự động.'))return;db.ref('vh/'+n).remove().then(()=>say('#vhMsg',' Đã thu hồi Lô '+n+'.')).catch(e2=>say('#vhMsg','Lỗi: '+e2.message,1))};
+db.ref('vh').on('value',s=>{vhAll=s.val()||{};try{vhAdFill()}catch(e){}});
 function npcFill(){const c=config.npc||{};NPC_K.forEach(k=>{const el=$('#npc_'+k);if(!el||document.activeElement===el)return;el.value=c[k]!=null&&c[k]!==''?c[k]:NPC_DEF[k]})}
 $('#npcSave').onclick=()=>{const v={};NPC_K.forEach(k=>{const x=+$('#npc_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:NPC_DEF[k]});v.on=v.on?1:0;['staff','guests','rich','scam'].forEach(k=>{v[k]=Math.round(v[k])});v.staff=Math.min(8,v.staff);v.guests=Math.min(14,v.guests);v.rich=Math.min(4,v.rich);v.scam=Math.min(4,v.scam);v.richChance=Math.min(1,v.richChance);v.enMul=Math.min(3,v.enMul);v.richMul=Math.min(3,v.richMul);v.scamMax=Math.min(1e7,v.scamMax);v.scamMin=Math.min(v.scamMin,v.scamMax);
  db.ref('config/npc').set(v).then(()=>say('#npcMsg','Đã lưu. Các máy đang chơi sẽ cập nhật NPC trong vài giây.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};
