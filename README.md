@@ -982,3 +982,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Trong nhà chủ nhà bấm **MỜI KHÁCH** (hoặc tab MỜI KHÁCH) → chọn người đang online. Khách nhận popup "LỜI MỜI VỀ NHÀ" (hiệu lực 20 giây) → bấm ĐẾN NHÀ để vào, chủ nhà và khách thấy nhau và đi lại được, lên/xuống cầu thang. Tối đa 5 khách. **MỜI RA** để đưa khách ra cổng.
 - Vị trí trong nhà gửi qua `pos/{uid}` (thêm `vi,vf,vx,vy,vd,vm,vg`); lời mời qua `invites/` (có sẵn). Chủ ra khỏi nhà hơn 8 giây thì khách tự được đưa ra ngoài.
 - Khách chưa được ngủ, ăn, dùng toilet, mua đồ (sẽ làm ở bước sau). Không cần SQL mới.
+
+## 14.11.2026-z87 · Bản đồ có Khu Villa Riêng
+- Bản đồ lớn (nút BẢN ĐỒ) và bản đồ nhỏ trong mục Thông tin: khi khu villa **đang mở** thì bản đồ mở rộng sang phải, hiện 6 lô, cổng (ô xanh), villa có chủ (vàng), villa của bạn (đỏ), tên khu. Khi khu còn đóng thì bản đồ giữ như cũ. Không cần SQL.
