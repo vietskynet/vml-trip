@@ -971,3 +971,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## 14.11.2026-z84b · SQL cho Khu Villa (BẮT BUỘC trước khi mở cửa)
 - Máy chủ mặc định từ chối ghi đường dẫn lạ, nên cần chạy **`sql-cu/supabase-update-villa.sql`** 1 lần trong Supabase SQL Editor (thêm quy tắc `vh` vào `rt_can`: chủ lô tạo/ghi/xoá lô của mình). `supabase-setup.sql` đã cập nhật cùng nội dung cho lần cài mới.
 - Đính chính: các ghi chú "không cần SQL" của z82–z84 là sai với bản chạy trên Supabase thật.
+
+## 14.11.2026-z85 · Khu Villa giai đoạn 2a: Nội thất bên trong nhà
+- Chủ nhà bấm **VÀO NHÀ** (tab Tổng quan) → cảnh bên trong, mỗi tầng một phòng, tường/sàn theo 10 phong cách nhà. Cửa ở tầng 1 (RA NGOÀI), cầu thang lên/xuống (nút hoặc phím **F** khi đứng gần).
+- Tab mới **NỘI THẤT** (và nút trong nhà): 20 món (giường đơn/đôi/king 8–40tr, bàn ăn, tủ lạnh, toilet riêng, sofa, TV, bàn làm việc, tủ áo, kệ sách, đèn, cây, thảm, tranh, điều hòa, lò sưởi, bể cá, piano, mini bar), 6 ô mỗi tầng, tổng 18 ô cho nhà 3 tầng. Dữ liệu lưu `vh/{lô}/fu/{tầng}_{ô}`.
+- **Ngủ được ở mọi tầng, kể cả tầng 1**: chỉ cần có giường trên tầng đang đứng. Tốc độ hồi tuỳ giường (đơn 1.00/s, đôi 1.33/s, king 1.82/s). Bàn ăn +15 năng lượng (hồi 90 giây), tủ lạnh +6 (45 giây). Toilet riêng dùng khi nhà đã mua toilet.
+- Chưa có mời khách (giai đoạn 2b). Không cần chạy thêm SQL (đã nằm trong quy tắc `vh` của z84b).
