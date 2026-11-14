@@ -994,3 +994,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## 14.11.2026-z90 · Sửa vùng xanh trống phía đông map
 - Khi Khu Villa còn đóng, camera không còn cuộn ra ngoài mép phải (x>2630) nên không còn thấy vùng xanh trống; khi mở khu thì camera mở rộng như cũ. Không cần SQL.
+
+## 14.11.2026-z91 · Lấp vùng xanh trống phía bắc Khu Villa
+- Vùng nền xanh đậm phía đông bãi biển (trên khu villa) nay được nối dài từ dải biển/cát/cỏ ở mép phải của map, cả trong game, bản đồ lớn và bản đồ nhỏ. Khi khu đóng, dải 70px sau mép cũng được lấp. Không cần SQL.
