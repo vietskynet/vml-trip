@@ -930,3 +930,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## 14.11.2026-z78 · Phượng Hoàng bắn quái từ xa hơn
 - Tầm tự bắn cầu ma thuật tăng 300 → 480px (rộng hơn cả màn hình), có quái trong tầm là bắn, không cần tới sát.
 - Không cần chạy SQL.
+
+## 14.11.2026-z79 · Phượng Hoàng bắn cầu tím vào quái và tàu hải tặc
+- Mỗi lượt tấn công: vòng ma thuật tím hiện dưới chim → bắn **từng quả cầu tím** (lõi trắng tím, vệt sao tím lượn, tinh thể xoay quanh) → nổ tím: sóng xung kích 3 lớp, tia sáng, cột sáng, mưa sao.
+- Ngoài quái vật, Phượng Hoàng giờ **tự bắn tàu hải tặc** trong tầm (mỗi quả tính 1 phát trúng, chia thưởng như thường). Quái ưu tiên trước, không có quái thì bắn tàu.
+- Không bắn khi người chơi đang ở trên thuyền.
+- Không cần chạy SQL.
