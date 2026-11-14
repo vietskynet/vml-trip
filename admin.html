@@ -233,7 +233,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    <div class="card" style="margin-top:14px">
     <h2>KHU VILLA RIÊNG (6 LÔ ĐẤT)</h2>
     <p>Khu villa người chơi tự mua đất &amp; xây (tối đa 3 tầng). <b>Mặc định ĐÓNG</b>: cổng có bảo vệ, rào chắn, người chơi không vào được. Bấm MỞ CỬA khi sẵn sàng; người chơi đang online nhận trong vài giây. Điều kiện mua: sở hữu tối đa 2 giường (hoặc 1 villa/bungalow/phòng KS) bên ngoài, mỗi người 1 lô.</p>
-    <div class="row" style="align-items:center"><button class="ok" id="vhGo">MỞ CỬA KHU VILLA</button><span id="vhState"></span><span id="vhMsg"></span></div>
+    <div class="row" style="align-items:center"><button class="ok" id="vhGo">MỞ CỬA KHU VILLA</button><button class="warn" id="vhWipe">XOÁ TOÀN BỘ TÀI SẢN KHU VILLA</button><span id="vhState"></span><span id="vhMsg"></span></div>
     <div id="vhList" style="margin-top:8px"></div>
    </div>
    <div class="card" style="margin-top:14px">
@@ -824,6 +824,11 @@ let vhAll={};
 function vhAdFill(){const on=+(config.vhOpen||0)===1,bt=$('#vhGo');if(!bt)return;bt.textContent=on?'ĐÓNG CỬA KHU VILLA':'MỞ CỬA KHU VILLA';bt.className=on?'warn':'ok';$('#vhState').textContent=on?' Trạng thái: ĐANG MỞ':' Trạng thái: ĐÓNG (sắp khai trương)';
  const rows=[1,2,3,4,5,6].map(n=>{const d=vhAll[n];return '<tr><td>Lô '+n+'</td><td>'+(d?esc(d.on||'?')+' <small>('+esc(String(d.o||'').slice(0,6))+')</small>':'<i>trống</i>')+'</td><td>'+(d?(d.f||0)+' tầng · kiểu '+(d.s|0):'')+'</td><td>'+(d?Number(d.inv||0).toLocaleString('vi-VN')+'₫':'')+'</td><td>'+(d?'<button class="warn" data-vhdel="'+n+'">THU HỒI</button>':'')+'</td></tr>'}).join('');$('#vhList').innerHTML='<div class="tbl"><table><tr><th>Lô</th><th>Chủ</th><th>Nhà</th><th>Đã đầu tư</th><th></th></tr>'+rows+'</table></div>'}
 $('#vhGo').onclick=()=>{const on=+(config.vhOpen||0)===1;db.ref('config/vhOpen').set(on?0:1).then(()=>say('#vhMsg',on?' Đã đóng cửa khu villa.':' Đã mở cửa khu villa!')).catch(e=>say('#vhMsg','Lỗi: '+e.message,1))};
+$('#vhWipe').onclick=()=>{const ns=[1,2,3,4,5,6].filter(n=>vhAll[n]);if(!ns.length){say('#vhMsg',' Khu villa đang trống, không có gì để xoá.');return}
+ if(!confirm('XÁC NHẬN 1/3\nXoá TOÀN BỘ '+ns.length+' lô villa (nhà, rào, cổng, trang trí, nội thất)?\nChủ nhà KHÔNG được hoàn tiền tự động.'))return;
+ if(!confirm('XÁC NHẬN 2/3\nHành động này KHÔNG THỂ hoàn tác. Dữ liệu '+ns.length+' lô sẽ mất vĩnh viễn.\nBạn vẫn muốn tiếp tục?'))return;
+ if(!confirm('XÁC NHẬN CUỐI 3/3\nBấm OK để XOÁ SẠCH khu villa ngay bây giờ.'))return;
+ Promise.all(ns.map(n=>db.ref('vh/'+n).remove())).then(()=>say('#vhMsg',' Đã xoá toàn bộ '+ns.length+' lô villa.')).catch(e=>say('#vhMsg','Lỗi: '+e.message,1))};
 $('#vhList').onclick=e=>{const b=e.target.closest('[data-vhdel]');if(!b)return;const n=b.dataset.vhdel;if(!confirm('Thu hồi Lô '+n+'? Chủ nhà mất toàn bộ nhà và KHÔNG được hoàn tiền tự động.'))return;db.ref('vh/'+n).remove().then(()=>say('#vhMsg',' Đã thu hồi Lô '+n+'.')).catch(e2=>say('#vhMsg','Lỗi: '+e2.message,1))};
 db.ref('vh').on('value',s=>{vhAll=s.val()||{};try{vhAdFill()}catch(e){}});
 function npcFill(){const c=config.npc||{};NPC_K.forEach(k=>{const el=$('#npc_'+k);if(!el||document.activeElement===el)return;el.value=c[k]!=null&&c[k]!==''?c[k]:NPC_DEF[k]})}
