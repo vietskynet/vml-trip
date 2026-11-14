@@ -887,3 +887,11 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Art: mọi sinh vật/vật thể được pixel hoá về lưới 1 điểm ảnh logic + viền đen 1px (giống nhân vật, cây, nhà ở game chính). Nước sáng và nhiều màu hơn, ít tối ở vực sâu, đáy cát sáng hơn.
 - Trạm mới "NGHỈ & ĂN UỐNG DƯỚI BIỂN": vòm kính quán mì với mái hiên sọc san hô, đèn lồng, thực khách cá, cabin ngủ phát Zzz, cột oxy 3 màu, biển hiệu neon nhấp nháy. Bấm E gần trạm: nạp oxy, ăn mì (+1 mạng +8s oxy), nghỉ cabin (hồi đầy mạng). Giá cao hơn 30% giá chuẩn (oxy 3.000×(1+m/80)×1,3 mỗi giây; mì 60.000×…; cabin 110.000×… mỗi mạng).
 - Không cần chạy SQL.
+
+## 14.11.2026-z72 · Resort về đêm lung linh & magical
+- Cột đèn gang kiểu cổ (thân sắt, đèn kính, đỉnh vàng) dọc lối đi chính, giữa các dãy bungalow và trên bến gỗ giữa các villa; quầng sáng ấm, tia lấp lánh nhấp nháy, vệt sáng rung nhẹ trên sàn gỗ.
+- Đèn lồng treo tường hai bên cửa mọi villa và bungalow (xen kẽ vàng ấm / hồng), sáng và có tia sao nhấp nháy khi trời tối.
+- Dây đèn kết hoa nhiều màu giữa các bungalow cùng dãy và giữa các villa (bóng nhấp nháy lệch pha).
+- Đom đóm vàng-xanh trên đất liền và lân tinh xanh lơ trên mặt biển, bay chậm và nhấp nháy.
+- Chỉ vẽ khi trời tối (theo độ tối ban đêm), ban ngày không đổi; chi phí vẽ ~3ms/khung.
+- Không cần chạy SQL.

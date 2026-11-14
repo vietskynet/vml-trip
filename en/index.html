@@ -1364,6 +1364,41 @@ function makeTent(col){const [c,g]=mk(76,66);const cx=38,by=60,W='#c98a52',WD='#
 function makeUmbrella(col){const [c,g]=mk(52,56);const cx=26,cy=16;rr(g,cx-1,cy,2,38,'#e9e2cf');rr(g,cx,cy,1,38,'#b9b2a0');
  for(let y=-10;y<=6;y++)for(let x=-23;x<=23;x++){const e=(x*x)/(23*23)+(y*y)/(y<0?100:36);if(e>1)continue;const a=Math.atan2(y*2,x)+Math.PI,seg=Math.floor(a/(Math.PI/4))%2;let cc=seg?col:'#ffffff';if(y>3)cc=shade(cc,.82);if(y<-6)cc=shade(cc,1.15);rr(g,cx+x,cy+y,1,1,cc)}
  rr(g,cx-1,cy-12,3,3,'#fff');outline(c);return{c,ox:cx,oy:54}}
+function makeLampPost(){const [c,g]=mk(14,58);rr(g,6,18,2,36,'#2c3442');rr(g,6,18,1,36,'#4a5568');rr(g,4,52,6,4,'#2c3442');rr(g,5,48,4,4,'#3a4558');rr(g,5,22,4,2,'#5a6a82');rr(g,2,3,10,3,'#2c3442');rr(g,5,0,4,3,'#d4af37');rr(g,3,6,8,13,'#2c3442');rr(g,4,7,6,11,'#ffe9a8');rr(g,4,7,2,11,'#fff6d0');rr(g,6,7,1,11,'#2c3442');rr(g,3,19,8,2,'#2c3442');outline(c);return{c,ox:7,oy:56}}
+function makeWallLantern(){const [c,g]=mk(9,15);rr(g,4,0,1,3,'#3a2a1e');rr(g,2,3,5,1,'#d4af37');rr(g,1,4,7,9,'#4a2a18');rr(g,2,5,5,7,'#ffd070');rr(g,2,5,2,7,'#fff0b0');rr(g,1,13,7,1,'#d4af37');outline(c);return{c,ox:4,oy:14}}
+let NLAMPS=[],NGAR=[];
+function buildNightMagic(){NLAMPS=[];NGAR=[];const post=makeLampPost(),wl=makeWallLantern(),ok=(x,y)=>lyDecor([[x,y]]).length>0;
+ const lampP=(x,y,col)=>{if(!ok(x,y))return;addProp(post,x,y);NLAMPS.push({x,y:y-44,r:88,col:col||'255,214,140',post:1})};
+ const wallL=(x,y,col)=>{addProp(wl,x,y);NLAMPS.push({x,y:y-8,r:44,col:col||'255,196,110'})};
+ // cột đèn dọc lối đi chính
+ [[300,764],[740,764],[1160,764],[1460,764],[1780,764],[2090,764],[2370,764]].forEach(([x,y])=>lampP(x,y));
+ // cột đèn trên bến gỗ villa (giữa các villa)
+ for(let i=0;i<VILLA_X.length-1;i++){if(i===VIP0-1)continue;const gp=VILLA_X[i+1]-VILLA_X[i];if(gp<0||gp>300)continue;lampP(Math.round((VILLA_X[i]+VILLA_X[i+1])/2),(i>=VIP0?VIPY+10:222)+0,i%2?'255,170,210':'255,214,140')}
+ // đèn tường trước villa
+ VILLA_X.forEach((cx,i)=>{const d=vdy(i);[-14,14].forEach(o=>wallL(cx-17+o+0,150+d+0,i%2?'255,170,210':'255,196,110'))});
+ // đèn trước bungalow
+ TENTS.forEach((t,k)=>{[-27,27].forEach(o=>wallL(t.x+o,t.y-14,k%2?'255,170,210':'255,196,110'))});
+ // lối đi giữa các dãy bungalow
+ {const lp=(x,y)=>{addProp(post,x,y);NLAMPS.push({x,y:y-44,r:88,col:'255,214,140',post:1})};for(let r=0;r<2;r++)for(let c=0;c<4;c++)lp(110+c*100+50,880+r*130+14);for(let c=0;c<4;c++){const t=TENTS[10+c];if(t)lp(t.x+60,t.y+14)}}
+ // dây đèn kết hoa giữa các bungalow
+ for(let i=0;i<TENTS.length;i++)for(let j=i+1;j<TENTS.length;j++){const a=TENTS[i],b=TENTS[j];if(Math.abs(a.y-b.y)<2&&b.x-a.x>0&&b.x-a.x<=130&&j===i+1)NGAR.push({x0:a.x,y0:a.y-40,x1:b.x,y1:b.y-40,sag:7})}
+ // dây đèn dọc bến villa
+ for(let i=0;i<VILLA_X.length-1;i++){const gp=VILLA_X[i+1]-VILLA_X[i];if(gp>0&&gp<=300&&((i<VIP0)===(i+1<VIP0)))NGAR.push({x0:VILLA_X[i]-17,y0:112+vdy(i),x1:VILLA_X[i+1]-17,y1:112+vdy(i+1),sag:9})}}
+const GBC=['#ff5a8a','#ffd23f','#5ae0ff','#7cff7a','#c58aff'];
+function drawNightMagic(cx,cy,t,nf,vis){const g=ctx,a=Math.min(1,nf*1.15);if(a<=.02)return;
+ NLAMPS.forEach((L,k)=>{if(!vis(L.x,L.y,L.r))return;const x=Math.round(L.x-cx),y=Math.round(L.y-cy),tw=.82+.18*Math.sin(t*3+k*1.7);
+  g.globalAlpha=a*.34*tw;g.drawImage(GLOW,x-L.r,y-L.r,L.r*2,L.r*2);
+  g.globalAlpha=a;g.fillStyle='rgb('+L.col+')';g.fillRect(x-1,y-2,3,4);g.fillStyle='#fff';g.fillRect(x,y-1,1,2);
+  const fl=3+Math.sin(t*4+k*2.3)*1.5+(L.post?3:0);g.globalAlpha=a*.55*tw;g.fillStyle='#fff';g.fillRect(x-fl,y,fl*2+1,1);g.fillRect(x,y-fl,1,fl*2+1);
+  if(L.post){g.globalAlpha=a*.16*tw;g.fillStyle='rgb('+L.col+')';for(let i=1;i<5;i++)g.fillRect(x-2+Math.round(Math.sin(t*2+i+k)*(i*.8)),y+34+i*5,4-(i>2?1:0),1)}});
+ NGAR.forEach((G,k)=>{const mnx=Math.min(G.x0,G.x1),mxx=Math.max(G.x0,G.x1);if(mxx-cx<-10||mnx-cx>VW+10||Math.min(G.y0,G.y1)-cy>VH+20||Math.max(G.y0,G.y1)-cy<-20)return;const n=Math.max(4,Math.round((mxx-mnx)/9));
+  g.globalAlpha=a*.55;g.fillStyle='#2a2438';let px=null,py=null;for(let i=0;i<=n;i++){const u=i/n,x=Math.round(G.x0+(G.x1-G.x0)*u-cx),y=Math.round(G.y0+(G.y1-G.y0)*u+Math.sin(u*Math.PI)*G.sag-cy);if(px!=null)g.fillRect(Math.min(px,x),Math.min(py,y),Math.max(1,Math.abs(x-px)),Math.max(1,Math.abs(y-py)));px=x;py=y}
+  for(let i=1;i<n;i++){const u=i/n,x=Math.round(G.x0+(G.x1-G.x0)*u-cx),y=Math.round(G.y0+(G.y1-G.y0)*u+Math.sin(u*Math.PI)*G.sag-cy),on=.5+.5*Math.sin(t*2.6+i*1.9+k);g.globalAlpha=a*(.35+.65*on);g.fillStyle=GBC[(i+k)%5];g.fillRect(x-1,y,3,3);g.globalAlpha=a*.2*on;g.fillRect(x-3,y-2,7,7)}});
+ // đom đóm & lân tinh lấp lánh
+ const T=190,gx0=Math.floor(cx/T)-1,gy0=Math.floor(cy/T)-1,gx1=Math.ceil((cx+VW)/T)+1,gy1=Math.ceil((cy+VH)/T)+1;
+ for(let gx=gx0;gx<=gx1;gx++)for(let gy=gy0;gy<=gy1;gy++){const n=h2(gx,gy);if(n<.35)continue;for(let q=0;q<2;q++){const m=h2(gx+q*9+100,gy+q*4+50);const wx=gx*T+h2(gx+q*7,gy+3)*T+Math.sin(t*.5+m*20)*16,wy=gy*T+h2(gx+5,gy+q*11)*T+Math.cos(t*.43+m*17)*12;const x=Math.round(wx-cx),y=Math.round(wy-cy);if(x<-8||x>VW+8||y<-8||y>VH+8)continue;
+  const bl=Math.max(0,Math.sin(t*(1.4+m)+m*40));if(bl<.05)continue;const sea=wy<230,col=sea?'120,230,255':'210,255,120';g.globalAlpha=a*bl*.9;g.fillStyle='rgb('+col+')';g.fillRect(x,y,2,2);g.globalAlpha=a*bl*.3;g.fillRect(x-2,y-2,6,6)}}
+ g.globalAlpha=1}
 function makeTorch(){const [c,g]=mk(12,44);rr(g,5,10,3,32,'#7c4a25');rr(g,5,10,1,32,'#a8703a');for(let y=14;y<40;y+=6)rr(g,4,y,5,2,'#d9b56e');rr(g,3,6,7,5,'#5a3618');rr(g,3,6,7,1,'#8a5a2a');outline(c);return{c,ox:6,oy:42}}
 function thatch(g,x,y,wTop,wBot,h,cx){for(let i=0;i<h;i++){const t=i/(h-1),w=wTop+(wBot-wTop)*t,x0=Math.round(cx-w/2);rr(g,x0,y+i,w,1,((i>>2)%2)?'#c79552':'#b58242');if(i%4===3)rr(g,x0,y+i,w,1,'#9a6a32');for(let k=0;k<w;k+=5)if(h2(k+x0,i+y)>.7)rr(g,x0+k,y+i,1,2,'#e0b66a')}
  const x0=Math.round(cx-wBot/2);for(let k=0;k<wBot;k+=4)rr(g,x0+k,y+h,2,2,'#8a5a2a')}
@@ -1557,6 +1592,7 @@ function buildWorld(){
  props=[];LIGHTS=[];
  PALMS.forEach(([x,y,l],k)=>{const p=makePalm(l,k*7+3);groundShadow(x+18,y-2,24,6);groundShadow(x+l*24+30,y-6,22,7);addProp(p,x,y)});
  UMBRELLAS.forEach(([x,y,c])=>{groundShadow(x+6,y-8,22,8);addProp(makeUmbrella(c),x,y)});
+ buildNightMagic();
  const torch=makeTorch();TORCHES.forEach(([x,y])=>{addProp(torch,x,y,{flame:P2(x,y-42)});LIGHTS.push({x,y:y-42,r:70,torch:1})});
  const TCOL=['#ff8a3d','#ffd23f','#ff5f6d','#b06cff','#2fb8e8','#7ad151'];
  TENTS.forEach((t,k)=>{groundShadow(t.x+6,t.y,30,5);addProp(makeTent(TCOL[k%6]),t.x,t.y,{tent:k})});
@@ -6637,7 +6673,7 @@ if(vis(BANKZ.bx,BANKZ.by,90))label(BK.due&&Math.floor(t*3)%2?'CÓ SỔ ĐẾN H�
   LIGHTS.forEach(L=>{if(!vis(L.x,L.y,L.r))return;const fl=L.fire||L.torch?(.85+Math.sin(t*13+L.x)*.15):1;ctx.globalAlpha=a*fl*(L.r>60?.55:.7);ctx.drawImage(GLOW,Math.round(L.x-cx-L.r),Math.round(L.y-cy-L.r),L.r*2,L.r*2)});
   S.chars.forEach(c=>{if(c.hidden||fxOf(c)!=='disco'||!vis(c.x,c.y,120))return;const x=Math.round(c.x-cx),y=Math.round(c.y-cy-14),hue=(t*120+c.x)%360,R2=110+Math.sin(t*8)*10;ctx.globalAlpha=Math.min(1,a*1.1);const gr=ctx.createRadialGradient(x,y,4,x,y,R2);gr.addColorStop(0,`hsla(${hue},100%,80%,.95)`);gr.addColorStop(.35,`hsla(${(hue+60)%360},100%,60%,.55)`);gr.addColorStop(1,'hsla(0,0%,0%,0)');ctx.fillStyle=gr;ctx.fillRect(x-R2,y-R2,R2*2,R2*2);
    for(let k=0;k<6;k++){const an=t*2.5+k*1.047,ex=x+Math.cos(an)*70,ey=y+Math.sin(an)*40;const g2=ctx.createRadialGradient(ex,ey,1,ex,ey,26);g2.addColorStop(0,`hsla(${(hue+k*60)%360},100%,70%,.7)`);g2.addColorStop(1,'hsla(0,0%,0%,0)');ctx.fillStyle=g2;ctx.fillRect(ex-26,ey-26,52,52)}});
-  drawLimGlow(cx,cy,t,a);
+  drawLimGlow(cx,cy,t,a);try{drawNightMagic(cx,cy,t,nf,vis)}catch(e){}
   ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over'}
  drawShine(t,cx,cy,vis);drawGood(t,cx,cy,vis);
  drawGuideArrow(t,cx,cy);if(location.hash.indexOf('grid')>=0)drawDbgGrid(cx,cy);
@@ -6819,7 +6855,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z71';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z72';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
