@@ -826,3 +826,14 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Phòng**: "Ghép trận nhanh" (vào phòng đang mở cùng đường đua hoặc tự mở phòng), "Tạo phòng riêng", danh sách phòng đang mở. Tự xuất phát sau 14 giây từ lúc có người mới (tối thiểu 2 người) hoặc khi đủ 5; chủ phòng có thể bấm xuất phát ngay. Không có bot trong trận online.
 - **Tiền**: phí vào 1.000.000₫/người, gom thành quỹ, F88 giữ 10%. Chia quỹ theo hạng: 2 người 100/0, 3 người 70/30/0, 4 người 60/30/10/0, 5 người 50/30/15/5/0 (%). Không tạo thêm tiền ra ngoài, nên không farm được bằng 2 tài khoản. Trận online không mở khoá đường mới. Thoát giữa trận = mất phí. Log: `mini.race` ("ONLINE n người LVx hạng p").
 - **Điều kiện**: Supabase phải bật Realtime (mặc định bật, kênh công khai). Gói miễn phí giới hạn ~100 tin/giây toàn dự án, tức khoảng 1 phòng đủ 5 người cùng lúc; nhiều phòng song song nên nâng gói hoặc hạ `RC_NETHZ`. **Không cần chạy SQL.**
+
+## z63 · TRẠM LẶN NGỤP (màn chơi lặn biển, phase 1)
+
+- **Cổng vào**: Trạm Lặn Ngụp trên bãi cát sát mép biển, giữa hai cây dừa phía đông resort (`DVG` trong index.html). Đứng gần và bấm E. Mở **màn chơi riêng** (overlay toàn màn hình, canvas 8-bit độ phân giải thấp), tắt render thế giới khi đang mở (`if(!RC&&!DV)renderWorld`).
+- **Thế giới**: nhìn ngang, dài 12.000px (1m = 4px). Càng bơi ra xa đáy càng sâu: Rạn san hô (<40m) → Biển xanh → Chạng vạng (100m) → Nửa đêm (180m) → Vực thẳm (300m+, rãnh sâu ~750m ở cuối). Càng sâu càng tối (đèn pin hẹp, sinh vật phát sáng).
+- **Trang bị** (lưu trong `P.buys`: `dv_t` bình, `dv_s` tàu ngầm, `dv_b` túi, `dv_f` chân vịt, `dv_u` đang dùng): Bình lặn 4 cấp (oxy 60–280s, sâu 40–260m, 200K–20TR), Tàu ngầm 3 cấp (oxy 300–800s, sâu 200–700m, thân tàu 4–9, 60TR–800TR), Túi ba gang 4 cấp (5–30 ô, 100K–15TR), Chân vịt (×1.25 / ×1.5). Phải có bình/tàu và túi mới lặn được. Tốn 6% năng lượng/lần.
+- **Sinh vật**: cá cơm, cá hề, cá ngừ, cá đèn lồng, cá mè hố, cá vây tay (bắt bằng lưới, SPACE); cá nóc, sứa, cá mập, lươn điện, cá cần câu, mực khổng lồ (gây sát thương). **Megalodon** (rất hiếm, >160m & xa bờ, báo trước rồi lao thẳng, sát thương 4) và **Draken** (hang cố định ở cuối rãnh ~565m, xúc tu có báo hiệu đỏ, canh rương 15TR). Bấm F chụp ảnh quái vật: thưởng 8TR (Megalodon) / 15TR (Draken), mỗi lần lặn 1 lần.
+- **Kho báu**: vàng cục, thỏi vàng, ngọc trai, đá quý, bình cổ, la bàn cổ rải đáy biển (random mỗi lần lặn); 6 xác tàu đắm, mỗi xác ~35% có rương (2 ô túi, tới 15TR); bình oxy dự phòng +25s.
+- **Luật thua**: hết oxy hoặc hết mạng → ngất, mất ngẫu nhiên một nửa đồ trong túi. Bỏ cuộc (Esc → Bỏ cuộc) cũng mất một nửa. Lặn quá giới hạn bình: oxy tụt gấp 4 (tàu ngầm thì nứt thân). Bơi lên mặt nước bấm E để lên bờ và tự bán toàn bộ đồ.
+- Bộ sưu tập (`dv_c_<id>`), kỷ lục độ sâu `dv_bd`, số lần lặn `dv_n`. Ghi nhật ký `mini.dive` (admin xem được), thêm "Trạm Lặn Ngụp" vào danh sách game hệ thống Mùa Biển.
+- **Không cần chạy SQL.** Chưa dịch riêng sang en/.
