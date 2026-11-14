@@ -988,3 +988,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## 14.11.2026-z88 · Admin: xoá toàn bộ tài sản Khu Villa
 - Thẻ KHU VILLA trong admin có nút **XOÁ TOÀN BỘ TÀI SẢN KHU VILLA**, phải xác nhận 3 lần (3 hộp thoại) mới xoá cả 6 lô (nhà, rào, cổng, trang trí, nội thất). Không hoàn tiền tự động. Không cần SQL.
+
+## 14.11.2026-z89 · Admin: bỏ xoá toàn bộ, thu hồi từng lô có hoàn tiền +20%
+- Gỡ nút "XOÁ TOÀN BỘ" (z88) cho an toàn. Chỉ còn **THU HỒI từng lô**: hộp xác nhận hiện số đã đầu tư và số hoàn. Hoàn = **đã đầu tư × 120%**, gửi cho chủ qua quà admin (`gifts/{uid}`, người chơi nhận khi online/đăng nhập), gửi quà xong mới xoá lô (lỗi thì không xoá). Không cần SQL.
