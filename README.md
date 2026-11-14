@@ -1021,3 +1021,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Game ghi nhật ký `vhlog/{lô}/{ts}_{id}` mỗi giao dịch (cần chạy lại `sql-cu/supabase-update-villa.sql`; thiếu SQL thì game vẫn chạy, chỉ không có lịch sử).
 - **Giá mới (×2 mọi thứ)**: đất Lô 1 = 840tr, giảm đều tới Lô 6 = −10% (756tr); tầng 1/2/3 = 1,68 / 2,1 / 2,38 tỷ; nội thất, sân vườn, rào, cổng ×2; phí kiểu nhà 100tr → 3 tỷ. Nhà thô 3 tầng: rẻ nhất ≈7,0 tỷ, đắt nhất (Tương lai, Lô 1) = 10 tỷ.
 - **Độ hoành tráng theo giá**: 10 kiểu nhà xếp theo giá kèm ★; càng đắt càng nhiều chi tiết cộng dồn (đá cuội → chậu cây → đèn vườn → luống hoa → tượng sư tử → thảm đỏ/trụ vàng/sao → cây tỉa + đèn rọi → cọ + kính → vành neon + hạt sáng).
+
+## z97 – Chi phí xây theo từng kiểu nhà & từng tầng, bỏ đổi kiểu, làm lại bảng giá admin
+- **Mỗi kiểu nhà có chi phí xây 3 tầng riêng** (không còn "phí chọn kiểu" + giá tầng chung). Nhà thô 3 tầng (đất + xây): rẻ nhất 5,0 tỷ (Nhà lá, Lô 6) → đắt nhất 10 tỷ (Tương lai, Lô 1); tầng 1/2/3 ≈ 27% / 34% / 39% tổng xây.
+- **Không đổi kiểu nhà sau khi đã xây** (đã bỏ nút & hàm `vhStyle`). Chọn kiểu khi xây tầng 1; sau đó chỉ nâng tầng.
+- **Bấm vào mảnh đất trống**: chỉ hiện giá đất của lô + 10 kiểu nhà (ảnh full 3 tầng, ★) kèm bảng Tầng 1 / 2 / 3 / Tổng xây / + Đất để tính đầu tư. Tab NHÀ khi chọn kiểu cũng hiện bảng này.
+- **Admin → SỰ KIỆN → QUẢN LÝ BĐS VILLA**: bảng giá tách cột/hàng: (1) giá đất 6 lô, (2) chi phí xây từng tầng từng kiểu nhà + tổng xây + tổng cả đất Lô 1/Lô 6 (tự tính khi sửa) + dòng rẻ nhất/đắt nhất, (3) nội thất, (4) sân vườn, (5) rào, (6) cổng. Lưu vào `config/vhP` (`st` giờ là `{kiểu:{tầng:giá}}`). Không cần SQL mới.

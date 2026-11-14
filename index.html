@@ -72,6 +72,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
 .vhtabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}.vhtabs .btn.on{background:#ffd23f;color:#1a1020}
 .vhbox p{margin:4px 0;font-size:14px;line-height:1.25}.vhbox .ok{color:#7fe08a}.vhbox .bad{color:#ff8a8a}.vhbox .mut{color:var(--muted);font-size:12px}
 .vhrow{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:6px}.vhrow .arr{font-size:26px;color:#ffd23f;align-self:center}.vhempty{width:150px;height:100px;border:3px dashed #5a5a7a;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.vhpt{border-collapse:collapse;font-size:10.5px;width:100%;margin-top:2px}.vhpt td,.vhpt th{border:1px solid #3a4a7a;padding:1px 3px;text-align:right;white-space:nowrap}.vhpt td:first-child,.vhpt th:first-child{text-align:left}.vhpt th{color:#9fb0d8;font-weight:normal}.vhpt td.done{background:rgba(80,200,120,.25)}.vhg2{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}.vhc2 .vhpv{margin:2px 0}
 .vhg{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px}
 .vhc{background:rgba(8,16,44,.7);border:2px solid #000;box-shadow:inset 0 0 0 1px #3a4a7a;padding:4px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}.vhc b{font-size:13px;line-height:1.05}.vhc small{font-size:11px;color:var(--muted);line-height:1.1}
 canvas.vhpv{image-rendering:pixelated;max-width:100%}
@@ -1885,19 +1886,19 @@ function vhGate(id){if(VH_GC[id])return VH_GC[id];const [c,g]=mk(64,56),cx=32,yb
 /* ================= KHU VILLA RIÊNG (bản test 6 lô) ================= */
 const EB_X=2560,EB_Y=-OY,EB_W=450,EB_H=MH+OY;
 const VHG={x0:2556,x1:3010,y0:440,y1:2050,gy:1240};
-let VH_LAND=840e6,VH_DROP=10;const VH_FL=[1680e6,2100e6,2380e6],VH_MAXB=2;
+let VH_LAND=840e6,VH_DROP=10;const VH_MAXB=2;
 const vhLand=n=>Math.round(VH_LAND*(1-VH_DROP/100*(((+n||1)-1)/5))/1e6)*1e6;
 const VH_ST=[
- {n:'Nhà lá giả nghèo',fee:100e6,d:'Nhà sàn tre, mái lá — mộc mạc, giá mềm nhất.'},
- {n:'Nhà tiền sử',fee:160e6,d:'Tường đá, mái da thú, xương thú và đuốc lửa.'},
- {n:'Nhà ống TPHCM',fee:240e6,d:'Nhà phố hẹp có ban công, bồn nước, dây điện đúng chất Sài Gòn.'},
- {n:'Nhà thiên nhiên',fee:340e6,d:'Nhà gỗ tròn, mái cỏ xanh, dây leo và cây trên mái.'},
- {n:'Nhà Nhật Zen',fee:520e6,d:'Khung gỗ, cửa shoji, mái ngói nhiều tầng như tháp.'},
- {n:'Biệt thự nhiệt đới',fee:450e6,d:'Tường trắng, cửa xanh biển, mái lá kiểu Maldives.'},
- {n:'Cổ điển châu Âu',fee:700e6,d:'Gạch ấm, cột trắng, mái đầu hồi và ống khói.'},
- {n:'Mid-century',fee:1000e6,d:'Mái bướm, vách gỗ nan, kính lớn, cửa cam retro.'},
- {n:'Hiện đại',fee:1700e6,d:'Hộp bê tông - kính, tầng nhô ra, sân thượng kính.'},
- {n:'Tương lai (Futuristic)',fee:3000e6,d:'Đĩa bay trắng, viền neon, chóp phát sáng.'}
+ {n:'Nhà lá giả nghèo',fl:[1160e6,1450e6,1640e6],d:'Nhà sàn tre, mái lá — mộc mạc, giá mềm nhất.'},
+ {n:'Nhà tiền sử',fl:[1270e6,1590e6,1790e6],d:'Tường đá, mái da thú, xương thú và đuốc lửa.'},
+ {n:'Nhà ống TPHCM',fl:[1410e6,1760e6,1980e6],d:'Nhà phố hẹp có ban công, bồn nước, dây điện đúng chất Sài Gòn.'},
+ {n:'Nhà thiên nhiên',fl:[1540e6,1930e6,2180e6],d:'Nhà gỗ tròn, mái cỏ xanh, dây leo và cây trên mái.'},
+ {n:'Nhà Nhật Zen',fl:[1820e6,2270e6,2560e6],d:'Khung gỗ, cửa shoji, mái ngói nhiều tầng như tháp.'},
+ {n:'Biệt thự nhiệt đới',fl:[1680e6,2100e6,2370e6],d:'Tường trắng, cửa xanh biển, mái lá kiểu Maldives.'},
+ {n:'Cổ điển châu Âu',fl:[1980e6,2470e6,2800e6],d:'Gạch ấm, cột trắng, mái đầu hồi và ống khói.'},
+ {n:'Mid-century',fl:[2140e6,2680e6,3030e6],d:'Mái bướm, vách gỗ nan, kính lớn, cửa cam retro.'},
+ {n:'Hiện đại',fl:[2330e6,2920e6,3300e6],d:'Hộp bê tông - kính, tầng nhô ra, sân thượng kính.'},
+ {n:'Tương lai (Futuristic)',fl:[2500e6,3120e6,3540e6],d:'Đĩa bay trắng, viền neon, chóp phát sáng.'}
 ];
 const VH_PL=[...Array(6)].map((_,i)=>{const x0=2656,y0=480+i*263;return{n:i+1,x0,y0,x1:x0+VH_PW,y1:y0+VH_PH,cx:x0+VH_PW/2,hy:y0+150}});
 const VH_SL=[[28,44],[28,90],[28,136],[62,28],[300,44],[300,90],[300,136],[300,182],[262,28],[240,196]];
@@ -1906,12 +1907,14 @@ const VH_ALL=()=>NET.vhAll||(NET.vhAll={});
 const vhDoc=n=>VH_ALL()[n]||null;
 const vhMine=()=>{const me=lmMe(),a=VH_ALL();for(const n in a)if(a[n]&&a[n].o===me)return +n;return 0};
 const vhIn=p=>!!p&&p.x>2560;
-const vhTot=d=>{let s=VH_LAND;if(d&&d.f>0){s+=VH_ST[d.s].fee;for(let i=0;i<d.f;i++)s+=VH_FL[i]}return s};
+const vhSum=(sid,k)=>VH_ST[sid].fl.slice(0,k==null?3:k).reduce((a,b)=>a+b,0);
+const vhTy=x=>x>=1e9?(x/1e9).toFixed(2).replace('.',',').replace(/,?0+$/,'')+' tỷ':Math.round(x/1e6).toLocaleString('vi-VN')+' tr';
+const vhTot=d=>{let s=VH_LAND;if(d&&d.f>0)s+=vhSum(d.s,d.f);return s};
 function vhElig(){try{const n=ownBeds(P).length;return n<=VH_MAXB?{ok:true,n}:{ok:false,n}}catch(e){return{ok:true,n:0}}}
 let VH_B=null;
-function vhPrices(c){try{if(!VH_B)VH_B={land:VH_LAND,drop:VH_DROP,fl:VH_FL.slice(),st:VH_ST.map(x=>x.fee),fu:VH_FU.map(x=>x.p),it:VH_IT.map(x=>x.p),fn:VH_FN.map(x=>x.p),gn:VH_GN.map(x=>x.p)};
+function vhPrices(c){try{if(!VH_B)VH_B={land:VH_LAND,drop:VH_DROP,st:VH_ST.map(x=>x.fl.slice()),fu:VH_FU.map(x=>x.p),it:VH_IT.map(x=>x.p),fn:VH_FN.map(x=>x.p),gn:VH_GN.map(x=>x.p)};
  const o=(c&&c.vhP)||{},g=(m,i,b)=>{const v=m?m[i]:null;return v!=null&&v!==''&&Number.isFinite(+v)&&+v>=0?+v:b};
- VH_LAND=g({0:o.land},0,VH_B.land);VH_DROP=Math.min(50,g({0:o.drop},0,VH_B.drop));VH_FL.forEach((_,i)=>{VH_FL[i]=g(o.fl,i,VH_B.fl[i])});VH_ST.forEach((x,i)=>{x.fee=g(o.st,i,VH_B.st[i])});VH_FU.forEach((x,i)=>{x.p=g(o.fu,i,VH_B.fu[i])});VH_IT.forEach((x,i)=>{x.p=g(o.it,i,VH_B.it[i])});VH_FN.forEach((x,i)=>{x.p=g(o.fn,i,VH_B.fn[i])});VH_GN.forEach((x,i)=>{x.p=g(o.gn,i,VH_B.gn[i])})}catch(e){}}
+ VH_LAND=g({0:o.land},0,VH_B.land);VH_DROP=Math.min(50,g({0:o.drop},0,VH_B.drop));VH_ST.forEach((x,i)=>{x.fl=[0,1,2].map(k=>g(o.st&&o.st[i],k,VH_B.st[i][k]))});VH_FU.forEach((x,i)=>{x.p=g(o.fu,i,VH_B.fu[i])});VH_IT.forEach((x,i)=>{x.p=g(o.it,i,VH_B.it[i])});VH_FN.forEach((x,i)=>{x.p=g(o.fn,i,VH_B.fn[i])});VH_GN.forEach((x,i)=>{x.p=g(o.gn,i,VH_B.gn[i])})}catch(e){}}
 function vhLog(n,t,a,x){try{if(!NET.on)return;const ts=Date.now();NET.db.ref('vhlog/'+n+'/'+ts+'_'+Math.random().toString(36).slice(2,6)).set({u:lmMe(),on:String(P.name||'').slice(0,18),t,a:Math.round(a||0),x:String(x||'').slice(0,60),ts}).catch(()=>{})}catch(e){}}
 function vhCfg(cfg){vhPrices(cfg);const was=VHX.open;VHX.open=!!(cfg&&+cfg.vhOpen===1)||(!NET.on&&/[?&]vh=1/.test(location.search));if(VHX.open!==was){try{buildGrid()}catch(e){}if(!VHX.open&&P&&P.x>2560){P.x=2480;P.y=1244;P.path=[]}try{if(!VHX.open&&!$('#vhOv').hidden)$('#vhOv').hidden=true}catch(e){}}}
 /* ---- dựng khu (canvas riêng, không phình nền chính) ---- */
@@ -2009,9 +2012,8 @@ async function vhBuyPlot(n){if(!VHX.open||vhDoc(n)||vhMine())return;const e=vhEl
  const LP=vhLand(n);if(!vhPay(LP))return;const doc={o:lmMe(),on:String(P.name||'').slice(0,18),s:0,f:0,fn:0,gt:0,inv:LP,t0:serverNow()};
  if(NET.on){let r;try{r=await NET.db.ref('vh/'+n).transaction(c=>c==null?doc:undefined)}catch(x){r=null}if(!r||!r.committed){P.money+=LP;toast('Lô đất vừa có người mua hoặc máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}NET.vhAll=NET.vhAll||{};NET.vhAll[n]=doc}else VH_ALL()[n]=doc;
  vhLog(n,'buy',LP,'Mua đất Lô '+n);coin();toast('Bạn đã mua Lô '+n+'! Hãy chọn kiểu nhà và xây tầng 1.',false,4500);sysLog('Mua Lô '+n+' Khu Villa Riêng.');if(NET.on)saveState();VHU.tab='house';renderVh()}
-async function vhBuild(n,sid){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f!==0)return;const c=VH_FL[0]+VH_ST[sid].fee;if(!vhPay(c))return;if(!await vhWrite(n,{s:sid,f:1,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'build',c,'Xây tầng 1 · '+VH_ST[sid].n);coin();toast('Đã xây tầng 1 kiểu '+VH_ST[sid].n+'.');if(NET.on)saveState();renderVh()}
-async function vhUp(n){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f<1||d.f>=3)return;const c=VH_FL[d.f];if(!vhPay(c))return;if(!await vhWrite(n,{f:d.f+1,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'up',c,'Nâng lên tầng '+(d.f+1));coin();toast('Đã nâng lên tầng '+(d.f)+'!');if(NET.on)saveState();renderVh()}
-async function vhStyle(n,sid){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f<1||d.s===sid)return;const c=VH_ST[sid].fee;if(!vhPay(c))return;if(!await vhWrite(n,{s:sid,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'style',c,'Đổi kiểu nhà · '+VH_ST[sid].n);coin();toast('Đã đổi sang kiểu '+VH_ST[sid].n+'.');if(NET.on)saveState();renderVh()}
+async function vhBuild(n,sid){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f!==0)return;const c=VH_ST[sid].fl[0];if(!vhPay(c))return;if(!await vhWrite(n,{s:sid,f:1,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'build',c,'Xây tầng 1 · '+VH_ST[sid].n);coin();toast('Đã xây tầng 1 kiểu '+VH_ST[sid].n+'.');if(NET.on)saveState();renderVh()}
+async function vhUp(n){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f<1||d.f>=3)return;const c=VH_ST[d.s].fl[d.f];if(!vhPay(c))return;if(!await vhWrite(n,{f:d.f+1,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'up',c,'Nâng lên tầng '+(d.f+1));coin();toast('Đã nâng lên tầng '+(d.f)+'!');if(NET.on)saveState();renderVh()}
 async function vhSetFg(n,kind,id){const d=vhDoc(n);if(!d||d.o!==lmMe())return;const key=kind==='f'?'fn':'gt',cur=d[key]|0;if(cur===id)return;const c=(kind==='f'?VH_FN[id].p:VH_GN[id].p);if(!vhPay(c))return;if(!await vhWrite(n,{[key]:id,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,kind==='f'?'fence':'gate',c,kind==='f'?'Hàng rào · '+VH_FN[id].n:'Cổng · '+VH_GN[id].n);coin();if(NET.on)saveState();renderVh()}
 async function vhPut(n,slot,id){const d=vhDoc(n);if(!d||d.o!==lmMe())return;const it=d.it||{};if(it[slot]!=null&&+it[slot]===id)return;const c=VH_IT[id].p;if(!vhPay(c))return;if(!await vhWrite(n,{['it/'+slot]:id,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'decor',c,'Trang trí ngoài · '+VH_IT[id].n);coin();if(NET.on)saveState();renderVh()}
 async function vhTake(n,slot){const d=vhDoc(n);if(!d||d.o!==lmMe())return;await vhWrite(n,{['it/'+slot]:null});renderVh()}
@@ -2021,18 +2023,23 @@ function vhOpenUi(n){if(!S||!P)return;VHU.n=n;VHU.arm=null;const d=vhDoc(n);VHU.
 const vhCv=(k,w,h)=>`<canvas class="vhpv" data-k="${k}" width="${w}" height="${h}"></canvas>`;
 function vhPaintPv(el){el.querySelectorAll('canvas.vhpv').forEach(cv=>{const [t,a,b]=cv.dataset.k.split(':'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;g.clearRect(0,0,cv.width,cv.height);let s;try{if(t==='h')s=vhHouse(+a,+b);else if(t==='u'){vhPaintU(cv,+a);return}else if(t==='i')s=vhItem(+a);else if(t==='g')s=vhGate(+a);else if(t==='f'){const f=VH_FN[+a];g.fillStyle='#79c95f';g.fillRect(0,0,cv.width,cv.height);if(f.t!=='none'){const q=vhFenceCv(+a,0);if(q)g.drawImage(q.c,6,18,110,70,0,0,cv.width,cv.height-4)}return}}catch(e){return}if(!s)return;const k=Math.min(cv.width/s.c.width,cv.height/s.c.height);const w=s.c.width*k,h=s.c.height*k;g.drawImage(s.c,(cv.width-w)/2,cv.height-h,w,h)})}
 function vhCard(pv,t,sub,btn,act,data,dis,cls){return `<div class="vhc ${cls||''}">${pv}<b>${t}</b><small>${sub||''}</small>${btn?`<button class="btn sm" data-act="${act}" ${data||''} ${dis?'disabled':''}>${btn}</button>`:''}</div>`}
+const vhCostTable=(sid,n,built)=>{const f=VH_ST[sid].fl,sum=vhSum(sid);return `<table class="vhpt"><tr><th></th><th>Tầng 1</th><th>Tầng 2</th><th>Tầng 3</th><th>Tổng xây</th><th>+ Đất Lô ${n}</th></tr><tr><td>Chi phí</td>${f.map((x,k)=>`<td${built&&k<built?' class="done"':''}>${vhTy(x)}</td>`).join('')}<td><b>${vhTy(sum)}</b></td><td><b>${vhTy(sum+vhLand(n))}</b></td></tr></table>`};
+function vhStyleCard(i,n,build){const s=VH_ST[i],f=s.fl,sum=vhSum(i),dis=P.money<f[0];return `<div class="vhc vhc2">${vhCv('h:'+i+':3',110,125)}<b>${esc(s.n)}</b><small style="color:#ffd23f">${vhStars(VH_TIER[i])}</small><small>${esc(s.d)}</small>
+ <table class="vhpt"><tr><td>Tầng 1</td><td>${vhTy(f[0])}</td></tr><tr><td>Tầng 2</td><td>${vhTy(f[1])}</td></tr><tr><td>Tầng 3</td><td>${vhTy(f[2])}</td></tr><tr><td><b>Tổng xây</b></td><td><b>${vhTy(sum)}</b></td></tr><tr><td><b>+ Đất Lô ${n}</b></td><td><b>${vhTy(sum+vhLand(n))}</b></td></tr></table>
+ ${build?`<button class="btn sm" data-act="build" data-s="${i}" ${dis?'disabled':''}>XÂY TẦNG 1 · ${vhTy(f[0])}</button>`:''}</div>`}
 function renderVh(){const el=$('#vhBody');if(!el)return;const n=VHU.n,d=vhDoc(n),me=lmMe(),mine=d&&d.o===me,my=vhMine();let h='';
  h+=`<div class="vhhd"><b>Lô ${n}</b> · ${d?'Chủ: <span>'+esc(d.on||'?')+'</span>':'Đất trống'} · Ví: <span>${VND(P.money)}</span></div>`;
  if(!d){const e=vhElig(),can=!my&&e.ok&&VHX.open;h+=`<div class="vhbox"><p>Mỗi người chỉ sở hữu <b>1 lô</b>. Lô gồm nhà villa ở giữa, vườn xung quanh, <b>10 vị trí trang trí</b>, hàng rào và cổng riêng. Ngăn cách bằng dòng suối nhỏ, bảo vệ cao cấp 24/7.</p>
-  <p>Giá đất Lô ${n}: <b>${VND(vhLand(n))}</b> <small>(sát biển đắt nhất, vào trong rẻ dần tới −${VH_DROP}%)</small>. Xây full 3 tầng (nhà thô, chưa trang trí): <b>${VND(vhLand(n)+VH_FL[0]+VH_FL[1]+VH_FL[2]+VH_ST[0].fee)}</b> – <b>${VND(vhLand(n)+VH_FL[0]+VH_FL[1]+VH_FL[2]+VH_ST[9].fee)}</b> tuỳ kiểu nhà.</p>
+  <p>Giá đất Lô ${n}: <b>${VND(vhLand(n))}</b> <small>(sát biển đắt nhất, vào trong rẻ dần tới −${VH_DROP}%)</small></p>
   <p class="${e.ok?'ok':'bad'}">Điều kiện: đang sở hữu tối đa ${VH_MAXB} giường (hoặc 1 villa/bungalow/phòng khách sạn) bên ngoài — bạn đang có <b>${e.n}</b> giường ${e.ok?'✔':'✖'}</p>${my?`<p class="bad">Bạn đã có Lô ${my}.</p>`:''}
-  <button class="btn" data-act="buy" ${can&&P.money>=vhLand(n)?'':'disabled'}>MUA ĐẤT ${VND(vhLand(n))}</button> <button class="btn sm" data-act="close">ĐÓNG</button></div>`}
+  <button class="btn" data-act="buy" ${can&&P.money>=vhLand(n)?'':'disabled'}>MUA ĐẤT ${VND(vhLand(n))}</button> <button class="btn sm" data-act="close">ĐÓNG</button></div>
+  <div class="vhbox"><p><b>CÁC KIỂU NHÀ — xây đủ 3 tầng (nhà thô, chưa trang trí)</b><br><small>Chi phí xây từng tầng mỗi kiểu một khác. Kiểu nhà chọn khi xây tầng 1 và <b>không thể đổi</b> sau khi đã xây. Tổng đầu tư = giá đất + chi phí xây.</small></p><div class="vhg vhg2">${VH_ORD.map(i=>vhStyleCard(i,n)).join('')}</div></div>`}
  else if(!mine){h+=`<div class="vhbox"><div class="vhrow">${d.f>0?vhCv('h:'+d.s+':'+d.f,150,170):''}<div><p><b>${d.f>0?esc(VH_ST[d.s].n)+' · '+d.f+' tầng':'Đang chuẩn bị xây'}</b></p><p>Rào: ${esc(VH_FN[d.fn|0].n)} · Cổng: ${esc(VH_GN[d.gt|0].n)}<br>Trang trí: ${Object.keys(d.it||{}).length}/10 vị trí</p><p class="mut">Chủ nhà có thể mời bạn tham quan, ăn uống, ngủ nhờ (sắp có).</p></div></div><button class="btn sm" data-act="close">ĐÓNG</button></div>`}
  else{const tabs=[['ov','TỔNG QUAN'],['house','NHÀ'],['fence','RÀO & CỔNG'],['furn','NỘI THẤT'],['inv','MỜI KHÁCH'],['garden','VƯỜN & TRANG TRÍ'],['sell','TRẢ ĐẤT']];h+=`<div class="vhtabs">${tabs.map(([k,v])=>`<button class="btn sm ${VHU.tab===k?'on':''}" data-act="tab" data-t="${k}">${v}</button>`).join('')}</div>`;
   if(VHU.tab==='ov'){h+=`<div class="vhbox"><div class="vhrow">${d.f>0?vhCv('h:'+d.s+':'+d.f,150,170):'<div class="vhempty">Chưa xây nhà</div>'}<div><p><b>${d.f>0?esc(VH_ST[d.s].n)+' · '+d.f+'/3 tầng':'Đất trống'}</b></p><p>Đã đầu tư: <b>${VND(d.inv||0)}</b><br>Rào: ${esc(VH_FN[d.fn|0].n)} · Cổng: ${esc(VH_GN[d.gt|0].n)}<br>Trang trí: ${Object.keys(d.it||{}).length}/10</p><p class="mut">Mời bạn bè về nhà ăn uống, vệ sinh, ngủ nhờ: sẽ có ở bản sau.</p></div></div>${d.f>0?'<button class="btn" data-act="enter">VÀO NHÀ</button> ':''}<button class="btn sm" data-act="close">ĐÓNG</button></div>`}
-  else if(VHU.tab==='house'){if(d.f===0){h+=`<div class="vhbox"><p><b>Chọn kiểu nhà</b> · giá = tầng 1 ${VND(VH_FL[0])} + phí kiểu nhà</p><div class="vhg">${VH_ORD.map(i=>{const s=VH_ST[i];return vhCard(vhCv('h:'+i+':1',100,112),esc(s.n)+' <small style="color:#ffd23f">'+vhStars(VH_TIER[i])+'</small>',esc(s.d)+'<br>Phí kiểu nhà '+VND(s.fee)+' · tầng 1 '+VND(VH_FL[0]+s.fee),'XÂY','build','data-s="'+i+'"',P.money<VH_FL[0]+s.fee)}).join('')}</div></div>`}
-   else{const nx=d.f<3?VH_FL[d.f]:0;h+=`<div class="vhbox"><div class="vhrow">${vhCv('h:'+d.s+':'+d.f,150,170)}${d.f<3?'<span class="arr">▶</span>'+vhCv('h:'+d.s+':'+(d.f+1),150,170):''}<div><p><b>${esc(VH_ST[d.s].n)} · ${d.f}/3 tầng</b></p>${d.f<3?`<button class="btn" data-act="up" ${P.money<nx?'disabled':''}>NÂNG LÊN TẦNG ${d.f+1} · ${VND(nx)}</button>`:'<p class="ok">Đã đạt 3 tầng tối đa.</p>'}</div></div>
-    <p style="margin-top:8px"><b>Đổi kiểu nhà</b> (giữ nguyên số tầng, trả phí kiểu mới)</p><div class="vhg">${VH_ORD.map(i=>{const s=VH_ST[i];return vhCard(vhCv('h:'+i+':'+d.f,100,112),esc(s.n)+' <small style="color:#ffd23f">'+vhStars(VH_TIER[i])+'</small>',VND(s.fee),i===d.s?'ĐANG DÙNG':'ĐỔI','style','data-s="'+i+'"',i===d.s||P.money<s.fee)}).join('')}</div></div>`}}
+  else if(VHU.tab==='house'){if(d.f===0){h+=`<div class="vhbox"><p><b>Chọn kiểu nhà</b> — chọn một lần, <b>không thể đổi</b> sau khi xây. Bấm XÂY để xây tầng 1.</p><div class="vhg vhg2">${VH_ORD.map(i=>vhStyleCard(i,n,true)).join('')}</div></div>`}
+   else{const nx=d.f<3?VH_ST[d.s].fl[d.f]:0;h+=`<div class="vhbox"><div class="vhrow">${vhCv('h:'+d.s+':'+d.f,150,170)}${d.f<3?'<span class="arr">▶</span>'+vhCv('h:'+d.s+':'+(d.f+1),150,170):''}<div><p><b>${esc(VH_ST[d.s].n)} · ${d.f}/3 tầng</b></p>${d.f<3?`<button class="btn" data-act="up" ${P.money<nx?'disabled':''}>NÂNG LÊN TẦNG ${d.f+1} · ${VND(nx)}</button>`:'<p class="ok">Đã đạt 3 tầng tối đa.</p>'}</div></div>
+    <p style="margin-top:8px">${vhCostTable(d.s,n,d.f)}</p><p class="mut">Kiểu nhà đã xây không thể thay đổi.</p></div>`}}
   else if(VHU.tab==='fence'){h+=`<div class="vhbox"><p><b>Hàng rào</b></p><div class="vhg">${VH_FN.map((f,i)=>vhCard(vhCv('f:'+i,110,64),esc(f.n),f.p?VND(f.p):'Miễn phí',(d.fn|0)===i?'ĐANG DÙNG':'CHỌN','fg','data-kd="f" data-i="'+i+'"',(d.fn|0)===i||P.money<f.p)).join('')}</div><p style="margin-top:8px"><b>Cổng</b> (hiện khi có rào hoặc đã chọn cổng khác cổng gỗ)</p><div class="vhg">${VH_GN.map((f,i)=>vhCard(vhCv('g:'+i,64,56),esc(f.n),f.p?VND(f.p):'Miễn phí',(d.gt|0)===i?'ĐANG DÙNG':'CHỌN','fg','data-kd="g" data-i="'+i+'"',(d.gt|0)===i||P.money<f.p)).join('')}</div></div>`}
   else if(VHU.tab==='inv'){h+=vhInvHtml(d)}
   else if(VHU.tab==='furn'){h+=d.f>0?vhFurnHtml(d):'<div class="vhbox"><p>Xây nhà trước rồi mới mua nội thất được.</p></div>'}
@@ -2137,7 +2144,7 @@ function vhFurnHtml(d){const fl=Math.min(VHU.fl||1,vhFloors(d)),fu=d.fu||{};VHU.
 function vhPaintU(cv,a){const g=cv.getContext('2d'),tc=document.createElement('canvas');tc.width=120;tc.height=110;const tg=tc.getContext('2d');tg.imageSmoothingEnabled=false;try{VH_FU[a].d(tg,60,106,0)}catch(e){return}const k=Math.min(cv.width/120,cv.height/110);g.drawImage(tc,(cv.width-120*k)/2,cv.height-110*k,120*k,110*k)}
 
 $('#vhOv').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.disabled)return;const a=b.dataset.act,n=VHU.n;
- if(a==='close')vhCloseUi();else if(a==='tab'){VHU.tab=b.dataset.t;VHU.arm=null;renderVh()}else if(a==='buy')vhBuyPlot(n);else if(a==='build')vhBuild(n,+b.dataset.s);else if(a==='up')vhUp(n);else if(a==='style')vhStyle(n,+b.dataset.s);else if(a==='fg')vhSetFg(n,b.dataset.kd,+b.dataset.i);else if(a==='slot'){VHU.slot=+b.dataset.s;renderVh()}else if(a==='put')vhPut(n,VHU.slot,+b.dataset.i);else if(a==='take')vhTake(n,+b.dataset.s);else if(a==='sell')vhSell(n);else if(a==='enter')vhEnter(n);else if(a==='vinv')vhInvite(b.dataset.u);else if(a==='vkick')vhKick(b.dataset.u);else if(a==='ffl'){VHU.fl=+b.dataset.f;renderVh()}else if(a==='fslot'){VHU.fs=+b.dataset.s;renderVh()}else if(a==='fput')vhFPut(n,VHU.fl||1,VHU.fs|0,+b.dataset.i);else if(a==='ftake')vhFTake(n,VHU.fl||1,+b.dataset.s)});
+ if(a==='close')vhCloseUi();else if(a==='tab'){VHU.tab=b.dataset.t;VHU.arm=null;renderVh()}else if(a==='buy')vhBuyPlot(n);else if(a==='build')vhBuild(n,+b.dataset.s);else if(a==='up')vhUp(n);else if(a==='fg')vhSetFg(n,b.dataset.kd,+b.dataset.i);else if(a==='slot'){VHU.slot=+b.dataset.s;renderVh()}else if(a==='put')vhPut(n,VHU.slot,+b.dataset.i);else if(a==='take')vhTake(n,+b.dataset.s);else if(a==='sell')vhSell(n);else if(a==='enter')vhEnter(n);else if(a==='vinv')vhInvite(b.dataset.u);else if(a==='vkick')vhKick(b.dataset.u);else if(a==='ffl'){VHU.fl=+b.dataset.f;renderVh()}else if(a==='fslot'){VHU.fs=+b.dataset.s;renderVh()}else if(a==='fput')vhFPut(n,VHU.fl||1,VHU.fs|0,+b.dataset.i);else if(a==='ftake')vhFTake(n,VHU.fl||1,+b.dataset.s)});
 
 function buildWorld(){
  buildTerrain();
@@ -7533,7 +7540,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z96';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z97';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
