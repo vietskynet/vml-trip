@@ -977,3 +977,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Tab mới **NỘI THẤT** (và nút trong nhà): 20 món (giường đơn/đôi/king 8–40tr, bàn ăn, tủ lạnh, toilet riêng, sofa, TV, bàn làm việc, tủ áo, kệ sách, đèn, cây, thảm, tranh, điều hòa, lò sưởi, bể cá, piano, mini bar), 6 ô mỗi tầng, tổng 18 ô cho nhà 3 tầng. Dữ liệu lưu `vh/{lô}/fu/{tầng}_{ô}`.
 - **Ngủ được ở mọi tầng, kể cả tầng 1**: chỉ cần có giường trên tầng đang đứng. Tốc độ hồi tuỳ giường (đơn 1.00/s, đôi 1.33/s, king 1.82/s). Bàn ăn +15 năng lượng (hồi 90 giây), tủ lạnh +6 (45 giây). Toilet riêng dùng khi nhà đã mua toilet.
 - Chưa có mời khách (giai đoạn 2b). Không cần chạy thêm SQL (đã nằm trong quy tắc `vh` của z84b).
+
+## 14.11.2026-z86 · Khu Villa: mời khách vào nhà, đi lại chung
+- Trong nhà chủ nhà bấm **MỜI KHÁCH** (hoặc tab MỜI KHÁCH) → chọn người đang online. Khách nhận popup "LỜI MỜI VỀ NHÀ" (hiệu lực 20 giây) → bấm ĐẾN NHÀ để vào, chủ nhà và khách thấy nhau và đi lại được, lên/xuống cầu thang. Tối đa 5 khách. **MỜI RA** để đưa khách ra cổng.
+- Vị trí trong nhà gửi qua `pos/{uid}` (thêm `vi,vf,vx,vy,vd,vm,vg`); lời mời qua `invites/` (có sẵn). Chủ ra khỏi nhà hơn 8 giây thì khách tự được đưa ra ngoài.
+- Khách chưa được ngủ, ăn, dùng toilet, mua đồ (sẽ làm ở bước sau). Không cần SQL mới.
