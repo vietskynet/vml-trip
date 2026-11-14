@@ -3048,8 +3048,8 @@ function drawMonster(o,x,y,t){const {m,p,st}=o;if(st!=='live')return;if(!MONC)MO
 const PRJ={pod:{sp:560},mole:{sp:340},rocket:{sp:400},bull:{sp:440},bolt:{sp:1000},f1:{sp:820},wing:{sp:540},candy:{sp:430},shark:{sp:360},tank:{sp:470},orb:{sp:340},melee:{sp:0}};
 const PRJ_IM={pod:.38,mole:.55,rocket:.8,bull:.55,bolt:.42,f1:.32,wing:.65,candy:.75,shark:.6,tank:.95,orb:1.1,melee:.28};
 const PRJ_ARC={shark:16,tank:26,orb:10,candy:6};
-function fxShoot(k,x0,y0,x1,y1){const d=Math.hypot(x1-x0,y1-y0),T=clamp(d/(PRJ[k]||400),.1,.65);monFx.push({pr:{k,x0,y0,x1,y1,sd:Math.random()*999},t:T,T,x:0,y:0})}
-function fxImpact(q){const k=q.k,T=PRJ_IM[k]||.5;monFx.push({im:{k,x:q.x1,y:q.y1,sd:q.sd||Math.random()*999},t:T,T,x:0,y:0});
+function fxShoot(k,x0,y0,x1,y1){if(![x0,y0,x1,y1].every(Number.isFinite))return;const d=Math.hypot(x1-x0,y1-y0),T=clamp(d/(PRJ[k]||400),.1,.65);monFx.push({pr:{k,x0,y0,x1,y1,sd:Math.random()*999},t:T,T,x:0,y:0})}
+function fxImpact(q){if(!Number.isFinite(q.x1)||!Number.isFinite(q.y1))return;const k=q.k,T=PRJ_IM[k]||.5;monFx.push({im:{k,x:q.x1,y:q.y1,sd:q.sd||Math.random()*999},t:T,T,x:0,y:0});
  if(k==='rocket'||k==='tank'||k==='orb')monShake=Math.max(monShake,k==='tank'?.3:.2);
  const b={pod:[880,.07,'square',.04,-300],mole:[120,.1,'sawtooth',.05,-40],rocket:[90,.28,'sawtooth',.07,-60],bull:[160,.14,'square',.05,-80],bolt:[1200,.08,'sawtooth',.04,-900],f1:[520,.05,'square',.03,-200],wing:[1320,.12,'triangle',.04,400],candy:[980,.12,'triangle',.04,300],shark:[260,.14,'triangle',.05,-120],tank:[70,.34,'sawtooth',.08,-30],orb:[660,.4,'triangle',.07,900],melee:[200,.05,'square',.04,-60]}[k];if(b)beep(...b)}
 const fxR=(sd,i)=>{const v=Math.sin((sd+i*7.13)*127.1)*43758.5453;return v-Math.floor(v)};
@@ -3058,8 +3058,9 @@ const fxCross=(x,y,c,s)=>{ctx.fillStyle=c;ctx.fillRect(Math.round(x)-s,Math.roun
 const fxRing=(x,y,r,c,n,s)=>{for(let i=0;i<n;i++){const a=i/n*6.283;fxPX(x+Math.cos(a)*r,y+Math.sin(a)*r*.82,s||2,c)}};
 const fxDisc=(x,y,r,c)=>{ctx.fillStyle=c;ctx.beginPath();ctx.arc(Math.round(x),Math.round(y),Math.max(.5,r),0,6.283);ctx.fill()};
 const fxNt=()=>nightF()>.35,fxLit=()=>{ctx.globalCompositeOperation=fxNt()?'lighter':'source-over'};
-function fxGlow(x,y,r,rgb,a){a*=fxNt()?1:.4;const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2)}
-function drawProj(f,cx,cy,t){const q=f.pr,u=clamp(1-f.t/f.T,0,1),k=q.k,ar=PRJ_ARC[k]||0,dx=q.x1-q.x0,dy=q.y1-q.y0,a=Math.atan2(dy,dx),ca=Math.cos(a),sa=Math.sin(a);
+function fxGlow(x,y,r,rgb,a){if(!(Number.isFinite(x)&&Number.isFinite(y)&&Number.isFinite(r)&&r>0&&Number.isFinite(a)))return;a*=fxNt()?1:.4;const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2)}
+function drawProj(f,cx,cy,t){ctx.save();try{drawProj0(f,cx,cy,t)}catch(e){f.t=0}finally{ctx.restore()}}
+function drawProj0(f,cx,cy,t){const q=f.pr,u=clamp(1-f.t/f.T,0,1),k=q.k,ar=PRJ_ARC[k]||0,dx=q.x1-q.x0,dy=q.y1-q.y0,a=Math.atan2(dy,dx),ca=Math.cos(a),sa=Math.sin(a);
  const pos=v=>[q.x0+dx*v-cx,q.y0+dy*v-cy-Math.sin(Math.PI*v)*ar],[x,y]=pos(u),trail=(n,gap,fn)=>{for(let i=1;i<=n;i++){const v=u-i*gap;if(v<0)break;const [tx,ty]=pos(v);fn(tx,ty,1-i/n,i)}};
  ctx.save();
  if(k==='pod'){fxLit();fxGlow(x,y,11,'95,232,255',.55);trail(5,.05,(tx,ty,al)=>{ctx.globalAlpha=al*.8;fxPX(tx-1,ty-1,3,'#5fe8ff')});ctx.globalAlpha=1;for(let i=0;i<6;i++)fxPX(x-ca*i*2-1,y-sa*i*2-1,i<2?3:2,i<2?'#ffffff':'#5fe8ff')}
@@ -3081,7 +3082,8 @@ function drawProj(f,cx,cy,t){const q=f.pr,u=clamp(1-f.t/f.T,0,1),k=q.k,ar=PRJ_AR
   fxGlow(x,y,22,'255,110,230',.55);fxGlow(x,y,13,'190,130,255',.8);fxDisc(x,y,6,'#d79bff');fxDisc(x,y,4.2,'#fff3d0');fxDisc(x,y,2,'#ffffff');
   for(let i=0;i<5;i++){const an=t*9+i*1.257,rr2=9+Math.sin(t*13+i)*2;fxCross(x+Math.cos(an)*rr2,y+Math.sin(an)*rr2*.8,['#ffe48a','#ff9ee0','#7af0ff'][i%3],1)}}
  ctx.restore()}
-function drawImpact(f,cx,cy,t){const q=f.im,p=clamp(1-f.t/f.T,0,1),k=q.k,x=Math.round(q.x-cx),y=Math.round(q.y-cy),al=1-p,e=1-(1-p)*(1-p),R=i=>fxR(q.sd,i);
+function drawImpact(f,cx,cy,t){ctx.save();try{drawImpact0(f,cx,cy,t)}catch(e){f.t=0}finally{ctx.restore()}}
+function drawImpact0(f,cx,cy,t){const q=f.im,p=clamp(1-f.t/f.T,0,1),k=q.k,x=Math.round(q.x-cx),y=Math.round(q.y-cy),al=1-p,e=1-(1-p)*(1-p),R=i=>fxR(q.sd,i);
  const burst=(n,r0,r1,cols,sz,grav,cross)=>{for(let i=0;i<n;i++){const an=R(i)*6.283,sp=r0+R(i+60)*(r1-r0),d=sp*e,px=x+Math.cos(an)*d,py=y+Math.sin(an)*d*.9+(grav||0)*p*p;ctx.globalAlpha=Math.max(0,al*1.2);const c=cols[i%cols.length];cross&&i%2===0?fxCross(px,py,c,1):fxPX(px,py,sz||2,c)}ctx.globalAlpha=1};
  ctx.save();
  if(k==='pod'){fxLit();ctx.globalAlpha=al;fxRing(x,y,3+e*18,'#5fe8ff',16,2);fxRing(x,y,2+e*11,'#ffffff',10,1);ctx.globalAlpha=1;if(p<.35)fxGlow(x,y,16,'95,232,255',.8*(1-p/.35));burst(8,6,22,['#5fe8ff','#ffffff','#2fb8e8'],2)}
@@ -6917,7 +6919,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z76';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z77';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

@@ -922,3 +922,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Đang bay thì **không bị xe tông** (xe người khác không đụng được) và quái không húc được.
 - Bụi tiên rải dày hơn, kéo dài phía sau, nhiều màu rõ cả ban ngày.
 - Không cần chạy SQL.
+
+## 14.11.2026-z77 · Sửa lỗi game "createRadialGradient"
+- Hiệu ứng đạn/nổ nhận toạ độ không hợp lệ (NaN) làm canvas báo lỗi. Đã chặn từ gốc: bỏ qua đạn có toạ độ sai, kiểm tra bán kính/toạ độ trước khi vẽ vầng sáng, và bọc phần vẽ đạn bằng try/catch để lỗi không bao giờ lan ra game.
+- Không cần chạy SQL.
