@@ -936,3 +936,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Ngoài quái vật, Phượng Hoàng giờ **tự bắn tàu hải tặc** trong tầm (mỗi quả tính 1 phát trúng, chia thưởng như thường). Quái ưu tiên trước, không có quái thì bắn tàu.
 - Không bắn khi người chơi đang ở trên thuyền.
 - Không cần chạy SQL.
+
+## 14.11.2026-z80 · Noel: cây thông tím-bạc, tuyết rơi 3 ngày, NV mặc đồ ông già Noel
+- **Cây thông Noel to** ở sảnh trước khách sạn: tán thông 5 tầng, quả châu tím lấp lánh & bạc, dây đèn nhấp nháy, ngôi sao trên đỉnh, hộp quà quanh gốc; ban đêm toả hào quang tím + hạt sáng bay quanh cây.
+- **Tuyết rơi**: hạt tuyết 3 lớp bay trên màn hình. Tuyết **tích dần trong 3 ngày thật** (từ 14/11/2026 12:30): ngày đầu lác đác, hết ngày thứ 3 phủ gần kín khu (~90% mặt đất). Tuyết nhẹ trên mái villa, bungalow, khách sạn, quầy; càng về sau càng dày. Tự tắt sau 10/01/2027 (hoặc admin đặt `config.xmas=0`). Test nhanh: thêm `?snow=0..1` vào URL.
+- **Trang trí**: người tuyết (khăn/mũ nhiều màu), cây thông mini tím-bạc ở từng khu (có đèn đêm), gậy kẹo, hộp quà, vòng nguyệt quế ở cửa villa, dây đèn trên khách sạn & quầy.
+- **Nhân viên NPC** mặc đồ đỏ + mũ ông già Noel. **Bỏ tên** trên đầu NV và khách NPC (vẫn giữ bong bóng thoại).
+- Không cần chạy SQL.
