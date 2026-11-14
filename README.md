@@ -870,3 +870,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Nhân vật demo mang đồ ngay cạnh**: bấm một món để thử, mua xong nhân vật/tàu ngầm mang món đó (bình 5 cấp, túi 5 cấp, chân vịt 3 loại, tàu ngầm 3 mẫu khác màu) và có hiệu ứng lấp lánh. Trong lúc lặn, thợ lặn cũng mang đúng trang bị.
 - Màn hình chính hiển thị nhân vật đang mang đồ + 4 ô trang bị bấm vào để mở cửa hàng.
 - Không cần chạy SQL.
+
+## z69 — Tiên cá to hơn, múa trên popup chào mừng
+- Marina & Triton giờ nằm ngay trong popup chào, to cỡ nhân vật người chơi, múa lượn (lắc người, vẫy hai tay, đuôi quẫy, đuôi lấp lánh, bong bóng/sao). Vẫn mặc vest + nơ/cà vạt. Mobile: hai nhân vật nằm hàng trên, thơ ở dưới.
+- Không cần chạy SQL.
