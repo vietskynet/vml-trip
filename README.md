@@ -900,3 +900,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Sức chứa túi (ô): Giỏ lưới mượn 3→8, Túi ba gang 5→14, Ba gang lớn 10→24, Lưới siêu bền 18→40, Không đáy 30→64. Túi mặc định chứa đủ 8 con cá ngừ = 2.000.000₫; túi càng đắt càng nhiều. Thanh túi trên HUD co giãn theo sức chứa (tối đa 30 ô vẽ).
 - Lên bờ: hiện thông báo "Lên bờ! Bạn kiếm được X (ròng Y nếu có phí oxy/ăn nghỉ)" và dòng lớn "KIẾM ĐƯỢC +X" ở bảng kết quả.
 - Không cần chạy SQL.
+
+## 14.11.2026-z74 · Game lặn: sửa giật thật sự + thêm xác tàu đắm & kho báu
+- Nguyên nhân giật chính (đã đo bằng profiler): sprite nhân vật lặn bị vẽ lại từ đầu + `getImageData` (đọc ngược pixel) + tạo canvas MỖI khung hình do cache thiếu khoá `key` (lỗi từ bản z67). Trên GPU/điện thoại việc đọc ngược pixel gây khựng nặng. Đã sửa cache: 0 lần getImageData và ~0 canvas mới mỗi khung.
+- Giảm ~1.300 lệnh vẽ ô nhỏ mỗi khung ở nền cát (dùng pattern lặp thay vì từng chấm): fillRect 2.200 → ~950/khung.
+- Xác tàu đắm: từ 6 lên ~13 chiếc (thêm vị trí ngẫu nhiên, lật trái/phải và đổi cỡ cho đa dạng). Mỗi xác có rương kho báu 70–90%, thêm 25% rương phụ cạnh xác, và rương chôn lẻ rải dọc đáy biển.
+- Giá trị mọi rương ngẫu nhiên 300.000₫ – 2.000.000₫ (Rương của Draken 15 triệu giữ nguyên).
+- Không cần chạy SQL.

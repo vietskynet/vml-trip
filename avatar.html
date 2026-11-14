@@ -3862,10 +3862,13 @@ function dvPickItemType(m){const r=Math.random();
 function dvWorld(D){D.items=[];D.wrecks=[];
  for(let x=140;x<DV_WL-200;x+=150+Math.random()*220){if(Math.random()<.6){const y=dvFloor(x)-7;D.items.push({t:dvPickItemType(y/DV_M),x,y})}}
  for(let x=500;x<DV_WL;x+=900+Math.random()*700){const y=dvFloor(x)-9;D.items.push({t:'o2',x,y})}
- DV_WR.forEach(x=>{const fy=dvFloor(x);D.wrecks.push({x,y:fy-26});const m=fy/DV_M;
+ const trv=()=>Math.round((3e5+Math.random()*1.7e6)/5e4)*5e4;
+ const wr=DV_WR.slice();for(let k=0,x=700;x<DV_WL-500&&k<40;k++,x+=500+Math.random()*420){if(wr.every(q=>Math.abs(q-x)>520))wr.push(Math.round(x))}
+ wr.forEach((x,wi)=>{const fy=dvFloor(x);D.wrecks.push({x,y:fy-26,fl:Math.random()<.5?-1:1,sc:.85+Math.random()*.35});const m=fy/DV_M;
   for(let i=0;i<3;i++){const ix=x-40+i*45+Math.random()*10;D.items.push({t:dvPickItemType(m),x:ix,y:dvFloor(ix)-7})}
   D.items.push({t:'o2',x:x+60,y:dvFloor(x+60)-9});
-  if(Math.random()<.35){const v=Math.min(15e6,Math.round((1.5e6+m*45e3*(.7+Math.random()*.6))/5e4)*5e4);D.items.push({t:'chest',x:x+8,y:fy-8,v})}});
+  if(Math.random()<(wi<DV_WR.length?.9:.7))D.items.push({t:'chest',x:x+8,y:fy-8,v:trv()});if(Math.random()<.25)D.items.push({t:'chest',x:x-50,y:dvFloor(x-50)-8,v:trv()})});
+ for(let x=420;x<DV_WL-300;x+=780+Math.random()*900){const y=dvFloor(x)-8;D.items.push({t:'chest',x:Math.round(x),y,v:trv()})}
  const kx=10400,ky=dvFloor(kx);D.items.push({t:'kchest',x:kx+210,y:dvFloor(kx+210)-10,v:15e6});
  D.stn=DV_STX.map(x=>({x,y:dvFloor(x)}));D.cr=[];D.cr.push({t:'kraken',x:kx,y:ky-70,vx:0,vy:0,dir:1,ph:0,cd:0,atk:[],at:2})}
 function dvDim(){const a=innerWidth/Math.max(1,innerHeight);if(a<1.2)return[250,Math.min(560,Math.round(250/a))];return[Math.round(225*Math.min(2.4,a)),225]}
@@ -4096,7 +4099,7 @@ function dvDiverBody(gr){const fr=P&&P.fr&&P.fr.side&&P.fr.side[0];if(!fr)return
  g.strokeStyle='#14283a';g.lineWidth=2.4;g.beginPath();g.moveTo(hx+4,hy-1);g.lineTo(hx-10,hy-18);g.stroke();
  g.strokeStyle='#2a3a48';g.lineWidth=2.2;g.beginPath();g.moveTo(hx+9,hy+10);g.quadraticCurveTo(hx-2,hy+26,-12,-4);g.stroke();g.fillStyle='#111';dvRR(g,hx+7,hy+8,6,5,2);g.fill();
  g.restore();
- DVC2.sw={fr,c:dvOut(dvPix(c,9),DVO,1.6)};return DVC2.sw.c}
+ DVC2.sw={fr,key,c:dvOut(dvPix(c,9),DVO,1.6)};return DVC2.sw.c}
 function dvDrawDiver(g,x,y,dir,vx,vy,t,mv,inv,gr){gr=gr||dvEqNow();const b=dvDiverBody(gr);if(!b)return;const Z=DVZ;g.save();g.translate(Math.round(x*Z)/Z,Math.round(y*Z)/Z);const rot=Math.round(Math.max(-.5,Math.min(.5,vy/110))*(dir)*.9/.1)*.1;if(rot)g.rotate(rot);if(dir<0)g.scale(-1,1);g.imageSmoothingEnabled=false;
  const s=1/Z;g.scale(s,s);
  // chân vịt đạp nước (vẽ sau thân)
@@ -4316,7 +4319,7 @@ function dvRender(){const D=DV,cv=$('#dvCv');if(!cv)return;const Z=DVZ;if(cv.wid
  {g.globalAlpha=.55;const x0=Math.floor((cx*.7-20)/38),x1=Math.floor((cx*.7+W+20)/38);for(let j=x0;j<=x1;j++){const r=dvH(j,41);if(r>.5)continue;const wx=j*38+dvH(j,42)*16,sx=wx-cx*.7,fy=dvFloor(wx+cx*.3)-cy,m=dvFloor(wx+cx*.3)/DV_M;if(sx<-30||sx>W+30||fy<-40||fy>H+60)continue;const kk=Math.floor(r*200);if(m<60){if(kk<40)dKelp(g,sx,fy,t,40+kk%24,'#1a9a52','#3ac880',j);else dFan(g,sx,fy,t,kk%2?'#e84a8a':'#e87a2a')}else if(m<180){if(kk<50)dKelp(g,sx,fy,t,44+kk%24,'#157a8a','#2aa8b0',j);else dTube(g,sx,fy,t,'#6a8ae8')}else{if(kk<50)dShroom(g,sx,fy,t,'80,220,200');else dColumn(g,sx,fy,.5)}}g.globalAlpha=1}
  // đáy biển
  {g.save();g.beginPath();g.moveTo(-4,H+8);for(let sx=-4;sx<=W+4;sx+=3)g.lineTo(sx,dvFloor(cx+sx)-cy);g.lineTo(W+4,H+8);g.closePath();g.clip();
-  const bh=20,w0=Math.floor(cy/bh)*bh;for(let wy=w0;wy<cy+H+bh;wy+=bh){const m=Math.max(0,(wy+bh/2)/DV_M),c=dvSand(Math.round(m/8)*8).map(v=>Math.min(255,Math.round(v*1.06)));g.fillStyle=dvRgb(c);g.fillRect(-6,wy-cy,W+12,bh+.6);g.fillStyle='rgba(0,0,0,.1)';for(let sx=((wy/bh)&1)*2;sx<W;sx+=4)g.fillRect(sx,wy-cy+bh-2,2,2)}
+  const bh=20,w0=Math.floor(cy/bh)*bh;for(let wy=w0;wy<cy+H+bh;wy+=bh){const m=Math.max(0,(wy+bh/2)/DV_M),c=dvSand(Math.round(m/8)*8).map(v=>Math.min(255,Math.round(v*1.06)));g.fillStyle=dvRgb(c);g.fillRect(-6,wy-cy,W+12,bh+.6);{const par=(wy/bh)&1;if(!DVC2.dpat)DVC2.dpat=[0,1].map(q=>{const[tc,tg]=dvCv(4,2);tg.fillStyle='rgba(0,0,0,.1)';tg.fillRect(q*2,0,2,2);return g.createPattern(tc,'repeat')});g.save();g.translate(0,wy-cy+bh-2);g.fillStyle=DVC2.dpat[par];g.fillRect(0,0,W,2);g.restore()}}
   for(let sx=0;sx<=W;sx+=4){const wx=Math.floor((cx+sx)/4),y=dvFloor(cx+sx)-cy;for(let r=0;r<5;r++){const h=dvH(wx,r+5);if(h>.82){g.fillStyle='rgba(0,0,0,.18)';g.fillRect(sx,y+8+r*7+((wx*7)%5),2,2)}else if(h<.1){g.fillStyle='rgba(255,255,255,.22)';g.fillRect(sx,y+6+r*7,2,2)}}}
   g.restore();
   // mép cỏ biển + răng cưa tối (kiểu game island)
@@ -4325,7 +4328,7 @@ function dvRender(){const D=DV,cv=$('#dvCv');if(!cv)return;const Z=DVZ;if(cv.wid
  // trang trí
  g.lineJoin='round';for(let i=Math.floor((cx-50)/26);i<=Math.floor((cx+W+50)/26);i++){const r=dvH(i,2),wx=i*26+Math.floor(dvH(i,1)*12),fy=dvFloor(wx),m=fy/DV_M,x=wx-cx,y=fy-cy+2;if(y<-60||y>H+60)continue;dvDecor(g,i,Math.floor(r*100),m,x,y,t,Z)}
  const nr=dvStnNear();D.stn.forEach(st=>{if(st.x-cx<-60||st.x-cx>W+60)return;dvDrawStation(g,st,cx,cy,t,nr===st)});
- D.wrecks.forEach(w=>{const x=w.x-cx;if(x<-90||x>W+90)return;const sp=dvSpr2('wreck'),ww=sp.width/Z,hh=sp.height/Z;g.drawImage(sp,Math.round((x-ww/2)*Z)/Z,Math.round((w.y-cy-hh*.62)*Z)/Z,ww,hh)});
+ D.wrecks.forEach(w=>{const x=w.x-cx;if(x<-100||x>W+100)return;const sp=dvSpr2('wreck'),sc=w.sc||1,ww=sp.width/Z*sc,hh=sp.height/Z*sc;g.save();g.translate(Math.round(x*Z)/Z,Math.round((w.y-cy-hh*.62)*Z)/Z);if(w.fl<0)g.scale(-1,1);g.drawImage(sp,-ww/2,0,ww,hh);g.restore()});
  D.items.forEach(it=>{const x=it.x-cx,y=it.y-cy+Math.sin(t*2+it.x)*1.2;if(x<-30||x>W+30)return;const s=dvSpr2(it.t),w=s.width/Z,h=s.height/Z;
   if(it.t==='kchest'){const q=g.createRadialGradient(x,y,2,x,y,26+Math.sin(t*3)*3);q.addColorStop(0,'rgba(255,230,120,.5)');q.addColorStop(1,'rgba(255,230,120,0)');g.fillStyle=q;g.fillRect(x-34,y-34,68,68)}
   g.drawImage(s,Math.round((x-w/2)*Z)/Z,Math.round((y-h/2)*Z)/Z,w,h);
@@ -6852,7 +6855,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z73';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z74';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
