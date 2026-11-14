@@ -915,3 +915,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Đồ hoạ đạn xe**: trước đây đạn không vẽ gì. Giờ mỗi xe có đạn + hiệu ứng nổ riêng: Pod laser, Chuột Chũi mũi khoan + bụi đất, Tên Lửa R2 tên lửa + nổ cầu lửa, Bò Tót cầu lửa đôi + sóng xung kích, Tia Chớp sét + điện giật, F1 đạn vệt sáng + tia lửa, Hồ Điệp bụi sao, Kẹo Bông sao cầu vồng + hoa giấy, Cá Mập thủy lôi + nước bắn, Xe Tăng đạn pháo + nổ lớn khói. Đấm tay không có tia "pow".
 - **Cân bằng**: minigame xây lâu đài cấp 3 hệ số thưởng 2,5 → 1,5. Thuyền câu cấp 2: mức kiếm tối thiểu 2,7M → 2,3M, cấp 3: 3,1M → 2,6M; giảm tỉ lệ cá quý/biển lạ.
 - Không cần chạy SQL (trường `pho` là JSON tự do trong `players`).
+
+## 14.11.2026-z76 · Sửa giao diện bay Phượng Hoàng
+- Bay cao hơn (nâng 54px), nhân vật **ngồi trên lưng** phượng hoàng (cánh vẽ phía sau người, chân ẩn trong thân).
+- Tên nhân vật và bong bóng chat nâng lên **trên đầu**, không bị chim che.
+- Đang bay thì **không bị xe tông** (xe người khác không đụng được) và quái không húc được.
+- Bụi tiên rải dày hơn, kéo dài phía sau, nhiều màu rõ cả ban ngày.
+- Không cần chạy SQL.
