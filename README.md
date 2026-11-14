@@ -964,3 +964,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## 14.11.2026-z83 · Nâng giá gốc Khu Villa (chống lạm phát)
 - Giá gốc tăng mạnh, phí kiểu nhà vẫn chỉ 50–300tr nên chênh lệch giữa các kiểu chỉ còn ~1–6% tổng: **đất 600tr · tầng 1 1,2 tỷ · tầng 2 1,5 tỷ · tầng 3 1,7 tỷ** (full 3 tầng + đất = **5 tỷ**, cộng phí kiểu nhà 50–300tr → 5,05–5,3 tỷ, chưa trang trí).
 - Hoàn khi trả đất vẫn 50% tổng đã đầu tư. Không cần chạy SQL.
+
+## 14.11.2026-z84 · Giảm giá gốc Khu Villa 30%
+- Đất 420tr · tầng 1 840tr · tầng 2 1,05 tỷ · tầng 3 1,19 tỷ (full 3 tầng + đất = **3,5 tỷ**, cộng phí kiểu nhà 50–300tr → 3,55–3,8 tỷ). Phí kiểu nhà giữ nguyên. Không cần chạy SQL.
