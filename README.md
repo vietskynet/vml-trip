@@ -819,3 +819,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z61 · Chọn xe trong Đường Đua F88
 - Màn chọn xe hiện đủ 16 xe, chia 3 cấp, kèm giá và 4 thanh chỉ số: Tốc độ, Tăng tốc, Bẻ lái, Vững. Xe chưa sở hữu bị khoá (ghi rõ mua ở Vinh Phát), xe mượn F88 luôn dùng được.
 - Chỉ số tính theo giá xe (thang log từ 2tr đến 100tr): tốc độ tối đa ×0,84 → ×1,04 so với mức chuẩn, tăng tốc ×0,8 → ×1,35. Cấp 2 bẻ lái ×1,12, cấp 3 ×1,25; cấp 2/3 bị trúng đòn thì quay vòng ngắn hơn (×0,85 / ×0,7). Không cần SQL.
+
+## z62 · Đường Đua F88 PHASE 2: đua online 2–5 người + giao diện gọn cho người mới
+- **Màn vào game đơn giản**: chỉ còn 2 nút to **ĐUA NGAY** (với 4 bot) và **ĐUA ONLINE · 2–5 NGƯỜI**, kèm 3 dòng hướng dẫn. Đổi xe / đổi đường đua / xem vật phẩm nằm trong mục phụ "ĐỔI XE / ĐƯỜNG ĐUA". Mặc định tự chọn đường cao nhất đã mở và xe nhanh nhất đang có.
+- **Đua online (độ trễ thấp)**: dùng Supabase **Realtime (WebSocket, Broadcast + Presence)** trên một kết nối riêng, KHÔNG đi qua chu kỳ đồng bộ 1,5 giây. Mỗi máy tự lái xe mình nên bấm là ăn ngay; trạng thái gửi ~14 lần/giây (`RC_NETHZ`), máy khác nội suy + ngoại suy để mượt. Đạn, tên lửa, vỏ chuối, sấm gửi dạng sự kiện, nạn nhân tự phát hiện trúng đòn. Đồng hồ xuất phát đồng bộ theo giờ máy chủ. HUD hiện ping.
+- **Phòng**: "Ghép trận nhanh" (vào phòng đang mở cùng đường đua hoặc tự mở phòng), "Tạo phòng riêng", danh sách phòng đang mở. Tự xuất phát sau 14 giây từ lúc có người mới (tối thiểu 2 người) hoặc khi đủ 5; chủ phòng có thể bấm xuất phát ngay. Không có bot trong trận online.
+- **Tiền**: phí vào 1.000.000₫/người, gom thành quỹ, F88 giữ 10%. Chia quỹ theo hạng: 2 người 100/0, 3 người 70/30/0, 4 người 60/30/10/0, 5 người 50/30/15/5/0 (%). Không tạo thêm tiền ra ngoài, nên không farm được bằng 2 tài khoản. Trận online không mở khoá đường mới. Thoát giữa trận = mất phí. Log: `mini.race` ("ONLINE n người LVx hạng p").
+- **Điều kiện**: Supabase phải bật Realtime (mặc định bật, kênh công khai). Gói miễn phí giới hạn ~100 tin/giây toàn dự án, tức khoảng 1 phòng đủ 5 người cùng lúc; nhiều phòng song song nên nâng gói hoặc hạ `RC_NETHZ`. **Không cần chạy SQL.**

@@ -404,7 +404,7 @@ body.m-room .pad{display:none!important}
 .sgboard{background:rgba(255,255,255,.07);border:2px solid #ffbe3b;padding:8px 10px;font-size:13px;color:#fff}.sgboard:empty{display:none}.sgboard h3{margin:0 0 4px;font-size:15px;color:#ffe45c;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.sgboard h3 small{font-size:12px;color:#7dffb0;font-weight:normal}.sgboard .pz{color:#ffbe3b;font-size:12px;margin-bottom:4px}.sgboard table{width:100%;border-collapse:collapse}.sgboard td{padding:1px 4px;font-size:12px;border-top:1px solid rgba(255,255,255,.12)}.sgboard td:first-child{width:28px;color:#ffbe3b;font-weight:bold}.sgboard td:last-child,.sgboard td:nth-last-child(2){text-align:right;white-space:nowrap}.sgboard tr.me td{background:rgba(255,95,174,.35);color:#fff}.sgboard .em{color:#b9a8ff;text-align:center;padding:6px 0}#sgInfo,#sgNote,#sgEndR{margin:0;text-align:center;font-size:15px;color:#fff}#sgNote{color:#ffe45c;font-size:13px}#sgEndR{font-size:20px;color:#7dffb0}.sgstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}.sgstats div{background:rgba(255,255,255,.08);padding:8px}.sgstats small{display:block;font-size:11px;color:#b9a8ff}.sgstats b{font-size:26px}.sghits{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;font-size:14px}.sghits .hp{color:#7dffb0}.sghits .hw{color:#ffb12b}.sghits .hc{color:#ffe45c}.sghits .hm{color:#ff8a8a}#sgIntro .row,#sgEnd .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:sticky;bottom:-18px;background:rgba(8,2,30,.96);padding:8px 0}#sgPad{display:none;grid-template-columns:repeat(4,1fr) 1.7fr;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:#12052c;border-top:3px solid #000}#sgPad button{background:#4a2f8f;color:#fff;border:3px solid #000;font-size:26px;min-height:64px;touch-action:manipulation;user-select:none;font:inherit;font-size:26px}#sgPad #sgSp{background:#d8327f;font-size:17px}@media (pointer:coarse),(max-width:760px){#sgPad{display:grid}}@media (max-width:760px) and (orientation:portrait){#sgCard{width:100vw;height:100vh;height:100dvh;border:0;box-shadow:none}#sgX{top:calc(8px + env(safe-area-inset-top,0px))}#sgIntro,#sgEnd{padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px))}.sgsteps{grid-template-columns:1fr;gap:6px}.sgsteps div{padding:6px 8px;display:grid;grid-template-columns:26px 1fr;column-gap:8px}.sgsteps i{grid-row:1/3;align-self:start}.sgsteps span{font-size:12px}.sgsteps b{font-size:13px}.sgkeys{font-size:11px}#sgLv{grid-template-columns:repeat(6,1fr)}.sgl{padding:5px 1px}#sgIntro h2,#sgEnd h2{font-size:22px}}@media (max-height:520px) and (orientation:landscape){#sgCard{height:100vh;height:100dvh;width:100vw;border:0}#sgPad button{min-height:44px}.sgsteps span{font-size:12px}#sgIntro h2{font-size:20px}}
 .skrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}.skrow>span{display:flex;flex-wrap:wrap;gap:6px}
 #rcOv{position:fixed;inset:0;display:block;padding:0;background:#05030f;z-index:60;color:#fff}#rcOv[hidden],#rcOv [hidden]{display:none!important}#rcCv{position:absolute;inset:0;width:100%;height:100%;display:block}
-#rcMenu>*{flex-shrink:0}#rcX{position:absolute;top:8px;right:8px;z-index:9;width:42px;height:42px;background:#3a1670;color:#fff;border:3px solid #000;font-size:24px;line-height:1;cursor:pointer}
+#rcMenu>*{flex-shrink:0}#rcV0,#rcV1,#rcV2{display:flex;flex-direction:column;gap:10px}#rcV0[hidden],#rcV1[hidden],#rcV2[hidden]{display:none}.rcbig{width:100%;padding:15px 8px;font-size:19px}.rcon{background:#1672c8;color:#fff}.rcrow2{display:flex;gap:8px}.rcrow2 .btn{flex:1}#rcSum{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2);padding:8px}#rcSum canvas{width:92px;height:68px;flex:none}#rcSum div{display:flex;flex-direction:column;gap:3px;font-size:13px}#rcSum b{font-size:16px;color:#ffe45c}#rcSum small{color:#cfe6ff}.rchow{margin:0;padding-left:18px;font-size:13px;line-height:1.35;color:#d3dcff}.rchow b{color:#ffe45c}.rcwarn{margin:0;color:#ffb0b0;font-size:13px}.rcnet{margin:0;font-size:11px;color:#7dffb0;text-align:center}#rcRoster{display:flex;flex-direction:column;gap:4px}.rcpl{display:grid;grid-template-columns:70px 1fr;grid-template-rows:auto auto;column-gap:8px;background:rgba(255,255,255,.08);padding:3px 8px;align-items:center;font-size:14px;min-height:54px}.rcpl canvas{grid-row:span 2;width:66px;height:48px}.rcpl small{color:#7dffb0;font-size:11px}.rcpl.me{background:#ed1c24}.rcpl.me small{color:#fff}.rcpl.empty{display:block;opacity:.45;line-height:46px}.rcrm{display:grid;grid-template-columns:1fr auto;gap:2px 8px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.25);color:#fff;padding:8px;cursor:pointer;text-align:left;font-family:inherit}.rcrm b{font-size:15px}.rcrm span{font-size:11px;color:#bfe8ff}.rcrm em{grid-row:span 2;grid-column:2;font-style:normal;font-size:18px;color:#ffe45c;align-self:center}#rcX{position:absolute;top:8px;right:8px;z-index:9;width:42px;height:42px;background:#3a1670;color:#fff;border:3px solid #000;font-size:24px;line-height:1;cursor:pointer}
 #rcMenu{position:absolute;left:max(10px,2vw);top:10px;bottom:10px;width:min(96vw,480px);overflow:auto;z-index:5;background:rgba(8,4,28,.88);border:4px solid #ed1c24;box-shadow:0 0 0 3px #000,0 0 30px rgba(237,28,36,.45);padding:14px;display:flex;flex-direction:column;gap:8px;-webkit-overflow-scrolling:touch}
 .rcbrand{font-family:var(--f-display);font-size:28px;color:#fff;text-shadow:3px 3px 0 #ed1c24;padding-right:46px}.rcbrand b{color:#ffe45c}.rcsub{margin:0;font-size:14px;color:#bfe8ff}.rch{font-family:var(--f-display);font-size:13px;color:#ffe45c;margin-top:4px}
 #rcTracks{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.rctk{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.22);color:#fff;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;gap:2px;text-align:center;font-family:inherit}.rctk b{font-size:16px;color:#ffe45c}.rctk span{font-size:11px;line-height:1.05;min-height:24px}.rctk small{font-size:10px;color:#9fb4e8;line-height:1.05}.rctk.on{background:#ed1c24;border-color:#fff}.rctk.on small{color:#fff}.rctk.lk{opacity:.5}
@@ -829,14 +829,23 @@ body.m-room .pad{display:none!important}
   <button id="rcX" aria-label="Thoát">×</button>
   <div id="rcMenu">
     <div class="rcbrand">ĐƯỜNG ĐUA <b>F88</b></div>
-    <p class="rcsub">Đua xe bắn súng · giả 3D · 3 vòng · đối đầu 4 bot</p>
-    <div class="rch">CHỌN ĐƯỜNG ĐUA</div><div id="rcTracks"></div>
+    <div id="rcV0">
+      <div id="rcSum"></div>
+      <button class="btn ok rcbig" id="rcGo">ĐUA NGAY</button>
+      <button class="btn rcbig rcon" id="rcOnline">ĐUA ONLINE · 2–5 NGƯỜI</button>
+      <div class="rcrow2"><button class="btn ghost" id="rcOpt">ĐỔI XE / ĐƯỜNG ĐUA</button><button class="btn ghost" id="rcQuit">THOÁT</button></div>
+      <p id="rcNote"></p>
+      <ul class="rchow"><li><b>← →</b> hoặc chạm nút ◀ ▶ để lái, xe tự chạy ga.</li><li>Chạy qua <b>trứng ?</b> để nhận vật phẩm, bấm <b>SPACE</b> (hoặc nút DÙNG) để xài.</li><li>Về nhất nhận thưởng lớn nhất. Phí vào 1.000.000₫.</li></ul>
+    </div>
+    <div id="rcV1" hidden>
+      <div class="rch">CHỌN ĐƯỜNG ĐUA</div><div id="rcTracks"></div>
     <div class="rch">CHỌN XE</div><div id="rcCars"></div>
     <div id="rcInfo"></div>
-    <div class="rch">VẬT PHẨM TRÊN ĐƯỜNG (ăn trứng ?)</div><div id="rcItems"></div>
+    <div class="rch">VẬT PHẨM TRÊN ĐƯỜNG</div><div id="rcItems"></div>
     <p class="rckeys">← → hoặc A D để lái · ↓ phanh · SPACE dùng vật phẩm · Esc tạm dừng. Trên điện thoại dùng các nút ở cuối màn hình. Nhặt xu để chạy nhanh hơn, đạp vệt mũi tên xanh để tăng tốc, tránh vệt dầu và chướng ngại.</p>
-    <p id="rcNote"></p>
-    <div class="rcrow"><button class="btn ok" id="rcGo">VÀO ĐUA</button><button class="btn ghost" id="rcQuit">THOÁT</button></div>
+    <div class="rcrow"><button class="btn ok" id="rcBack">XONG</button></div>
+    </div>
+    <div id="rcV2" hidden></div>
   </div>
   <div id="rcPause" class="rcdlg" hidden><div class="rcbox"><h2>TẠM DỪNG</h2><p>Thoát giữa chừng sẽ mất phí vào.</p><div class="rcrow"><button class="btn ok" id="rcResume">TIẾP TỤC</button><button class="btn ghost" id="rcLeave">BỎ CUỘC</button></div></div></div>
   <div id="rcEnd" class="rcdlg" hidden><div class="rcbox"><h2 id="rcEndT"></h2><div id="rcEndL"></div><p id="rcEndP"></p><p id="rcEndU"></p><div class="rcrow"><button class="btn ok" id="rcAgain">ĐUA TIẾP</button><button class="btn ghost" id="rcLeave2">VỀ RESORT</button></div></div></div>
@@ -3297,16 +3306,17 @@ function rcBuild(T){const R=rcMul(T.id*7919+13),seg=[];let y=0;
  let hd=0,mx=0,my=0;const pts=[];seg.forEach((s,i)=>{hd+=s.cv*.0016;mx+=Math.cos(hd);my+=Math.sin(hd);if(i%4===0)pts.push([mx,my])});
  return{seg,N,len,pts,T}}
 /* ---- khởi tạo cuộc đua ---- */
-function rcSetup(L,demo){const T=RC_TR[L-1],tk=rcBuild(T),v=RC.veh,ST=rcStats(v),top=demo?.96:ST.top;
+function rcSetup(L,demo,mp){const T=RC_TR[L-1],tk=rcBuild(T),v=RC.veh,ST=rcStats(v),top=demo?.96:ST.top;
  const mk=(n,kind,hc,human,ai,lane,dist)=>({n,kind,hc,human,ai,x:lane,dist,speed:0,top:1,item:null,ammo:0,rol:0,shield:0,boost:0,spin:0,star:0,tiny:0,coins:0,useT:1+Math.random()*2,tx:lane,thk:0,fin:0,lap:0,hit:0,fx:0,pu:0,skill:.8,handle:1});
  const bots=[];const names=RC_BOTN.slice().sort(()=>Math.random()-.5),kinds=VEHS.map(q=>q.k).sort(()=>Math.random()-.5);
  const lanes=[-.7,.7,-.25,.25];
- for(let i=0;i<4;i++){const b=mk(names[i],kinds[i],RC_HC[(i*2+1)%RC_HC.length],false,true,lanes[i],-(i>>1)*500-(i%2)*180-900);const sk=T.bot*(1+(i-1.5)*.012);b.top=sk;b.skill=.6+Math.random()*.4;b.handle=1;bots.push(b)}
+ for(let i=0;i<(mp?0:4);i++){const b=mk(names[i],kinds[i],RC_HC[(i*2+1)%RC_HC.length],false,true,lanes[i],-(i>>1)*500-(i%2)*180-900);const sk=T.bot*(1+(i-1.5)*.012);b.top=sk;b.skill=.6+Math.random()*.4;b.handle=1;bots.push(b)}
  const me=mk(P.name||'Bạn',v.k,'#ff5a5a',true,!!demo,0,-250);me.top=top;me.handle=ST.hd;me.acc=ST.acc;me.tf=ST.tf;if(demo){me.ai=true;me.top=.9;me.skill=.8}
  if(v.gun&&!demo){me.item='gun';me.ammo=3}
- const cars=[me,...bots];
- RC={...RC,L,T,tk,cars,me,bots,pj:[],ph:demo?'demo':'count',cd:3.4,t:0,pos:0,x:0,bgx:0,shake:0,flash:0,msgs:[],fin:0,order:[],endT:0,sp:[],clock:0,pause:0,fxT:0,pkq:[],pt:[],dtf:0,res:null,demo:!!demo,k:RC.k||{l:0,r:0,b:0}};
- me.dist=-250;rcRank()}
+ let rem=[];if(mp){const sl=u=>mp.ids.indexOf(u),ln=q=>[-.7,.7,-.25,.25,0][q],gd=q=>-250-(q>>1)*500-(q%2)*180,ms=sl(NET.uid);me.x=ln(ms);me.mdist=gd(ms);me.hc=(mp.info[NET.uid]||{}).hc||me.hc;mp.ids.forEach(u=>{if(u===NET.uid)return;const q=mp.info[u]||{},k=sl(u),c=mk(q.n||'Người chơi',q.k||'kart',q.hc||'#ffffff',false,false,ln(k),gd(k));c.remote=true;c.uid=u;c.top=q.sp||.9;rem.push(c)})}
+ const cars=[me,...bots,...rem];
+ RC={...RC,L,T,tk,cars,me,bots,pj:[],ph:demo?'demo':'count',cd:3.4,t:0,pos:0,x:0,bgx:0,shake:0,flash:0,msgs:[],fin:0,order:[],endT:0,sp:[],clock:0,pause:0,fxT:0,pkq:[],pt:[],dtf:0,res:null,demo:!!demo,mp:mp?{ids:mp.ids}:null,startAt:mp?mp.at:0,k:RC.k||{l:0,r:0,b:0}};
+ me.dist=me.mdist!=null?me.mdist:-250;rcRank()}
 const rcRank=()=>{RC.cars.sort((a,b)=>(b.fin?1e9-b.fin:b.dist)-(a.fin?1e9-a.fin:a.dist));RC.cars.forEach((c,i)=>c.rk=i);return RC.me.rk};
 const rcSegAt=z=>RC.tk.seg[((Math.floor((z+RC_ST)/RC_SL)%RC.tk.N)+RC.tk.N)%RC.tk.N];
 const rcMsg=(t,col)=>{if(RC.demo)return;RC.msgs.push({t,col:col||'#fff',a:2});if(RC.msgs.length>4)RC.msgs.shift()};
@@ -3315,9 +3325,10 @@ function rcRoll(c){const r=c.rk,W=[[3,3,3,3,0,0,0],[3,3,2,2,2,0,0],[3,3,2,1,3,1,
 function rcGive(c){if(c.item||c.rol>0)return false;c.rol=c.human?1.1:.4;c.pu=c.human?1:0;return true}
 function rcHit(t,src,k){if(t.fin&&!t.human&&0)return;if(t.star>0||t.fx>0&&0){if(src&&src.star>0&&t.star<=0){}else return}
  if(t.shield>0){t.shield=0;t.shP=.5;if(t.human){rcMsg('Khiên đã chặn đòn!','#3ddcff');RC.flash=.4;rcSnd('shield')}return}
- t.spin=(k==='rocket'?1.3:k==='peel'?1.1:.9)*(t.tf||1);t.speed*=k==='rocket'?.3:.45;t.boost=0;if(t.human){RC.shake=.7;RC.flash=.5;rcSnd('hit');rcMsg(k==='peel'?'Trượt vỏ chuối!':k==='oil'?'Trượt vệt dầu!':'Bạn bị bắn trúng'+(src?' bởi '+src.n:'')+'!','#ff6a6a')}
+ t.spin=(k==='rocket'?1.3:k==='peel'?1.1:.9)*(t.tf||1);t.speed*=k==='rocket'?.3:.45;t.boost=0;if(RC.mp&&t.human&&src&&src.remote)rcNetSend({e:'h',to:src.uid,by:t.n});if(t.human){RC.shake=.7;RC.flash=.5;rcSnd('hit');rcMsg(k==='peel'?'Trượt vỏ chuối!':k==='oil'?'Trượt vệt dầu!':'Bạn bị bắn trúng'+(src?' bởi '+src.n:'')+'!','#ff6a6a')}
  else if(src&&src.human){rcMsg('Trúng '+t.n+'!','#7dffb0');rcSnd('ok')}}
-function rcUse(c){if(!c.item||c.rol>0||c.spin>0&&c.item!=='shield'&&0)return;const it=c.item;
+function rcUse(c){const it0=c.item,n0=RC.pj.length;rcUse0(c);if(RC.mp&&c.human){const p=RC.pj[RC.pj.length-1];if(RC.pj.length>n0&&p){p.id=p.id||rcPid();rcNetSend({e:'x',t:p.t,x:+p.x.toFixed(2),z:Math.round(p.z),id:p.id,tg:p.tg&&p.tg.uid})}else if(it0==='thunder'&&!c.item)rcNetSend({e:'x',t:'thunder'})}}
+function rcUse0(c){if(!c.item||c.rol>0||c.spin>0&&c.item!=='shield'&&0)return;const it=c.item;
  if(it==='nitro'){c.boost=2.1;c.item=null;if(c.human){RC.flash=.3;rcSnd('boost')}}
  else if(it==='shield'){c.shield=7;c.item=null;if(c.human)rcSnd('shield')}
  else if(it==='star'){c.star=6;c.item=null;c.spin=0;if(c.human){rcMsg('SIÊU SAO!','#ffe45c');rcSnd('boost')}}
@@ -3329,11 +3340,12 @@ function rcUse(c){if(!c.item||c.rol>0||c.spin>0&&c.item!=='shield'&&0)return;con
 function rcSnd(k){try{if(k==='hit')beep(120,.25,'sawtooth',.06,-60);else if(k==='shot')beep(880,.07,'square',.04,-500);else if(k==='ok')coin();else if(k==='boost')beep(260,.4,'sawtooth',.05,900);else if(k==='shield')beep(660,.18,'triangle',.05,400);else if(k==='thunder'){beep(90,.5,'sawtooth',.08,-30);setTimeout(()=>beep(1500,.12,'square',.05,-900),30)}else if(k==='egg')beep(1175,.09,'triangle',.05,300);else if(k==='coin')beep(1568,.04,'square',.025);else if(k==='cd')beep(520,.12,'square',.05);else if(k==='go')beep(1040,.4,'square',.06)}catch(e){}}
 /* ---- cập nhật ---- */
 function rcUpdate(dt){const R=RC,T=R.T,tk=R.tk,fin=T.laps*tk.len;R.clock+=dt;R.dtf=dt;if(R.slotFx>0)R.slotFx-=dt;if(R.coinFx>0)R.coinFx-=dt;
- if(R.ph==='count'){R.cd-=dt;const q=Math.ceil(R.cd);if(R.lastCd!==q&&q>0&&q<=3){R.lastCd=q;rcSnd('cd')}if(R.cd<=0){R.ph='race';R.t=0;rcSnd('go');R.goT=1}}
- const live=R.ph==='race'||R.ph==='demo'||R.ph==='fin';if(R.ph==='race'||R.ph==='fin')R.t+=dt;if(R.goT>0)R.goT-=dt;
+ if(R.ph==='count'){if(R.mp)R.cd=(R.startAt-rcSrv())/1000;else R.cd-=dt;const q=Math.ceil(R.cd);if(R.lastCd!==q&&q>0&&q<=3){R.lastCd=q;rcSnd('cd')}if(R.cd<=0){R.ph='race';R.t=0;rcSnd('go');R.goT=1}}
+ const live=R.ph==='race'||R.ph==='demo'||R.ph==='fin';if(R.mp){if(R.ph!=='count')R.t=Math.max(0,(rcSrv()-R.startAt)/1000)}else if(R.ph==='race'||R.ph==='fin')R.t+=dt;if(R.goT>0)R.goT-=dt;
  if(R.strike>0)R.strike-=dt;if(R.shake>0)R.shake-=dt;if(R.flash>0)R.flash-=dt*2;
  R.msgs.forEach(m=>m.a-=dt);R.msgs=R.msgs.filter(m=>m.a>0);
  for(const c of R.cars){
+  if(c.remote){rcRem(c,dt);continue}
   if(c.rol>0){c.rol-=dt;if(c.rol<=0){c.item=rcRoll(c);c.ammo=c.item==='gun'?3:0;c.useT=.6+Math.random()*1.6;if(c.human){rcSnd('egg');rcMsg(RC_IT[c.item][0]+'!','#ffe45c')}}}
   if(c.spin>0)c.spin-=dt;if(c.boost>0)c.boost-=dt;if(c.star>0)c.star-=dt;if(c.shield>0)c.shield-=dt;if(c.shP>0)c.shP-=dt;if(c.tiny>0)c.tiny-=dt;if(c.fireT>0){c.fireT-=dt;if(c.fireT<=0&&c.item==='gun'&&c.ammo>0&&!c.human&&Math.random()<.9)rcUse(c)}
   const seg=rcSegAt(c.dist),sp=c.speed/RC_MAX;
@@ -3371,23 +3383,23 @@ function rcUpdate(dt){const R=RC,T=R.T,tk=R.tk,fin=T.laps*tk.len;R.clock+=dt;R.d
     else if(o.t==='ob'){if(dx<.3+(o.k==='tire'?.04:0)&&c.star<=0){o.cd=1.2;if(c.shield>0){c.shield=0;c.shP=.5}else{c.speed*=.4;c.spin=Math.max(c.spin,.35);if(c.human){RC.shake=.5;rcSnd('hit')}}}else if(dx<.3&&c.star>0){o.cd=4}}
     else if(o.t==='sc'&&o.sol!==0&&dx<.16&&Math.abs(o.off)<1.25&&c.star<=0){o.cd=1;c.speed*=.5;if(c.human)RC.shake=.4}}}}
   /* hoàn thành */
-  if(!c.fin&&c.dist>=fin){c.fin=R.clock;c.speed=Math.min(c.speed,RC_MAX*.8);R.order.push(c);if(c.human){R.ph='fin';R.endT=2.6;rcSnd('go')}}
+  if(!c.fin&&c.dist>=fin){c.fin=R.mp?R.t:R.clock;c.speed=Math.min(c.speed,RC_MAX*.8);R.order.push(c);if(c.human){R.ph='fin';R.endT=R.mp?999:2.6;rcSnd('go');if(R.mp)rcNetSend({e:'f',t:c.fin})}}
  }
  /* đồng hồ sprite hồi sinh */
  if(R.sp.length===0){tk.seg.forEach(s=>s.spr.forEach(o=>{if(o.t==='egg'||o.t==='coin'||o.t==='oil'||o.t==='pad'||o.t==='ob'||o.sol===0||o.t==='sc')R.sp.push(o)}))}
  for(const o of R.sp)if(o.cd>0)o.cd-=dt;
  /* va chạm giữa các xe */
- for(const a of R.cars)for(const b of R.cars){if(a===b)continue;const dz=a.dist-b.dist;if(dz>0&&dz<300&&Math.abs(a.x-b.x)<.3){if(a.star>0&&b.star<=0&&!b.fin){rcHit(b,a,'star')}else if(b.star<=0){b.speed=Math.min(b.speed,a.speed*.97);b.x+=(b.x>=a.x?1:-1)*dt*1.2}}}
+ for(const a of R.cars)for(const b of R.cars){if(a===b||b.remote)continue;const dz=a.dist-b.dist;if(dz>0&&dz<300&&Math.abs(a.x-b.x)<.3){if(a.star>0&&b.star<=0&&!b.fin){rcHit(b,a,'star')}else if(b.star<=0){b.speed=Math.min(b.speed,a.speed*.97);b.x+=(b.x>=a.x?1:-1)*dt*1.2}}}
  /* đạn / vỏ chuối / tên lửa */
- for(const p of R.pj){p.life-=dt;if(p.t==='peel'){for(const c of R.cars){if(c!==p.src||p.life<22){if(Math.abs(c.dist-p.z)<260&&Math.abs(c.x-p.x)<.3&&c.spin<=0){p.life=0;rcHit(c,p.src,'peel')}}}continue}
+ for(const p of R.pj){p.life-=dt;if(p.t==='peel'){for(const c of R.cars){if(c.remote)continue;if(c!==p.src||p.life<22){if(Math.abs(c.dist-p.z)<260&&Math.abs(c.x-p.x)<.3&&c.spin<=0){p.life=0;if(R.mp)rcNetSend({e:'pk',id:p.id});rcHit(c,p.src,'peel')}}}continue}
   let tgx=null;if(p.t==='rocket'&&p.tg&&p.tg.dist>p.z-400){tgx=p.tg.x}else if(p.t==='gun'){const n=R.cars.filter(q=>q!==p.src&&q.dist>p.z&&q.dist<p.z+5500).sort((a,b)=>a.dist-b.dist)[0];if(n&&Math.abs(n.x-p.x)<.7)tgx=n.x}
   if(tgx!=null)p.x+=Math.max(-1,Math.min(1,(tgx-p.x)*4))*dt*(p.t==='rocket'?3:2.2);
   const z0=p.z;p.z+=p.v*dt;if(p.t==='rocket'&&p.tg)p.v=Math.max(p.v,p.tg.speed*1.6+4000);
-  for(const c of R.cars){if(c===p.src||c.fin&&0)continue;if(c.dist>=z0-300&&c.dist<=p.z+300&&Math.abs(c.x-p.x)<(p.t==='rocket'?.5:.34)){p.life=0;rcHit(c,p.src,p.t);break}}}
+  for(const c of R.cars){if(c===p.src||c.fin&&0)continue;if(c.dist>=z0-300&&c.dist<=p.z+300&&Math.abs(c.x-p.x)<(p.t==='rocket'?.5:.34)){p.life=0;if(!c.remote)rcHit(c,p.src,p.t);break}}}
  R.pj=R.pj.filter(p=>p.life>0&&p.z<R.me.dist+RC_DRAW*RC_SL+4000&&p.z>R.me.dist-3000);
  rcRank();
  const me=R.me;R.pos=(((me.dist+RC_ST)%tk.len)+tk.len)%tk.len;R.x=me.x;R.bgx+=-rcSegAt(me.dist).cv*(me.speed/RC_MAX)*dt*40;
- if(R.ph==='fin'){R.endT-=dt;if(R.endT<=0)rcEnd()}
+ if(R.ph==='fin'){R.endT-=dt;if(R.endT<=0)rcEnd()}rcMpTick(dt);
  if(R.ph==='race'&&R.t>300&&!R.fin){me.fin=R.clock;R.order.push(me);rcEnd()}
  if(R.eng){try{R.eng.o.frequency.value=55+me.speed/RC_MAX*(me.boost>0?210:150);R.eng.g.gain.value=R.ph==='race'||R.ph==='fin'?.018+me.speed/RC_MAX*.016:.0}catch(e){}}
 }
@@ -3437,7 +3449,7 @@ function rcRender(){const cv=$('#rcCv');if(!cv)return;const g=cv.getContext('2d'
     if(clip!=null&&clip<sy){const ch=Math.max(0,sy-clip);if(ch<dH){g.beginPath();g.rect(cx2-dW,0,dW*2,sy-ch);g.clip();g.drawImage(img,cx2-dW/2,sy-dH,dW,dH)}}else g.drawImage(img,cx2-dW/2,sy-dH,dW,dH);
     if(c.shield>0){g.globalAlpha=.35;g.fillStyle='#3ddcff';g.beginPath();g.ellipse(cx2,sy-dH*.5,dW*.6,dH*.62,0,0,7);g.fill();g.globalAlpha=1}
     if(c.boost>0||c.speed>RC_MAX*.2){const fl=c.boost>0?1.6:.7;g.fillStyle=c.boost>0?'#7dffb0':'#ffb02e';g.globalAlpha=.85;g.beginPath();g.ellipse(cx2,sy-dH*.1,dW*.08*fl,dH*.1*fl*(.8+Math.random()*.4),0,0,7);g.fill();g.globalAlpha=1}
-    g.restore();if(R.ph!=='demo'){const lab=c.rk+1;g.font='bold '+Math.max(10,Math.round(dW*.2))+'px '+FONT}}
+    g.restore();if(R.mp&&dW>24){rcT(g,c.n.slice(0,12),cx2,sy-dH-4,Math.max(11,dW*.17),'#fff','center',.2)}}
    else if(o.p){const p=o.p,k=rcScSpr(p.t==='peel'?'peel':p.t==='rocket'?'rkt':'shot').c;rcSpr(g,k,p.t==='peel'?90:p.t==='rocket'?70:50,p.x,p1.sc,sx,sy,sw,clip,W,-sw*(p.t==='peel'?0:.18))}}}
  /* xe người chơi */
  const cs=rcCarSpr(me.kind,me.hc).c,pw=Math.min(W*.34,H*.62)*(me.tiny>0?.6:1),ph=pw*cs.height/cs.width,steer=(R.k.r-R.k.l),spd=me.speed/RC_MAX;
@@ -3459,7 +3471,7 @@ function rcRender(){const cv=$('#rcCv');if(!cv)return;const g=cv.getContext('2d'
 function rcDemoHud(g,W,H,u){const R=RC;g.fillStyle='rgba(0,0,0,.18)';g.fillRect(0,0,W,H)}
 function rcHud(g,W,H,u){const R=RC,me=R.me,t=R.clock,T=R.T;
  /* hạng */
- rcT(g,String(me.rk+1),W*.045,H*.17,92*u,['#ffe45c','#e8f2ff','#ffb87a','#ff9a9a','#ff9a9a'][me.rk],'left');rcT(g,'/5',W*.045+ (String(me.rk+1).length*58+10)*u,H*.17,40*u,'#fff','left');
+ rcT(g,String(me.rk+1),W*.045,H*.17,92*u,['#ffe45c','#e8f2ff','#ffb87a','#ff9a9a','#ff9a9a'][me.rk],'left');rcT(g,'/'+R.cars.length,W*.045+ (String(me.rk+1).length*58+10)*u,H*.17,40*u,'#fff','left');
  const lp=Math.max(1,Math.min(T.laps,Math.floor(me.dist/R.tk.len)+1));rcT(g,'VÒNG '+lp+'/'+T.laps,W*.045,H*.17+44*u,28*u,'#fff','left');
  const tm=R.t;rcT(g,Math.floor(tm/60)+':'+String(Math.floor(tm%60)).padStart(2,'0')+'.'+String(Math.floor(tm*10%10)),W*.045,H*.17+74*u,24*u,'#bfe8ff','left');
  /* ô vật phẩm */
@@ -3481,6 +3493,7 @@ function rcHud(g,W,H,u){const R=RC,me=R.me,t=R.clock,T=R.T;
  rcRR(g,mx-8*u,my-8*u,ms+16*u,ms+16*u,12*u,'rgba(8,4,28,.6)');g.strokeStyle='#6f7bb0';g.lineWidth=4*u;g.beginPath();pts.forEach((p,i)=>{const X=ox+(p[0]-x0)*sc,Y=oy+(p[1]-y0)*sc;i?g.lineTo(X,Y):g.moveTo(X,Y)});g.closePath();g.stroke();
  for(const c of [...R.cars].reverse()){const q=(((c.dist+RC_ST)%R.tk.len)+R.tk.len)%R.tk.len/R.tk.len,pt=pts[Math.min(pts.length-1,Math.floor(q*pts.length))];g.fillStyle=c.human?'#ffe45c':c.hc==='#ffffff'?'#e0e0e0':c.hc;g.beginPath();g.arc(ox+(pt[0]-x0)*sc,oy+(pt[1]-y0)*sc,(c.human?7:5)*u,0,7);g.fill();g.strokeStyle='#05030a';g.lineWidth=2*u;g.stroke()}
  R.cars.forEach((c,i)=>{const yy=my+ms+34*u+i*26*u;rcT(g,(i+1)+'. '+c.n.slice(0,16),W-14*u,yy,19*u,c.human?'#ffe45c':'#fff','right',.16)});
+ if(R.mp)rcT(g,'ONLINE · '+(RCN.ping?'ping '+RCN.ping+' ms':'đo ping…'),W-14*u,H-14*u,16*u,'#7dffb0','right');
  /* thông báo */
  R.msgs.forEach((m,i)=>{g.globalAlpha=Math.min(1,m.a);rcT(g,m.t,W/2,H*.3+i*34*u,28*u,m.col);g.globalAlpha=1});
  /* đếm ngược */
@@ -3496,10 +3509,10 @@ function rcOpen(){if(!S||mode!=='world'||P.hidden||P.boat||P.mount||P.dance||mod
  const vl=rcVehList(),A=avSt(),cur=vl.find(v=>v.id===A.cur)||vl.slice().sort((a,b)=>rcStats(b).top-rcStats(a).top)[0];let L=1;for(let i=1;i<=5;i++)if(rcUnl(i))L=i;
  RC={ph:'demo',veh:cur,k:{l:0,r:0,b:0},sel:L,raf:0,clock:0,last:performance.now(),menu:true};
  $('#rcOv').hidden=false;keys={};$('#rcMenu').hidden=false;$('#rcEnd').hidden=true;$('#rcPause').hidden=true;$('#rcPad').hidden=true;
- rcSetup(L,true);rcMenuDom();requestAnimationFrame(rcSize);RC.raf=requestAnimationFrame(rcFrame)}
+ rcSetup(L,true);rcMenuDom();rcView(0);requestAnimationFrame(rcSize);RC.raf=requestAnimationFrame(rcFrame)}
 function rcSize(){if(!RC)return;const cv=$('#rcCv'),r=cv.getBoundingClientRect(),d=Math.min(1.5,window.devicePixelRatio||1);cv.width=Math.max(320,Math.round(r.width*d));cv.height=Math.max(240,Math.round(r.height*d))}
 window.addEventListener('resize',()=>{if(RC)rcSize()});
-function rcMenuDom(){const R=RC;let h='';RC_TR.forEach(T=>{const un=rcUnl(T.id),on=R.sel===T.id;h+=`<button class="rctk${on?' on':''}${un?'':' lk'}" data-rt="${T.id}"><b>LV ${T.id}</b><span>${T.n}</span><small>${un?'Thưởng hạng 1: '+VND(T.rew):'🔒 Về top 3 ở LV '+(T.id-1)+' để mở'}</small></button>`});$('#rcTracks').innerHTML=h;
+function rcMenuDom(){const R=RC;let h='';rcSumDom();RC_TR.forEach(T=>{const un=rcUnl(T.id),on=R.sel===T.id;h+=`<button class="rctk${on?' on':''}${un?'':' lk'}" data-rt="${T.id}"><b>LV ${T.id}</b><span>${T.n}</span><small>${un?'Thưởng hạng 1: '+VND(T.rew):'🔒 Về top 3 ở LV '+(T.id-1)+' để mở'}</small></button>`});$('#rcTracks').innerHTML=h;
  h='';rcVehList(1).forEach(v=>{const st=rcStats(v),ok=v.own||v.id==='loan',bar=(x,m)=>`<i><u style="width:${Math.round(Math.max(.08,Math.min(1,x/m))*100)}%"></u></i>`;h+=`<button class="rcvh${R.veh.id===v.id?' on':''}${ok?'':' lk'}" data-rv="${v.id}"><canvas width="110" height="80" data-k="${v.k}"></canvas><b>${esc(v.n)}</b><em>CẤP ${v.id==='loan'?1:v.lv}${v.id==='loan'?'':' · '+kfmt(v.p)}</em><div class="rcst"><span>Tốc độ</span>${bar(st.top-.8,.25)}<span>Tăng tốc</span>${bar(st.acc-.6,.8)}<span>Bẻ lái</span>${bar(st.hd-.9,.4)}<span>Vững</span>${bar(1.3-st.tf,.6)}</div><small>${ok?(v.gun?'Có súng khởi đầu':v.id==='loan'?'Xe mượn miễn phí':'Đang sở hữu'):'🔒 Chưa sở hữu · mua ở Vinh Phát'}</small></button>`});$('#rcCars').innerHTML=h;
  document.querySelectorAll('#rcCars canvas').forEach(c=>{const g=c.getContext('2d');g.drawImage(rcCarSpr(c.dataset.k,'#ff5a5a').c,0,0,110,80)});const _o=document.querySelector('#rcCars .on');if(_o&&_o.scrollIntoView)try{_o.scrollIntoView({block:'nearest',inline:'center'})}catch(e){}
  const T=RC_TR[R.sel-1];$('#rcInfo').innerHTML=`<div class="rcrw"><b>${T.n}</b> · ${T.laps} vòng · 5 xe (bạn + 4 bot)</div><div class="rcrw">Thưởng theo hạng: <span>🥇 ${VND(T.rew)}</span> <span>🥈 ${VND(round50k(T.rew*.5))}</span> <span>🥉 ${VND(round50k(T.rew*.25))}</span> <span>4: ${VND(round50k(T.rew*.1))}</span> <span>5: 0₫</span></div><div class="rcrw">Phí vào ${VND(RC_FEE)} · tốn ${RC_EN}% năng lượng${R.veh.id==='loan'?' · đang dùng xe mượn (chậm hơn một chút)':' · xe '+(R.veh.p?'giá '+kfmt(R.veh.p):'')+' → tốc độ tối đa '+Math.round(rcStats(R.veh).top*280)+' km/h'}${R.veh.gun?' · xe có súng: xuất phát cầm sẵn Súng Ba Hoa':''}</div>`;
@@ -3510,31 +3523,129 @@ function rcStart(){if(!RC||!RC.menu||!rcUnl(RC.sel))return;if(P.money<RC_FEE){to
  P.money-=RC_FEE;P.energy-=RC_EN;try{sysLog('Đường Đua F88 LV'+RC.sel+' · phí -'+VND(RC_FEE))}catch(e){}if(NET.on)saveState();
  RC.menu=false;RC.paid=true;RC.ended=false;$('#rcMenu').hidden=true;$('#rcEnd').hidden=true;$('#rcPad').hidden=false;$('#rcOv').classList.add('racing');requestAnimationFrame(rcSize);rcSetup(RC.sel,false);RC.paid=true;RC.ended=false;RC.lastCd=0;rcEng(true)}
 function rcEng(on){const R=RC;if(!R)return;try{if(R.eng){R.eng.o.stop();R.eng=null}if(on&&audio){const o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.value=60;g.gain.value=0;o.connect(g);g.connect(audio.destination);o.start();R.eng={o,g}}}catch(e){R.eng=null}}
-function rcEnd(){const R=RC;if(!R||R.ended)return;R.ended=true;const T=R.T,me=R.me,pl=rcRank()+1,prize=round50k(T.rew*RC_PAY[pl-1]);
- if(prize>0){P.money+=prize;try{coin();setTimeout(coin,160)}catch(e){}}if(pl<=3)track('rc_u'+R.L);if(pl===1)track('rc_w'+R.L);
- alog('mini','race',{w:prize,l:RC_FEE,v:Math.round(prize/1000),x:'LV'+R.L+' hạng '+pl});try{sysLog('Đường Đua F88 LV'+R.L+' hạng '+pl+(prize?' +'+VND(prize):''))}catch(e){}if(NET.on)saveState();
- R.ph='end';R.menu=false;rcEng(false);$('#rcPad').hidden=true;$('#rcOv').classList.remove('racing');requestAnimationFrame(rcSize);
- const nu=pl<=3&&R.L<5&&!((P.buys||{})['rc_u'+R.L]>1)?'Đã mở khoá LV '+(R.L+1)+'!':'';
+function rcEnd(){const R=RC;if(!R||R.ended)return;R.ended=true;const T=R.T,me=R.me,pl=rcRank()+1,nP=R.cars.length,prize=R.mp?rcPrizeMp(nP,pl,nP):round50k(T.rew*RC_PAY[pl-1]);
+ if(prize>0){P.money+=prize;try{coin();setTimeout(coin,160)}catch(e){}}if(pl<=3&&!R.mp)track('rc_u'+R.L);if(pl===1)track('rc_w'+R.L);
+ alog('mini','race',{w:prize,l:RC_FEE,v:Math.round(prize/1000),x:(R.mp?'ONLINE '+nP+' người ':'')+'LV'+R.L+' hạng '+pl});try{sysLog('Đường Đua F88 LV'+R.L+' hạng '+pl+(prize?' +'+VND(prize):''))}catch(e){}if(NET.on)saveState();
+ R.ph='end';R.menu=false;if(R.mp){rcNetSend({e:'f',t:me.fin||R.t});}rcEng(false);$('#rcPad').hidden=true;$('#rcOv').classList.remove('racing');requestAnimationFrame(rcSize);
+ const nu=!R.mp&&pl<=3&&R.L<5&&!((P.buys||{})['rc_u'+R.L]>1)?'Đã mở khoá LV '+(R.L+1)+'!':'';
  $('#rcEndT').textContent=['VÔ ĐỊCH!','HẠNG NHÌ!','HẠNG BA!','HẠNG TƯ','HẠNG CHÓT'][pl-1];$('#rcEndT').dataset.k=pl;
- $('#rcEndP').textContent=prize>0?'Thưởng '+VND(prize)+' (đã trừ phí '+VND(RC_FEE)+')':'Không có thưởng. Phí vào '+VND(RC_FEE)+' đã mất.';$('#rcEndU').textContent=nu;
+ $('#rcEndP').textContent=prize>0?'Thưởng '+VND(prize)+(R.mp?' từ quỹ '+nP+' người':'')+' (đã trừ phí '+VND(RC_FEE)+')':'Không có thưởng. Phí vào '+VND(RC_FEE)+' đã mất.';$('#rcEndU').textContent=nu;
  $('#rcEndL').innerHTML=R.cars.map((c,i)=>`<div class="${c.human?'me':''}"><i>${i+1}</i><span>${esc(c.n)}</span><b>${c.fin?(Math.floor(c.fin/60)+':'+String(Math.floor(c.fin%60)).padStart(2,'0')):'—'}</b></div>`).join('');
  $('#rcEnd').hidden=false}
 function rcClose(){const R=RC;if(!R)return;if(R.paid&&!R.ended&&(R.ph==='count'||R.ph==='race'||R.ph==='fin')){R.ended=true;alog('mini','race',{w:0,l:RC_FEE,v:0,x:'LV'+R.L+' bỏ cuộc'});toast('Bạn bỏ cuộc giữa chừng nên mất phí vào.')}
- cancelAnimationFrame(R.raf);rcEng(false);$('#rcOv').classList.remove('racing');$('#rcOv').hidden=true;RC=null;keys={};if(S&&P){NET.lastPos='';P.path=[];try{requestAnimationFrame(()=>{window.dispatchEvent(new Event('resize'))})}catch(e){}}if(NET.on)saveState()}
+ cancelAnimationFrame(R.raf);rcEng(false);try{if(R.mp&&R.paid&&!R.ended)rcNetSend({e:'quit'});rcLeaveRoom();rcLobbyOff()}catch(e){}$('#rcOv').classList.remove('racing');$('#rcOv').hidden=true;RC=null;keys={};if(S&&P){NET.lastPos='';P.path=[];try{requestAnimationFrame(()=>{window.dispatchEvent(new Event('resize'))})}catch(e){}}if(NET.on)saveState()}
 function rcFrame(ts){const R=RC;if(!R)return;const dt=Math.min(.05,(ts-R.last)/1000);R.last=ts;try{if(!R.pause){rcUpdate(dt);if(R.ph==='end'||R.ph==='demo'||R.ph==='count'||R.ph==='race'||R.ph==='fin')rcRender()}else rcRender()}catch(e){console.error('rc',e);errReport('race',e&&e.message,e&&e.stack)}R.raf=requestAnimationFrame(rcFrame)}
 /* ---- phím & nút ---- */
 window.addEventListener('keydown',e=>{if(!RC)return;const k=e.key,K=RC.k;let h=true;
- if(k==='Escape'){if(RC.menu||RC.ph==='end')rcClose();else if(RC.ph==='race'||RC.ph==='count'||RC.ph==='fin'){RC.pause=!RC.pause;$('#rcPause').hidden=!RC.pause}}
- else if(RC.menu||RC.ph==='end'){h=(k==='Enter'&&RC.menu)?(rcStart(),true):false;if(!h)return}
+ if(k==='Escape'){if(RC.menu){if(RC.view){rcView(0)}else rcClose()}else if(RC.ph==='end')rcClose();else if(RC.ph==='race'||RC.ph==='count'||RC.ph==='fin')rcPauseT()}
+ else if(RC.menu||RC.ph==='end'){h=(k==='Enter'&&RC.menu&&!RC.view)?(rcStart(),true):false;if(!h)return}
  else if(k==='ArrowLeft'||k==='a'||k==='A')K.l=1;else if(k==='ArrowRight'||k==='d'||k==='D')K.r=1;else if(k==='ArrowDown'||k==='s'||k==='S')K.b=1;
  else if(k===' '||k==='Enter'||k==='e'||k==='E'||k==='f'||k==='F'||k==='ArrowUp'||k==='w'||k==='W'){if(!e.repeat&&RC.ph==='race'&&!RC.pause)rcUse(RC.me)}else h=false;
  if(h){e.preventDefault();e.stopImmediatePropagation()}},true);
 window.addEventListener('keyup',e=>{if(!RC)return;const k=e.key,K=RC.k;if(k==='ArrowLeft'||k==='a'||k==='A')K.l=0;else if(k==='ArrowRight'||k==='d'||k==='D')K.r=0;else if(k==='ArrowDown'||k==='s'||k==='S')K.b=0;else return;e.stopImmediatePropagation()},true);
 window.addEventListener('blur',()=>{if(RC)RC.k={l:0,r:0,b:0}});
 document.querySelectorAll('#rcPad [data-rc]').forEach(b=>{const a=b.dataset.rc,set=v=>{if(!RC)return;if(a==='use'){if(v&&RC.ph==='race'&&!RC.pause)rcUse(RC.me)}else RC.k[a==='left'?'l':a==='right'?'r':'b']=v};b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture&&b.setPointerCapture(e.pointerId);set(1)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,()=>set(0)))});
-$('#rcX').onclick=()=>{if(RC&&(RC.ph==='race'||RC.ph==='count'||RC.ph==='fin')){RC.pause=true;$('#rcPause').hidden=false}else rcClose()};
-$('#rcQuit').onclick=rcClose;$('#rcGo').onclick=rcStart;$('#rcResume').onclick=()=>{if(RC){RC.pause=false;$('#rcPause').hidden=true}};$('#rcLeave').onclick=()=>{$('#rcPause').hidden=true;rcClose()};
-$('#rcAgain').onclick=()=>{if(!RC)return;$('#rcOv').classList.remove('racing');requestAnimationFrame(rcSize);RC.menu=true;RC.ph='demo';$('#rcEnd').hidden=true;$('#rcMenu').hidden=false;$('#rcPad').hidden=true;const L=Math.max(RC.sel,1);let top=1;for(let i=1;i<=5;i++)if(rcUnl(i))top=i;RC.sel=Math.min(L+(RC.L===L&&(P.buys['rc_u'+L]|0)>0&&RC.me.rk<3&&L<5?1:0),top);rcSetup(RC.sel,true);rcMenuDom()};$('#rcLeave2').onclick=rcClose;
+$('#rcX').onclick=()=>{if(RC&&(RC.ph==='race'||RC.ph==='count'||RC.ph==='fin'))rcPauseT(1);else rcClose()};
+$('#rcQuit').onclick=rcClose;$('#rcGo').onclick=rcStart;$('#rcResume').onclick=()=>{if(RC)rcPauseT(0)};$('#rcLeave').onclick=()=>{$('#rcPause').hidden=true;rcClose()};
+$('#rcAgain').onclick=()=>{if(!RC)return;try{rcLeaveRoom();rcLobbyOff()}catch(e){}RC.mp=null;$('#rcOv').classList.remove('racing');requestAnimationFrame(rcSize);RC.menu=true;RC.ph='demo';$('#rcEnd').hidden=true;$('#rcMenu').hidden=false;$('#rcPad').hidden=true;const L=Math.max(RC.sel,1);let top=1;for(let i=1;i<=5;i++)if(rcUnl(i))top=i;RC.sel=Math.min(L+(RC.L===L&&(P.buys['rc_u'+L]|0)>0&&RC.me.rk<3&&L<5?1:0),top);rcSetup(RC.sel,true);rcMenuDom();rcView(0)};$('#rcLeave2').onclick=rcClose;
+/* ================= ĐƯỜNG ĐUA F88 · PHASE 2: ĐUA ONLINE 2–5 NGƯỜI =================
+   Dùng Supabase Realtime (WebSocket · Broadcast + Presence) trên một kết nối riêng, không đi qua
+   lớp đồng bộ 1,5 giây. Mỗi máy tự lái xe mình (không có độ trễ khi bấm), gửi trạng thái ~14 lần/giây,
+   máy khác nội suy/ngoại suy. Vật phẩm (đạn, tên lửa, vỏ chuối, sấm) gửi dạng sự kiện, nạn nhân tự
+   phát hiện trúng đòn trên máy mình. Không cần SQL. */
+const RC_NETHZ=14,RC_MAXP=5,RC_AUTO=14;
+let RCN={rooms:[],st:'idle',ping:0};
+const rcSrv=()=>Date.now()+((typeof NET!=='undefined'&&NET.on&&NET.offset)||0);
+const rcPid=()=>NET.uid.slice(0,4)+Math.random().toString(36).slice(2,7);
+function rcCl(){if(RCN.cl)return RCN.cl;const c=window.VML_CONFIG&&VML_CONFIG.supabase;if(!c||!c.url||!window.supabase||!NET.on||!NET.uid)return null;try{RCN.cl=window.supabase.createClient(c.url,c.anonKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false,storageKey:'vml-rc-rt'},realtime:{params:{eventsPerSecond:40}}})}catch(e){console.warn('rc client',e);RCN.cl=null}return RCN.cl}
+/* sảnh: ai đang mở phòng */
+function rcLobby(){const cl=rcCl();if(!cl){RCN.st='off';rcOnDom();return}if(RCN.lob)return;RCN.st='conn';
+ const ch=cl.channel('f88-lobby',{config:{presence:{key:NET.uid}}});RCN.lob=ch;
+ ch.on('presence',{event:'sync'},()=>{const s=ch.presenceState(),l=[];Object.keys(s).forEach(k=>(s[k]||[]).forEach(m=>{if(m&&m.rid&&m.st==='open')l.push(m)}));RCN.rooms=l;rcOnDom()});
+ ch.subscribe(st=>{if(st==='SUBSCRIBED'){RCN.st='ok'}else if(st==='CHANNEL_ERROR'||st==='TIMED_OUT'){RCN.st='err'}else if(st==='CLOSED'&&RCN.st==='conn')RCN.st='err';rcOnDom()})}
+function rcLobbyOff(){try{if(RCN.lob){RCN.lob.untrack&&RCN.lob.untrack();RCN.cl.removeChannel(RCN.lob)}}catch(e){}RCN.lob=null;RCN.rooms=[];RCN.st='idle'}
+/* phòng */
+function rcRoster(){const R=RCN.room;if(!R)return[];const s=R.presenceState(),l=[];Object.keys(s).forEach(k=>{const m=(s[k]||[])[0];if(m)l.push({uid:k,n:m.n,k:m.k,hc:m.hc,sp:m.sp})});l.sort((a,b)=>a.uid<b.uid?-1:1);return l}
+function rcJoin(rid,lv,make){const cl=rcCl();if(!cl||RCN.room)return;if(P.money<RC_FEE){toast('Bạn chưa đủ '+VND(RC_FEE)+' phí vào.');return}if(P.energy<Math.max(RC_EN,CFG.PLAY_MIN||0)){toast('Năng lượng quá thấp để đua.');return}
+ RC.sel=lv;RCN.rid=rid;RCN.lv=lv;RCN.mk=!!make;RCN.joinAt=Date.now();RCN.began=false;
+ const ch=cl.channel('f88-r-'+rid,{config:{broadcast:{self:false,ack:false},presence:{key:NET.uid}}});RCN.room=ch;
+ ch.on('presence',{event:'sync'},()=>{rcRoomSync()});
+ ch.on('broadcast',{event:'m'},({payload})=>{try{rcRecv(payload)}catch(e){console.warn('rc recv',e)}});
+ ch.subscribe(async st=>{if(st==='SUBSCRIBED'){const v=RC.veh,ST=rcStats(v);await ch.track({n:(P.name||'Bạn').slice(0,16),k:v.k,hc:RC_HC[Math.abs(hashStr(NET.uid))%RC_HC.length],sp:ST.top});rcRoomSync()}else if(st==='CHANNEL_ERROR'||st==='TIMED_OUT'){toast('Mất kết nối phòng đua.');rcLeaveRoom()}})}
+const hashStr=s=>{let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return h};
+function rcRoomSync(){const R=RCN;if(!R.room)return;const ro=rcRoster(),host=ro[0]&&ro[0].uid===NET.uid;R.host=host;R.n=ro.length;
+ if(R.lob&&!R.began){try{if(host)R.lob.track({rid:R.rid,host:(P.name||'?').slice(0,14),lv:R.lv,n:ro.length,st:ro.length>=RC_MAXP?'full':'open'});else R.lob.untrack()}catch(e){}}
+ if(RC&&RC.mp&&RC.ph!=='end'){RC.cars.forEach(c=>{if(c.remote&&!ro.find(q=>q.uid===c.uid)&&!c.fin)c.gone=true})}
+ rcOnDom()}
+function rcLeaveRoom(refund){const R=RCN;try{if(R.room){R.room.untrack&&R.room.untrack();R.cl.removeChannel(R.room)}}catch(e){}R.room=null;R.host=false;R.began=false;try{if(R.lob)R.lob.untrack()}catch(e){}if(RC&&RC.menu)rcOnDom()}
+function rcNetSend(m){const R=RCN;if(!R.room)return;m.u=NET.uid;try{R.room.send({type:'broadcast',event:'m',payload:m})}catch(e){}}
+/* khởi động trận (host bấm hoặc tự động) */
+function rcHostStart(){const R=RCN;if(!R.room||!R.host||R.began)return;const ro=rcRoster();if(ro.length<2){toast('Cần ít nhất 2 người để bắt đầu.');return}
+ const at=rcSrv()+4200,ids=ro.map(q=>q.uid);R.began=true;rcNetSend({e:'start',at,lv:R.lv,ids});rcMpBegin(R.lv,ids,at)}
+function rcMpBegin(lv,ids,at){const R=RCN;if(!RC||!RC.menu&&RC.ph!=='demo'&&RC.ph!=='end')return;R.began=true;
+ if(P.money<RC_FEE||P.energy<Math.max(RC_EN,CFG.PLAY_MIN||0)){rcNetSend({e:'quit'});toast('Không đủ tiền hoặc năng lượng nên bạn bị loại khỏi trận.');rcLeaveRoom();return}
+ P.money-=RC_FEE;P.energy-=RC_EN;try{sysLog('Đường Đua F88 ONLINE LV'+lv+' · phí -'+VND(RC_FEE))}catch(e){}if(NET.on)saveState();
+ const ro=rcRoster(),info={};ro.forEach(q=>info[q.uid]=q);
+ try{R.lob&&R.lob.untrack()}catch(e){}
+ RC.menu=false;RC.paid=true;RC.ended=false;RC.sel=lv;$('#rcMenu').hidden=true;$('#rcEnd').hidden=true;$('#rcPad').hidden=false;$('#rcOv').classList.add('racing');requestAnimationFrame(rcSize);
+ rcSetup(lv,false,{ids,info,at});RC.paid=true;RC.ended=false;RC.lastCd=0;rcEng(true)}
+/* nhận gói tin */
+function rcRecv(m){const R=RC;if(!m||m.u===NET.uid)return;
+ if(m.e==='start'){if(!RC||!RC.menu||RCN.began)return;RCN.began=true;rcMpBegin(m.lv,m.ids,m.at);return}
+ if(m.e==='p'){rcNetSend({e:'q',t:m.t,to:m.u});return}
+ if(m.e==='q'){if(m.to===NET.uid){const p=Date.now()-m.t;RCN.ping=RCN.ping?Math.round(RCN.ping*.6+p*.4):p}return}
+ if(!R||!R.mp)return;const c=R.cars.find(q=>q.uid===m.u);if(!c)return;c.lastRx=performance.now();
+ if(m.e==='s'){c.tg={d:m.d,x:m.x,v:m.v,at:performance.now()};const f=m.f|0;c.boost=f&1?1:0;c.star=f&2?1:0;c.shield=f&4?1:0;c.tiny=f&8?1:0;c.item=f&16?'?':null;c.spin=m.sp||0;if(!c.got){c.got=1;c.dist=m.d;c.x=m.x}}
+ else if(m.e==='f'){if(!c.fin){c.fin=m.t;c.tg&&(c.tg.v=Math.min(c.tg.v,RC_MAX*.55))}}
+ else if(m.e==='quit'){c.gone=true}
+ else if(m.e==='h'){if(m.to===NET.uid)rcMsg('Trúng '+m.by+'!','#7dffb0')}
+ else if(m.e==='pk'){R.pj=R.pj.filter(p=>p.id!==m.id)}
+ else if(m.e==='x'){if(m.t==='thunder'){R.flash=Math.max(R.flash,.6);R.strike=.5;rcSnd('thunder');const me=R.me;if(me.dist>c.dist){if(me.shield>0){me.shield=0;me.shP=.5}else if(me.star<=0){me.spin=.7*(me.tf||1);me.speed*=.4;me.tiny=3;RC.shake=.6}rcMsg(c.n+' gọi sấm sét!','#ffe629')}}
+  else if(m.t==='gun')R.pj.push({t:'gun',x:m.x,z:m.z,v:RC_MAX*3.4,src:c,life:1.4,id:m.id});
+  else if(m.t==='rocket')R.pj.push({t:'rocket',x:m.x,z:m.z,v:RC_MAX*2.1,src:c,tg:R.cars.find(q=>q.uid===m.tg),life:7,id:m.id});
+  else if(m.t==='peel')R.pj.push({t:'peel',x:m.x,z:m.z,v:0,src:c,life:24,id:m.id})}}
+/* xe người khác: nội suy + ngoại suy để mượt, bù trễ */
+function rcRem(c,dt){const g=c.tg;if(!g)return;const age=Math.min(.3,(performance.now()-g.at)/1000),pd=g.d+g.v*age,df=pd-c.dist;if(Math.abs(df)>9000)c.dist=pd;else c.dist+=df*Math.min(1,dt*11);c.x+=(g.x-c.x)*Math.min(1,dt*13);c.speed=g.v}
+/* mỗi khung hình: gửi trạng thái, kiểm tra kết thúc */
+function rcMpTick(dt){const R=RC;if(!R.mp||!RCN.room||R.ended)return;const m=R.me;
+ R.nT=(R.nT||0)-dt;if(R.nT<=0){R.nT=1/RC_NETHZ;rcNetSend({e:'s',d:Math.round(m.dist),x:+m.x.toFixed(2),v:Math.round(m.speed),f:(m.boost>0?1:0)|(m.star>0?2:0)|(m.shield>0?4:0)|(m.tiny>0?8:0)|(m.item?16:0),sp:+Math.max(0,m.spin).toFixed(2)})}
+ R.pgT=(R.pgT||0)-dt;if(R.pgT<=0){R.pgT=2;rcNetSend({e:'p',t:Date.now()})}
+ const now=performance.now();R.cars.forEach(c=>{if(c.remote&&!c.gone&&!c.fin&&c.lastRx&&now-c.lastRx>7000)c.gone=true});
+ if(m.fin&&R.ph==='fin'){const al=R.cars.filter(c=>!c.gone&&!c.fin);const first=Math.min(...R.cars.filter(c=>c.fin).map(c=>c.fin));if(!al.length||R.t-first>25){if(!R.endAt)R.endAt=R.clock+1.2;else if(R.clock>=R.endAt)rcEnd()}}
+ else if(R.ph==='race'&&R.cars.filter(c=>c.remote&&!c.gone).length===0&&R.t>5){/* mọi người khác đã rời */ if(!R.alone)R.alone=R.clock}}
+/* chia thưởng: tiền phí gom thành quỹ, F88 giữ 10% */
+const RC_SPLIT={2:[1,0],3:[.7,.3,0],4:[.6,.3,.1,0],5:[.5,.3,.15,.05,0]};
+const rcPrizeMp=(n,pl,paid)=>{const pool=RC_FEE*paid*.9,sp=RC_SPLIT[Math.max(2,Math.min(5,n))]||[1];return Math.round(pool*(sp[pl-1]||0)/1000)*1000};
+/* giao diện sảnh/phòng */
+function rcOnDom(){const el=$('#rcV2');if(!el||!RC||!RC.menu||$('#rcV2').hidden)return;const R=RCN;let h='';
+ if(R.st==='off'){h=`<p class="rcwarn">Chưa kết nối được máy chủ nên chưa đua online được.</p><button class="btn ghost rcbig" data-a="back">QUAY LẠI</button>`}
+ else if(R.room){const ro=rcRoster(),T=RC_TR[R.lv-1];h=`<div class="rch">PHÒNG ĐUA · ${esc(T.n)}</div><div class="rcsub">${ro.length}/${RC_MAXP} người · quỹ thưởng ${VND(Math.round(RC_FEE*ro.length*.9))} · phí vào ${VND(RC_FEE)}</div><div id="rcRoster">`;
+  for(let i=0;i<RC_MAXP;i++){const q=ro[i];h+=q?`<div class="rcpl${q.uid===NET.uid?' me':''}"><canvas width="66" height="48" data-k="${q.k}" data-h="${q.hc}"></canvas><b>${esc(q.n)}${i===0?' · chủ phòng':''}</b><small>${q.uid===NET.uid?'Bạn':'Đã sẵn sàng'}</small></div>`:`<div class="rcpl empty"><b>Đang chờ người chơi…</b></div>`}
+  h+=`</div>`;const left=Math.max(0,RC_AUTO-Math.floor((Date.now()-(R.lastJoin||R.joinAt))/1000));
+  h+=ro.length<2?`<p class="rcwarn">Chờ thêm ít nhất 1 người. Gửi cho đồng nghiệp: vào Đường Đua F88 → ĐUA ONLINE → Ghép trận nhanh.</p>`:R.host?`<p class="rcsub">Tự động xuất phát sau ${ro.length>=RC_MAXP?0:left} giây hoặc khi đủ ${RC_MAXP} người.</p>`:`<p class="rcsub">Đợi chủ phòng xuất phát…</p>`;
+  h+=`<div class="rcrow">${R.host?`<button class="btn ok" data-a="startmp"${ro.length<2?' disabled':''}>XUẤT PHÁT NGAY</button>`:''}<button class="btn ghost" data-a="leave">RỜI PHÒNG</button></div>`}
+ else{const T=RC_TR[RC.sel-1];h=`<div class="rch">ĐUA ONLINE · 2–5 NGƯỜI</div><p class="rcsub">Phí ${VND(RC_FEE)} gom thành quỹ thưởng, người về nhất ăn nhiều nhất. Không có bot, toàn người thật.</p>`+
+  (R.st==='ok'?'':`<p class="rcwarn">Đang kết nối máy chủ đua…</p>`)+
+  `<button class="btn ok rcbig" data-a="quick"${R.st==='ok'?'':' disabled'}>GHÉP TRẬN NHANH</button><div class="rcsub">Đường đua: ${esc(T.n)} (đổi ở mục "Đổi xe / đường đua")</div>`;
+  if(R.rooms.length){h+=`<div class="rch">PHÒNG ĐANG MỞ</div>`;R.rooms.forEach(r=>{h+=`<button class="rcrm" data-a="join" data-r="${esc(r.rid)}" data-l="${r.lv|0}"><b>${esc(r.host)}</b><span>LV${r.lv|0} · ${esc((RC_TR[(r.lv|0)-1]||{}).n||'')}</span><em>${r.n}/${RC_MAXP}</em></button>`})}
+  else h+=`<p class="rcsub">Chưa có phòng nào đang mở. Bấm "Ghép trận nhanh" để mở phòng và chờ người khác vào.</p>`;
+  h+=`<button class="btn rcbig" data-a="make"${R.st==='ok'?'':' disabled'}>TẠO PHÒNG RIÊNG</button><button class="btn ghost" data-a="back">QUAY LẠI</button>`}
+ h+=`<p class="rcnet">${R.st==='ok'||R.room?'Kết nối trực tiếp (WebSocket)'+(R.ping?' · ping '+R.ping+' ms':''):''}</p>`;
+ el.innerHTML=h;el.querySelectorAll('canvas[data-k]').forEach(c=>{const g=c.getContext('2d');g.drawImage(rcCarSpr(c.dataset.k,c.dataset.h||'#ff5a5a').c,0,0,66,48)})}
+document.addEventListener('click',e=>{const b=e.target.closest('#rcV2 [data-a]');if(!b||!RC)return;const a=b.dataset.a,R=RCN;
+ if(a==='back'){if(R.room)rcLeaveRoom();rcLobbyOff();rcView(0)}
+ else if(a==='leave'){rcLeaveRoom();rcOnDom()}
+ else if(a==='quick'){const L=RC.sel;if(!rcUnl(L)){toast('Hãy chọn đường đua đã mở khoá.');return}const r=R.rooms.find(q=>(q.lv|0)===L&&q.n<RC_MAXP)||R.rooms.find(q=>(q.lv|0)<=L&&rcUnl(q.lv|0)&&q.n<RC_MAXP);if(r)rcJoin(r.rid,r.lv|0,false);else rcJoin(rcPid(),L,true)}
+ else if(a==='make'){if(!rcUnl(RC.sel))return;rcJoin(rcPid(),RC.sel,true)}
+ else if(a==='join'){const L=+b.dataset.l;if(!rcUnl(L)){toast('Bạn chưa mở khoá LV '+L+' (về top 3 ở LV '+(L-1)+').');return}rcJoin(b.dataset.r,L,false)}
+ else if(a==='startmp')rcHostStart()});
+setInterval(()=>{if(!RC||!RC.menu||!RCN.room||RCN.began)return;const ro=rcRoster();if(ro.length!==RCN.lastN){RCN.lastN=ro.length;RCN.lastJoin=Date.now()}
+ if(RCN.host&&ro.length>=2&&(ro.length>=RC_MAXP||(Date.now()-(RCN.lastJoin||RCN.joinAt))/1000>=RC_AUTO))rcHostStart();rcOnDom()},1000);
+
+function rcView(n){if(!RC)return;RC.view=n;['#rcV0','#rcV1','#rcV2'].forEach((q,i)=>{$(q).hidden=i!==n});if(n!==2){try{if(RCN.room)rcLeaveRoom();rcLobbyOff()}catch(e){}}else{rcLobby();rcOnDom()}$('#rcMenu').scrollTop=0}
+function rcSumDom(){const R=RC,v=R.veh,T=RC_TR[R.sel-1];if(!$('#rcSum'))return;$('#rcSum').innerHTML=`<canvas id="rcSumC" width="110" height="80"></canvas><div><b>LV ${T.id} · ${esc(T.n)}</b><small>Xe: ${esc(v.n)}</small><small>Phí ${VND(RC_FEE)} · về nhất nhận ${VND(T.rew)}</small></div>`;const g=$('#rcSumC').getContext('2d');g.drawImage(rcCarSpr(v.k,'#ff5a5a').c,0,0,110,80)}
+function rcPauseT(on){const R=RC;if(on===undefined)on=$('#rcPause').hidden;if(!R.mp)R.pause=!!on;$('#rcPause').hidden=!on;const p=$('#rcPause p');if(p)p.textContent=R.mp?'Trận online không dừng được. Thoát giữa chừng sẽ mất phí vào.':'Thoát giữa chừng sẽ mất phí vào.'}
+$('#rcOnline').onclick=()=>{if(!NET.on){toast('Chưa kết nối máy chủ nên chưa đua online được.');return}rcView(2)};$('#rcOpt').onclick=()=>rcView(1);$('#rcBack').onclick=()=>rcView(0);
 function sgOpen(){const C=skCfg();if(!C.on){toast('Sky Bar đang đóng cửa.');return}if(!S||mode!=='world'||P.hidden||P.boat)return;
  SG={ph:'intro',sel:1,run:{total:0,n:0,counted:false,pts:0},trl:[],lv:1,t:30,score:0,combo:0,best:0,seq:[],idx:0,sp:'wait',st:0,tS:1,stL:0,cur:0,dir:1,bt:0,pause:0,hit:{P:0,W:0,C:0,M:0},fx:[],pt:[],shake:0,move:null,clock:0,last:performance.now(),idle:0,cd:0,W:300,H:300,bps:2,res:null};
  $('#skyOv').hidden=true;$('#sgOv').hidden=false;keys={};try{skSub()}catch(e){}sgIntroDom();try{sgBoardDom()}catch(e){}sgShow('intro');requestAnimationFrame(sgSize);SG.raf=requestAnimationFrame(sgFrame)}
@@ -5783,7 +5894,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z61';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z62';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
