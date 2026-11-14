@@ -853,3 +853,13 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Sửa lỗi chưa bơi được**: trước đó phải mua cả bình lặn lẫn túi ba gang mới bấm LẶN được (nút xám "CẦN MUA ĐỒ TRƯỚC"). Giờ ai cũng được **mượn đồ miễn phí**: Bình mượn của trạm (oxy 45s, sâu 30m) và Giỏ lưới nhỏ (3 ô). Mua đồ trong cửa hàng để nâng cấp (`DV_T0`, `DV_B0` trong index.html).
 - **Giao diện**: menu có màu (thẻ bình lặn xanh, túi cam, chân vịt xanh lá), nút LẶN NGAY vàng nhấp nháy, nút cửa hàng/bộ sưu tập có màu + icon, tiêu đề nhún nhảy, phông cảnh có nhiều cá hơn, thợ lặn bơi + bong bóng + tàu ngầm chạy ngang. Cửa hàng có viền màu từng mục.
 - Cập nhật bản tiếng Anh. **Không cần chạy SQL.**
+
+## z67 — Trạm Lặn Ngụp: đồ hoạ pixel-art tươi sáng + trạm nạp oxy + thú cưng
+- **Đồ hoạ viết lại hoàn toàn** (độ phân giải ×2, hậu xử lý posterize + viền đậm → pixel-art tươi sáng như Fatal Fury / Adventure Island): nước dải màu bậc thang, đáy biển có mép cỏ + răng cưa tối, chữ HUD 2 tông có viền, bảng HUD pixel, thanh oxy dạng ô.
+- **Nhiều lớp trước/sau**: núi xa, bóng cột/san hô xa, lớp giữa (parallax .7), lớp trước tối (parallax 1.45), tia nắng, đảo xa, dừa, mây, chim.
+- **Nhiều trang trí**: san hô, quạt biển, ống biển, rong biển, cỏ biển, cá ngựa, cua, sò, trai ngọc, sao biển, nhím biển, neo, bình cổ, thùng gỗ, túi vàng, cột đá, xương, nấm phát sáng, miệng núi lửa; sinh vật nền: rùa, cá đuối, cá voi xa, đàn cá nhiệt đới.
+- **Cá thời trang mới (8 loài)**: Cá Nơ Hồng, Cá Phao Bơi, Cá Bồn Cầu, Cá Cao Bồi, Cá Đầu Bếp, Cá Kính Râm, Cá Quý Ông, Cá Vương Miện.
+- Thợ lặn mặc **đúng trang phục trên bờ** (lấy từ `P.fr`), tàu ngầm có đầu nhân vật trong cửa sổ.
+- **Thú cưng hệ nước** (tối đa 3) bơi theo người chơi.
+- **5 trạm nạp oxy dưới biển**: bấm E gần trạm; giá/giây = 3000×(1+độ sâu/80); hệ thống gợi ý nạp đầy hoặc tối đa theo số tiền có; có tuỳ chọn 1/2; phí hiện trong bảng kết quả.
+- Không cần chạy SQL.

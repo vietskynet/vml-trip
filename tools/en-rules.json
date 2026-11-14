@@ -328,5 +328,12 @@
 "Oxy {1}s · sâu tối đa {2}m": "Oxygen {1}s · max depth {2}m",
 "{1} ô chứa đồ": "{1} item slots",
 "Oxy {1}s · sâu tối đa {2}m · thân tàu {3} · đèn mạnh": "Oxygen {1}s · max depth {2}m · hull {3} · strong light",
-"Oxy {1}s · sâu tối đa {2}m · thân tàu {3}": "Oxygen {1}s · max depth {2}m · hull {3}"
+"Oxy {1}s · sâu tối đa {2}m · thân tàu {3}": "Oxygen {1}s · max depth {2}m · hull {3}",
+"💡 Hệ thống gợi ý: nạp ĐẦY thêm {1}s với giá {2}.": "💡 System suggests: full refill, +{1}s for {2}.",
+"💡 Hệ thống gợi ý: ví chỉ đủ nạp thêm {1}s với giá {2}.": "💡 System suggests: your wallet only covers +{1}s for {2}.",
+"NẠP ĐẦY · +{1}s · {2}": "FULL REFILL · +{1}s · {2}",
+"NẠP TỐI ĐA · +{1}s · {2}": "MAX REFILL · +{1}s · {2}",
+"NẠP 1/2 · +{1}s · {2}": "HALF REFILL · +{1}s · {2}",
+"Bạn không đủ tiền nạp (cần ít nhất {1} cho 1 giây oxy). Hãy lên bờ bán đồ rồi quay lại.": "You can't afford a refill (at least {1} for 1 second of oxygen). Go ashore, sell your loot and come back.",
+"Đã nạp +{1}s oxy · −{2}": "Refilled +{1}s oxygen · −{2}"
 }
