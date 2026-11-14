@@ -842,3 +842,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 - Thêm ~140 mục vào `tools/en-dict.json` và các luật câu `tools/en-rules.json` cho toàn bộ chữ của Trạm Lặn Ngụp (menu, cửa hàng, bộ sưu tập, HUD, thông báo, bảng kết quả). Đã kiểm tra bản `en/` không còn chữ Việt trong màn lặn.
 - Bọc ký hiệu ✔/○ trong `<i>` để từ điển dịch được từng dòng hướng dẫn. **Không cần chạy SQL.**
+
+## z65 · Trạm Lặn Ngụp: thiết kế mới "Chuông Lặn Hải Đăng" (có animation)
+
+- Phương án C trong 3 concept (tạo bằng Higgsfield). Trạm vẽ bằng pixel: khung gỗ chữ A, chuông lặn bằng đồng đu đưa, đèn hải đăng ngọc lam nhấp nháy + chùm sáng quét, hố thuỷ triều có sứa phát sáng và xúc tu Draken vẫy, bong bóng nổi, bảng phấn, rương nửa chìm. Nhỏ gọn (~140×110px).
+- Vẽ động trong `drawDiveStation` (không còn là prop tĩnh): thêm `{dvs:1}` vào danh sách vẽ như phòng Gym. Chuyển vị trí `DVG` sang x=2252, giữa hai cây dừa. **Không cần chạy SQL.**
