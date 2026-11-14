@@ -847,3 +847,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 - Phương án C trong 3 concept (tạo bằng Higgsfield). Trạm vẽ bằng pixel: khung gỗ chữ A, chuông lặn bằng đồng đu đưa, đèn hải đăng ngọc lam nhấp nháy + chùm sáng quét, hố thuỷ triều có sứa phát sáng và xúc tu Draken vẫy, bong bóng nổi, bảng phấn, rương nửa chìm. Nhỏ gọn (~140×110px).
 - Vẽ động trong `drawDiveStation` (không còn là prop tĩnh): thêm `{dvs:1}` vào danh sách vẽ như phòng Gym. Chuyển vị trí `DVG` sang x=2252, giữa hai cây dừa. **Không cần chạy SQL.**
+
+## z66 · Trạm Lặn Ngụp: lặn được ngay + giao diện vui hơn
+
+- **Sửa lỗi chưa bơi được**: trước đó phải mua cả bình lặn lẫn túi ba gang mới bấm LẶN được (nút xám "CẦN MUA ĐỒ TRƯỚC"). Giờ ai cũng được **mượn đồ miễn phí**: Bình mượn của trạm (oxy 45s, sâu 30m) và Giỏ lưới nhỏ (3 ô). Mua đồ trong cửa hàng để nâng cấp (`DV_T0`, `DV_B0` trong index.html).
+- **Giao diện**: menu có màu (thẻ bình lặn xanh, túi cam, chân vịt xanh lá), nút LẶN NGAY vàng nhấp nháy, nút cửa hàng/bộ sưu tập có màu + icon, tiêu đề nhún nhảy, phông cảnh có nhiều cá hơn, thợ lặn bơi + bong bóng + tàu ngầm chạy ngang. Cửa hàng có viền màu từng mục.
+- Cập nhật bản tiếng Anh. **Không cần chạy SQL.**
