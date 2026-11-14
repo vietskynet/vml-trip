@@ -128,6 +128,10 @@ begin
     if docv is not null and docv ->> 'h' = u then return true; end if;
     return n = 4 and s[3] in ('m', 'c', 'iv') and s[4] = u;
   end if;
+  if s[1] = 'vh' then                                      -- Khu Villa Riêng: chủ lô ghi lô của mình (mua = tạo mới với o = mình)
+    if n = 2 then return (cur is null and nv is not null and nv ->> 'o' = u) or (docv is not null and docv ->> 'o' = u); end if;
+    return docv is not null and docv ->> 'o' = u;
+  end if;
   if s[1] = 'errlog' then                                  -- nhật ký lỗi game: ai cũng được GỬI bản ghi mới của mình (nhỏ, không ghi đè), chỉ admin xem/xoá
     return n = 2 and cur is null and nv is not null and nv ->> 'u' = u and length(nv::text) < 3000;
   end if;
@@ -656,7 +660,7 @@ begin
   update public.rtdb set val = replace(val::text, '"' || n::text || '"', 'null')::jsonb, upd = t
     where path like 'beds/%' and val is not null and val::text like '%' || n::text || '%';
   update public.rtdb set val = replace(val::text, o::text, n::text)::jsonb, upd = t
-    where (path like 'beds/%' or path like 'duels/%' or path like 'castle/%' or path like 'lm/%') and val is not null and val::text like '%' || o::text || '%';
+    where (path like 'beds/%' or path like 'duels/%' or path like 'castle/%' or path like 'lm/%' or path like 'vh/%') and val is not null and val::text like '%' || o::text || '%';
   insert into public.rtdb(path, val, upd) values ('players/' || n, pv, t)
     on conflict (path) do update set val = excluded.val, upd = excluded.upd;
   update public.rtdb set val = null, upd = t where path = 'players/' || o;

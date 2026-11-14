@@ -967,3 +967,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## 14.11.2026-z84 · Giảm giá gốc Khu Villa 30%
 - Đất 420tr · tầng 1 840tr · tầng 2 1,05 tỷ · tầng 3 1,19 tỷ (full 3 tầng + đất = **3,5 tỷ**, cộng phí kiểu nhà 50–300tr → 3,55–3,8 tỷ). Phí kiểu nhà giữ nguyên. Không cần chạy SQL.
+
+## 14.11.2026-z84b · SQL cho Khu Villa (BẮT BUỘC trước khi mở cửa)
+- Máy chủ mặc định từ chối ghi đường dẫn lạ, nên cần chạy **`sql-cu/supabase-update-villa.sql`** 1 lần trong Supabase SQL Editor (thêm quy tắc `vh` vào `rt_can`: chủ lô tạo/ghi/xoá lô của mình). `supabase-setup.sql` đã cập nhật cùng nội dung cho lần cài mới.
+- Đính chính: các ghi chú "không cần SQL" của z82–z84 là sai với bản chạy trên Supabase thật.
