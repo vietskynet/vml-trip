@@ -837,3 +837,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Luật thua**: hết oxy hoặc hết mạng → ngất, mất ngẫu nhiên một nửa đồ trong túi. Bỏ cuộc (Esc → Bỏ cuộc) cũng mất một nửa. Lặn quá giới hạn bình: oxy tụt gấp 4 (tàu ngầm thì nứt thân). Bơi lên mặt nước bấm E để lên bờ và tự bán toàn bộ đồ.
 - Bộ sưu tập (`dv_c_<id>`), kỷ lục độ sâu `dv_bd`, số lần lặn `dv_n`. Ghi nhật ký `mini.dive` (admin xem được), thêm "Trạm Lặn Ngụp" vào danh sách game hệ thống Mùa Biển.
 - **Không cần chạy SQL.** Chưa dịch riêng sang en/.
+
+## z64 · Bản tiếng Anh cho Trạm Lặn Ngụp
+
+- Thêm ~140 mục vào `tools/en-dict.json` và các luật câu `tools/en-rules.json` cho toàn bộ chữ của Trạm Lặn Ngụp (menu, cửa hàng, bộ sưu tập, HUD, thông báo, bảng kết quả). Đã kiểm tra bản `en/` không còn chữ Việt trong màn lặn.
+- Bọc ký hiệu ✔/○ trong `<i>` để từ điển dịch được từng dòng hướng dẫn. **Không cần chạy SQL.**

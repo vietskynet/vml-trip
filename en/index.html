@@ -422,7 +422,7 @@ body.m-room .pad{display:none!important}
 .dvbrand{font-family:var(--f-display);font-size:26px;color:#fff;text-shadow:3px 3px 0 #0a6a9a;padding-right:46px}.dvbrand b{color:#7ae0ff}.dvsub{margin:0;font-size:14px;color:#bfe8ff;line-height:1.25}
 .dvh{font-family:var(--f-display);font-size:13px;color:#ffe45c;margin-top:4px}.dvcard{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.2);padding:8px;display:flex;flex-direction:column;gap:5px}
 .dvrow{display:flex;justify-content:space-between;gap:8px;font-size:14px;align-items:baseline}.dvrow b{color:#fff}.dvrow span{color:#9fe8ff;font-size:13px;text-align:right}
-.dvstep{margin:0;padding:8px 8px 8px 10px;list-style:none;background:rgba(255,228,92,.1);border:2px dashed #ffe45c;font-size:14px;display:flex;flex-direction:column;gap:3px}.dvstep li.ok{color:#7dffb0}
+.dvstep{margin:0;padding:8px 8px 8px 10px;list-style:none;background:rgba(255,228,92,.1);border:2px dashed #ffe45c;font-size:14px;display:flex;flex-direction:column;gap:3px}.dvstep li.ok{color:#7dffb0}.dvstep i{font-style:normal}
 #dvStat{font-size:13px;color:#bfe8ff}#dvNote{margin:0;color:#ff9a9a;font-size:13px}#dvNote:empty{display:none}.dvbig{width:100%;padding:15px 8px;font-size:18px}.dvrow2{display:flex;gap:8px}.dvrow2 .btn{flex:1}.dvbig:disabled{opacity:.5}
 .dvit{display:flex;justify-content:space-between;align-items:center;gap:8px;background:rgba(255,255,255,.06);padding:6px 8px;border:2px solid rgba(255,255,255,.12)}.dvit.own{border-color:#4cff7a55}.dvit b{display:block;font-size:14px}.dvit small{display:block;color:#9fe8ff;font-size:12px;line-height:1.15}.dvit em{font-style:normal;color:#7dffb0;font-size:12px;white-space:nowrap}.dvit em.lk{color:#8896b8}.dvit .btn{padding:8px 10px;font-size:13px;white-space:nowrap}
 .dvfoot{margin:0;font-size:14px;color:#cfe8ff}.dvfoot b{color:#7dffb0}
@@ -3977,7 +3977,7 @@ function dvHud(g){const D=DV,W=D.W,H=D.H,p=D.p,m=Math.max(0,Math.round(p.y/DV_M)
 /* ---------- menu UI ---------- */
 function dvView(n){if(!DV)return;DV.view=n;[0,1,2].forEach(i=>{$('#dvV'+i).hidden=i!==n});if(n===1)dvShopDom();if(n===2)dvColDom();if(n===0)dvMenuDom();$('#dvMenu').scrollTo&&$('#dvMenu').scrollTo(0,0)}
 function dvMenuDom(){const G=dvGear(),has=G.E&&G.B,en=P.energy>=Math.max(DV_EN,CFG.PLAY_MIN||0);let h='';
- const step=(ok,t)=>`<li class="${ok?'ok':''}">${ok?'✔':'○'} ${t}</li>`;
+ const step=(ok,t)=>`<li class="${ok?'ok':''}"><i>${ok?'✔':'○'}</i> ${t}</li>`;
  h+=`<div class="dvcard"><div class="dvh">THIẾT BỊ CỦA BẠN</div>`;
  h+=G.E?`<div class="dvrow"><b>${esc(G.E.n)}</b><span>Oxy ${G.E.o}s · sâu tối đa ${G.E.d}m${G.E.k==='s'?' · thân tàu '+G.E.h:''}</span></div>`:'<div class="dvrow"><b>Chưa có bình lặn / tàu ngầm</b></div>';
  h+=G.B?`<div class="dvrow"><b>${esc(G.B.n)}</b><span>${G.B.c} ô chứa đồ</span></div>`:'<div class="dvrow"><b>Chưa có túi ba gang</b></div>';
@@ -6292,7 +6292,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z63';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z64';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

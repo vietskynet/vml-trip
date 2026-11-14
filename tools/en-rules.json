@@ -316,5 +316,17 @@
 "LEVEL {1} HOÀN THÀNH!": "LEVEL {1} COMPLETE!",
 "THƯỞNG {1}": "REWARD {1}",
 "Tiếp theo · LEVEL {1} · MỤC TIÊU {2}": "Next · LEVEL {1} · TARGET {2}",
-"LEVEL {1}": "LEVEL {1}"
+"LEVEL {1}": "LEVEL {1}",
+"TÚI {1}": "BAG {1}",
+"Túi đầy! ({1})": "Bag full! ({1})",
+"HIẾM! Bạn bắt được {1}!": "RARE! You caught {1}!",
+"{1} xuất hiện! Bấm F để chụp ảnh!": "{1} appears! Press F to take a photo!",
+"ẢNH QUÁI VẬT {1}! +{2} (nhận khi lên bờ)": "MONSTER PHOTO {1}! +{2} (paid when you reach shore)",
+"Bạn chưa đủ {1}.": "You can't afford {1}.",
+"Đã mua {1}!": "Bought {1}!",
+"LẶN NGAY · tốn {1}% năng lượng": "DIVE NOW · costs {1}% energy",
+"Oxy {1}s · sâu tối đa {2}m": "Oxygen {1}s · max depth {2}m",
+"{1} ô chứa đồ": "{1} item slots",
+"Oxy {1}s · sâu tối đa {2}m · thân tàu {3} · đèn mạnh": "Oxygen {1}s · max depth {2}m · hull {3} · strong light",
+"Oxy {1}s · sâu tối đa {2}m · thân tàu {3}": "Oxygen {1}s · max depth {2}m · hull {3}"
 }
