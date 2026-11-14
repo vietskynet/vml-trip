@@ -1027,3 +1027,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Không đổi kiểu nhà sau khi đã xây** (đã bỏ nút & hàm `vhStyle`). Chọn kiểu khi xây tầng 1; sau đó chỉ nâng tầng.
 - **Bấm vào mảnh đất trống**: chỉ hiện giá đất của lô + 10 kiểu nhà (ảnh full 3 tầng, ★) kèm bảng Tầng 1 / 2 / 3 / Tổng xây / + Đất để tính đầu tư. Tab NHÀ khi chọn kiểu cũng hiện bảng này.
 - **Admin → SỰ KIỆN → QUẢN LÝ BĐS VILLA**: bảng giá tách cột/hàng: (1) giá đất 6 lô, (2) chi phí xây từng tầng từng kiểu nhà + tổng xây + tổng cả đất Lô 1/Lô 6 (tự tính khi sửa) + dòng rẻ nhất/đắt nhất, (3) nội thất, (4) sân vườn, (5) rào, (6) cổng. Lưu vào `config/vhP` (`st` giờ là `{kiểu:{tầng:giá}}`). Không cần SQL mới.
+
+## z98 – Nâng giá nội thất & vật phẩm trang trí vườn lên 300%
+- 20 món nội thất và 20 vật phẩm sân vườn nhân 3 so với bản z97 (ví dụ giường đơn 16 → 48tr, giường king 80 → 240tr, đàn piano 120 → 360tr, hồ bơi mini 80 → 240tr). Rào, cổng, đất và chi phí xây giữ nguyên. Admin hiển thị giá mặc định mới; giá đã lưu ở `config/vhP` (nếu có) vẫn ưu tiên. Không cần SQL.
