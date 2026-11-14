@@ -960,3 +960,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Mùa Noel: mái villa tự phủ tuyết như các công trình khác.
 - Dữ liệu lưu ở `vh/{1..6}` (cùng cơ chế Vườn Liên Minh, mua lô dùng transaction chống trùng). Chưa làm: mời bạn về nhà ăn/ngủ/vệ sinh (bản sau), nội thất bên trong.
 - Không cần chạy SQL (cần kiểm tra khi bật thật: quyền ghi đường dẫn `vh` giống `lm`).
+
+## 14.11.2026-z83 · Nâng giá gốc Khu Villa (chống lạm phát)
+- Giá gốc tăng mạnh, phí kiểu nhà vẫn chỉ 50–300tr nên chênh lệch giữa các kiểu chỉ còn ~1–6% tổng: **đất 600tr · tầng 1 1,2 tỷ · tầng 2 1,5 tỷ · tầng 3 1,7 tỷ** (full 3 tầng + đất = **5 tỷ**, cộng phí kiểu nhà 50–300tr → 5,05–5,3 tỷ, chưa trang trí).
+- Hoàn khi trả đất vẫn 50% tổng đã đầu tư. Không cần chạy SQL.
