@@ -67,6 +67,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-of
 #toasts{position:absolute;left:50%;top:calc(var(--top) + 140px);transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;align-items:center;z-index:6;pointer-events:none;width:min(92%,560px)}
 .toast{background:var(--paper);color:#1a1020;border:3px solid #000;box-shadow:3px 3px 0 rgba(0,0,0,.4);padding:3px 12px;font-size:20px;text-align:center;line-height:1.05}
 .toast.ev{background:#1c3170;color:#fff}
+#toastc{position:absolute;right:max(8px,env(safe-area-inset-right,0px));top:calc(var(--top) + 84px);z-index:6;width:min(46%,210px);display:flex;flex-direction:column;gap:3px;align-items:stretch;pointer-events:none}
+#toastc .toast{font-size:13px;line-height:1.1;text-align:left;padding:3px 7px;border-width:2px;box-shadow:2px 2px 0 rgba(0,0,0,.35);opacity:.93;animation:tcIn .18s ease-out;word-break:break-word}
+@keyframes tcIn{from{transform:translateX(24px);opacity:0}}
+@media (max-width:760px){#toastc{top:calc(var(--top) + 100px);width:min(33%,134px)}#toastc .toast{font-size:11px;padding:2px 5px}}
 #prompt{position:absolute;left:50%;bottom:calc(max(16px,env(safe-area-inset-bottom,0px)));transform:translateX(-50%);z-index:5;background:rgba(8,16,44,.9);border:3px solid #000;box-shadow:inset 0 0 0 2px var(--sun);padding:5px 14px;font-size:21px;white-space:nowrap;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;pointer-events:none}
 #prompt{background:linear-gradient(180deg,rgba(18,40,96,.97),rgba(8,16,44,.97));border-color:#000;box-shadow:inset 0 0 0 2px var(--sun),0 0 0 3px rgba(255,210,63,.35),0 6px 18px rgba(0,0,0,.55);animation:pPop .35s ease-out;display:flex;align-items:center;gap:10px;font-size:20px;line-height:1.15;white-space:normal;max-width:min(calc(100% - 20px),560px);min-width:min(260px,calc(100% - 20px));text-overflow:clip}
 #prompt kbd{flex:0 0 auto;font-family:var(--f-display);font-size:22px;line-height:1;min-width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;background:var(--sun);color:#000;padding:0 8px;margin:0;border:3px solid #000;box-shadow:0 4px 0 #8a6a00,inset 0 -3px 0 rgba(0,0,0,.18);animation:pKey 1s ease-in-out infinite}
@@ -481,7 +485,7 @@ body.m-room .pad{display:none!important}
     </div>
   </div>
   <div id="need" hidden><b id="needTitle">MẮC TIỂU</b><span id="needHint"></span><span class="cd" id="needCd">30</span></div>
-  <div id="toasts"></div>
+  <div id="toasts"></div><div id="toastc"></div>
   <button id="boostBtn" hidden>TĂNG TỐC x3 (B)</button><button id="flyBtn" hidden>BAY (V)</button>
   <button id="chatFab" aria-label="Mở chat" hidden><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#fff" d="M2 2h12v1h1v7h-1v1H7l-3 3v-3H2v-1H1V3h1z"/><path fill="#1c3170" d="M4 5h8v1H4zM4 8h6v1H4z"/></svg><i id="chatDot" hidden></i></button>
   <div id="guide" hidden role="status" aria-live="polite"><div class="gTop"><b id="gHead"></b><button id="gMin" aria-label="Thu nhỏ hướng dẫn">–</button><button id="gOff" aria-label="Tắt hướng dẫn">✕</button></div><div class="gBody"><p id="gText"></p><div id="gBarW" hidden><div class="gBar"><i id="gBar"></i></div><small id="gBarL"></small></div></div></div>
@@ -1781,7 +1785,7 @@ function setMeal(t){S.mealAt=nextMeal(t);S.mealId=Math.round(S.mealAt);S.mealWar
 const nowOnline=()=>Math.max(0,(serverNow()-CFG.EPOCH)/1000);
 const clockStr=()=>clockAt(S.time);
 var LASTMSG={t:-1e9,m:''};
-function toast(msg,ev=false,ms=3200){LASTMSG={t:performance.now(),m:String(msg)};const t=document.createElement('div');t.className='toast'+(ev?' ev':'');t.textContent=msg;const box=$('#toasts');box.prepend(t);while(box.children.length>3)box.lastChild.remove();setTimeout(()=>t.remove(),ms)}
+function toast(msg,ev=false,ms=3200){LASTMSG={t:performance.now(),m:String(msg)};const t=document.createElement('div');t.className='toast'+(ev?' ev':'');t.textContent=msg;const big=/^⚠ QUÁI VẬT/.test(String(msg)),box=$(big?'#toasts':'#toastc');if(big)box.prepend(t);else{box.append(t);ms=Math.min(ms,3600)}while(box.children.length>(big?3:3))(big?box.lastChild:box.firstChild).remove();setTimeout(()=>t.remove(),ms)}
 const who=c=>c===P?'Bạn':c.name;
 function loadProfile(){try{return JSON.parse(localStorage.getItem('vmlTripProfile')||'null')||{days:0,best:0,villa:0,room:0,tent:0,faint:0,acc:0}}catch(e){return{days:0,best:0,villa:0,room:0,tent:0,faint:0,acc:0}}}
 function saveProfile(kind){const pf=loadProfile();pf.days++;pf.best=Math.max(pf.best,P.money);pf.acc+=P.accCount;if(kind==='faint')pf.faint++;else if(P.lodge)pf[P.lodge.type]++;pf.last=new Date().toISOString();try{localStorage.setItem('vmlTripProfile',JSON.stringify(pf))}catch(e){}return pf}
@@ -7048,7 +7052,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z80';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z81';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

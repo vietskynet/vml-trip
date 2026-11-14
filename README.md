@@ -943,3 +943,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Trang trí**: người tuyết (khăn/mũ nhiều màu), cây thông mini tím-bạc ở từng khu (có đèn đêm), gậy kẹo, hộp quà, vòng nguyệt quế ở cửa villa, dây đèn trên khách sạn & quầy.
 - **Nhân viên NPC** mặc đồ đỏ + mũ ông già Noel. **Bỏ tên** trên đầu NV và khách NPC (vẫn giữ bong bóng thoại).
 - Không cần chạy SQL.
+
+## 14.11.2026-z81 · Thông báo gom vào popup nhỏ ở góc
+- Mọi thông báo (toast) giờ hiện trong **một popup nhỏ ở góc phải-trên** (tối đa 3 dòng, chữ nhỏ, trượt vào), không còn chiếm giữa màn hình trên mobile.
+- Riêng thông báo **quái vật xuất hiện** vẫn hiện giữa màn hình như cũ.
+- Không cần chạy SQL.
