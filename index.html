@@ -1237,7 +1237,7 @@ TORCHES.forEach(([x,y])=>addBlock(x-3,y-3,x+3,y+2));
 addBlock(780,640,800,652);addBlock(960,640,980,652);
 addBlock(CAMPFIRE.x-14,CAMPFIRE.y-8,CAMPFIRE.x+14,CAMPFIRE.y+6);
 const inR=(r,x,y)=>x>=r.x0&&x<=r.x1&&y>=r.y0&&y<=r.y1;
-var LIMSW=false;function walkable(x,y){if(x<8||y<8-OY||x>MWX-24||y>MH-8)return false;if(x>MW-8&&(y<1010||!VHX.open))return false;if(x>2590&&!VHX.open)return false;if(y<shoreY(x)+6&&!inR(PIER,x,y)&&!inR(JETTY,x,y)&&!inR(PIER2,x,y)){if(!(LIMSW&&y>40&&x>40&&x<MW-40))return false}for(const b of blocks)if(x>b.x0&&x<b.x1&&y>b.y0&&y<b.y1)return false;return true}
+var LIMSW=false;function walkable(x,y){if(x<8||y<8-OY||x>MWX-24||y>MH-8)return false;if(x>MW-8&&!VHX.open)return false;if(x>MW-8&&y<1010)return walkable(MW-14,y);if(x>2590&&!VHX.open)return false;if(y<shoreY(x)+6&&!inR(PIER,x,y)&&!inR(JETTY,x,y)&&!inR(PIER2,x,y)){if(!(LIMSW&&y>40&&x>40&&x<MW-40))return false}for(const b of blocks)if(x>b.x0&&x<b.x1&&y>b.y0&&y<b.y1)return false;return true}
 const canStand=(x,y)=>walkable(x-5,y-2)&&walkable(x+5,y-2)&&walkable(x-5,y+2)&&walkable(x+5,y+2);
 
 /* ---- pathfinding grid ---- */
@@ -7500,7 +7500,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z91';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z92';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -8468,7 +8468,7 @@ function petRefund(i){const p=PETS[i];if(i!==PHO_I)return Math.round(p.price*PET
 function phoDust(x,y,dir,t,n,seed,L){L=L||30;const C=['#ff6fd0','#3fd8ff','#ffd23f','#b86bff','#ffffff'];ctx.save();fxLit();for(let k=0;k<n;k++){const age=(t*1.1+k/n+(seed||0)*.013)%1,px=x-dir*(8+age*L)+Math.sin(k*3.1+t*4)*(3+age*L*.12),py=y+4+age*(L*.8)+Math.cos(k*2.3+t*3)*(2+age*L*.1);ctx.globalAlpha=Math.min(1,Math.max(0,1-age)*1.3);ctx.fillStyle=C[k%5];const s=age<.4?(L>40?3:2):(L>40?2:1);ctx.fillRect(Math.round(px),Math.round(py),s,s);if(k%3===0&&age<.7){ctx.fillRect(Math.round(px)-1,Math.round(py),1,1);ctx.fillRect(Math.round(px)+s,Math.round(py),1,1);ctx.fillRect(Math.round(px),Math.round(py)-1,1,1);ctx.fillRect(Math.round(px),Math.round(py)+s,1,1)}}ctx.restore()}
 /* --- bay --- */
 const inCastleZone=(x,y)=>x>=CF.x0&&x<=CF.x1&&y>FENCE_Y;
-const flyOK=(x,y)=>x>=10&&x<=MW-10&&y>=10-OY&&y<=MH-10&&!inCastleZone(x,y);
+const flyOK=(x,y)=>x>=10&&x<=(VHX.open?MWX-30:MW-10)&&y>=10-OY&&y<=MH-10&&!inCastleZone(x,y);
 const phoFl=()=>P.fl||(P.fl={t:0,cd:0,dur:10});
 function drawFlyer(c,x,y,t){const fd=c.dir==='left'?-1:c.dir==='right'?1:(c.fdx||1);c.fdx=fd;const k=Math.floor(t*(c.moving?10:6))%4,sp=phoSpr(k,true),sf=phoSpr(k,true,2),sb=phoSpr(k,true,1),lift=PHO_LIFT+Math.round(Math.sin(t*4+c.x*.02)*2.5);
  ctx.fillStyle='rgba(20,30,60,.3)';ctx.fillRect(x-17,y-1,34,4);ctx.fillRect(x-11,y-2,22,6);

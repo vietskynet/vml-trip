@@ -997,3 +997,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## 14.11.2026-z91 · Lấp vùng xanh trống phía bắc Khu Villa
 - Vùng nền xanh đậm phía đông bãi biển (trên khu villa) nay được nối dài từ dải biển/cát/cỏ ở mép phải của map, cả trong game, bản đồ lớn và bản đồ nhỏ. Khi khu đóng, dải 70px sau mép cũng được lấp. Không cần SQL.
+
+## 14.11.2026-z92 · Sửa không đi/bay vào được Khu Villa
+- Khi khu **mở**, vùng đất phía đông bãi biển (trên khu villa) đi bộ được như phần nối dài của map (trước đó bị chặn vô hình khi y<1010, nên đi dọc bãi biển sang phải bị kẹt). Khi đóng vẫn chặn.
+- Chim bay / bay 10 giây (`flyOK`) giờ bay được vào khu khi khu mở (trước đó bị giới hạn ở mép phải cũ).
+- Kiểm tra tự động: từ bãi biển, từ đường chính, đi tới cổng, cả 6 lô (cửa nhà) đều có đường đi; không lỗi script. Không cần SQL.
