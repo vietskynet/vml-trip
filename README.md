@@ -863,3 +863,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Thú cưng hệ nước** (tối đa 3) bơi theo người chơi.
 - **5 trạm nạp oxy dưới biển**: bấm E gần trạm; giá/giây = 3000×(1+độ sâu/80); hệ thống gợi ý nạp đầy hoặc tối đa theo số tiền có; có tuỳ chọn 1/2; phí hiện trong bảng kết quả.
 - Không cần chạy SQL.
+
+## z68 — Trạm Lặn Ngụp: cửa hàng trực quan + tiên cá chào đón
+- **Tiên cá Marina & Tiên cá Triton mặc vest** chào khi vừa xuống biển, kèm bài thơ nhảm có tên nhân vật (3 bài ngẫu nhiên); bấm BẮT ĐẦU LẶN / Enter / Space để bơi.
+- **Cửa hàng dạng tab** (Bình lặn / Tàu ngầm / Túi / Chân vịt): thẻ có icon lớn vẽ riêng từng cấp, nhãn màu thông số.
+- **Nhân vật demo mang đồ ngay cạnh**: bấm một món để thử, mua xong nhân vật/tàu ngầm mang món đó (bình 5 cấp, túi 5 cấp, chân vịt 3 loại, tàu ngầm 3 mẫu khác màu) và có hiệu ứng lấp lánh. Trong lúc lặn, thợ lặn cũng mang đúng trang bị.
+- Màn hình chính hiển thị nhân vật đang mang đồ + 4 ô trang bị bấm vào để mở cửa hàng.
+- Không cần chạy SQL.
