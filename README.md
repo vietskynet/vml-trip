@@ -1002,3 +1002,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Khi khu **mở**, vùng đất phía đông bãi biển (trên khu villa) đi bộ được như phần nối dài của map (trước đó bị chặn vô hình khi y<1010, nên đi dọc bãi biển sang phải bị kẹt). Khi đóng vẫn chặn.
 - Chim bay / bay 10 giây (`flyOK`) giờ bay được vào khu khi khu mở (trước đó bị giới hạn ở mép phải cũ).
 - Kiểm tra tự động: từ bãi biển, từ đường chính, đi tới cổng, cả 6 lô (cửa nhà) đều có đường đi; không lỗi script. Không cần SQL.
+
+## 14.11.2026-z93 · Vẽ lại địa hình phía đông (biển, cát, cỏ) quanh Khu Villa
+- Bỏ cách kéo giãn dải ảnh (gây sọc). Vẽ địa hình thật cho vùng x 2560–3560, y phía trên khu villa bằng cùng thuật toán biển/bờ/cát của map chính (liền mạch ở mép x=2560), và cỏ lan dần từ y≈1040 lên y≈760 khi sang phải; phần đất của khu villa dùng cùng ngưỡng cỏ nên không còn đường cắt cát/cỏ. Áp dụng cho game, bản đồ lớn, bản đồ nhỏ. Không cần SQL.
