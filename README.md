@@ -895,3 +895,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Đom đóm vàng-xanh trên đất liền và lân tinh xanh lơ trên mặt biển, bay chậm và nhấp nháy.
 - Chỉ vẽ khi trời tối (theo độ tối ban đêm), ban ngày không đổi; chi phí vẽ ~3ms/khung.
 - Không cần chạy SQL.
+
+## 14.11.2026-z73 · Game lặn: túi chứa nhiều cá hơn + thông báo tiền khi lên bờ
+- Sức chứa túi (ô): Giỏ lưới mượn 3→8, Túi ba gang 5→14, Ba gang lớn 10→24, Lưới siêu bền 18→40, Không đáy 30→64. Túi mặc định chứa đủ 8 con cá ngừ = 2.000.000₫; túi càng đắt càng nhiều. Thanh túi trên HUD co giãn theo sức chứa (tối đa 30 ô vẽ).
+- Lên bờ: hiện thông báo "Lên bờ! Bạn kiếm được X (ròng Y nếu có phí oxy/ăn nghỉ)" và dòng lớn "KIẾM ĐƯỢC +X" ở bảng kết quả.
+- Không cần chạy SQL.

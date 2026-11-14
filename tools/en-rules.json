@@ -366,5 +366,8 @@
 "🛏 NGHỈ CABIN · hồi đầy mạng (+{1}) · {2}": "🛏 REST IN A CABIN · full lives (+{1}) · {2}",
 "Không đủ tiền nạp oxy (cần ít nhất {1}/giây).": "Not enough money for oxygen (need at least {1}/second).",
 "Ăn mì nóng: +1 mạng +8s oxy · −{1}": "Hot noodles: +1 life +8s oxygen · −{1}",
-"Nghỉ cabin: hồi đầy mạng · −{1}": "Cabin rest: lives fully restored · −{1}"
+"Nghỉ cabin: hồi đầy mạng · −{1}": "Cabin rest: lives fully restored · −{1}",
+"Lên bờ! Bạn kiếm được {1} từ lặn biển": "Ashore! You earned {1} from diving",
+"Lên bờ! Bạn kiếm được {1} từ lặn biển (ròng {2})": "Ashore! You earned {1} from diving ({2} net)",
+"KIẾM ĐƯỢC +{1}": "EARNED +{1}"
 }
