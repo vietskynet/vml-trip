@@ -926,3 +926,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## 14.11.2026-z77 · Sửa lỗi game "createRadialGradient"
 - Hiệu ứng đạn/nổ nhận toạ độ không hợp lệ (NaN) làm canvas báo lỗi. Đã chặn từ gốc: bỏ qua đạn có toạ độ sai, kiểm tra bán kính/toạ độ trước khi vẽ vầng sáng, và bọc phần vẽ đạn bằng try/catch để lỗi không bao giờ lan ra game.
 - Không cần chạy SQL.
+
+## 14.11.2026-z78 · Phượng Hoàng bắn quái từ xa hơn
+- Tầm tự bắn cầu ma thuật tăng 300 → 480px (rộng hơn cả màn hình), có quái trong tầm là bắn, không cần tới sát.
+- Không cần chạy SQL.
