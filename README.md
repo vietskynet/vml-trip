@@ -991,3 +991,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## 14.11.2026-z89 · Admin: bỏ xoá toàn bộ, thu hồi từng lô có hoàn tiền +20%
 - Gỡ nút "XOÁ TOÀN BỘ" (z88) cho an toàn. Chỉ còn **THU HỒI từng lô**: hộp xác nhận hiện số đã đầu tư và số hoàn. Hoàn = **đã đầu tư × 120%**, gửi cho chủ qua quà admin (`gifts/{uid}`, người chơi nhận khi online/đăng nhập), gửi quà xong mới xoá lô (lỗi thì không xoá). Không cần SQL.
+
+## 14.11.2026-z90 · Sửa vùng xanh trống phía đông map
+- Khi Khu Villa còn đóng, camera không còn cuộn ra ngoài mép phải (x>2630) nên không còn thấy vùng xanh trống; khi mở khu thì camera mở rộng như cũ. Không cần SQL.

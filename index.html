@@ -7230,7 +7230,7 @@ function drawFlies(x,y,t,n){for(let i=0;i<n;i++){const a=t*6+i*2.1,fx=Math.round
 function label(s,x,y,col='#fff',bgc='rgba(8,16,44,.78)'){ctx.font='12px '+FONT;const w=Math.ceil(ctx.measureText(s).width)+6;ctx.fillStyle=bgc;ctx.fillRect(Math.round(x-w/2),y-10,w,11);ctx.fillStyle=col;ctx.textAlign='center';ctx.fillText(s,Math.round(x),y-1)}
 function needTarget(){const nh=smelly(P)?null:nearestHome(P),pd=nh?unitDoor(nh):null;if(pd)return{pt:pd,name:lodgeName(nh)};let best=0,bd=1e9;WC_DOORS.forEach((d,k)=>{const l=dist(P,d)+(S.cabins[k].q.length+(S.cabins[k].occ?1:0))*40;if(l<bd){bd=l;best=k}});return{pt:WC_DOORS[best],name:'WC'+(best+1)}}
 function renderWorld(t){
- const tx=clamp(P.x-VW/2,Math.min(0,(MWX-VW)/2),Math.max(0,MWX-VW)),ty=clamp(P.y-VH/2,Math.min(-OY,(MH-VH)/2),Math.max(-OY,MH-VH));
+ const CWX=VHX.open?MWX:MW+70,tx=clamp(P.x-VW/2,Math.min(0,(CWX-VW)/2),Math.max(0,CWX-VW)),ty=clamp(P.y-VH/2,Math.min(-OY,(MH-VH)/2),Math.max(-OY,MH-VH));
  cam.x+=(tx-cam.x)*.15;cam.y+=(ty-cam.y)*.15;const cx=Math.round(cam.x),cy=Math.round(cam.y);
  ctx.fillStyle='#0b3a72';ctx.fillRect(0,0,VW,VH);ctx.drawImage(bg,cx,cy+OY,VW,VH,0,0,VW,VH);try{vhGround(cx,cy,t)}catch(e){console.warn('vhg',e)}
  const vis=(x,y,mg=40)=>x>cx-mg&&x<cx+VW+mg&&y>cy-mg&&y<cy+VH+mg;
@@ -7500,7 +7500,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,FENCE_Y-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z89';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z90';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
