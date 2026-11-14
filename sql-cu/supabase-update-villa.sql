@@ -1,5 +1,8 @@
--- Khu Villa Riêng (6 lô): cho phép chủ lô ghi dữ liệu vh/{1..6}. Nếu KHÔNG chạy file này, mua đất sẽ bị máy chủ từ chối.
--- Chạy 1 lần trong Supabase SQL Editor (thay hàm rt_can bản mới nhất, đã gồm toàn bộ quy tắc cũ + vh).
+-- Khu Villa Riêng (6 lô) + QUẢN LÝ BĐS VILLA (admin). Chạy 1 lần trong Supabase SQL Editor (thay hàm rt_can bản mới nhất, gồm toàn bộ quy tắc cũ).
+--  • vh/{1..6}      : chủ lô ghi lô của mình (mua / xây / trang trí). Thiếu thì mua đất bị máy chủ từ chối.
+--  • vhlog/{lô}/{id}: NHẬT KÝ lịch sử phát triển lô (mua, xây, nâng tầng, đổi kiểu, nội thất, trả đất). Thiếu thì game vẫn chạy nhưng lịch sử trong admin sẽ trống.
+--  • config/vhP     : bảng giá do ADMIN đặt (admin được phép ghi mọi đường dẫn, không cần quy tắc riêng).
+-- Đã chạy bản cũ của file này rồi vẫn PHẢI chạy lại để thêm vhlog.
 create or replace function public.rt_can(path text, cur jsonb, nv jsonb, docv jsonb) returns boolean
 language plpgsql stable security definer set search_path = public as $$
 declare s text[] := string_to_array(trim(both '/' from path), '/'); u text := auth.uid()::text; n int;
@@ -34,6 +37,9 @@ begin
   if s[1] = 'vh' then                                      -- Khu Villa Riêng: chủ lô ghi lô của mình (mua = tạo mới với o = mình)
     if n = 2 then return (cur is null and nv is not null and nv ->> 'o' = u) or (docv is not null and docv ->> 'o' = u); end if;
     return docv is not null and docv ->> 'o' = u;
+  end if;
+  if s[1] = 'vhlog' then                                   -- nhật ký Khu Villa: mỗi người chỉ GỬI bản ghi mới của mình (nhỏ, không ghi đè)
+    return n = 3 and cur is null and nv is not null and nv ->> 'u' = u and length(nv::text) < 400;
   end if;
   if s[1] = 'errlog' then                                  -- nhật ký lỗi game: ai cũng được GỬI bản ghi mới của mình (nhỏ, không ghi đè), chỉ admin xem/xoá
     return n = 2 and cur is null and nv is not null and nv ->> 'u' = u and length(nv::text) < 3000;

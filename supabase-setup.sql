@@ -132,6 +132,9 @@ begin
     if n = 2 then return (cur is null and nv is not null and nv ->> 'o' = u) or (docv is not null and docv ->> 'o' = u); end if;
     return docv is not null and docv ->> 'o' = u;
   end if;
+  if s[1] = 'vhlog' then                                   -- nhật ký Khu Villa: mỗi người chỉ GỬI bản ghi mới của mình (nhỏ, không ghi đè)
+    return n = 3 and cur is null and nv is not null and nv ->> 'u' = u and length(nv::text) < 400;
+  end if;
   if s[1] = 'errlog' then                                  -- nhật ký lỗi game: ai cũng được GỬI bản ghi mới của mình (nhỏ, không ghi đè), chỉ admin xem/xoá
     return n = 2 and cur is null and nv is not null and nv ->> 'u' = u and length(nv::text) < 3000;
   end if;

@@ -1775,46 +1775,74 @@ const VH_DRAW=[
  const rx=[52,42,30][fl-1];ellP(g,cx,top+2,rx*.7,6,'#cfdcff');ellP(g,cx,top-6,rx*.45,10,'#3df0ff');ellP(g,cx-4,top-9,rx*.2,4,'#b8faff');rr(g,cx,top-30,1,22,'#8a94b0');rr(g,cx-1,top-33,3,3,'#ff3de0');rr(g,cx-2,top-34,5,5,'rgba(255,61,224,.45)')}
 ];
 const VHC={};
-function vhHouse(sid,fl){const k=sid+'/'+fl;if(VHC[k])return VHC[k];const [c,g]=mk(VHW,VHH);VH_DRAW[sid](g,fl);outline(c);try{if(xmOn())xmCap({img:c,x:0,xk:4},xmLvl())}catch(e){}const o={c,ox:VHW/2,oy:VHB+2};VHC[k]=o;return o}
+/* ---- độ hoành tráng theo bậc giá: kiểu nhà càng đắt càng nhiều chi tiết (cộng dồn) ---- */
+const VH_TIER=[0,1,2,3,5,4,6,7,8,9],VH_ORD=[0,1,2,3,5,4,6,7,8,9],vhStars=t=>'★'.repeat(Math.ceil((t+1)/2))+'☆'.repeat(5-Math.ceil((t+1)/2));
+function vhTopY(c){try{const d=c.getContext('2d').getImageData(40,0,70,VHH).data;for(let y=0;y<VHH;y++)for(let x=0;x<70;x++)if(d[(y*70+x)*4+3]>40)return y}catch(e){}return 20}
+function vhFx(g,sid,fl,c){const t=VH_TIER[sid],cx=75,yb=VHB,top=vhTopY(c);if(t<1)return;
+ /* t1: đá cuội & cỏ quanh nền */
+ for(let k=0;k<7+t;k++){const x=(k%2?8:118)+h2(k,61)*24,y=yb-1-h2(k,62)*3;if(k%3===0)ellP(g,x,y,2,1.5,'#8a8a82');else rr(g,x,y-2,1,3,k%3===1?'#3f9a3a':'#5acf4a')}
+ /* t2: hai chậu cây cạnh cửa */
+ if(t>=2)for(const sx of[-1,1]){const x=cx+sx*50;rr(g,x-3,yb-6,7,6,'#b5562a');rr(g,x-3,yb-6,7,1,'#d9774a');ellP(g,x,yb-10,5,4,'#3f9a3a');ellP(g,x-1,yb-12,3,3,'#5acf4a');if(sid!==9)rr(g,x+1,yb-12,2,2,'#ff7a9a')}
+ /* t3: đèn vườn hai bên */
+ if(t>=3)for(const x of[6,144]){rr(g,x-1,yb-20,2,20,'#3a3a44');rr(g,x-3,yb-24,6,5,'#ffe08a');rr(g,x-3,yb-25,6,1,'#3a3a44');rr(g,x-1,yb-1,2,1,'#2a2a30')}
+ /* t4: luống hoa trước nhà + lối đá bước */
+ if(t>=4){for(let k=0;k<26;k++){const x=cx-44+h2(k,71)*88;if(Math.abs(x-cx)<8)continue;rr(g,x,yb-2-h2(k,72)*2,2,2,['#ff6a8a','#ffd23f','#ffffff','#b66aff'][(h2(k,73)*4)|0])}for(let k=0;k<3;k++)rr(g,cx-4+(k%2)*2,yb-6+k*2,8,2,'#b8b2a4')}
+ /* t5: hai tượng sư tử đá canh nhà */
+ if(t>=5)for(const sx of[-1,1]){const x=cx+sx*60;rr(g,x-5,yb-5,10,5,'#9a9a92');rr(g,x-4,yb-6,8,1,'#c4c4bc');rr(g,x-3,yb-13,6,8,'#b4b4ac');ellP(g,x,yb-15,3,3,'#c8c8c0');rr(g,x-1,yb-16,1,1,'#2a2a2a');rr(g,x+(sx>0?-4:2),yb-12,2,3,'#9a9a92')}
+ /* t6: thảm đỏ, trụ cổng viền vàng, ngôi sao lấp lánh trên mái */
+ if(t>=6){rr(g,cx-6,yb-2,12,2,'#b01e3c');rr(g,cx-6,yb-2,12,1,'#d8486a');for(const sx of[-1,1]){const x=cx+sx*11;rr(g,x-1,yb-9,3,9,'#e8e0c8');ellP(g,x,yb-11,2,2,'#ffd23f')}for(const[ax,ay]of[[22,top+14],[128,top+20],[40,top+4],[112,top+8]]){rr(g,ax,ay-1,1,3,'#fff6c0');rr(g,ax-1,ay,3,1,'#fff6c0')}}
+ /* t7: cây tỉa hình cầu + vòng viền vàng chân nhà */
+ if(t>=7){for(const sx of[-1,1]){const x=cx+sx*34;rr(g,x,yb-8,1,8,'#6a4a2a');ellP(g,x,yb-12,5,5,'#2e8a3a');ellP(g,x-1,yb-14,3,2,'#5acf4a')}rr(g,cx-52,yb-1,104,1,'#d8b04a')}
+ /* t8: hai cây cọ lớn + kính phản chiếu trước nhà */
+ if(t>=8){for(const sx of[-1,1]){const x=cx+sx*66,y0=yb-2;for(let y=0;y<36;y++)rr(g,x+Math.round(Math.sin(y/12)*2*sx)-1,y0-y,3,1,y%4?'#8a6a3a':'#6e5226');const tx=x+Math.round(Math.sin(3)*2*sx);for(let k=0;k<5;k++)lineP(g,tx,y0-36,tx+(k-2)*8,y0-30+Math.abs(k-2)*4,'#3f9a3a',2);ellP(g,tx,y0-37,3,2,'#6acf4a')}rr(g,cx-40,yb-1,80,1,'#7ec8e8')}
+ /* t9: bệ nổi tương lai: vành neon, hạt sáng bay quanh */
+ if(t>=9){for(const[ax,ay,cl]of[[18,60,'#3df0ff'],[130,48,'#ff3de0'],[28,100,'#ff3de0'],[122,92,'#3df0ff']])ellP(g,ax,ay,2,2,cl);rr(g,cx-44,yb-1,88,1,'#3df0ff');rr(g,cx-32,yb,64,1,'#ff3de0')}}
+function vhFxGlow(g,sid,fl,c){const t=VH_TIER[sid],cx=75,yb=VHB;if(t<3)return;g.save();
+ const orb=(x,y,r,col)=>{const gr=g.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,col);gr.addColorStop(1,'rgba(255,224,138,0)');g.fillStyle=gr;g.fillRect(x-r,y-r,r*2,r*2)};
+ if(t>=3){orb(6,yb-22,11,'rgba(255,224,138,.55)');orb(144,yb-22,11,'rgba(255,224,138,.55)')}
+ if(t>=7){for(const sx of[-1,1]){const x=cx+sx*34,gr=g.createLinearGradient(x,yb-2,x,yb-52);gr.addColorStop(0,'rgba(255,240,190,.32)');gr.addColorStop(1,'rgba(255,240,190,0)');g.fillStyle=gr;g.beginPath();g.moveTo(x-3,yb-2);g.lineTo(x+3,yb-2);g.lineTo(x+9,yb-52);g.lineTo(x-9,yb-52);g.fill()}}
+ if(t>=9){orb(cx,yb,50,'rgba(61,240,255,.22)');for(const[ax,ay,cl]of[[18,60,'rgba(61,240,255,.6)'],[130,48,'rgba(255,61,224,.6)'],[28,100,'rgba(255,61,224,.6)'],[122,92,'rgba(61,240,255,.6)']])orb(ax,ay,8,cl)}
+ g.restore()}
+function vhHouse(sid,fl){const k=sid+'/'+fl;if(VHC[k])return VHC[k];const [c,g]=mk(VHW,VHH);VH_DRAW[sid](g,fl);try{vhFx(g,sid,fl,c)}catch(e){}outline(c);try{vhFxGlow(g,sid,fl,c)}catch(e){}try{if(xmOn())xmCap({img:c,x:0,xk:4},xmLvl())}catch(e){}const o={c,ox:VHW/2,oy:VHB+2};VHC[k]=o;return o}
 
 /* ===== VẬT PHẨM: vườn / trang trí / rào / cổng ===== */
 const VH_IW=64,VH_IH=64,VH_IB=60;
 const vhTree=(g,cx,yb,r,c1,c2,th)=>{rr(g,cx-2,yb-th,4,th,'#6e4a28');rr(g,cx-2,yb-th,1,th,'#8a6038');ellP(g,cx,yb-th-r*.6,r,r*.9,c2);ellP(g,cx-r*.2,yb-th-r*.8,r*.8,r*.7,c1);for(let k=0;k<10;k++)rr(g,cx-r+h2(k,3)*r*2,yb-th-r*1.4+h2(k,4)*r*1.5,2,2,shade(c1,1.3))};
 const VH_IT=[
-{n:'Cây dừa',p:3e6,c:'cay',d:g=>{const x=32,yb=VH_IB;for(let y=0;y<34;y++)rr(g,x+Math.round(Math.sin(y/10)*2)-1,yb-y,3,1,y%4?'#7a5a2a':'#5e4420');const tx=x+Math.round(Math.sin(34/10)*2);for(let k=0;k<7;k++){const a=-Math.PI*.95+k/6*Math.PI*.9;lineP(g,tx,yb-35,tx+Math.cos(a)*22,yb-35+Math.sin(a)*10+8,'#2f9a3e',2);lineP(g,tx,yb-35,tx+Math.cos(a)*15,yb-35+Math.sin(a)*8+4,'#4fba4e',1)}ellP(g,tx-2,yb-31,2,2,'#7a5a2a');ellP(g,tx+3,yb-30,2,2,'#7a5a2a')}},
-{n:'Cây anh đào',p:6e6,c:'cay',d:g=>{vhTree(g,32,VH_IB,22,'#ffc0e0','#ff9ac8',22);for(let k=0;k<7;k++)rr(g,20+h2(k,8)*26,52+h2(k,9)*6,2,1,'#ffc0e0')}},
-{n:'Cây thông',p:5e6,c:'cay',d:g=>{rr(g,30,50,4,10,'#6e4a28');for(let k=0;k<4;k++){const w=26-k*5,y=52-k*11;for(let r=0;r<12;r++){const hw=Math.round(w/2*(r+1)/12);rr(g,32-hw,y-12+r,hw*2,1,r%3?'#1f7a4c':'#2fa073')}}rr(g,31,6,2,2,'#ffe45c')}},
-{n:'Bonsai',p:12e6,c:'cay',d:g=>{rr(g,22,50,20,10,'#8a5a3a');rr(g,22,50,20,2,'#b07a52');rr(g,24,58,16,2,'#6a4026');lineP(g,32,50,28,40,'#5a3a1a',2);lineP(g,28,40,34,30,'#5a3a1a',2);ellP(g,22,38,9,5,'#2f8a3e');ellP(g,38,28,10,6,'#3fa04a');ellP(g,28,22,8,5,'#4fba4e')}},
-{n:'Bụi hoa hồng',p:2e6,c:'cay',d:g=>{ellP(g,32,52,18,9,'#2f8a3e');ellP(g,30,48,13,7,'#3fa04a');for(let k=0;k<12;k++){const x=18+h2(k,2)*28,y=44+h2(k,3)*14;rr(g,x,y,3,3,k%3?'#e8334a':'#ff7aa0');rr(g,x+1,y+1,1,1,'#fff0f0')}}},
-{n:'Luống hoa',p:2e6,c:'cay',d:g=>{rr(g,10,50,44,10,'#6e4423');rr(g,10,50,44,2,'#8a5530');rr(g,10,59,44,2,'#4e2e14');for(let k=0;k<11;k++){const x=12+k*4,col=['#ff4f8a','#ffd23f','#b46bff','#ffffff','#ff9a3a'][k%5];rr(g,x+1,43+(k%3)*3,1,8,'#2f8a3e');ellP(g,x+1,43+(k%3)*3,2,2,col)}}},
-{n:'Cây ăn quả (sắp có chức năng)',p:8e6,c:'cay',fn:1,d:g=>{vhTree(g,32,VH_IB,22,'#6cc254','#3a8a37',18);for(let k=0;k<6;k++)ellP(g,18+h2(k,5)*28,26+h2(k,6)*18,2,2,'#ff8a2a')}},
-{n:'Hồ cá Koi',p:15e6,c:'nuoc',d:g=>{ellP(g,32,50,29,11,'#9a9aa6');ellP(g,32,50,26,9,'#3fb6d8');ellP(g,32,49,22,6,'#6fd2ea');ellP(g,24,50,4,2,'#ff8a2a');rr(g,28,50,2,1,'#ff8a2a');ellP(g,40,52,4,2,'#ffffff');rr(g,44,52,2,1,'#e8334a');ellP(g,34,46,4,2,'#3a9a3a');rr(g,36,44,2,2,'#ff9ad5');for(let k=0;k<10;k++)rr(g,6+h2(k,1)*52,42+h2(k,2)*16,3,2,'#b8b8c4')}},
-{n:'Đài phun nước',p:25e6,c:'nuoc',d:g=>{ellP(g,32,54,26,8,'#b8b8c6');ellP(g,32,53,23,6,'#4fc8e8');rr(g,29,30,6,24,'#c8c8d6');ellP(g,32,38,14,4,'#c8c8d6');ellP(g,32,37,12,3,'#7fdcf0');ellP(g,32,28,8,3,'#c8c8d6');for(let k=0;k<7;k++){lineP(g,32,24,32+(k-3)*5,36,'#bff4ff',1)}rr(g,31,18,2,8,'#bff4ff')}},
-{n:'Ghế đá',p:3e6,c:'tien',d:g=>{rr(g,10,46,44,6,'#b8b0a0');rr(g,10,46,44,2,'#d8d0c0');rr(g,10,38,44,6,'#a8a090');rr(g,12,52,6,8,'#8a8274');rr(g,46,52,6,8,'#8a8274')}},
-{n:'Bàn ô che nắng',p:6e6,c:'tien',d:g=>{rr(g,31,22,2,38,'#8a8a96');for(let r=0;r<12;r++){const hw=Math.round(26*(r+1)/12);rr(g,32-hw,10+r,hw*2,1,r%2?'#e8334a':'#ffffff')}rr(g,12,46,40,3,'#c8a070');rr(g,30,48,4,12,'#8a6a40');rr(g,14,50,2,10,'#8a6a40');rr(g,48,50,2,10,'#8a6a40');rr(g,14,40,6,6,'#d8c8a0');rr(g,44,40,6,6,'#d8c8a0')}},
-{n:'Võng thư giãn',p:5e6,c:'tien',d:g=>{rr(g,6,24,3,36,'#6e4a28');rr(g,55,24,3,36,'#6e4a28');for(let x=9;x<55;x++){const y=30+Math.round(Math.sin((x-9)/46*Math.PI)*14);rr(g,x,y,1,3,'#e8334a');rr(g,x,y+3,1,1,'#a02030')}}},
-{n:'Xích đu',p:8e6,c:'tien',d:g=>{lineP(g,8,60,16,14,'#8a6a40',2);lineP(g,56,60,48,14,'#8a6a40',2);rr(g,14,12,36,3,'#6e4a28');rr(g,22,15,1,28,'#b8b0a0');rr(g,42,15,1,28,'#b8b0a0');rr(g,20,42,24,4,'#e8a040');rr(g,20,42,24,1,'#ffd080')}},
-{n:'Bếp nướng BBQ',p:10e6,c:'tien',d:g=>{rr(g,14,34,36,16,'#3a3a44');rr(g,14,34,36,3,'#5a5a66');for(let x=16;x<48;x+=4)rr(g,x,38,2,1,'#8a8a96');rr(g,18,50,3,10,'#2a2a30');rr(g,43,50,3,10,'#2a2a30');ellP(g,28,32,3,3,'#ff7a2a');ellP(g,38,32,3,3,'#ffb02e');rr(g,28,20,2,10,'#aaa');for(let k=0;k<3;k++)rr(g,26+k*6,14-k*2,2,6,'rgba(220,220,230,.5)')}},
-{n:'Ghế tắm nắng',p:6e6,c:'tien',d:g=>{for(let x=0;x<34;x++)rr(g,12+x,50-Math.round(x*.1),1,5,x%6<5?'#f0f0f0':'#c8c8d0');lineP(g,12,50,10,38,'#f0f0f0',3);rr(g,12,55,3,5,'#8a8a96');rr(g,42,52,3,8,'#8a8a96');rr(g,22,44,8,4,'#2a8bd0')}},
-{n:'Đèn vườn',p:4e6,c:'den',lamp:1,d:g=>{rr(g,31,22,3,38,'#2a2a34');rr(g,28,56,9,4,'#2a2a34');rr(g,27,12,11,12,'#fff3b8');rr(g,27,12,11,2,'#2a2a34');rr(g,27,23,11,2,'#2a2a34');rr(g,29,14,3,8,'#fff');ellP(g,32,10,7,3,'#2a2a34')}},
-{n:'Đèn đá Nhật',p:7e6,c:'den',lamp:1,d:g=>{rr(g,26,52,12,8,'#9a9a96');rr(g,29,40,6,12,'#b0b0ac');rr(g,24,30,16,10,'#b8b8b4');rr(g,28,32,8,6,'#ffd88a');rr(g,22,24,20,6,'#8a8a86');rr(g,28,18,8,6,'#9a9a96');rr(g,31,14,2,4,'#b8b8b4')}},
-{n:'Tượng đá',p:18e6,c:'deco',d:g=>{rr(g,16,52,32,8,'#a8a8b4');rr(g,16,52,32,2,'#c8c8d4');rr(g,24,24,16,28,'#d0d0dc');ellP(g,32,18,7,8,'#d8d8e4');rr(g,20,30,4,14,'#c0c0cc');rr(g,40,26,4,14,'#c0c0cc');rr(g,38,18,2,2,'#8a8a96');rr(g,30,16,2,2,'#7a7a86')}},
-{n:'Hộp thư',p:1e6,c:'deco',d:g=>{rr(g,31,36,3,24,'#6e4a28');rr(g,22,26,20,12,'#2a6ab0');rr(g,22,26,20,2,'#4a8ad0');rr(g,38,28,2,10,'#c0392b');rr(g,40,24,6,4,'#ffd23f')}},
-{n:'Hồ bơi mini',p:40e6,c:'nuoc',w:1,d:g=>{rr(g,2,34,60,28,'#e8e0d0');rr(g,6,38,52,20,'#2a9ed8');for(let y=38;y<58;y+=4){rr(g,6,y,52,1,'#4ac0ec')}rr(g,10,42,12,2,'#bff4ff');rr(g,34,50,14,2,'#bff4ff');rr(g,50,30,3,10,'#c8c8d6');rr(g,56,30,3,10,'#c8c8d6');rr(g,50,30,9,2,'#c8c8d6')}}
+{n:'Cây dừa',p:6e6,c:'cay',d:g=>{const x=32,yb=VH_IB;for(let y=0;y<34;y++)rr(g,x+Math.round(Math.sin(y/10)*2)-1,yb-y,3,1,y%4?'#7a5a2a':'#5e4420');const tx=x+Math.round(Math.sin(34/10)*2);for(let k=0;k<7;k++){const a=-Math.PI*.95+k/6*Math.PI*.9;lineP(g,tx,yb-35,tx+Math.cos(a)*22,yb-35+Math.sin(a)*10+8,'#2f9a3e',2);lineP(g,tx,yb-35,tx+Math.cos(a)*15,yb-35+Math.sin(a)*8+4,'#4fba4e',1)}ellP(g,tx-2,yb-31,2,2,'#7a5a2a');ellP(g,tx+3,yb-30,2,2,'#7a5a2a')}},
+{n:'Cây anh đào',p:12e6,c:'cay',d:g=>{vhTree(g,32,VH_IB,22,'#ffc0e0','#ff9ac8',22);for(let k=0;k<7;k++)rr(g,20+h2(k,8)*26,52+h2(k,9)*6,2,1,'#ffc0e0')}},
+{n:'Cây thông',p:10e6,c:'cay',d:g=>{rr(g,30,50,4,10,'#6e4a28');for(let k=0;k<4;k++){const w=26-k*5,y=52-k*11;for(let r=0;r<12;r++){const hw=Math.round(w/2*(r+1)/12);rr(g,32-hw,y-12+r,hw*2,1,r%3?'#1f7a4c':'#2fa073')}}rr(g,31,6,2,2,'#ffe45c')}},
+{n:'Bonsai',p:24e6,c:'cay',d:g=>{rr(g,22,50,20,10,'#8a5a3a');rr(g,22,50,20,2,'#b07a52');rr(g,24,58,16,2,'#6a4026');lineP(g,32,50,28,40,'#5a3a1a',2);lineP(g,28,40,34,30,'#5a3a1a',2);ellP(g,22,38,9,5,'#2f8a3e');ellP(g,38,28,10,6,'#3fa04a');ellP(g,28,22,8,5,'#4fba4e')}},
+{n:'Bụi hoa hồng',p:4e6,c:'cay',d:g=>{ellP(g,32,52,18,9,'#2f8a3e');ellP(g,30,48,13,7,'#3fa04a');for(let k=0;k<12;k++){const x=18+h2(k,2)*28,y=44+h2(k,3)*14;rr(g,x,y,3,3,k%3?'#e8334a':'#ff7aa0');rr(g,x+1,y+1,1,1,'#fff0f0')}}},
+{n:'Luống hoa',p:4e6,c:'cay',d:g=>{rr(g,10,50,44,10,'#6e4423');rr(g,10,50,44,2,'#8a5530');rr(g,10,59,44,2,'#4e2e14');for(let k=0;k<11;k++){const x=12+k*4,col=['#ff4f8a','#ffd23f','#b46bff','#ffffff','#ff9a3a'][k%5];rr(g,x+1,43+(k%3)*3,1,8,'#2f8a3e');ellP(g,x+1,43+(k%3)*3,2,2,col)}}},
+{n:'Cây ăn quả (sắp có chức năng)',p:16e6,c:'cay',fn:1,d:g=>{vhTree(g,32,VH_IB,22,'#6cc254','#3a8a37',18);for(let k=0;k<6;k++)ellP(g,18+h2(k,5)*28,26+h2(k,6)*18,2,2,'#ff8a2a')}},
+{n:'Hồ cá Koi',p:30e6,c:'nuoc',d:g=>{ellP(g,32,50,29,11,'#9a9aa6');ellP(g,32,50,26,9,'#3fb6d8');ellP(g,32,49,22,6,'#6fd2ea');ellP(g,24,50,4,2,'#ff8a2a');rr(g,28,50,2,1,'#ff8a2a');ellP(g,40,52,4,2,'#ffffff');rr(g,44,52,2,1,'#e8334a');ellP(g,34,46,4,2,'#3a9a3a');rr(g,36,44,2,2,'#ff9ad5');for(let k=0;k<10;k++)rr(g,6+h2(k,1)*52,42+h2(k,2)*16,3,2,'#b8b8c4')}},
+{n:'Đài phun nước',p:50e6,c:'nuoc',d:g=>{ellP(g,32,54,26,8,'#b8b8c6');ellP(g,32,53,23,6,'#4fc8e8');rr(g,29,30,6,24,'#c8c8d6');ellP(g,32,38,14,4,'#c8c8d6');ellP(g,32,37,12,3,'#7fdcf0');ellP(g,32,28,8,3,'#c8c8d6');for(let k=0;k<7;k++){lineP(g,32,24,32+(k-3)*5,36,'#bff4ff',1)}rr(g,31,18,2,8,'#bff4ff')}},
+{n:'Ghế đá',p:6e6,c:'tien',d:g=>{rr(g,10,46,44,6,'#b8b0a0');rr(g,10,46,44,2,'#d8d0c0');rr(g,10,38,44,6,'#a8a090');rr(g,12,52,6,8,'#8a8274');rr(g,46,52,6,8,'#8a8274')}},
+{n:'Bàn ô che nắng',p:12e6,c:'tien',d:g=>{rr(g,31,22,2,38,'#8a8a96');for(let r=0;r<12;r++){const hw=Math.round(26*(r+1)/12);rr(g,32-hw,10+r,hw*2,1,r%2?'#e8334a':'#ffffff')}rr(g,12,46,40,3,'#c8a070');rr(g,30,48,4,12,'#8a6a40');rr(g,14,50,2,10,'#8a6a40');rr(g,48,50,2,10,'#8a6a40');rr(g,14,40,6,6,'#d8c8a0');rr(g,44,40,6,6,'#d8c8a0')}},
+{n:'Võng thư giãn',p:10e6,c:'tien',d:g=>{rr(g,6,24,3,36,'#6e4a28');rr(g,55,24,3,36,'#6e4a28');for(let x=9;x<55;x++){const y=30+Math.round(Math.sin((x-9)/46*Math.PI)*14);rr(g,x,y,1,3,'#e8334a');rr(g,x,y+3,1,1,'#a02030')}}},
+{n:'Xích đu',p:16e6,c:'tien',d:g=>{lineP(g,8,60,16,14,'#8a6a40',2);lineP(g,56,60,48,14,'#8a6a40',2);rr(g,14,12,36,3,'#6e4a28');rr(g,22,15,1,28,'#b8b0a0');rr(g,42,15,1,28,'#b8b0a0');rr(g,20,42,24,4,'#e8a040');rr(g,20,42,24,1,'#ffd080')}},
+{n:'Bếp nướng BBQ',p:20e6,c:'tien',d:g=>{rr(g,14,34,36,16,'#3a3a44');rr(g,14,34,36,3,'#5a5a66');for(let x=16;x<48;x+=4)rr(g,x,38,2,1,'#8a8a96');rr(g,18,50,3,10,'#2a2a30');rr(g,43,50,3,10,'#2a2a30');ellP(g,28,32,3,3,'#ff7a2a');ellP(g,38,32,3,3,'#ffb02e');rr(g,28,20,2,10,'#aaa');for(let k=0;k<3;k++)rr(g,26+k*6,14-k*2,2,6,'rgba(220,220,230,.5)')}},
+{n:'Ghế tắm nắng',p:12e6,c:'tien',d:g=>{for(let x=0;x<34;x++)rr(g,12+x,50-Math.round(x*.1),1,5,x%6<5?'#f0f0f0':'#c8c8d0');lineP(g,12,50,10,38,'#f0f0f0',3);rr(g,12,55,3,5,'#8a8a96');rr(g,42,52,3,8,'#8a8a96');rr(g,22,44,8,4,'#2a8bd0')}},
+{n:'Đèn vườn',p:8e6,c:'den',lamp:1,d:g=>{rr(g,31,22,3,38,'#2a2a34');rr(g,28,56,9,4,'#2a2a34');rr(g,27,12,11,12,'#fff3b8');rr(g,27,12,11,2,'#2a2a34');rr(g,27,23,11,2,'#2a2a34');rr(g,29,14,3,8,'#fff');ellP(g,32,10,7,3,'#2a2a34')}},
+{n:'Đèn đá Nhật',p:14e6,c:'den',lamp:1,d:g=>{rr(g,26,52,12,8,'#9a9a96');rr(g,29,40,6,12,'#b0b0ac');rr(g,24,30,16,10,'#b8b8b4');rr(g,28,32,8,6,'#ffd88a');rr(g,22,24,20,6,'#8a8a86');rr(g,28,18,8,6,'#9a9a96');rr(g,31,14,2,4,'#b8b8b4')}},
+{n:'Tượng đá',p:36e6,c:'deco',d:g=>{rr(g,16,52,32,8,'#a8a8b4');rr(g,16,52,32,2,'#c8c8d4');rr(g,24,24,16,28,'#d0d0dc');ellP(g,32,18,7,8,'#d8d8e4');rr(g,20,30,4,14,'#c0c0cc');rr(g,40,26,4,14,'#c0c0cc');rr(g,38,18,2,2,'#8a8a96');rr(g,30,16,2,2,'#7a7a86')}},
+{n:'Hộp thư',p:2e6,c:'deco',d:g=>{rr(g,31,36,3,24,'#6e4a28');rr(g,22,26,20,12,'#2a6ab0');rr(g,22,26,20,2,'#4a8ad0');rr(g,38,28,2,10,'#c0392b');rr(g,40,24,6,4,'#ffd23f')}},
+{n:'Hồ bơi mini',p:80e6,c:'nuoc',w:1,d:g=>{rr(g,2,34,60,28,'#e8e0d0');rr(g,6,38,52,20,'#2a9ed8');for(let y=38;y<58;y+=4){rr(g,6,y,52,1,'#4ac0ec')}rr(g,10,42,12,2,'#bff4ff');rr(g,34,50,14,2,'#bff4ff');rr(g,50,30,3,10,'#c8c8d6');rr(g,56,30,3,10,'#c8c8d6');rr(g,50,30,9,2,'#c8c8d6')}}
 ];
 const VH_IC={};
 function vhItem(id){if(VH_IC[id])return VH_IC[id];const [c,g]=mk(VH_IW,VH_IH);VH_IT[id].d(g);outline(c);return VH_IC[id]={c,ox:VH_IW/2,oy:VH_IB+2}}
 /* rào */
 const VH_FN=[
 {n:'Không rào',p:0,t:'none'},
-{n:'Rào gỗ trắng',p:3e6,t:'picket',h:10,c:'#f4f4f0',c2:'#d0d0c8'},
-{n:'Rào tre',p:2e6,t:'bamboo',h:11,c:'#d8b45e',c2:'#a88a3a'},
-{n:'Rào sắt đen',p:8e6,t:'iron',h:13,c:'#2a2a34',c2:'#55556a'},
-{n:'Tường gạch',p:12e6,t:'wall',h:14,c:'#c9704a',c2:'#a85a38'},
-{n:'Tường đá cuội',p:15e6,t:'stone',h:13,c:'#9a968a',c2:'#7a766a'},
-{n:'Rào cây xanh',p:9e6,t:'hedge',h:14,c:'#3f9a3a',c2:'#2a7a2a'},
-{n:'Rào kính',p:25e6,t:'glass',h:13,c:'#9fe0f0',c2:'#d8f8ff'},
-{n:'Rào vàng sang trọng',p:40e6,t:'gold',h:15,c:'#ffd23f',c2:'#fff3a0'}
+{n:'Rào gỗ trắng',p:6e6,t:'picket',h:10,c:'#f4f4f0',c2:'#d0d0c8'},
+{n:'Rào tre',p:4e6,t:'bamboo',h:11,c:'#d8b45e',c2:'#a88a3a'},
+{n:'Rào sắt đen',p:16e6,t:'iron',h:13,c:'#2a2a34',c2:'#55556a'},
+{n:'Tường gạch',p:24e6,t:'wall',h:14,c:'#c9704a',c2:'#a85a38'},
+{n:'Tường đá cuội',p:30e6,t:'stone',h:13,c:'#9a968a',c2:'#7a766a'},
+{n:'Rào cây xanh',p:18e6,t:'hedge',h:14,c:'#3f9a3a',c2:'#2a7a2a'},
+{n:'Rào kính',p:50e6,t:'glass',h:13,c:'#9fe0f0',c2:'#d8f8ff'},
+{n:'Rào vàng sang trọng',p:80e6,t:'gold',h:15,c:'#ffd23f',c2:'#fff3a0'}
 ];
 function vhFenceCol(g,x,y,f,k){const h=f.h;switch(f.t){
  case'picket':if(k%4<2){rr(g,x,y-h,1,h,f.c);rr(g,x,y-h,1,1,f.c2)}if(k%4===0)rr(g,x-1,y-h-1,3,1,f.c);rr(g,x,y-h+3,1,1,f.c2);rr(g,x,y-4,1,1,f.c2);break;
@@ -1837,11 +1865,11 @@ function vhFenceCv(id,gapW){const k=id+'/'+gapW;if(VHFC[k])return VHFC[k];const 
 /* cổng */
 const VH_GN=[
 {n:'Cổng gỗ',p:0},
-{n:'Cổng sắt',p:6e6},
-{n:'Cổng vòm hoa hồng',p:10e6},
-{n:'Cổng đá & đèn',p:18e6},
-{n:'Cổng torii',p:25e6},
-{n:'Cổng điện tử',p:35e6}
+{n:'Cổng sắt',p:12e6},
+{n:'Cổng vòm hoa hồng',p:20e6},
+{n:'Cổng đá & đèn',p:36e6},
+{n:'Cổng torii',p:50e6},
+{n:'Cổng điện tử',p:70e6}
 ];
 const VH_GC={};
 function vhGate(id){if(VH_GC[id])return VH_GC[id];const [c,g]=mk(64,56),cx=32,yb=54;
@@ -1857,18 +1885,19 @@ function vhGate(id){if(VH_GC[id])return VH_GC[id];const [c,g]=mk(64,56),cx=32,yb
 /* ================= KHU VILLA RIÊNG (bản test 6 lô) ================= */
 const EB_X=2560,EB_Y=-OY,EB_W=450,EB_H=MH+OY;
 const VHG={x0:2556,x1:3010,y0:440,y1:2050,gy:1240};
-const VH_LAND=420e6,VH_FL=[840e6,1050e6,1190e6],VH_MAXB=2;
+let VH_LAND=840e6,VH_DROP=10;const VH_FL=[1680e6,2100e6,2380e6],VH_MAXB=2;
+const vhLand=n=>Math.round(VH_LAND*(1-VH_DROP/100*(((+n||1)-1)/5))/1e6)*1e6;
 const VH_ST=[
- {n:'Nhà lá giả nghèo',fee:50e6,d:'Nhà sàn tre, mái lá — mộc mạc, giá mềm nhất.'},
- {n:'Nhà tiền sử',fee:80e6,d:'Tường đá, mái da thú, xương thú và đuốc lửa.'},
- {n:'Nhà ống TPHCM',fee:100e6,d:'Nhà phố hẹp có ban công, bồn nước, dây điện đúng chất Sài Gòn.'},
- {n:'Nhà thiên nhiên',fee:130e6,d:'Nhà gỗ tròn, mái cỏ xanh, dây leo và cây trên mái.'},
- {n:'Nhà Nhật Zen',fee:160e6,d:'Khung gỗ, cửa shoji, mái ngói nhiều tầng như tháp.'},
- {n:'Biệt thự nhiệt đới',fee:150e6,d:'Tường trắng, cửa xanh biển, mái lá kiểu Maldives.'},
- {n:'Cổ điển châu Âu',fee:180e6,d:'Gạch ấm, cột trắng, mái đầu hồi và ống khói.'},
- {n:'Mid-century',fee:200e6,d:'Mái bướm, vách gỗ nan, kính lớn, cửa cam retro.'},
- {n:'Hiện đại',fee:230e6,d:'Hộp bê tông - kính, tầng nhô ra, sân thượng kính.'},
- {n:'Tương lai (Futuristic)',fee:300e6,d:'Đĩa bay trắng, viền neon, chóp phát sáng.'}
+ {n:'Nhà lá giả nghèo',fee:100e6,d:'Nhà sàn tre, mái lá — mộc mạc, giá mềm nhất.'},
+ {n:'Nhà tiền sử',fee:160e6,d:'Tường đá, mái da thú, xương thú và đuốc lửa.'},
+ {n:'Nhà ống TPHCM',fee:240e6,d:'Nhà phố hẹp có ban công, bồn nước, dây điện đúng chất Sài Gòn.'},
+ {n:'Nhà thiên nhiên',fee:340e6,d:'Nhà gỗ tròn, mái cỏ xanh, dây leo và cây trên mái.'},
+ {n:'Nhà Nhật Zen',fee:520e6,d:'Khung gỗ, cửa shoji, mái ngói nhiều tầng như tháp.'},
+ {n:'Biệt thự nhiệt đới',fee:450e6,d:'Tường trắng, cửa xanh biển, mái lá kiểu Maldives.'},
+ {n:'Cổ điển châu Âu',fee:700e6,d:'Gạch ấm, cột trắng, mái đầu hồi và ống khói.'},
+ {n:'Mid-century',fee:1000e6,d:'Mái bướm, vách gỗ nan, kính lớn, cửa cam retro.'},
+ {n:'Hiện đại',fee:1700e6,d:'Hộp bê tông - kính, tầng nhô ra, sân thượng kính.'},
+ {n:'Tương lai (Futuristic)',fee:3000e6,d:'Đĩa bay trắng, viền neon, chóp phát sáng.'}
 ];
 const VH_PL=[...Array(6)].map((_,i)=>{const x0=2656,y0=480+i*263;return{n:i+1,x0,y0,x1:x0+VH_PW,y1:y0+VH_PH,cx:x0+VH_PW/2,hy:y0+150}});
 const VH_SL=[[28,44],[28,90],[28,136],[62,28],[300,44],[300,90],[300,136],[300,182],[262,28],[240,196]];
@@ -1879,7 +1908,12 @@ const vhMine=()=>{const me=lmMe(),a=VH_ALL();for(const n in a)if(a[n]&&a[n].o===
 const vhIn=p=>!!p&&p.x>2560;
 const vhTot=d=>{let s=VH_LAND;if(d&&d.f>0){s+=VH_ST[d.s].fee;for(let i=0;i<d.f;i++)s+=VH_FL[i]}return s};
 function vhElig(){try{const n=ownBeds(P).length;return n<=VH_MAXB?{ok:true,n}:{ok:false,n}}catch(e){return{ok:true,n:0}}}
-function vhCfg(cfg){const was=VHX.open;VHX.open=!!(cfg&&+cfg.vhOpen===1)||(!NET.on&&/[?&]vh=1/.test(location.search));if(VHX.open!==was){try{buildGrid()}catch(e){}if(!VHX.open&&P&&P.x>2560){P.x=2480;P.y=1244;P.path=[]}try{if(!VHX.open&&!$('#vhOv').hidden)$('#vhOv').hidden=true}catch(e){}}}
+let VH_B=null;
+function vhPrices(c){try{if(!VH_B)VH_B={land:VH_LAND,drop:VH_DROP,fl:VH_FL.slice(),st:VH_ST.map(x=>x.fee),fu:VH_FU.map(x=>x.p),it:VH_IT.map(x=>x.p),fn:VH_FN.map(x=>x.p),gn:VH_GN.map(x=>x.p)};
+ const o=(c&&c.vhP)||{},g=(m,i,b)=>{const v=m?m[i]:null;return v!=null&&v!==''&&Number.isFinite(+v)&&+v>=0?+v:b};
+ VH_LAND=g({0:o.land},0,VH_B.land);VH_DROP=Math.min(50,g({0:o.drop},0,VH_B.drop));VH_FL.forEach((_,i)=>{VH_FL[i]=g(o.fl,i,VH_B.fl[i])});VH_ST.forEach((x,i)=>{x.fee=g(o.st,i,VH_B.st[i])});VH_FU.forEach((x,i)=>{x.p=g(o.fu,i,VH_B.fu[i])});VH_IT.forEach((x,i)=>{x.p=g(o.it,i,VH_B.it[i])});VH_FN.forEach((x,i)=>{x.p=g(o.fn,i,VH_B.fn[i])});VH_GN.forEach((x,i)=>{x.p=g(o.gn,i,VH_B.gn[i])})}catch(e){}}
+function vhLog(n,t,a,x){try{if(!NET.on)return;const ts=Date.now();NET.db.ref('vhlog/'+n+'/'+ts+'_'+Math.random().toString(36).slice(2,6)).set({u:lmMe(),on:String(P.name||'').slice(0,18),t,a:Math.round(a||0),x:String(x||'').slice(0,60),ts}).catch(()=>{})}catch(e){}}
+function vhCfg(cfg){vhPrices(cfg);const was=VHX.open;VHX.open=!!(cfg&&+cfg.vhOpen===1)||(!NET.on&&/[?&]vh=1/.test(location.search));if(VHX.open!==was){try{buildGrid()}catch(e){}if(!VHX.open&&P&&P.x>2560){P.x=2480;P.y=1244;P.path=[]}try{if(!VHX.open&&!$('#vhOv').hidden)$('#vhOv').hidden=true}catch(e){}}}
 /* ---- dựng khu (canvas riêng, không phình nền chính) ---- */
 let EB=null,VHGU=null,VHNL=[];
 const vhGrassY=(x,y)=>1040-280*clamp((x-MW)/400,0,1)-vnoise(x/38,y/38)*21;
@@ -1963,7 +1997,7 @@ function vhNight(cx,cy,t,nf,vis){if(!vhVis(cx,cy)||nf<.05)return;const g=ctx;if(
 /* ---- tương tác ---- */
 function vhNear(add){
  add(P2(2546,VHG.gy),80,{k:'vhgate',label:VHX.open?'Cổng Khu Villa Riêng · bảo vệ 24/7':'Khu Villa Riêng · sắp khai trương'});
- if(VHX.open)VH_PL.forEach(p=>{const d=vhDoc(p.n),o={k:'vhplot',n:p.n,label:d?(d.o===lmMe()?'Villa của bạn · Lô '+p.n+' · quản lý':'Villa của '+(d.on||'?')+' · Lô '+p.n):'Lô '+p.n+' · đất trống · nhấn E để mua'};
+ if(VHX.open)VH_PL.forEach(p=>{const d=vhDoc(p.n),o={k:'vhplot',n:p.n,label:d?(d.o===lmMe()?'Villa của bạn · Lô '+p.n+' · quản lý':'Villa của '+(d.on||'?')+' · Lô '+p.n):'Lô '+p.n+' · đất trống '+VND(vhLand(p.n))+' · E để mua'};
   add(P2(p.cx,p.hy+40),70,o);add(P2(p.x0+14,p.hy+22),70,o);add(P2(p.x0-24,p.hy+22),48,o);add(P2(p.x0+70,p.hy+22),60,o)})}
 function vhGateTalk(){if(!VHX.open){toast('Bảo vệ: Khu Villa Riêng sắp khai trương, xin quý khách quay lại sau!',false,4000);return}toast('Bảo vệ: Khu vực an ninh 24/7. Không có người lạ, không có lừa đảo. Chúc quý khách vui vẻ!',false,4500)}
 /* ---- dữ liệu / hành động ---- */
@@ -1972,16 +2006,16 @@ async function vhWrite(n,patch,remove){if(NET.on){try{if(remove)await NET.db.ref
  const a=VH_ALL();if(remove){delete a[n];return true}const d=a[n]||(a[n]={});for(const k in patch){const v=patch[k];if(k.indexOf('/')>0){const [p,q]=k.split('/');d[p]=d[p]||{};if(v==null)delete d[p][q];else d[p][q]=v}else d[k]=v}return true}
 function vhPay(c){if(P.money<c){toast('Không đủ tiền. Cần '+VND(c)+'.',true);return false}P.money-=c;return true}
 async function vhBuyPlot(n){if(!VHX.open||vhDoc(n)||vhMine())return;const e=vhElig();if(!e.ok){toast('Bạn đang sở hữu '+e.n+' giường. Chỉ được mua đất khi sở hữu tối đa '+VH_MAXB+' giường (hoặc 1 villa/bungalow/phòng khách sạn).',true,5000);return}
- if(!vhPay(VH_LAND))return;const doc={o:lmMe(),on:String(P.name||'').slice(0,18),s:0,f:0,fn:0,gt:0,inv:VH_LAND,t0:serverNow()};
- if(NET.on){let r;try{r=await NET.db.ref('vh/'+n).transaction(c=>c==null?doc:undefined)}catch(x){r=null}if(!r||!r.committed){P.money+=VH_LAND;toast('Lô đất vừa có người mua hoặc máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}NET.vhAll=NET.vhAll||{};NET.vhAll[n]=doc}else VH_ALL()[n]=doc;
- coin();toast('Bạn đã mua Lô '+n+'! Hãy chọn kiểu nhà và xây tầng 1.',false,4500);sysLog('Mua Lô '+n+' Khu Villa Riêng.');if(NET.on)saveState();VHU.tab='house';renderVh()}
-async function vhBuild(n,sid){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f!==0)return;const c=VH_FL[0]+VH_ST[sid].fee;if(!vhPay(c))return;if(!await vhWrite(n,{s:sid,f:1,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}coin();toast('Đã xây tầng 1 kiểu '+VH_ST[sid].n+'.');if(NET.on)saveState();renderVh()}
-async function vhUp(n){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f<1||d.f>=3)return;const c=VH_FL[d.f];if(!vhPay(c))return;if(!await vhWrite(n,{f:d.f+1,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}coin();toast('Đã nâng lên tầng '+(d.f)+'!');if(NET.on)saveState();renderVh()}
-async function vhStyle(n,sid){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f<1||d.s===sid)return;const c=VH_ST[sid].fee;if(!vhPay(c))return;if(!await vhWrite(n,{s:sid,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}coin();toast('Đã đổi sang kiểu '+VH_ST[sid].n+'.');if(NET.on)saveState();renderVh()}
-async function vhSetFg(n,kind,id){const d=vhDoc(n);if(!d||d.o!==lmMe())return;const key=kind==='f'?'fn':'gt',cur=d[key]|0;if(cur===id)return;const c=(kind==='f'?VH_FN[id].p:VH_GN[id].p);if(!vhPay(c))return;if(!await vhWrite(n,{[key]:id,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}coin();if(NET.on)saveState();renderVh()}
-async function vhPut(n,slot,id){const d=vhDoc(n);if(!d||d.o!==lmMe())return;const it=d.it||{};if(it[slot]!=null&&+it[slot]===id)return;const c=VH_IT[id].p;if(!vhPay(c))return;if(!await vhWrite(n,{['it/'+slot]:id,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}coin();if(NET.on)saveState();renderVh()}
+ const LP=vhLand(n);if(!vhPay(LP))return;const doc={o:lmMe(),on:String(P.name||'').slice(0,18),s:0,f:0,fn:0,gt:0,inv:LP,t0:serverNow()};
+ if(NET.on){let r;try{r=await NET.db.ref('vh/'+n).transaction(c=>c==null?doc:undefined)}catch(x){r=null}if(!r||!r.committed){P.money+=LP;toast('Lô đất vừa có người mua hoặc máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}NET.vhAll=NET.vhAll||{};NET.vhAll[n]=doc}else VH_ALL()[n]=doc;
+ vhLog(n,'buy',LP,'Mua đất Lô '+n);coin();toast('Bạn đã mua Lô '+n+'! Hãy chọn kiểu nhà và xây tầng 1.',false,4500);sysLog('Mua Lô '+n+' Khu Villa Riêng.');if(NET.on)saveState();VHU.tab='house';renderVh()}
+async function vhBuild(n,sid){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f!==0)return;const c=VH_FL[0]+VH_ST[sid].fee;if(!vhPay(c))return;if(!await vhWrite(n,{s:sid,f:1,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'build',c,'Xây tầng 1 · '+VH_ST[sid].n);coin();toast('Đã xây tầng 1 kiểu '+VH_ST[sid].n+'.');if(NET.on)saveState();renderVh()}
+async function vhUp(n){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f<1||d.f>=3)return;const c=VH_FL[d.f];if(!vhPay(c))return;if(!await vhWrite(n,{f:d.f+1,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'up',c,'Nâng lên tầng '+(d.f+1));coin();toast('Đã nâng lên tầng '+(d.f)+'!');if(NET.on)saveState();renderVh()}
+async function vhStyle(n,sid){const d=vhDoc(n);if(!d||d.o!==lmMe()||d.f<1||d.s===sid)return;const c=VH_ST[sid].fee;if(!vhPay(c))return;if(!await vhWrite(n,{s:sid,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'style',c,'Đổi kiểu nhà · '+VH_ST[sid].n);coin();toast('Đã đổi sang kiểu '+VH_ST[sid].n+'.');if(NET.on)saveState();renderVh()}
+async function vhSetFg(n,kind,id){const d=vhDoc(n);if(!d||d.o!==lmMe())return;const key=kind==='f'?'fn':'gt',cur=d[key]|0;if(cur===id)return;const c=(kind==='f'?VH_FN[id].p:VH_GN[id].p);if(!vhPay(c))return;if(!await vhWrite(n,{[key]:id,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,kind==='f'?'fence':'gate',c,kind==='f'?'Hàng rào · '+VH_FN[id].n:'Cổng · '+VH_GN[id].n);coin();if(NET.on)saveState();renderVh()}
+async function vhPut(n,slot,id){const d=vhDoc(n);if(!d||d.o!==lmMe())return;const it=d.it||{};if(it[slot]!=null&&+it[slot]===id)return;const c=VH_IT[id].p;if(!vhPay(c))return;if(!await vhWrite(n,{['it/'+slot]:id,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'decor',c,'Trang trí ngoài · '+VH_IT[id].n);coin();if(NET.on)saveState();renderVh()}
 async function vhTake(n,slot){const d=vhDoc(n);if(!d||d.o!==lmMe())return;await vhWrite(n,{['it/'+slot]:null});renderVh()}
-async function vhSell(n){const d=vhDoc(n);if(!d||d.o!==lmMe())return;if(VHU.arm!=='sell'){VHU.arm='sell';renderVh();return}VHU.arm=null;const rf=Math.floor((d.inv||0)*.5);await vhWrite(n,null,true);P.money+=rf;coin();toast('Đã đập bỏ & trả đất. Hoàn lại '+VND(rf)+' (50% đã đầu tư).',false,5000);sysLog('Trả Lô '+n+' Khu Villa, hoàn '+VND(rf)+'.');if(NET.on)saveState();VHU.tab='ov';renderVh()}
+async function vhSell(n){const d=vhDoc(n);if(!d||d.o!==lmMe())return;if(VHU.arm!=='sell'){VHU.arm='sell';renderVh();return}VHU.arm=null;const rf=Math.floor((d.inv||0)*.5);vhLog(n,'return',rf,'Trả đất, hoàn 50%');await vhWrite(n,null,true);P.money+=rf;coin();toast('Đã đập bỏ & trả đất. Hoàn lại '+VND(rf)+' (50% đã đầu tư).',false,5000);sysLog('Trả Lô '+n+' Khu Villa, hoàn '+VND(rf)+'.');if(NET.on)saveState();VHU.tab='ov';renderVh()}
 /* ---- giao diện ---- */
 function vhOpenUi(n){if(!S||!P)return;VHU.n=n;VHU.arm=null;const d=vhDoc(n);VHU.tab=d&&d.o===lmMe()?(d.f>0?'ov':'house'):'ov';renderVh();$('#vhOv').hidden=false;keys={}}
 const vhCv=(k,w,h)=>`<canvas class="vhpv" data-k="${k}" width="${w}" height="${h}"></canvas>`;
@@ -1990,15 +2024,15 @@ function vhCard(pv,t,sub,btn,act,data,dis,cls){return `<div class="vhc ${cls||''
 function renderVh(){const el=$('#vhBody');if(!el)return;const n=VHU.n,d=vhDoc(n),me=lmMe(),mine=d&&d.o===me,my=vhMine();let h='';
  h+=`<div class="vhhd"><b>Lô ${n}</b> · ${d?'Chủ: <span>'+esc(d.on||'?')+'</span>':'Đất trống'} · Ví: <span>${VND(P.money)}</span></div>`;
  if(!d){const e=vhElig(),can=!my&&e.ok&&VHX.open;h+=`<div class="vhbox"><p>Mỗi người chỉ sở hữu <b>1 lô</b>. Lô gồm nhà villa ở giữa, vườn xung quanh, <b>10 vị trí trang trí</b>, hàng rào và cổng riêng. Ngăn cách bằng dòng suối nhỏ, bảo vệ cao cấp 24/7.</p>
-  <p>Giá đất: <b>${VND(VH_LAND)}</b>. Xây full 3 tầng (chưa trang trí): <b>${VND(VH_LAND+VH_FL[0]+VH_FL[1]+VH_FL[2]+VH_ST[0].fee)}</b> – <b>${VND(VH_LAND+VH_FL[0]+VH_FL[1]+VH_FL[2]+VH_ST[9].fee)}</b> tuỳ kiểu nhà.</p>
+  <p>Giá đất Lô ${n}: <b>${VND(vhLand(n))}</b> <small>(sát biển đắt nhất, vào trong rẻ dần tới −${VH_DROP}%)</small>. Xây full 3 tầng (nhà thô, chưa trang trí): <b>${VND(vhLand(n)+VH_FL[0]+VH_FL[1]+VH_FL[2]+VH_ST[0].fee)}</b> – <b>${VND(vhLand(n)+VH_FL[0]+VH_FL[1]+VH_FL[2]+VH_ST[9].fee)}</b> tuỳ kiểu nhà.</p>
   <p class="${e.ok?'ok':'bad'}">Điều kiện: đang sở hữu tối đa ${VH_MAXB} giường (hoặc 1 villa/bungalow/phòng khách sạn) bên ngoài — bạn đang có <b>${e.n}</b> giường ${e.ok?'✔':'✖'}</p>${my?`<p class="bad">Bạn đã có Lô ${my}.</p>`:''}
-  <button class="btn" data-act="buy" ${can&&P.money>=VH_LAND?'':'disabled'}>MUA ĐẤT ${VND(VH_LAND)}</button> <button class="btn sm" data-act="close">ĐÓNG</button></div>`}
+  <button class="btn" data-act="buy" ${can&&P.money>=vhLand(n)?'':'disabled'}>MUA ĐẤT ${VND(vhLand(n))}</button> <button class="btn sm" data-act="close">ĐÓNG</button></div>`}
  else if(!mine){h+=`<div class="vhbox"><div class="vhrow">${d.f>0?vhCv('h:'+d.s+':'+d.f,150,170):''}<div><p><b>${d.f>0?esc(VH_ST[d.s].n)+' · '+d.f+' tầng':'Đang chuẩn bị xây'}</b></p><p>Rào: ${esc(VH_FN[d.fn|0].n)} · Cổng: ${esc(VH_GN[d.gt|0].n)}<br>Trang trí: ${Object.keys(d.it||{}).length}/10 vị trí</p><p class="mut">Chủ nhà có thể mời bạn tham quan, ăn uống, ngủ nhờ (sắp có).</p></div></div><button class="btn sm" data-act="close">ĐÓNG</button></div>`}
  else{const tabs=[['ov','TỔNG QUAN'],['house','NHÀ'],['fence','RÀO & CỔNG'],['furn','NỘI THẤT'],['inv','MỜI KHÁCH'],['garden','VƯỜN & TRANG TRÍ'],['sell','TRẢ ĐẤT']];h+=`<div class="vhtabs">${tabs.map(([k,v])=>`<button class="btn sm ${VHU.tab===k?'on':''}" data-act="tab" data-t="${k}">${v}</button>`).join('')}</div>`;
   if(VHU.tab==='ov'){h+=`<div class="vhbox"><div class="vhrow">${d.f>0?vhCv('h:'+d.s+':'+d.f,150,170):'<div class="vhempty">Chưa xây nhà</div>'}<div><p><b>${d.f>0?esc(VH_ST[d.s].n)+' · '+d.f+'/3 tầng':'Đất trống'}</b></p><p>Đã đầu tư: <b>${VND(d.inv||0)}</b><br>Rào: ${esc(VH_FN[d.fn|0].n)} · Cổng: ${esc(VH_GN[d.gt|0].n)}<br>Trang trí: ${Object.keys(d.it||{}).length}/10</p><p class="mut">Mời bạn bè về nhà ăn uống, vệ sinh, ngủ nhờ: sẽ có ở bản sau.</p></div></div>${d.f>0?'<button class="btn" data-act="enter">VÀO NHÀ</button> ':''}<button class="btn sm" data-act="close">ĐÓNG</button></div>`}
-  else if(VHU.tab==='house'){if(d.f===0){h+=`<div class="vhbox"><p><b>Chọn kiểu nhà</b> · giá = tầng 1 ${VND(VH_FL[0])} + phí kiểu nhà</p><div class="vhg">${VH_ST.map((s,i)=>vhCard(vhCv('h:'+i+':1',100,112),esc(s.n),esc(s.d)+'<br>'+VND(VH_FL[0]+s.fee),'XÂY','build','data-s="'+i+'"',P.money<VH_FL[0]+s.fee)).join('')}</div></div>`}
+  else if(VHU.tab==='house'){if(d.f===0){h+=`<div class="vhbox"><p><b>Chọn kiểu nhà</b> · giá = tầng 1 ${VND(VH_FL[0])} + phí kiểu nhà</p><div class="vhg">${VH_ORD.map(i=>{const s=VH_ST[i];return vhCard(vhCv('h:'+i+':1',100,112),esc(s.n)+' <small style="color:#ffd23f">'+vhStars(VH_TIER[i])+'</small>',esc(s.d)+'<br>Phí kiểu nhà '+VND(s.fee)+' · tầng 1 '+VND(VH_FL[0]+s.fee),'XÂY','build','data-s="'+i+'"',P.money<VH_FL[0]+s.fee)}).join('')}</div></div>`}
    else{const nx=d.f<3?VH_FL[d.f]:0;h+=`<div class="vhbox"><div class="vhrow">${vhCv('h:'+d.s+':'+d.f,150,170)}${d.f<3?'<span class="arr">▶</span>'+vhCv('h:'+d.s+':'+(d.f+1),150,170):''}<div><p><b>${esc(VH_ST[d.s].n)} · ${d.f}/3 tầng</b></p>${d.f<3?`<button class="btn" data-act="up" ${P.money<nx?'disabled':''}>NÂNG LÊN TẦNG ${d.f+1} · ${VND(nx)}</button>`:'<p class="ok">Đã đạt 3 tầng tối đa.</p>'}</div></div>
-    <p style="margin-top:8px"><b>Đổi kiểu nhà</b> (giữ nguyên số tầng, trả phí kiểu mới)</p><div class="vhg">${VH_ST.map((s,i)=>vhCard(vhCv('h:'+i+':'+d.f,100,112),esc(s.n),VND(s.fee),i===d.s?'ĐANG DÙNG':'ĐỔI','style','data-s="'+i+'"',i===d.s||P.money<s.fee)).join('')}</div></div>`}}
+    <p style="margin-top:8px"><b>Đổi kiểu nhà</b> (giữ nguyên số tầng, trả phí kiểu mới)</p><div class="vhg">${VH_ORD.map(i=>{const s=VH_ST[i];return vhCard(vhCv('h:'+i+':'+d.f,100,112),esc(s.n)+' <small style="color:#ffd23f">'+vhStars(VH_TIER[i])+'</small>',VND(s.fee),i===d.s?'ĐANG DÙNG':'ĐỔI','style','data-s="'+i+'"',i===d.s||P.money<s.fee)}).join('')}</div></div>`}}
   else if(VHU.tab==='fence'){h+=`<div class="vhbox"><p><b>Hàng rào</b></p><div class="vhg">${VH_FN.map((f,i)=>vhCard(vhCv('f:'+i,110,64),esc(f.n),f.p?VND(f.p):'Miễn phí',(d.fn|0)===i?'ĐANG DÙNG':'CHỌN','fg','data-kd="f" data-i="'+i+'"',(d.fn|0)===i||P.money<f.p)).join('')}</div><p style="margin-top:8px"><b>Cổng</b> (hiện khi có rào hoặc đã chọn cổng khác cổng gỗ)</p><div class="vhg">${VH_GN.map((f,i)=>vhCard(vhCv('g:'+i,64,56),esc(f.n),f.p?VND(f.p):'Miễn phí',(d.gt|0)===i?'ĐANG DÙNG':'CHỌN','fg','data-kd="g" data-i="'+i+'"',(d.gt|0)===i||P.money<f.p)).join('')}</div></div>`}
   else if(VHU.tab==='inv'){h+=vhInvHtml(d)}
   else if(VHU.tab==='furn'){h+=d.f>0?vhFurnHtml(d):'<div class="vhbox"><p>Xây nhà trước rồi mới mua nội thất được.</p></div>'}
@@ -2017,26 +2051,26 @@ function vhMapPaint(g,k){if(!EB)return;g.drawImage(EB,0,OY,EB_W,MH,EB_X*k,0,EB_W
 const VH_INP=[['#c9a860','#8a6a30','#a07a40','#8a6430'],['#a09078','#5a4a38','#6a5a48','#5a4a3a'],['#f4e2c0','#d0603a','#c8b898','#b8a888'],['#bcd9a0','#6a8a4a','#b08a58','#a07848'],['#efe6cf','#7a4a28','#d8c490','#c8b480'],['#f6f4ee','#3a9ad0','#d8c8a0','#c8b890'],['#e8d5a8','#8a5a30','#7a4a28','#6a3e20'],['#f0c050','#d98a2a','#8b5a2b','#7a4a22'],['#e9edf2','#9aa6b4','#c9c2b6','#bdb5a8'],['#2a3252','#5af0ff','#1c2238','#262e4c']];
 const VH_FSL=[[80,192],[240,192],[400,192],[110,250],[240,250],[370,250]];
 const VH_FU=[
- {n:'Giường đơn',p:8e6,k:'bed',rg:100/100,w:64,d:(g,x,y)=>vhBedD(g,x,y,60,'#3f8fd0')},
- {n:'Giường đôi',p:18e6,k:'bed',rg:100/75,w:88,d:(g,x,y)=>vhBedD(g,x,y,84,'#d0507a')},
- {n:'Giường king',p:40e6,k:'bed',rg:100/55,w:104,d:(g,x,y)=>vhBedD(g,x,y,100,'#8a4ad0',1)},
- {n:'Bàn ăn',p:12e6,k:'eat',w:84,d:(g,x,y)=>{rr(g,x-36,y-16,5,16,'#7c4a25');rr(g,x+31,y-16,5,16,'#7c4a25');rr(g,x-40,y-26,80,10,'#a8703a');rr(g,x-40,y-26,80,2,'#c98a52');rr(g,x-26,y-30,14,4,'#fff');rr(g,x+12,y-30,14,4,'#fff');rr(g,x-4,y-36,8,8,'#d94a3a');rr(g,x-1,y-39,2,3,'#3a8a3a')}},
- {n:'Tủ lạnh',p:14e6,k:'fridge',w:40,d:(g,x,y)=>{rr(g,x-18,y-70,36,70,'#e8eef2');rr(g,x-18,y-70,36,3,'#fff');rr(g,x-18,y-42,36,2,'#9aa6b4');rr(g,x+10,y-62,3,12,'#7a8a96');rr(g,x+10,y-34,3,10,'#7a8a96');rr(g,x-18,y-3,36,3,'#9aa6b4')}},
- {n:'Toilet riêng',p:25e6,k:'wc',w:44,d:(g,x,y)=>{rr(g,x-20,y-52,40,52,'#cfe4ee');rr(g,x-20,y-52,40,3,'#eaf6fb');rr(g,x-10,y-34,20,14,'#f4f4f4');rr(g,x-12,y-20,24,12,'#fff');rr(g,x-12,y-10,24,2,'#d6d6d6');rr(g,x-8,y-8,16,8,'#e0e0e0');rr(g,x+12,y-30,5,3,'#aaa')}},
- {n:'Sofa',p:15e6,k:'dec',w:94,d:(g,x,y)=>{rr(g,x-45,y-40,90,24,'#b8402a');rr(g,x-45,y-20,90,18,'#d86a50');rr(g,x-50,y-30,8,28,'#a83a28');rr(g,x+42,y-30,8,28,'#a83a28');rr(g,x-2,y-20,2,18,'#a83a28');rr(g,x-45,y-2,90,2,'#7a2a1a')}},
- {n:'TV + kệ',p:20e6,k:'dec',w:72,d:(g,x,y,t)=>{rr(g,x-35,y-16,70,16,'#6a4a2a');rr(g,x-35,y-16,70,2,'#8a6a40');rr(g,x-30,y-56,60,38,'#111');rr(g,x-27,y-53,54,32,'#2a6a9a');rr(g,x-27,y-53+Math.floor((t*18)%30),54,2,'#7ac0e0');rr(g,x-4,y-18,8,2,'#444')}},
- {n:'Bàn làm việc',p:8e6,k:'dec',w:68,d:(g,x,y)=>{rr(g,x-30,y-14,4,14,'#7c4a25');rr(g,x+26,y-14,4,14,'#7c4a25');rr(g,x-32,y-22,64,7,'#a8703a');rr(g,x-12,y-36,24,14,'#333');rr(g,x-10,y-34,20,10,'#7ad0f0');rr(g,x-8,y-22,16,2,'#555')}},
- {n:'Tủ quần áo',p:9e6,k:'dec',w:60,d:(g,x,y)=>{rr(g,x-28,y-86,56,86,'#8a5a30');rr(g,x-28,y-86,56,4,'#a8703a');rr(g,x-1,y-80,2,76,'#5a3a18');rr(g,x-8,y-44,3,7,'#ffd23f');rr(g,x+5,y-44,3,7,'#ffd23f');rr(g,x-28,y-4,56,4,'#5a3a18')}},
- {n:'Kệ sách',p:6e6,k:'dec',w:54,d:(g,x,y)=>{rr(g,x-25,y-80,50,80,'#7c4a25');for(let i=0;i<4;i++){rr(g,x-23,y-76+i*19+14,46,3,'#5a3a18');for(let j=0;j<7;j++)rr(g,x-22+j*6,y-76+i*19+(j%3),5,14-(j%3),['#d94a3a','#3a8ad0','#e8c040','#3aa04a','#a050c0'][(i+j)%5])}}},
- {n:'Đèn cây',p:3e6,k:'dec',w:20,d:(g,x,y)=>{rr(g,x-1,y-70,2,70,'#555');rr(g,x-10,y-86,20,18,'#ffe9a0');rr(g,x-10,y-86,20,3,'#fff4c8');rr(g,x-6,y-3,12,3,'#444')}},
- {n:'Chậu cây',p:2e6,k:'dec',w:26,d:(g,x,y,t)=>{rr(g,x-9,y-14,18,14,'#b0643c');rr(g,x-9,y-14,18,3,'#d0845a');for(let i=0;i<6;i++){const a=-1.2+i*.5,s=Math.sin(t*1.5+i)*1;lineP(g,x,y-14,x+Math.cos(a)*14+s,y-14-Math.sin(a+1.5)*22,'#3aa04a',3)}}},
- {n:'Thảm trải sàn',p:4e6,k:'dec',w:96,fl:1,d:(g,x,y)=>{ellP(g,x,y-6,46,9,'#c0392b');ellP(g,x,y-6,38,7,'#e8b040');ellP(g,x,y-6,26,5,'#c0392b')}},
- {n:'Tranh treo tường',p:5e6,k:'dec',w:56,fl:1,wl:1,d:(g,x,y)=>{rr(g,x-26,y-134,52,40,'#7a4a22');rr(g,x-23,y-131,46,34,'#79b8e8');rr(g,x-23,y-110,46,13,'#4a9a4a');rr(g,x-8,y-124,14,14,'#ff8a3d')}},
- {n:'Điều hòa',p:10e6,k:'dec',w:64,fl:1,wl:1,d:(g,x,y)=>{rr(g,x-30,y-136,60,18,'#f4f4f4');rr(g,x-30,y-136,60,3,'#fff');rr(g,x-26,y-122,52,3,'#bbb');rr(g,x+22,y-132,4,3,'#3f3')}},
- {n:'Lò sưởi',p:30e6,k:'dec',w:74,d:(g,x,y,t)=>{rr(g,x-35,y-70,70,70,'#8a6a5a');rr(g,x-35,y-70,70,4,'#a8887a');rr(g,x-22,y-46,44,46,'#2a1a14');for(let i=0;i<5;i++){const h=10+((Math.sin(t*7+i*2)+1)*7);rr(g,x-16+i*7,y-4-h,6,h,i%2?'#ff8a3d':'#ffd23f')}}},
- {n:'Bể cá',p:35e6,k:'dec',w:84,d:(g,x,y,t)=>{rr(g,x-40,y-12,80,12,'#4a3a2a');rr(g,x-40,y-54,80,42,'#2a7ab0');rr(g,x-40,y-54,80,3,'#7ac8f0');for(let i=0;i<2;i++){const fx=x-34+((t*(14+i*6)+i*30)%68);rr(g,fx,y-40+i*12,7,4,i?'#ff5f6d':'#ff8a3d');rr(g,fx-3,y-39+i*12,3,2,i?'#ff5f6d':'#ff8a3d')}rr(g,x-36,y-16,72,4,'#e8d090')}},
- {n:'Đàn piano',p:60e6,k:'dec',w:84,d:(g,x,y)=>{rr(g,x-40,y-52,80,52,'#1a1a1a');rr(g,x-40,y-56,80,5,'#333');rr(g,x-36,y-30,72,8,'#fff');for(let i=0;i<12;i++)rr(g,x-34+i*6,y-30,2,5,'#111');rr(g,x-36,y-22,72,3,'#bbb');rr(g,x-34,y-12,5,12,'#111');rr(g,x+29,y-12,5,12,'#111')}},
- {n:'Quầy mini bar',p:25e6,k:'dec',w:60,d:(g,x,y)=>{rr(g,x-28,y-56,56,56,'#5a3a2a');rr(g,x-28,y-58,56,4,'#a8703a');rr(g,x-24,y-40,48,34,'#7a4a30');rr(g,x-18,y-72,6,14,'#3a8a4a');rr(g,x-6,y-72,6,14,'#d94a3a');rr(g,x+8,y-72,6,14,'#e8c040')}}
+ {n:'Giường đơn',p:16e6,k:'bed',rg:100/100,w:64,d:(g,x,y)=>vhBedD(g,x,y,60,'#3f8fd0')},
+ {n:'Giường đôi',p:36e6,k:'bed',rg:100/75,w:88,d:(g,x,y)=>vhBedD(g,x,y,84,'#d0507a')},
+ {n:'Giường king',p:80e6,k:'bed',rg:100/55,w:104,d:(g,x,y)=>vhBedD(g,x,y,100,'#8a4ad0',1)},
+ {n:'Bàn ăn',p:24e6,k:'eat',w:84,d:(g,x,y)=>{rr(g,x-36,y-16,5,16,'#7c4a25');rr(g,x+31,y-16,5,16,'#7c4a25');rr(g,x-40,y-26,80,10,'#a8703a');rr(g,x-40,y-26,80,2,'#c98a52');rr(g,x-26,y-30,14,4,'#fff');rr(g,x+12,y-30,14,4,'#fff');rr(g,x-4,y-36,8,8,'#d94a3a');rr(g,x-1,y-39,2,3,'#3a8a3a')}},
+ {n:'Tủ lạnh',p:28e6,k:'fridge',w:40,d:(g,x,y)=>{rr(g,x-18,y-70,36,70,'#e8eef2');rr(g,x-18,y-70,36,3,'#fff');rr(g,x-18,y-42,36,2,'#9aa6b4');rr(g,x+10,y-62,3,12,'#7a8a96');rr(g,x+10,y-34,3,10,'#7a8a96');rr(g,x-18,y-3,36,3,'#9aa6b4')}},
+ {n:'Toilet riêng',p:50e6,k:'wc',w:44,d:(g,x,y)=>{rr(g,x-20,y-52,40,52,'#cfe4ee');rr(g,x-20,y-52,40,3,'#eaf6fb');rr(g,x-10,y-34,20,14,'#f4f4f4');rr(g,x-12,y-20,24,12,'#fff');rr(g,x-12,y-10,24,2,'#d6d6d6');rr(g,x-8,y-8,16,8,'#e0e0e0');rr(g,x+12,y-30,5,3,'#aaa')}},
+ {n:'Sofa',p:30e6,k:'dec',w:94,d:(g,x,y)=>{rr(g,x-45,y-40,90,24,'#b8402a');rr(g,x-45,y-20,90,18,'#d86a50');rr(g,x-50,y-30,8,28,'#a83a28');rr(g,x+42,y-30,8,28,'#a83a28');rr(g,x-2,y-20,2,18,'#a83a28');rr(g,x-45,y-2,90,2,'#7a2a1a')}},
+ {n:'TV + kệ',p:40e6,k:'dec',w:72,d:(g,x,y,t)=>{rr(g,x-35,y-16,70,16,'#6a4a2a');rr(g,x-35,y-16,70,2,'#8a6a40');rr(g,x-30,y-56,60,38,'#111');rr(g,x-27,y-53,54,32,'#2a6a9a');rr(g,x-27,y-53+Math.floor((t*18)%30),54,2,'#7ac0e0');rr(g,x-4,y-18,8,2,'#444')}},
+ {n:'Bàn làm việc',p:16e6,k:'dec',w:68,d:(g,x,y)=>{rr(g,x-30,y-14,4,14,'#7c4a25');rr(g,x+26,y-14,4,14,'#7c4a25');rr(g,x-32,y-22,64,7,'#a8703a');rr(g,x-12,y-36,24,14,'#333');rr(g,x-10,y-34,20,10,'#7ad0f0');rr(g,x-8,y-22,16,2,'#555')}},
+ {n:'Tủ quần áo',p:18e6,k:'dec',w:60,d:(g,x,y)=>{rr(g,x-28,y-86,56,86,'#8a5a30');rr(g,x-28,y-86,56,4,'#a8703a');rr(g,x-1,y-80,2,76,'#5a3a18');rr(g,x-8,y-44,3,7,'#ffd23f');rr(g,x+5,y-44,3,7,'#ffd23f');rr(g,x-28,y-4,56,4,'#5a3a18')}},
+ {n:'Kệ sách',p:12e6,k:'dec',w:54,d:(g,x,y)=>{rr(g,x-25,y-80,50,80,'#7c4a25');for(let i=0;i<4;i++){rr(g,x-23,y-76+i*19+14,46,3,'#5a3a18');for(let j=0;j<7;j++)rr(g,x-22+j*6,y-76+i*19+(j%3),5,14-(j%3),['#d94a3a','#3a8ad0','#e8c040','#3aa04a','#a050c0'][(i+j)%5])}}},
+ {n:'Đèn cây',p:6e6,k:'dec',w:20,d:(g,x,y)=>{rr(g,x-1,y-70,2,70,'#555');rr(g,x-10,y-86,20,18,'#ffe9a0');rr(g,x-10,y-86,20,3,'#fff4c8');rr(g,x-6,y-3,12,3,'#444')}},
+ {n:'Chậu cây',p:4e6,k:'dec',w:26,d:(g,x,y,t)=>{rr(g,x-9,y-14,18,14,'#b0643c');rr(g,x-9,y-14,18,3,'#d0845a');for(let i=0;i<6;i++){const a=-1.2+i*.5,s=Math.sin(t*1.5+i)*1;lineP(g,x,y-14,x+Math.cos(a)*14+s,y-14-Math.sin(a+1.5)*22,'#3aa04a',3)}}},
+ {n:'Thảm trải sàn',p:8e6,k:'dec',w:96,fl:1,d:(g,x,y)=>{ellP(g,x,y-6,46,9,'#c0392b');ellP(g,x,y-6,38,7,'#e8b040');ellP(g,x,y-6,26,5,'#c0392b')}},
+ {n:'Tranh treo tường',p:10e6,k:'dec',w:56,fl:1,wl:1,d:(g,x,y)=>{rr(g,x-26,y-134,52,40,'#7a4a22');rr(g,x-23,y-131,46,34,'#79b8e8');rr(g,x-23,y-110,46,13,'#4a9a4a');rr(g,x-8,y-124,14,14,'#ff8a3d')}},
+ {n:'Điều hòa',p:20e6,k:'dec',w:64,fl:1,wl:1,d:(g,x,y)=>{rr(g,x-30,y-136,60,18,'#f4f4f4');rr(g,x-30,y-136,60,3,'#fff');rr(g,x-26,y-122,52,3,'#bbb');rr(g,x+22,y-132,4,3,'#3f3')}},
+ {n:'Lò sưởi',p:60e6,k:'dec',w:74,d:(g,x,y,t)=>{rr(g,x-35,y-70,70,70,'#8a6a5a');rr(g,x-35,y-70,70,4,'#a8887a');rr(g,x-22,y-46,44,46,'#2a1a14');for(let i=0;i<5;i++){const h=10+((Math.sin(t*7+i*2)+1)*7);rr(g,x-16+i*7,y-4-h,6,h,i%2?'#ff8a3d':'#ffd23f')}}},
+ {n:'Bể cá',p:70e6,k:'dec',w:84,d:(g,x,y,t)=>{rr(g,x-40,y-12,80,12,'#4a3a2a');rr(g,x-40,y-54,80,42,'#2a7ab0');rr(g,x-40,y-54,80,3,'#7ac8f0');for(let i=0;i<2;i++){const fx=x-34+((t*(14+i*6)+i*30)%68);rr(g,fx,y-40+i*12,7,4,i?'#ff5f6d':'#ff8a3d');rr(g,fx-3,y-39+i*12,3,2,i?'#ff5f6d':'#ff8a3d')}rr(g,x-36,y-16,72,4,'#e8d090')}},
+ {n:'Đàn piano',p:120e6,k:'dec',w:84,d:(g,x,y)=>{rr(g,x-40,y-52,80,52,'#1a1a1a');rr(g,x-40,y-56,80,5,'#333');rr(g,x-36,y-30,72,8,'#fff');for(let i=0;i<12;i++)rr(g,x-34+i*6,y-30,2,5,'#111');rr(g,x-36,y-22,72,3,'#bbb');rr(g,x-34,y-12,5,12,'#111');rr(g,x+29,y-12,5,12,'#111')}},
+ {n:'Quầy mini bar',p:50e6,k:'dec',w:60,d:(g,x,y)=>{rr(g,x-28,y-56,56,56,'#5a3a2a');rr(g,x-28,y-58,56,4,'#a8703a');rr(g,x-24,y-40,48,34,'#7a4a30');rr(g,x-18,y-72,6,14,'#3a8a4a');rr(g,x-6,y-72,6,14,'#d94a3a');rr(g,x+8,y-72,6,14,'#e8c040')}}
 ];
 function vhBedD(g,x,y,w,bl,two){const h=w/2;rr(g,x-h,y-40,w,10,'#7c4a25');rr(g,x-h,y-40,w,2,'#a8703a');rr(g,x-h,y-16,w,16,'#7c4a25');rr(g,x-h+2,y-30,w-4,16,'#f6f4ee');
  if(two||w>70){rr(g,x-h+6,y-30,w/2-9,7,'#fff');rr(g,x+3,y-30,w/2-9,7,'#fff')}else rr(g,x-h+8,y-30,w-16,7,'#fff');
@@ -2093,7 +2127,7 @@ function vhInvHtml(d){const R=ROOM,n=VHU.n,cand=Object.values(NET.chars).filter(
  <p style="margin-top:8px"><b>Đang online (${cand.length})</b></p><div class="vhg">${cand.map(c=>{const sent=VHI.at[c.uid]&&Date.now()-VHI.at[c.uid]<20000;return vhCard('',esc(c.name),sent?'đã mời':'online',sent?'ĐÃ MỜI':'MỜI','vinv','data-u="'+c.uid+'"',sent||!NET.on)}).join('')||'<p class="mut">Chưa có ai khác online.</p>'}</div></div>`}
 /* ---- UI nội thất ---- */
 async function vhFPut(n,fl,slot,id){const d=vhDoc(n);if(!d||d.o!==lmMe()||fl>vhFloors(d))return;const key=fl+'_'+slot,cur=(d.fu||{})[key];if(cur!=null&&+cur===id)return;const c=VH_FU[id].p;if(!vhPay(c))return;
- if(!await vhWrite(n,{['fu/'+key]:id,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}coin();if(NET.on)saveState();toast('Đã đặt '+VH_FU[id].n+' · '+VND(c),false,2500);renderVh();if(ROOM&&ROOM.type==='vh'){ROOM.nk=null;vhRoomBar()}}
+ if(!await vhWrite(n,{['fu/'+key]:id,inv:(d.inv||0)+c})){P.money+=c;toast('Máy chủ chưa cho ghi. Đã hoàn tiền.',true);return}vhLog(n,'furn',c,'Nội thất tầng '+fl+' · '+VH_FU[id].n);coin();if(NET.on)saveState();toast('Đã đặt '+VH_FU[id].n+' · '+VND(c),false,2500);renderVh();if(ROOM&&ROOM.type==='vh'){ROOM.nk=null;vhRoomBar()}}
 async function vhFTake(n,fl,slot){const d=vhDoc(n);if(!d||d.o!==lmMe())return;if(ROOM&&ROOM.type==='vh'&&ROOM.sleep){toast('Đang ngủ, dậy rồi hãy dọn đồ.');return}await vhWrite(n,{['fu/'+fl+'_'+slot]:null});renderVh();if(ROOM&&ROOM.type==='vh'){ROOM.nk=null;vhRoomBar()}}
 function vhFurnHtml(d){const fl=Math.min(VHU.fl||1,vhFloors(d)),fu=d.fu||{};VHU.fl=fl;let h=`<div class="vhbox"><p><b>Nội thất bên trong</b> · giường ngủ được ở <b>mọi tầng</b> (cả tầng 1). Giường: ${vhBeds(d)} · Toilet: ${vhHasWc(d)?'có':'chưa'}</p>`;
  h+=`<div class="vhtabs">${[1,2,3].map(f=>`<button class="btn sm ${fl===f?'on':''}" data-act="ffl" data-f="${f}" ${f>vhFloors(d)?'disabled':''}>TẦNG ${f}</button>`).join('')}</div>`;
@@ -7499,7 +7533,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z95';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z96';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

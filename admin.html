@@ -236,6 +236,15 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <div class="row" style="align-items:center"><button class="ok" id="vhGo">MỞ CỬA KHU VILLA</button><span id="vhState"></span><span id="vhMsg"></span></div>
     <div id="vhList" style="margin-top:8px"></div>
    </div>
+   <div class="card" style="margin-top:14px" id="vhMgr">
+    <h2>QUẢN LÝ BĐS VILLA RIÊNG</h2>
+    <p>Quản lý giá đất, giá xây, kiểu nhà, vật phẩm; theo dõi tài sản và lịch sử phát triển từng lô. <b>Giá mới chỉ áp dụng cho giao dịch từ lúc lưu</b>; tiền đã đầu tư của các lô hiện có giữ nguyên.</p>
+    <div id="vhStat" class="tbl" style="margin-bottom:10px"></div>
+    <div class="row" style="gap:6px;flex-wrap:wrap"><button class="ok" id="vhpSave">LƯU BẢNG GIÁ</button><button class="warn" id="vhpReset">KHÔI PHỤC GIÁ MẶC ĐỊNH</button><span id="vhpMsg"></span></div>
+    <div id="vhPrice" style="margin-top:8px"></div>
+    <h3 style="margin-top:14px">TÀI SẢN &amp; LỊCH SỬ TỪNG LÔ</h3>
+    <div id="vhAsset"></div>
+   </div>
    <div class="card" style="margin-top:14px">
     <h2>QUẢN LÝ NPC / BOT RESORT</h2>
     <p>NPC chạy trên máy từng người chơi (không đồng bộ). Thay đổi áp dụng cho mọi máy đang online trong vài giây. <b>Nhân viên</b> mời nước/finger food tặng nhẹ năng lượng. <b>Đại gia</b> đố toán, đúng được thưởng 100k đến 3tr (4 mức độ khó), có xác suất không đố và giới hạn mỗi ngày để tránh lạm phát. <b>Lừa đảo</b> trông như khách thường, lao tới người chơi; không chạy kịp hoặc lỡ chạm vào sẽ mất tiền rồi hắn bỏ chạy.</p>
@@ -402,7 +411,7 @@ db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{pdRender()}catch(e){}});
  db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
- db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{npcFill()}catch(e){}try{vhAdFill()}catch(e){}try{skyFill()}catch(e){}try{ssFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
+ db.ref('config').on('value',s=>{config=s.val()||{};if(!prDirty)renderPrices();renderTst();try{limAct()}catch(e){}try{limRep()}catch(e){}try{maFill()}catch(e){}try{npcFill()}catch(e){}try{vhPriceFill()}catch(e){}try{vhAdFill()}catch(e){}try{skyFill()}catch(e){}try{ssFill()}catch(e){}try{const m=config.lim&&config.lim.dayMax;if(m!=null&&document.activeElement!==$('#limMax'))$('#limMax').value=m}catch(e){}});
 });
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=SB();if(!sb)return;$('#lgo').disabled=true;say('#lmsg','Đang kiểm tra…');
  try{const {data,error}=await sb.rpc('admin_login',{u_name:$('#lu').value,p_word:$('#lp').value});if(error)throw error;if(!data||!data.ok){say('#lmsg',(data&&data.msg)||'Sai username hoặc mật khẩu.',1);$('#lgo').disabled=false;return}
@@ -826,9 +835,44 @@ function vhAdFill(){const on=+(config.vhOpen||0)===1,bt=$('#vhGo');if(!bt)return
 $('#vhGo').onclick=()=>{const on=+(config.vhOpen||0)===1;db.ref('config/vhOpen').set(on?0:1).then(()=>say('#vhMsg',on?' Đã đóng cửa khu villa.':' Đã mở cửa khu villa!')).catch(e=>say('#vhMsg','Lỗi: '+e.message,1))};
 $('#vhList').onclick=e=>{const b=e.target.closest('[data-vhdel]');if(!b)return;const n=b.dataset.vhdel,d=vhAll[n];if(!d)return;const inv=Number(d.inv||0),rf=Math.round(inv*1.2/1000)*1000,vn=x=>Number(x).toLocaleString('vi-VN')+'₫';
  if(!confirm('Thu hồi Lô '+n+' của '+(d.on||'?')+'?\nChủ nhà mất toàn bộ nhà, rào, cổng, trang trí, nội thất.\nĐã đầu tư: '+vn(inv)+'\nHoàn cho chủ: '+vn(rf)+' (gồm +20%).'))return;
- const run=()=>db.ref('vh/'+n).remove().then(()=>say('#vhMsg',' Đã thu hồi Lô '+n+(rf>0?' và hoàn '+vn(rf)+' cho '+(d.on||'chủ nhà')+'.':'.'))).catch(e2=>say('#vhMsg','Lỗi: '+e2.message,1));
+ const run=()=>db.ref('vhlog/'+n+'/'+Date.now()+'_adm').set({u:'admin',on:d.on||'?',t:'revoke',a:rf,x:'Thu hồi, hoàn '+vn(rf),ts:Date.now()}).catch(()=>{}).then(()=>db.ref('vh/'+n).remove()).then(()=>say('#vhMsg',' Đã thu hồi Lô '+n+(rf>0?' và hoàn '+vn(rf)+' cho '+(d.on||'chủ nhà')+'.':'.'))).catch(e2=>say('#vhMsg','Lỗi: '+e2.message,1));
  if(rf>0&&d.o)db.ref('gifts/'+d.o+'/g'+Date.now()).set({amount:rf,ts:TS}).then(run).catch(e2=>say('#vhMsg','Lỗi hoàn tiền, chưa thu hồi: '+e2.message,1));else run()};
-db.ref('vh').on('value',s=>{vhAll=s.val()||{};try{vhAdFill()}catch(e){}});
+const VHCAT={"drop": 10, "land": 840000000, "fl": [1680000000, 2100000000, 2380000000], "st": [["Nhà lá giả nghèo", 100000000], ["Nhà tiền sử", 160000000], ["Nhà ống TPHCM", 240000000], ["Nhà thiên nhiên", 340000000], ["Nhà Nhật Zen", 520000000], ["Biệt thự nhiệt đới", 450000000], ["Cổ điển châu Âu", 700000000], ["Mid-century", 1000000000], ["Hiện đại", 1700000000], ["Tương lai (Futuristic)", 3000000000]], "fu": [["Giường đơn", 16000000, "bed"], ["Giường đôi", 36000000, "bed"], ["Giường king", 80000000, "bed"], ["Bàn ăn", 24000000, "eat"], ["Tủ lạnh", 28000000, "fridge"], ["Toilet riêng", 50000000, "wc"], ["Sofa", 30000000, "dec"], ["TV + kệ", 40000000, "dec"], ["Bàn làm việc", 16000000, "dec"], ["Tủ quần áo", 18000000, "dec"], ["Kệ sách", 12000000, "dec"], ["Đèn cây", 6000000, "dec"], ["Chậu cây", 4000000, "dec"], ["Thảm trải sàn", 8000000, "dec"], ["Tranh treo tường", 10000000, "dec"], ["Điều hòa", 20000000, "dec"], ["Lò sưởi", 60000000, "dec"], ["Bể cá", 70000000, "dec"], ["Đàn piano", 120000000, "dec"], ["Quầy mini bar", 50000000, "dec"]], "it": [["Cây dừa", 6000000, "cay"], ["Cây anh đào", 12000000, "cay"], ["Cây thông", 10000000, "cay"], ["Bonsai", 24000000, "cay"], ["Bụi hoa hồng", 4000000, "cay"], ["Luống hoa", 4000000, "cay"], ["Cây ăn quả (sắp có chức năng)", 16000000, "cay"], ["Hồ cá Koi", 30000000, "nuoc"], ["Đài phun nước", 50000000, "nuoc"], ["Ghế đá", 6000000, "tien"], ["Bàn ô che nắng", 12000000, "tien"], ["Võng thư giãn", 10000000, "tien"], ["Xích đu", 16000000, "tien"], ["Bếp nướng BBQ", 20000000, "tien"], ["Ghế tắm nắng", 12000000, "tien"], ["Đèn vườn", 8000000, "den"], ["Đèn đá Nhật", 14000000, "den"], ["Tượng đá", 36000000, "deco"], ["Hộp thư", 2000000, "deco"], ["Hồ bơi mini", 80000000, "nuoc"]], "fn": [["Không rào", 0], ["Rào gỗ trắng", 6000000], ["Rào tre", 4000000], ["Rào sắt đen", 16000000], ["Tường gạch", 24000000], ["Tường đá cuội", 30000000], ["Rào cây xanh", 18000000], ["Rào kính", 50000000], ["Rào vàng sang trọng", 80000000]], "gn": [["Cổng gỗ", 0], ["Cổng sắt", 12000000], ["Cổng vòm hoa hồng", 20000000], ["Cổng đá & đèn", 36000000], ["Cổng torii", 50000000], ["Cổng điện tử", 70000000]]};
+let vhLogs={};const vhUnit=1e6,vhVn=x=>Number(x||0).toLocaleString('vi-VN')+'₫',vhTm=ts=>{const d=new Date(+ts);return d.toLocaleDateString('vi-VN')+' '+d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})};
+const VHT={buy:'Mua đất',build:'Xây nhà',up:'Nâng tầng',style:'Đổi kiểu nhà',fence:'Hàng rào',gate:'Cổng',decor:'Trang trí ngoài',furn:'Nội thất',return:'Trả đất',revoke:'Admin thu hồi'};
+function vhPriceFill(){const el=$('#vhPrice');if(!el||el.contains(document.activeElement))return;const o=config.vhP||{},cur=(m,i,b)=>{const v=m?m[i]:null;return v!=null&&v!==''&&isFinite(+v)?+v:b};
+ const row=(id,name,base,val,note)=>'<tr><td>'+esc(name)+(note?' <small>'+esc(note)+'</small>':'')+'</td><td>'+vhVn(base)+'</td><td><input type="number" step="0.5" min="0" id="'+id+'" data-b="'+base+'" value="'+(val/vhUnit)+'" style="width:90px"> tr</td><td>'+(val!==base?'<b style="color:#e8a020">'+(val>base?'+':'')+Math.round((val/base-1)*100||0)+'%</b>':'')+'</td></tr>';
+ const sec=(t,rows)=>'<h4 style="margin:10px 0 4px">'+t+'</h4><div class="tbl"><table><tr><th>Mục</th><th>Mặc định</th><th>Giá hiện tại (triệu ₫)</th><th></th></tr>'+rows+'</table></div>';
+ let h=sec('ĐẤT &amp; XÂY TẦNG',row('vhp_land','Giá đất Lô 1 (sát biển, đắt nhất)',VHCAT.land,cur({0:o.land},0,VHCAT.land))+VHCAT.fl.map((b,i)=>row('vhp_fl'+i,'Xây tầng '+(i+1),b,cur(o.fl,i,b))).join(''));
+ h+='<p style="margin:8px 0">Chênh lệch giá đất giữa lô sát biển (Lô 1) và lô trong cùng (Lô 6): <input type="number" step="1" min="0" max="50" id="vhp_drop" data-b="'+VHCAT.drop+'" value="'+cur({0:o.drop},0,VHCAT.drop)+'" style="width:60px"> % (giảm đều từng lô; hiện Lô 6 = '+Math.round(cur({0:o.land},0,VHCAT.land)*(1-cur({0:o.drop},0,VHCAT.drop)/100)/1e6)+' tr)</p>';
+ h+=sec('KIỂU NHÀ (phí chọn / đổi kiểu)',VHCAT.st.map((x,i)=>row('vhp_st'+i,x[0],x[1],cur(o.st,i,x[1]))).join(''));
+ h+=sec('NỘI THẤT TRONG NHÀ',VHCAT.fu.map((x,i)=>row('vhp_fu'+i,x[0],x[1],cur(o.fu,i,x[1]),x[2])).join(''));
+ h+=sec('VẬT PHẨM TRANG TRÍ SÂN VƯỜN',VHCAT.it.map((x,i)=>row('vhp_it'+i,x[0],x[1],cur(o.it,i,x[1]),x[2])).join(''));
+ h+=sec('HÀNG RÀO',VHCAT.fn.map((x,i)=>row('vhp_fn'+i,x[0],x[1],cur(o.fn,i,x[1]))).join(''));
+ h+=sec('CỔNG',VHCAT.gn.map((x,i)=>row('vhp_gn'+i,x[0],x[1],cur(o.gn,i,x[1]))).join(''));
+ const wasOpen=!!el.querySelector('details[open]');el.innerHTML='<details'+(wasOpen?' open':'')+'><summary style="cursor:pointer"><b>BẢNG GIÁ (bấm để mở / thu gọn)</b></summary>'+h+'</details>'}
+function vhPriceCollect(){const o={},rd=(id)=>{const e=$('#'+id);if(!e)return null;const b=+e.dataset.b,v=Math.round(parseFloat(e.value)*vhUnit);if(!isFinite(v)||v<0)return null;return v!==b?v:null};
+ const l=rd('vhp_land');if(l!=null)o.land=l;{const e=$('#vhp_drop');if(e){const v=parseFloat(e.value);if(isFinite(v)&&v>=0&&v!==+e.dataset.b)o.drop=Math.min(50,v)}}
+ const grp=(k,id,n)=>{for(let i=0;i<n;i++){const v=rd(id+i);if(v!=null){o[k]=o[k]||{};o[k][i]=v}}};
+ grp('fl','vhp_fl',3);grp('st','vhp_st',VHCAT.st.length);grp('fu','vhp_fu',VHCAT.fu.length);grp('it','vhp_it',VHCAT.it.length);grp('fn','vhp_fn',VHCAT.fn.length);grp('gn','vhp_gn',VHCAT.gn.length);return o}
+$('#vhpSave').onclick=()=>{const o=vhPriceCollect(),keys=Object.keys(o);const p=keys.length?db.ref('config/vhP').set(o):db.ref('config/vhP').remove();p.then(()=>say('#vhpMsg',keys.length?' Đã lưu bảng giá mới (máy người chơi cập nhật trong vài giây).':' Giá đang là mặc định.')).catch(e=>say('#vhpMsg','Lỗi: '+e.message,1))};
+$('#vhpReset').onclick=()=>{if(!confirm('Khôi phục TOÀN BỘ giá về mặc định?'))return;db.ref('config/vhP').remove().then(()=>{say('#vhpMsg',' Đã khôi phục giá mặc định.');$('#vhPrice').innerHTML='';vhPriceFill()}).catch(e=>say('#vhpMsg','Lỗi: '+e.message,1))};
+function vhValue(d){if(!d)return 0;return Number(d.inv||0)}
+function vhStatFill(){const el=$('#vhStat');if(!el)return;const ids=[1,2,3,4,5,6],own=ids.filter(n=>vhAll[n]),built=own.filter(n=>(vhAll[n].f|0)>0);
+ let inv=0;own.forEach(n=>{inv+=vhValue(vhAll[n])});
+ const st={},fl={0:0,1:0,2:0,3:0},itc={},fuc={};
+ own.forEach(n=>{const d=vhAll[n];fl[d.f|0]=(fl[d.f|0]||0)+1;if((d.f|0)>0)st[d.s|0]=(st[d.s|0]||0)+1;Object.keys(d.it||{}).forEach(k=>{const i=d.it[k];itc[i]=(itc[i]||0)+1});Object.keys(d.fu||{}).forEach(k=>{const i=d.fu[k];fuc[i]=(fuc[i]||0)+1})});
+ const top=(m,cat)=>Object.keys(m).sort((a,b)=>m[b]-m[a]).slice(0,5).map(i=>esc((cat[i]||['?'])[0])+' ×'+m[i]).join(', ')||'—';
+ el.innerHTML='<table><tr><th>Đã bán</th><th>Còn trống</th><th>Đã xây nhà</th><th>Tổng vốn người chơi đã đầu tư</th><th>Tầng 1 / 2 / 3</th></tr><tr><td><b>'+own.length+'/6</b></td><td>'+(6-own.length)+'</td><td>'+built.length+'</td><td><b>'+vhVn(inv)+'</b></td><td>'+(fl[1]||0)+' / '+(fl[2]||0)+' / '+(fl[3]||0)+'</td></tr></table>'+
+ '<p style="margin:6px 0"><b>Kiểu nhà đang dùng:</b> '+top(st,VHCAT.st)+'<br><b>Vật phẩm sân vườn phổ biến:</b> '+top(itc,VHCAT.it)+'<br><b>Nội thất phổ biến:</b> '+top(fuc,VHCAT.fu)+'</p>'}
+function vhAssetFill(){const el=$('#vhAsset');if(!el)return;const open=[...el.querySelectorAll('details[open]')].map(x=>x.dataset.n);
+ el.innerHTML=[1,2,3,4,5,6].map(n=>{const d=vhAll[n],lg=Object.entries(vhLogs[n]||{}).sort((a,b)=>(a[1].ts||0)-(b[1].ts||0)).map(x=>x[1]);
+  let sum='<i>Lô trống</i>';if(d){const it=Object.values(d.it||{}).map(i=>(VHCAT.it[i]||['?'])[0]),fu=Object.values(d.fu||{}).map(i=>(VHCAT.fu[i]||['?'])[0]);
+   sum='<b>'+esc(d.on||'?')+'</b> · '+((d.f|0)>0?(d.f|0)+' tầng, kiểu <b>'+esc((VHCAT.st[d.s|0]||['?'])[0])+'</b>':'chưa xây nhà')+' · rào: '+esc((VHCAT.fn[d.fn|0]||['?'])[0])+' · cổng: '+esc((VHCAT.gn[d.gt|0]||['?'])[0])+' · đã đầu tư <b>'+vhVn(d.inv)+'</b> · mua lúc '+(d.t0?vhTm(d.t0):'?')+'<br><small>Sân vườn ('+it.length+'): '+(it.map(esc).join(', ')||'—')+'<br>Nội thất ('+fu.length+'): '+(fu.map(esc).join(', ')||'—')+'</small>'}
+  const tl=lg.length?'<div class="tbl"><table><tr><th>Thời gian</th><th>Người chơi</th><th>Sự kiện</th><th>Chi tiết</th><th>Số tiền</th></tr>'+lg.map(e=>'<tr><td>'+vhTm(e.ts)+'</td><td>'+esc(e.on||'?')+'</td><td>'+esc(VHT[e.t]||e.t)+'</td><td>'+esc(e.x||'')+'</td><td>'+vhVn(e.a)+'</td></tr>').join('')+'</table></div>':'<small>Chưa có lịch sử (nhật ký chỉ ghi từ khi bản mới được cập nhật &amp; đã chạy SQL).</small>';
+  return '<details data-n="'+n+'"'+(open.includes(String(n))?' open':'')+' style="margin:4px 0"><summary style="cursor:pointer"><b>Lô '+n+'</b> — '+(d?esc(d.on||'?')+' · '+vhVn(d.inv):'trống')+' · '+lg.length+' sự kiện</summary><div style="padding:6px 0 8px 12px">'+sum+'<div style="margin-top:6px">'+tl+'</div></div></details>'}).join('')}
+db.ref('vhlog').on('value',s=>{vhLogs=s.val()||{};try{vhAssetFill()}catch(e){}});
+db.ref('vh').on('value',s=>{vhAll=s.val()||{};try{vhAdFill()}catch(e){}try{vhStatFill();vhAssetFill()}catch(e){}});
 function npcFill(){const c=config.npc||{};NPC_K.forEach(k=>{const el=$('#npc_'+k);if(!el||document.activeElement===el)return;el.value=c[k]!=null&&c[k]!==''?c[k]:NPC_DEF[k]})}
 $('#npcSave').onclick=()=>{const v={};NPC_K.forEach(k=>{const x=+$('#npc_'+k).value;v[k]=Number.isFinite(x)&&x>=0?x:NPC_DEF[k]});v.on=v.on?1:0;['staff','guests','rich','scam'].forEach(k=>{v[k]=Math.round(v[k])});v.staff=Math.min(8,v.staff);v.guests=Math.min(14,v.guests);v.rich=Math.min(4,v.rich);v.scam=Math.min(4,v.scam);v.richChance=Math.min(1,v.richChance);v.enMul=Math.min(3,v.enMul);v.richMul=Math.min(3,v.richMul);v.scamMax=Math.min(1e7,v.scamMax);v.scamMin=Math.min(v.scamMin,v.scamMax);
  db.ref('config/npc').set(v).then(()=>say('#npcMsg','Đã lưu. Các máy đang chơi sẽ cập nhật NPC trong vài giây.')).catch(e=>say('#npcMsg','Lỗi: '+e.message,1))};

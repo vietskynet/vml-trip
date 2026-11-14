@@ -1015,3 +1015,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Lỗi: sau khi đổi layout z94, điểm tương tác của mỗi lô chỉ nằm ở biển giữa lô, còn người chơi đi vào bằng cầu gỗ phía tây (cách ~150px) nên không hiện gợi ý E.
 - Sửa: mỗi lô có thêm vùng tương tác ở giữa cầu, đầu cầu và lối vào lô (ngoài biển giữa lô). Gợi ý ghi rõ "đất trống · nhấn E để mua".
 - Đã test cả 6 lô ở 4 vị trí: đều hiện gợi ý, nhấn E mở bảng, bấm MUA ĐẤT thành công. Không cần chạy SQL.
+
+## z96 – Quản lý BĐS Villa (admin), giá mới ×2, đất giảm dần vào trong, nhà càng đắt càng hoành tráng
+- **Admin → "QUẢN LÝ BĐS VILLA RIÊNG"**: thống kê (đã bán/trống, tổng vốn đầu tư, kiểu nhà & vật phẩm phổ biến), **bảng giá** chỉnh được (đất, 3 tầng, 10 kiểu nhà, 20 nội thất, 20 vật phẩm sân vườn, 9 rào, 6 cổng, % chênh lệch giá đất), nút Lưu / Khôi phục mặc định (ghi `config/vhP`; chỉ ảnh hưởng giao dịch sau khi lưu), và **tài sản + lịch sử từng lô** (đọc `vhlog/{lô}`: mua, xây, nâng tầng, đổi kiểu, rào, cổng, trang trí, nội thất, trả đất, admin thu hồi).
+- Game ghi nhật ký `vhlog/{lô}/{ts}_{id}` mỗi giao dịch (cần chạy lại `sql-cu/supabase-update-villa.sql`; thiếu SQL thì game vẫn chạy, chỉ không có lịch sử).
+- **Giá mới (×2 mọi thứ)**: đất Lô 1 = 840tr, giảm đều tới Lô 6 = −10% (756tr); tầng 1/2/3 = 1,68 / 2,1 / 2,38 tỷ; nội thất, sân vườn, rào, cổng ×2; phí kiểu nhà 100tr → 3 tỷ. Nhà thô 3 tầng: rẻ nhất ≈7,0 tỷ, đắt nhất (Tương lai, Lô 1) = 10 tỷ.
+- **Độ hoành tráng theo giá**: 10 kiểu nhà xếp theo giá kèm ★; càng đắt càng nhiều chi tiết cộng dồn (đá cuội → chậu cây → đèn vườn → luống hoa → tượng sư tử → thảm đỏ/trụ vàng/sao → cây tỉa + đèn rọi → cọ + kính → vành neon + hạt sáng).
