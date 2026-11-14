@@ -358,5 +358,13 @@
 " · pin {1}% (tốn {2}%/trận)": " · battery {1}% (uses {2}%/race)",
 "Pin {1}% — cuộc đua tốn {2}% pin. Hết ổ sạc/ở xa VINH PHÁT? Nạp ngay tại đường đua (giá cao gấp ~5 lần), hoặc dùng xe mượn miễn phí.": "Battery {1}% — a race uses {2}%. No free charger / far from VINH PHAT? Recharge right here at the track (about 5x the price), or use the free loan kart.",
 "Không đủ tiền: nạp {1} + phí vào {2}.": "Not enough money: recharge {1} + entry fee {2}.",
-"Đã nạp đầy pin {1} tại Đường Đua F88 (−{2}, giá cao hơn trạm sạc VINH PHÁT).": "Fully recharged {1} at F88 Race Track (−{2}, pricier than the VINH PHAT charger)."
+"Đã nạp đầy pin {1} tại Đường Đua F88 (−{2}, giá cao hơn trạm sạc VINH PHÁT).": "Fully recharged {1} at F88 Race Track (−{2}, pricier than the VINH PHAT charger).",
+"NẠP ĐẦY OXY · +{1}s · {2}": "FULL O₂ REFILL · +{1}s · {2}",
+"NẠP TỐI ĐA OXY · +{1}s · {2}": "MAX O₂ REFILL · +{1}s · {2}",
+"NẠP 1/2 OXY · +{1}s · {2}": "HALF O₂ REFILL · +{1}s · {2}",
+"🍜 ĂN MÌ HẢI SẢN · +1 mạng +8s oxy · {1}": "🍜 EAT SEAFOOD NOODLES · +1 life +8s oxygen · {1}",
+"🛏 NGHỈ CABIN · hồi đầy mạng (+{1}) · {2}": "🛏 REST IN A CABIN · full lives (+{1}) · {2}",
+"Không đủ tiền nạp oxy (cần ít nhất {1}/giây).": "Not enough money for oxygen (need at least {1}/second).",
+"Ăn mì nóng: +1 mạng +8s oxy · −{1}": "Hot noodles: +1 life +8s oxygen · −{1}",
+"Nghỉ cabin: hồi đầy mạng · −{1}": "Cabin rest: lives fully restored · −{1}"
 }

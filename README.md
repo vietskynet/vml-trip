@@ -881,3 +881,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Online: xe người chơi đã thoát/mất kết nối không còn chặn xe phía sau (bỏ qua va chạm với xe "ma").
 - Xe cá nhân tốn 30% pin mỗi trận (trừ khi bắt đầu). Thiếu pin: nút VÀO ĐUA bị khoá, hiện "NẠP ĐẦY PIN TẠI ĐÂY" (≈5× phí sạc VINH PHÁT, tối thiểu 300.000₫) hoặc dùng xe mượn miễn phí. Xe đang cắm sạc: không đua được. Đua online cũng kiểm tra pin.
 - Không cần chạy SQL.
+
+## 14.11.2026-z71 · Game lặn: style giống game chính, trạm nghỉ & ăn dưới biển, hết giật
+- Giật khi di chuyển: camera trước đây bám theo mỗi khung hình một tỉ lệ cố định nên khi tốc độ khung hình lệch nhịp thì cả cảnh rung. Giờ camera bám theo thời gian thực (đo: độ rung nhân vật trên màn hình 0,54 → 0,04 px/khung). Bỏ rung xoay sprite (lắc đuôi), xoay theo bậc 0,1 rad để pixel không nhấp nháy.
+- Art: mọi sinh vật/vật thể được pixel hoá về lưới 1 điểm ảnh logic + viền đen 1px (giống nhân vật, cây, nhà ở game chính). Nước sáng và nhiều màu hơn, ít tối ở vực sâu, đáy cát sáng hơn.
+- Trạm mới "NGHỈ & ĂN UỐNG DƯỚI BIỂN": vòm kính quán mì với mái hiên sọc san hô, đèn lồng, thực khách cá, cabin ngủ phát Zzz, cột oxy 3 màu, biển hiệu neon nhấp nháy. Bấm E gần trạm: nạp oxy, ăn mì (+1 mạng +8s oxy), nghỉ cabin (hồi đầy mạng). Giá cao hơn 30% giá chuẩn (oxy 3.000×(1+m/80)×1,3 mỗi giây; mì 60.000×…; cabin 110.000×… mỗi mạng).
+- Không cần chạy SQL.
