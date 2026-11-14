@@ -3239,5 +3239,12 @@
 "ĐANG DÙNG": "IN USE",
 "Chưa có": "None",
 "ô": "slots",
-"chứa đồ": "storage"
+"chứa đồ": "storage",
+"XE KHÔNG ĐỦ PIN": "NOT ENOUGH BATTERY",
+"Xe không đủ pin để đua. Nạp pin tại đây hoặc dùng xe mượn.": "Not enough battery to race. Recharge here or use the loan kart.",
+"Xe không đủ pin nên bạn bị loại khỏi trận.": "Your vehicle has no battery, so you were removed from the match.",
+"Xe không đủ pin để đua online. Nạp pin ở menu hoặc chọn xe mượn.": "Not enough battery for online racing. Recharge in the menu or pick the loan kart.",
+"Xe đang cắm sạc ở VINH PHÁT. Lấy xe ra, hoặc chọn xe mượn.": "The vehicle is plugged in at VINH PHAT. Take it out, or pick the loan kart.",
+"Xe đang cắm sạc ở VINH PHÁT. Lấy xe ra hoặc dùng xe mượn.": "The vehicle is plugged in at VINH PHAT. Take it out or use the loan kart.",
+"Xe này không còn trong kho của bạn, đã chuyển sang xe mượn.": "This vehicle is no longer in your garage; switched to the loan kart."
 }

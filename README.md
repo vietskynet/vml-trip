@@ -874,3 +874,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z69 — Tiên cá to hơn, múa trên popup chào mừng
 - Marina & Triton giờ nằm ngay trong popup chào, to cỡ nhân vật người chơi, múa lượn (lắc người, vẫy hai tay, đuôi quẫy, đuôi lấp lánh, bong bóng/sao). Vẫn mặc vest + nơ/cà vạt. Mobile: hai nhân vật nằm hàng trên, thơ ở dưới.
 - Không cần chạy SQL.
+
+## 14.11.2026-z70 · Đua xe: sửa lỗi "không điều khiển được", pin xe cá nhân, nạp năng lượng tại đường đua
+- Nút cảm ứng (◀ ▶ PHANH DÙNG) giờ hiện trên mọi thiết bị có màn hình cảm ứng (trước chỉ khi `pointer:coarse`, nên iPad/laptop cảm ứng/Android chế độ desktop không lái được).
+- Phím theo vị trí (`e.code`): bộ gõ tiếng Việt/kiểu bàn phím khác vẫn lái được bằng A/D/S/W/E/F.
+- Online: xe người chơi đã thoát/mất kết nối không còn chặn xe phía sau (bỏ qua va chạm với xe "ma").
+- Xe cá nhân tốn 30% pin mỗi trận (trừ khi bắt đầu). Thiếu pin: nút VÀO ĐUA bị khoá, hiện "NẠP ĐẦY PIN TẠI ĐÂY" (≈5× phí sạc VINH PHÁT, tối thiểu 300.000₫) hoặc dùng xe mượn miễn phí. Xe đang cắm sạc: không đua được. Đua online cũng kiểm tra pin.
+- Không cần chạy SQL.
