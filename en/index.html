@@ -1963,7 +1963,8 @@ function vhNight(cx,cy,t,nf,vis){if(!vhVis(cx,cy)||nf<.05)return;const g=ctx;if(
 /* ---- tương tác ---- */
 function vhNear(add){
  add(P2(2546,VHG.gy),80,{k:'vhgate',label:VHX.open?'Cổng Khu Villa Riêng · bảo vệ 24/7':'Khu Villa Riêng · sắp khai trương'});
- if(VHX.open)VH_PL.forEach(p=>{const d=vhDoc(p.n);add(P2(p.cx,p.hy+40),60,{k:'vhplot',n:p.n,label:d?(d.o===lmMe()?'Villa của bạn · Lô '+p.n+' · quản lý':'Villa của '+(d.on||'?')+' · Lô '+p.n):'Lô '+p.n+' · đất trống '+VND(VH_LAND)})})}
+ if(VHX.open)VH_PL.forEach(p=>{const d=vhDoc(p.n),o={k:'vhplot',n:p.n,label:d?(d.o===lmMe()?'Villa của bạn · Lô '+p.n+' · quản lý':'Villa của '+(d.on||'?')+' · Lô '+p.n):'Lô '+p.n+' · đất trống · nhấn E để mua'};
+  add(P2(p.cx,p.hy+40),70,o);add(P2(p.x0+14,p.hy+22),70,o);add(P2(p.x0-24,p.hy+22),48,o);add(P2(p.x0+70,p.hy+22),60,o)})}
 function vhGateTalk(){if(!VHX.open){toast('Bảo vệ: Khu Villa Riêng sắp khai trương, xin quý khách quay lại sau!',false,4000);return}toast('Bảo vệ: Khu vực an ninh 24/7. Không có người lạ, không có lừa đảo. Chúc quý khách vui vẻ!',false,4500)}
 /* ---- dữ liệu / hành động ---- */
 const VHU={n:0,tab:'ov',slot:0,arm:null};
@@ -7498,7 +7499,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z94';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z95';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

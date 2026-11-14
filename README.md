@@ -1010,3 +1010,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Khu villa**: 6 lô xếp dọc theo cột phía đông (x 2656–2986, y 480–2000), từ bãi biển vào trong, cách nhau bằng suối ngang. Tường rào + cổng bảo vệ ở phía tây (đường chính y≈1240 dẫn thẳng vào cổng), lối đi lát đá dọc, kênh nước dọc với **6 cầu gỗ**, mỗi cầu vào 1 lô; rào/cổng riêng của lô giờ mở về phía cầu (tây). 10 vị trí trang trí được bố trí lại cho lô 330×205.
 - **Cắt map thừa**: chiều rộng map khi khu mở giảm còn 3010 (trước 3560), bỏ vùng xanh dương bên phải. Địa hình biển/cát/cỏ vẽ liền mạch cho dải 2560–3010 (một canvas duy nhất, nhẹ hơn trước).
 - **Vườn liên minh thu nhỏ**: còn **6 lô** (lô 1,2,5,6,9,10 – nửa trái, 2 cột × 3 hàng), rào bao vừa đủ x 1405–2004, y 1512–2054; thêm rào bên trái. Lô 3,4,7,8,11,12 không còn hiển thị (dữ liệu `lm/` của các lô này, nếu có chủ, vẫn nằm trong DB: admin cần kiểm tra/hoàn tiền thủ công). Không cần SQL.
+
+## z95 – Sửa gợi ý "nhấn E để mua đất" ở Khu Villa
+- Lỗi: sau khi đổi layout z94, điểm tương tác của mỗi lô chỉ nằm ở biển giữa lô, còn người chơi đi vào bằng cầu gỗ phía tây (cách ~150px) nên không hiện gợi ý E.
+- Sửa: mỗi lô có thêm vùng tương tác ở giữa cầu, đầu cầu và lối vào lô (ngoài biển giữa lô). Gợi ý ghi rõ "đất trống · nhấn E để mua".
+- Đã test cả 6 lô ở 4 vị trí: đều hiện gợi ý, nhấn E mở bảng, bấm MUA ĐẤT thành công. Không cần chạy SQL.
