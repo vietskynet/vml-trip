@@ -907,3 +907,11 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Xác tàu đắm: từ 6 lên ~13 chiếc (thêm vị trí ngẫu nhiên, lật trái/phải và đổi cỡ cho đa dạng). Mỗi xác có rương kho báu 70–90%, thêm 25% rương phụ cạnh xác, và rương chôn lẻ rải dọc đáy biển.
 - Giá trị mọi rương ngẫu nhiên 300.000₫ – 2.000.000₫ (Rương của Draken 15 triệu giữ nguyên).
 - Không cần chạy SQL.
+
+## 14.11.2026-z75 · Phượng Hoàng Delulu, đạn riêng cho từng xe, cân bằng kinh tế
+- **Thú cưng huyền thoại "Phượng Hoàng Delulu"** (shop thú cưng, tab Tâm linh, 15.000.000₫): sprite lớn nhiều màu huyền ảo, bay lơ lửng rải bụi tiên. Sống **30 ngày game** (= 30 × CFG.DAY giây thật, tính từ lúc nhận nuôi, lưu ở `players/uid.pho` hoặc localStorage `vmlTripPho`), hết hạn tự bay đi; hiển thị "còn N ngày", hoàn tiền 70% theo tuổi thọ còn lại.
+- **Cưỡi bay**: phím **V** hoặc nút **BAY** (cảm ứng). Bay nhanh ×1.9 đi bộ, xuyên vật cản, bay 10s / hồi 20s. **Ban đêm** chỉ bay 5s, hồi 36s và phát sáng. Không bay vào được **lâu đài** (chặn vùng x∈[CF.x0,CF.x1], y>FENCE_Y). Hết giờ tự hạ cánh, nếu chỗ đáp kẹt thì dời tới ô trống gần nhất. Đang bay không tương tác/vào nhà (bấm V hạ cánh). Người chơi khác thấy trạng thái bay qua cờ `pf` trong `pos/uid`.
+- **Tự tấn công quái**: trong 300px có quái là bắn cầu ma thuật (×6 sát thương, 1,4s/quả) cộng vào `P.mh.n`.
+- **Đồ hoạ đạn xe**: trước đây đạn không vẽ gì. Giờ mỗi xe có đạn + hiệu ứng nổ riêng: Pod laser, Chuột Chũi mũi khoan + bụi đất, Tên Lửa R2 tên lửa + nổ cầu lửa, Bò Tót cầu lửa đôi + sóng xung kích, Tia Chớp sét + điện giật, F1 đạn vệt sáng + tia lửa, Hồ Điệp bụi sao, Kẹo Bông sao cầu vồng + hoa giấy, Cá Mập thủy lôi + nước bắn, Xe Tăng đạn pháo + nổ lớn khói. Đấm tay không có tia "pow".
+- **Cân bằng**: minigame xây lâu đài cấp 3 hệ số thưởng 2,5 → 1,5. Thuyền câu cấp 2: mức kiếm tối thiểu 2,7M → 2,3M, cấp 3: 3,1M → 2,6M; giảm tỉ lệ cá quý/biển lạ.
+- Không cần chạy SQL (trường `pho` là JSON tự do trong `players`).
