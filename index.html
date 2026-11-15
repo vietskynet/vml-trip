@@ -4033,7 +4033,7 @@ function drawVendor(v,x,y,t){const g=ctx;g.fillStyle='rgba(20,30,60,.25)';g.fill
  if(v.say>0&&v.bub)label(v.bub,x,y-36,'#1a1020','#ffffff');else if(dist(P,v)<110)label('VÉ SỐ · '+v.name,x,y-36,'#ffd23f')}
 /* ===== NPC sinh động: nhân viên resort (mời nước / finger food) + khách nghỉ dưỡng nhiều vai. Chạy cục bộ trên máy từng người, KHÔNG đồng bộ, KHÔNG tính vào xếp hạng/minimap ===== */
 function npcCfg(){const c=(NET.config&&NET.config.npc)||{},g=(k,d,lo,hi)=>{const v=c[k];if(v==null||v==='')return d;const x=+v;return Number.isFinite(x)?Math.min(hi,Math.max(lo,x)):d};
- const o={on:g('on',1,0,1),staff:Math.round(g('staff',2,0,8)),guests:Math.round(g('guests',CFG.BOTS>=8?2:4,0,14)),rich:Math.round(g('rich',1,0,4)),scam:Math.round(g('scam',2,0,4)),
+ const o={on:g('on',1,0,1),staff:Math.round(g('staff',1,0,8)),guests:Math.round(g('guests',1,0,14)),rich:Math.round(g('rich',1,0,4)),scam:Math.round(g('scam',2,0,4)),
   enMul:g('enMul',1,0,3),cap:Math.round(g('cap',8,0,50)),cd:Math.round(g('cd',120,10,3600)),
   richCd:Math.round(g('richCd',600,30,7200)),richDay:Math.round(g('richDay',3,0,30)),richChance:g('richChance',.55,0,1),richMul:g('richMul',1,0,3),
   scamMin:Math.round(g('scamMin',100000,0,1e7)),scamMax:Math.round(g('scamMax',1000000,0,1e7)),scamDay:Math.round(g('scamDay',3,0,30)),scamCd:Math.round(g('scamCd',240,20,7200))};

@@ -1084,3 +1084,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z112 — Tượng vàng gà la hét (id 96, 80 triệu)
 - Vật phẩm vẽ động: xoay liên tục (lật ngang theo cos, mặt sau tối hơn) và cứ ~5 giây hét: mở miệng + sóng âm, kèm tiếng kêu (beep trượt tần số) nếu người chơi trong ~230px, to nhỏ theo khoảng cách. Cờ `anim:'spin'` + `d2` (khung mở miệng) trong VH_IT. Không cần SQL.
+
+## z113 — Mùa Noel: nhạc, ông già Noel tặng quà, bớt khách/nhân viên
+- Nhạc nền đổi sang Noel khi `xmOn()` (đến hết 10/1/2027, tắt bằng `config/xmas=0`): Jingle Bells + Deck the Halls, chuông xe trượt tuyết.
+- Ông già Noel cưỡi tuần lộc bay ngang map ngẫu nhiên (80–170s/lượt, thưa hơn nếu đã hết quà), thả quà xuống người chơi gần nhất: tiền 50–300k, +20–45 năng lượng, hoặc item Thương Xá ≤ 3 triệu. Mỗi người tối đa **2 quà/ngày** (ngày lịch theo máy người chơi), lưu `players/{uid}/state/xg`.
+- Giảm NPC: nhân viên resort mặc định 2→1, khách nghỉ dưỡng 2→1, bot offline 16→8 (config/npc của admin vẫn ghi đè). Không cần SQL.
