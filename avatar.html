@@ -2039,6 +2039,10 @@ const VH_ST=[
 ];
 const VH_PL=[...Array(6)].map((_,i)=>{const x0=2656,y0=480+i*263;return{n:i+1,x0,y0,x1:x0+VH_PW,y1:y0+VH_PH,cx:x0+VH_PW/2,hy:y0+150}});
 const VH_SL=[[28,44],[28,90],[28,136],[62,28],[300,44],[300,90],[300,136],[300,182],[262,28],[240,196]];
+/* Bố cục riêng từng kiểu nhà (xuất từ Trình thiết kế bố cục trong admin): VH_LAY[styleId]={h:[dx,dy],s:[[x,y],...]} — chưa khai báo thì dùng mặc định */
+const VH_LAY={};
+function vhSl(sid){const l=VH_LAY[sid];return l&&l.s?l.s:VH_SL}
+function vhHo(sid){const l=VH_LAY[sid];return l&&l.h?l.h:[0,0]}
 const VH_CATS={cay:'Cây & hoa',nuoc:'Hồ & nước',tien:'Tiện ích',den:'Đèn',deco:'Trang trí'};
 const VH_ALL=()=>NET.vhAll||(NET.vhAll={});
 const vhDoc=n=>VH_ALL()[n]||null;
@@ -2110,12 +2114,12 @@ function vhGuards(){if(VHGD)return VHGD;const mkG=(n,x,y)=>{const L=ambLook(fals
 const vhVis=(cx,cy)=>cx+VW>2520;
 function vhList(cx,cy,list){if(!vhVis(cx,cy))return;
  VH_PL.forEach(p=>{if(p.x1<cx-60||p.x0>cx+VW+60||p.y1<cy-20||p.y0>cy+VH+200)return;const d=vhDoc(p.n);
-  if(d&&d.f>0)list.push({vh:1,k:'h',p,d,base:p.hy});else list.push({vh:1,k:'s',p,d,base:p.hy});
-  if(d){if((d.fn>0)||(d.gt>0))list.push({vh:1,k:'g',p,d,base:p.hy+36});const it=d.it||{};for(const s in it){const id=+it[s],sl=VH_SL[+s];if(sl&&VH_IT[id])list.push({vh:1,k:'i',p,d,id,s:+s,x:p.x0+sl[0],y:p.y0+sl[1],base:p.y0+sl[1]})}}});
+  if(d&&d.f>0)list.push({vh:1,k:'h',p,d,base:p.hy+vhHo(d.s)[1]});else list.push({vh:1,k:'s',p,d,base:p.hy});
+  if(d){if((d.fn>0)||(d.gt>0))list.push({vh:1,k:'g',p,d,base:p.hy+36});const it=d.it||{};for(const s in it){const id=+it[s],sl=vhSl(d.s)[+s];if(sl&&VH_IT[id])list.push({vh:1,k:'i',p,d,id,s:+s,x:p.x0+sl[0],y:p.y0+sl[1],base:p.y0+sl[1]})}}});
  list.push({vh:1,k:'gate',base:VHG.gy+30});
  try{vhGuards().forEach(c=>{if(c.x>cx-40&&c.x<cx+VW+40&&c.y>cy-40&&c.y<cy+VH+60)list.push({am:c,base:c.y})})}catch(e){}}
 function drawVhObj(o,cx,cy,t){const g=ctx;
- if(o.k==='h'){const h=vhHouse(o.d.s,o.d.f),x=Math.round(o.p.cx-cx),y=Math.round(o.p.hy-cy);g.drawImage(h.c,x-h.ox,y-h.oy);const dd=dist(P,{x:o.p.cx,y:o.p.hy+40});if(dd<190)label((o.d.on?'VILLA '+o.d.on:'Lô '+o.p.n),x,y-(h.c.height-20)-2,'#fff3a0','rgba(40,30,70,.88)');return}
+ if(o.k==='h'){const h=vhHouse(o.d.s,o.d.f),ho=vhHo(o.d.s),x=Math.round(o.p.cx+ho[0]-cx),y=Math.round(o.p.hy+ho[1]-cy);g.drawImage(h.c,x-h.ox,y-h.oy);const dd=dist(P,{x:o.p.cx,y:o.p.hy+40});if(dd<190)label((o.d.on?'VILLA '+o.d.on:'Lô '+o.p.n),x,y-(h.c.height-20)-2,'#fff3a0','rgba(40,30,70,.88)');return}
  if(o.k==='s'){const x=Math.round(o.p.cx-cx),y=Math.round(o.p.hy-cy);if(o.d){rr(g,x-30,y-4,60,10,'#c9b88a');rr(g,x-30,y-4,60,2,'#e4d6ae');for(let k=-2;k<=2;k++)rr(g,x+k*12-1,y-12,3,8,'#8a5a2a');rr(g,x-24,y-18,48,10,'#a07a40');ptext(g,'ĐANG XÂY',x,y-10,8,'#fff','center','monospace','#000')}else{
    rr(g,x-1,y-26,3,28,'#6e4a28');rr(g,x-24,y-44,48,22,'#fff3d0');rr(g,x-24,y-44,48,2,'#d6334a');rr(g,x-24,y-24,48,2,'#d6334a');rr(g,x-24,y-44,2,22,'#d6334a');rr(g,x+22,y-44,2,22,'#d6334a');ptext(g,'LÔ '+o.p.n,x,y-33,9,'#8a1f2c','center','monospace',null);ptext(g,'ĐẤT TRỐNG',x,y-25,7,'#2a2a34','center','monospace',null);for(const q of[[-40,-6],[40,-6],[-40,-30],[40,-30]]){rr(g,x+q[0]-1,y+q[1],3,10,'#d6334a');rr(g,x+q[0]-1,y+q[1],3,2,'#fff')}if(dist(P,{x:o.p.cx,y:o.p.y1})<120)label(VND(VH_LAND)+' · bấm để mua',x,y-48,'#ffe9a8','rgba(40,30,70,.88)')}return}
  if(o.k==='g'){const s=vhGate(o.d.gt|0);g.drawImage(s.c,Math.round(o.p.x0-cx)-s.ox,Math.round(o.p.hy+36-cy)-s.oy);return}
@@ -2133,7 +2137,7 @@ function vhGround(cx,cy,t){if(!vhVis(cx,cy))return;const g=ctx;
 let VGL=null;
 function vhNight(cx,cy,t,nf,vis){if(!vhVis(cx,cy)||nf<.05)return;const g=ctx;if(!VGL){const [c,q]=mk(64,64),gr=q.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,'rgba(255,225,150,.95)');gr.addColorStop(.5,'rgba(255,190,90,.35)');gr.addColorStop(1,'rgba(255,170,60,0)');q.fillStyle=gr;q.fillRect(0,0,64,64);VGL=c}
  const a=Math.min(1,nf*1.2);VHNL.forEach(([x,y])=>{if(x<cx-80||x>cx+VW+80||y<cy-80||y>cy+VH+80)return;g.globalAlpha=a*.7;g.drawImage(VGL,Math.round(x-cx-24),Math.round(y-cy-24),48,48)});
- VH_PL.forEach(p=>{const d=vhDoc(p.n);if(!d)return;if(p.x1<cx-100||p.x0>cx+VW+100||p.y1<cy-60||p.y0>cy+VH+200)return;if(d.f>0){g.globalAlpha=a*.55;g.drawImage(VGL,Math.round(p.cx-cx-70),Math.round(p.hy-cy-90),140,120)}const it=d.it||{};for(const s in it){if(VH_IT[+it[s]]&&VH_IT[+it[s]].lamp){const sl=VH_SL[+s];g.globalAlpha=a*.8;g.drawImage(VGL,Math.round(p.x0+sl[0]-cx-24),Math.round(p.y0+sl[1]-cy-48),48,48)}}});g.globalAlpha=1}
+ VH_PL.forEach(p=>{const d=vhDoc(p.n);if(!d)return;if(p.x1<cx-100||p.x0>cx+VW+100||p.y1<cy-60||p.y0>cy+VH+200)return;if(d.f>0){g.globalAlpha=a*.55;g.drawImage(VGL,Math.round(p.cx-cx-70),Math.round(p.hy-cy-90),140,120)}const it=d.it||{};for(const s in it){if(VH_IT[+it[s]]&&VH_IT[+it[s]].lamp){const sl=vhSl(d.s)[+s];if(!sl)continue;g.globalAlpha=a*.8;g.drawImage(VGL,Math.round(p.x0+sl[0]-cx-24),Math.round(p.y0+sl[1]-cy-48),48,48)}}});g.globalAlpha=1}
 /* ---- tương tác ---- */
 function vhNear(add){
  add(P2(2546,VHG.gy),80,{k:'vhgate',label:VHX.open?'Cổng Khu Villa Riêng · bảo vệ 24/7':'Khu Villa Riêng · sắp khai trương'});
@@ -2180,7 +2184,7 @@ function renderVh(){const el=$('#vhBody');if(!el)return;const n=VHU.n,d=vhDoc(n)
   else if(VHU.tab==='fence'){h+=`<div class="vhbox"><p><b>Hàng rào</b></p><div class="vhg">${VH_FN.map((f,i)=>vhCard(vhCv('f:'+i,110,64),esc(f.n),f.p?VND(f.p):'Miễn phí',(d.fn|0)===i?'ĐANG DÙNG':'CHỌN','fg','data-kd="f" data-i="'+i+'"',(d.fn|0)===i||P.money<f.p)).join('')}</div><p style="margin-top:8px"><b>Cổng</b> (hiện khi có rào hoặc đã chọn cổng khác cổng gỗ)</p><div class="vhg">${VH_GN.map((f,i)=>vhCard(vhCv('g:'+i,64,56),esc(f.n),f.p?VND(f.p):'Miễn phí',(d.gt|0)===i?'ĐANG DÙNG':'CHỌN','fg','data-kd="g" data-i="'+i+'"',(d.gt|0)===i||P.money<f.p)).join('')}</div></div>`}
   else if(VHU.tab==='inv'){h+=vhInvHtml(d)}
   else if(VHU.tab==='furn'){h+=d.f>0?vhFurnHtml(d):'<div class="vhbox"><p>Xây nhà trước rồi mới mua nội thất được.</p></div>'}
-  else if(VHU.tab==='garden'){const it=d.it||{};h+=`<div class="vhbox"><p><b>10 vị trí quanh vườn</b> — chọn vị trí rồi chọn món (mua mới sẽ thay món cũ)</p><div class="vhslots">${VH_SL.map((q,i)=>{const id=it[i];return `<button class="vhs ${VHU.slot===i?'on':''}" data-act="slot" data-s="${i}">${i+1}${id!=null&&VH_IT[+id]?'<br><small>'+esc(VH_IT[+id].n)+'</small>':'<br><small>trống</small>'}</button>`}).join('')}</div>
+  else if(VHU.tab==='garden'){const it=d.it||{};h+=`<div class="vhbox"><p><b>${vhSl(d.s).length} vị trí quanh vườn</b> — chọn vị trí rồi chọn món (mua mới sẽ thay món cũ)</p><div class="vhslots">${vhSl(d.s).map((q,i)=>{const id=it[i];return `<button class="vhs ${VHU.slot===i?'on':''}" data-act="slot" data-s="${i}">${i+1}${id!=null&&VH_IT[+id]?'<br><small>'+esc(VH_IT[+id].n)+'</small>':'<br><small>trống</small>'}</button>`}).join('')}</div>
    ${it[VHU.slot]!=null?`<button class="btn sm" data-act="take" data-s="${VHU.slot}">GỠ MÓN Ở VỊ TRÍ ${VHU.slot+1} (không hoàn tiền)</button>`:''}
    ${Object.keys(VH_CATS).map(ck=>`<p style="margin:8px 0 2px"><b>${VH_CATS[ck]}</b> <small>(bộ chung)</small></p><div class="vhg">${VH_IT.map((q,i)=>q.c===ck?vhCard(vhCv('i:'+i,64,64),esc(q.n),VND(q.p),'ĐẶT VÀO VỊ TRÍ '+(VHU.slot+1),'put','data-i="'+i+'"',P.money<q.p||(it[VHU.slot]!=null&&+it[VHU.slot]===i)):'').join('')}</div>`).join('')}
    ${d.f>0?`<p style="margin:10px 0 2px;color:#ffd23f"><b>★ BỘ ĐẶC BIỆT · ${esc(VH_ST[d.s].n)}</b> <small>(chỉ dành riêng cho kiểu nhà này)</small></p><div class="vhg">${VH_IT.map((q,i)=>q.sp===d.s?vhCard(vhCv('i:'+i,64,64),esc(q.n),VND(q.p),'ĐẶT VÀO VỊ TRÍ '+(VHU.slot+1),'put','data-i="'+i+'"',P.money<q.p||(it[VHU.slot]!=null&&+it[VHU.slot]===i)):'').join('')}</div>`:'<p class="mut">Xây nhà để mở bộ trang trí đặc biệt theo kiểu nhà.</p>'}</div>`}
@@ -7678,7 +7682,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z100';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z101';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

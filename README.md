@@ -1039,3 +1039,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Bộ chung**: 20 món sân vườn cũ (cây, hồ & nước, tiện ích, đèn, trang trí) — mọi nhà đều mua được.
 - **Bộ đặc biệt**: 14 kiểu nhà × 4 món = 56 món vẽ riêng theo theme (vd Nhà lá: lửa trại/giàn phơi cá/chum nước/cối giã gạo; Nhật Zen: torii/vườn cát/shishi-odoshi/thông niwaki; Kawaii: kẹo mút/gấu bông/xích đu tim/cầu trượt cầu vồng; Dubai: lạc đà vàng/lều Bedouin/đèn lồng Ả Rập/đài phun vàng...). Chỉ mua/đặt được khi nhà **đã xây và đúng kiểu** (`VH_IT[].sp`); kiểu nhà không đổi được nên không lẫn bộ. Giá tăng theo hạng kiểu nhà (≈36tr → ≈550tr/món).
 - Game: tab "VƯỜN & TRANG TRÍ" có mục "★ BỘ ĐẶC BIỆT · <kiểu nhà>"; bảng kiểu nhà (đất trống & tab NHÀ) liệt kê tên bộ riêng. Admin: bảng giá vật phẩm gồm 76 món, nhóm "★ Đặc biệt · <kiểu nhà>". Không cần SQL.
+
+## z101 — Trình thiết kế bố cục villa (admin)
+- Admin › SỰ KIỆN › QUẢN LÝ BĐS VILLA: nút mở `index.html?vhdesign=1`. Chọn kiểu nhà + 1/2/3 tầng, kéo nhà trên đất, vẽ khung slot (chế độ VẼ KHUNG), kéo thả vật phẩm từ bảng vào khung, chỉnh số/phím mũi tên, lưới snap. Bản nháp lưu localStorage; XUẤT JSON gửi lại để hard-code.
+- Game đã hỗ trợ `VH_LAY[styleId]={h:[dx,dy],s:[[x,y],...]}` (mặc định rỗng = bố cục cũ). Không cần SQL.

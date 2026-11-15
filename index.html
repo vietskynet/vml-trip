@@ -2042,6 +2042,10 @@ const VH_ST=[
 ];
 const VH_PL=[...Array(6)].map((_,i)=>{const x0=2656,y0=480+i*263;return{n:i+1,x0,y0,x1:x0+VH_PW,y1:y0+VH_PH,cx:x0+VH_PW/2,hy:y0+150}});
 const VH_SL=[[28,44],[28,90],[28,136],[62,28],[300,44],[300,90],[300,136],[300,182],[262,28],[240,196]];
+/* Bố cục riêng từng kiểu nhà (xuất từ Trình thiết kế bố cục trong admin): VH_LAY[styleId]={h:[dx,dy],s:[[x,y],...]} — chưa khai báo thì dùng mặc định */
+const VH_LAY={};
+function vhSl(sid){const l=VH_LAY[sid];return l&&l.s?l.s:VH_SL}
+function vhHo(sid){const l=VH_LAY[sid];return l&&l.h?l.h:[0,0]}
 const VH_CATS={cay:'Cây & hoa',nuoc:'Hồ & nước',tien:'Tiện ích',den:'Đèn',deco:'Trang trí'};
 const VH_ALL=()=>NET.vhAll||(NET.vhAll={});
 const vhDoc=n=>VH_ALL()[n]||null;
@@ -2113,12 +2117,12 @@ function vhGuards(){if(VHGD)return VHGD;const mkG=(n,x,y)=>{const L=ambLook(fals
 const vhVis=(cx,cy)=>cx+VW>2520;
 function vhList(cx,cy,list){if(!vhVis(cx,cy))return;
  VH_PL.forEach(p=>{if(p.x1<cx-60||p.x0>cx+VW+60||p.y1<cy-20||p.y0>cy+VH+200)return;const d=vhDoc(p.n);
-  if(d&&d.f>0)list.push({vh:1,k:'h',p,d,base:p.hy});else list.push({vh:1,k:'s',p,d,base:p.hy});
-  if(d){if((d.fn>0)||(d.gt>0))list.push({vh:1,k:'g',p,d,base:p.hy+36});const it=d.it||{};for(const s in it){const id=+it[s],sl=VH_SL[+s];if(sl&&VH_IT[id])list.push({vh:1,k:'i',p,d,id,s:+s,x:p.x0+sl[0],y:p.y0+sl[1],base:p.y0+sl[1]})}}});
+  if(d&&d.f>0)list.push({vh:1,k:'h',p,d,base:p.hy+vhHo(d.s)[1]});else list.push({vh:1,k:'s',p,d,base:p.hy});
+  if(d){if((d.fn>0)||(d.gt>0))list.push({vh:1,k:'g',p,d,base:p.hy+36});const it=d.it||{};for(const s in it){const id=+it[s],sl=vhSl(d.s)[+s];if(sl&&VH_IT[id])list.push({vh:1,k:'i',p,d,id,s:+s,x:p.x0+sl[0],y:p.y0+sl[1],base:p.y0+sl[1]})}}});
  list.push({vh:1,k:'gate',base:VHG.gy+30});
  try{vhGuards().forEach(c=>{if(c.x>cx-40&&c.x<cx+VW+40&&c.y>cy-40&&c.y<cy+VH+60)list.push({am:c,base:c.y})})}catch(e){}}
 function drawVhObj(o,cx,cy,t){const g=ctx;
- if(o.k==='h'){const h=vhHouse(o.d.s,o.d.f),x=Math.round(o.p.cx-cx),y=Math.round(o.p.hy-cy);g.drawImage(h.c,x-h.ox,y-h.oy);const dd=dist(P,{x:o.p.cx,y:o.p.hy+40});if(dd<190)label((o.d.on?'VILLA '+o.d.on:'Lô '+o.p.n),x,y-(h.c.height-20)-2,'#fff3a0','rgba(40,30,70,.88)');return}
+ if(o.k==='h'){const h=vhHouse(o.d.s,o.d.f),ho=vhHo(o.d.s),x=Math.round(o.p.cx+ho[0]-cx),y=Math.round(o.p.hy+ho[1]-cy);g.drawImage(h.c,x-h.ox,y-h.oy);const dd=dist(P,{x:o.p.cx,y:o.p.hy+40});if(dd<190)label((o.d.on?'VILLA '+o.d.on:'Lô '+o.p.n),x,y-(h.c.height-20)-2,'#fff3a0','rgba(40,30,70,.88)');return}
  if(o.k==='s'){const x=Math.round(o.p.cx-cx),y=Math.round(o.p.hy-cy);if(o.d){rr(g,x-30,y-4,60,10,'#c9b88a');rr(g,x-30,y-4,60,2,'#e4d6ae');for(let k=-2;k<=2;k++)rr(g,x+k*12-1,y-12,3,8,'#8a5a2a');rr(g,x-24,y-18,48,10,'#a07a40');ptext(g,'ĐANG XÂY',x,y-10,8,'#fff','center','monospace','#000')}else{
    rr(g,x-1,y-26,3,28,'#6e4a28');rr(g,x-24,y-44,48,22,'#fff3d0');rr(g,x-24,y-44,48,2,'#d6334a');rr(g,x-24,y-24,48,2,'#d6334a');rr(g,x-24,y-44,2,22,'#d6334a');rr(g,x+22,y-44,2,22,'#d6334a');ptext(g,'LÔ '+o.p.n,x,y-33,9,'#8a1f2c','center','monospace',null);ptext(g,'ĐẤT TRỐNG',x,y-25,7,'#2a2a34','center','monospace',null);for(const q of[[-40,-6],[40,-6],[-40,-30],[40,-30]]){rr(g,x+q[0]-1,y+q[1],3,10,'#d6334a');rr(g,x+q[0]-1,y+q[1],3,2,'#fff')}if(dist(P,{x:o.p.cx,y:o.p.y1})<120)label(VND(VH_LAND)+' · bấm để mua',x,y-48,'#ffe9a8','rgba(40,30,70,.88)')}return}
  if(o.k==='g'){const s=vhGate(o.d.gt|0);g.drawImage(s.c,Math.round(o.p.x0-cx)-s.ox,Math.round(o.p.hy+36-cy)-s.oy);return}
@@ -2136,7 +2140,7 @@ function vhGround(cx,cy,t){if(!vhVis(cx,cy))return;const g=ctx;
 let VGL=null;
 function vhNight(cx,cy,t,nf,vis){if(!vhVis(cx,cy)||nf<.05)return;const g=ctx;if(!VGL){const [c,q]=mk(64,64),gr=q.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,'rgba(255,225,150,.95)');gr.addColorStop(.5,'rgba(255,190,90,.35)');gr.addColorStop(1,'rgba(255,170,60,0)');q.fillStyle=gr;q.fillRect(0,0,64,64);VGL=c}
  const a=Math.min(1,nf*1.2);VHNL.forEach(([x,y])=>{if(x<cx-80||x>cx+VW+80||y<cy-80||y>cy+VH+80)return;g.globalAlpha=a*.7;g.drawImage(VGL,Math.round(x-cx-24),Math.round(y-cy-24),48,48)});
- VH_PL.forEach(p=>{const d=vhDoc(p.n);if(!d)return;if(p.x1<cx-100||p.x0>cx+VW+100||p.y1<cy-60||p.y0>cy+VH+200)return;if(d.f>0){g.globalAlpha=a*.55;g.drawImage(VGL,Math.round(p.cx-cx-70),Math.round(p.hy-cy-90),140,120)}const it=d.it||{};for(const s in it){if(VH_IT[+it[s]]&&VH_IT[+it[s]].lamp){const sl=VH_SL[+s];g.globalAlpha=a*.8;g.drawImage(VGL,Math.round(p.x0+sl[0]-cx-24),Math.round(p.y0+sl[1]-cy-48),48,48)}}});g.globalAlpha=1}
+ VH_PL.forEach(p=>{const d=vhDoc(p.n);if(!d)return;if(p.x1<cx-100||p.x0>cx+VW+100||p.y1<cy-60||p.y0>cy+VH+200)return;if(d.f>0){g.globalAlpha=a*.55;g.drawImage(VGL,Math.round(p.cx-cx-70),Math.round(p.hy-cy-90),140,120)}const it=d.it||{};for(const s in it){if(VH_IT[+it[s]]&&VH_IT[+it[s]].lamp){const sl=vhSl(d.s)[+s];if(!sl)continue;g.globalAlpha=a*.8;g.drawImage(VGL,Math.round(p.x0+sl[0]-cx-24),Math.round(p.y0+sl[1]-cy-48),48,48)}}});g.globalAlpha=1}
 /* ---- tương tác ---- */
 function vhNear(add){
  add(P2(2546,VHG.gy),80,{k:'vhgate',label:VHX.open?'Cổng Khu Villa Riêng · bảo vệ 24/7':'Khu Villa Riêng · sắp khai trương'});
@@ -2183,7 +2187,7 @@ function renderVh(){const el=$('#vhBody');if(!el)return;const n=VHU.n,d=vhDoc(n)
   else if(VHU.tab==='fence'){h+=`<div class="vhbox"><p><b>Hàng rào</b></p><div class="vhg">${VH_FN.map((f,i)=>vhCard(vhCv('f:'+i,110,64),esc(f.n),f.p?VND(f.p):'Miễn phí',(d.fn|0)===i?'ĐANG DÙNG':'CHỌN','fg','data-kd="f" data-i="'+i+'"',(d.fn|0)===i||P.money<f.p)).join('')}</div><p style="margin-top:8px"><b>Cổng</b> (hiện khi có rào hoặc đã chọn cổng khác cổng gỗ)</p><div class="vhg">${VH_GN.map((f,i)=>vhCard(vhCv('g:'+i,64,56),esc(f.n),f.p?VND(f.p):'Miễn phí',(d.gt|0)===i?'ĐANG DÙNG':'CHỌN','fg','data-kd="g" data-i="'+i+'"',(d.gt|0)===i||P.money<f.p)).join('')}</div></div>`}
   else if(VHU.tab==='inv'){h+=vhInvHtml(d)}
   else if(VHU.tab==='furn'){h+=d.f>0?vhFurnHtml(d):'<div class="vhbox"><p>Xây nhà trước rồi mới mua nội thất được.</p></div>'}
-  else if(VHU.tab==='garden'){const it=d.it||{};h+=`<div class="vhbox"><p><b>10 vị trí quanh vườn</b> — chọn vị trí rồi chọn món (mua mới sẽ thay món cũ)</p><div class="vhslots">${VH_SL.map((q,i)=>{const id=it[i];return `<button class="vhs ${VHU.slot===i?'on':''}" data-act="slot" data-s="${i}">${i+1}${id!=null&&VH_IT[+id]?'<br><small>'+esc(VH_IT[+id].n)+'</small>':'<br><small>trống</small>'}</button>`}).join('')}</div>
+  else if(VHU.tab==='garden'){const it=d.it||{};h+=`<div class="vhbox"><p><b>${vhSl(d.s).length} vị trí quanh vườn</b> — chọn vị trí rồi chọn món (mua mới sẽ thay món cũ)</p><div class="vhslots">${vhSl(d.s).map((q,i)=>{const id=it[i];return `<button class="vhs ${VHU.slot===i?'on':''}" data-act="slot" data-s="${i}">${i+1}${id!=null&&VH_IT[+id]?'<br><small>'+esc(VH_IT[+id].n)+'</small>':'<br><small>trống</small>'}</button>`}).join('')}</div>
    ${it[VHU.slot]!=null?`<button class="btn sm" data-act="take" data-s="${VHU.slot}">GỠ MÓN Ở VỊ TRÍ ${VHU.slot+1} (không hoàn tiền)</button>`:''}
    ${Object.keys(VH_CATS).map(ck=>`<p style="margin:8px 0 2px"><b>${VH_CATS[ck]}</b> <small>(bộ chung)</small></p><div class="vhg">${VH_IT.map((q,i)=>q.c===ck?vhCard(vhCv('i:'+i,64,64),esc(q.n),VND(q.p),'ĐẶT VÀO VỊ TRÍ '+(VHU.slot+1),'put','data-i="'+i+'"',P.money<q.p||(it[VHU.slot]!=null&&+it[VHU.slot]===i)):'').join('')}</div>`).join('')}
    ${d.f>0?`<p style="margin:10px 0 2px;color:#ffd23f"><b>★ BỘ ĐẶC BIỆT · ${esc(VH_ST[d.s].n)}</b> <small>(chỉ dành riêng cho kiểu nhà này)</small></p><div class="vhg">${VH_IT.map((q,i)=>q.sp===d.s?vhCard(vhCv('i:'+i,64,64),esc(q.n),VND(q.p),'ĐẶT VÀO VỊ TRÍ '+(VHU.slot+1),'put','data-i="'+i+'"',P.money<q.p||(it[VHU.slot]!=null&&+it[VHU.slot]===i)):'').join('')}</div>`:'<p class="mut">Xây nhà để mở bộ trang trí đặc biệt theo kiểu nhà.</p>'}</div>`}
@@ -7681,7 +7685,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z100';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z101';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -9356,6 +9360,82 @@ fontsReady.then(()=>new Promise(r=>setTimeout(r,30))).then(async()=>{buildGrid()
  if(SBX){await new Promise(r=>setTimeout(r,1200));if(testIsMe()){testBoot();AUTOGO=true}else try{sessionStorage.removeItem('vmlSandbox')}catch(e){}}
  newGame();running=false;P.x=880;P.y=560;$('#startBtn').disabled=false;$('#startBtn').textContent='VÀO RESORT';requestAnimationFrame(loop);
  if(AUTOGO){$('#startOv').classList.remove('auto');enterResort();const rs=()=>{try{audio&&audio.state==='suspended'&&audio.resume()}catch(e){}};addEventListener('pointerdown',rs,{once:true});addEventListener('keydown',rs,{once:true})}});
+/* ===== TRÌNH THIẾT KẾ BỐ CỤC VILLA (?vhdesign=1) — dùng đúng hình nhà/vật phẩm thật của game ===== */
+function vhDesigner(){
+ const K=3,PW=VH_PW,PH=VH_PH,HX=Math.round(PW/2),HY=150,KEY='vhDesignV1';
+ let D={};try{D=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+ const st={sid:0,fl:3,sel:-1,mode:'move',snap:4,grid:true,def:true};
+ const lay=sid=>{if(!D[sid]){D[sid]={h:[(VH_LAY[sid]&&VH_LAY[sid].h||[0,0])[0],(VH_LAY[sid]&&VH_LAY[sid].h||[0,0])[1]],s:VH_SL.map(q=>({x:q[0],y:q[1],w:30,h:26,i:null}))};if(VH_LAY[sid]&&VH_LAY[sid].s)D[sid].s=VH_LAY[sid].s.map(q=>({x:q[0],y:q[1],w:30,h:26,i:null}))}return D[sid]};
+ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+ const ov=document.createElement('div');ov.id='vhDz';
+ ov.style.cssText='position:fixed;inset:0;z-index:99999;background:#1b1f2a;color:#e8ecf4;font:14px/1.35 monospace;display:flex;gap:10px;padding:10px;overflow:hidden';
+ ov.innerHTML=`<style>#vhDz button,#vhDz select,#vhDz input,#vhDz textarea{font:inherit;background:#2c3345;color:#fff;border:2px solid #4a5370;padding:4px 8px;cursor:pointer}#vhDz button.on{background:#ffd23f;color:#000;border-color:#fff}#vhDz .pal{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-height:230px;overflow:auto;margin:4px 0}#vhDz .pal div{background:#2c3345;border:2px solid #4a5370;padding:2px;text-align:center;font-size:10px;cursor:grab}#vhDz .pal div:hover{border-color:#ffd23f}#vhDz h4{margin:8px 0 3px;color:#ffd23f}#vhDz .r{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin:4px 0}#vhDz .sl{display:flex;gap:4px;align-items:center;font-size:12px;padding:2px 4px;border:1px solid #3a4260;cursor:pointer}#vhDz .sl.on{background:#3a4a7a}#vhDz input[type=number]{width:54px}</style>
+ <div style="flex:1 1 auto;overflow:auto;min-width:0"><div class="r"><b style="color:#ffd23f">THIẾT KẾ BỐ CỤC VILLA</b><button id="dzx">THOÁT</button></div><canvas id="dzc" width="${PW*K}" height="${PH*K}" style="border:3px solid #000;image-rendering:pixelated;cursor:crosshair;background:#6cb35a;max-width:100%"></canvas><div id="dzi" style="margin-top:4px;font-size:12px;color:#aab"></div></div>
+ <div style="flex:0 0 400px;overflow:auto;height:100%"><div class="r">Kiểu nhà <select id="dzs"></select></div>
+ <div class="r">Số tầng <button data-f="1">1</button><button data-f="2">2</button><button data-f="3">3</button></div>
+ <div class="r">Chế độ <button data-m="move">DỜI / CHỌN</button><button data-m="draw">VẼ KHUNG SLOT</button></div>
+ <div class="r">Lưới <input type="number" id="dzg" value="4" min="1" max="20"> <button id="dzgr">LƯỚI</button><button id="dzdf">VẠCH MẶC ĐỊNH</button></div>
+ <div class="r">Nhà: dx <input type="number" id="dzhx"> dy <input type="number" id="dzhy"> <button id="dzh0">VỀ GỐC</button></div>
+ <h4>SLOT (khung)</h4><div id="dzl"></div>
+ <div class="r">Slot chọn: x <input type="number" id="dzx1"> y <input type="number" id="dzy1"> rộng <input type="number" id="dzw"> cao <input type="number" id="dzh"> <button id="dzdel">XOÁ</button><button id="dzclr">GỠ MÓN</button></div>
+ <h4>VẬT PHẨM — kéo thả vào khung</h4><div id="dzp"></div>
+ <h4>XUẤT / NHẬP</h4><div class="r"><button id="dzex">XUẤT JSON (kiểu này)</button><button id="dzea">XUẤT TẤT CẢ</button><button id="dzim">NHẬP</button><button id="dzrs">RESET KIỂU NÀY</button></div><textarea id="dzt" rows="7" style="width:100%" placeholder="JSON xuất ra hiện ở đây — copy gửi lại cho Claude"></textarea></div>`;
+ document.body.appendChild(ov);const q=s=>ov.querySelector(s),cv=q('#dzc'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
+ const sel=q('#dzs');VH_ORD.forEach(i=>{const o=document.createElement('option');o.value=i;o.textContent=VH_ST[i].n;sel.appendChild(o)});sel.value=st.sid;
+ const sn=v=>Math.round(v/st.snap)*st.snap,L=()=>lay(st.sid);
+ function pal(){const sid=st.sid;let h='';for(const ck in VH_CATS){h+=`<small>${VH_CATS[ck]}</small><div class="pal">${VH_IT.map((t,i)=>t.c===ck?`<div draggable="true" data-i="${i}"><canvas width="64" height="64" data-i="${i}"></canvas><br>${esc(t.n)}</div>`:'').join('')}</div>`}
+  h+=`<small style="color:#ffd23f">★ Đặc biệt kiểu này</small><div class="pal">${VH_IT.map((t,i)=>t.sp===sid?`<div draggable="true" data-i="${i}"><canvas width="64" height="64" data-i="${i}"></canvas><br>${esc(t.n)}</div>`:'').join('')}</div>`;
+  q('#dzp').innerHTML=h;q('#dzp').querySelectorAll('canvas').forEach(c=>{const s=vhItem(+c.dataset.i);c.getContext('2d').drawImage(s.c,0,0)});
+  q('#dzp').querySelectorAll('[draggable]').forEach(d=>d.ondragstart=e=>{e.dataTransfer.setData('text/plain',d.dataset.i)})}
+ function list(){const l=L();q('#dzl').innerHTML=l.s.map((s,i)=>`<div class="sl ${i===st.sel?'on':''}" data-i="${i}">#${i+1} (${s.x},${s.y}) ${s.w}×${s.h} ${s.i!=null?'· '+esc(VH_IT[s.i].n):'· trống'}</div>`).join('')||'<small>Chưa có slot — bấm VẼ KHUNG SLOT rồi kéo trên đất</small>';
+  q('#dzl').querySelectorAll('.sl').forEach(d=>d.onclick=()=>{st.sel=+d.dataset.i;ui()});
+  const s=l.s[st.sel];['x1','y1','w','h'].forEach(k=>{const e=q('#dz'+k);e.disabled=!s;e.value=s?s[{x1:'x',y1:'y',w:'w',h:'h'}[k]]:''});q('#dzhx').value=l.h[0];q('#dzhy').value=l.h[1]}
+ function draw(){const l=L();g.clearRect(0,0,cv.width,cv.height);g.fillStyle='#6cb35a';g.fillRect(0,0,cv.width,cv.height);
+  g.fillStyle='#62a851';for(let y=0;y<PH;y+=8)for(let x=((y/8)%2)*8;x<PW;x+=16)g.fillRect(x*K,y*K,8*K,8*K);
+  if(st.grid){g.strokeStyle='rgba(255,255,255,.14)';g.lineWidth=1;for(let x=0;x<=PW;x+=st.snap*2){g.beginPath();g.moveTo(x*K+.5,0);g.lineTo(x*K+.5,PH*K);g.stroke()}for(let y=0;y<=PH;y+=st.snap*2){g.beginPath();g.moveTo(0,y*K+.5);g.lineTo(PW*K,y*K+.5);g.stroke()}}
+  g.strokeStyle='#fff';g.setLineDash([6,4]);g.strokeRect(1,1,PW*K-2,PH*K-2);g.setLineDash([]);
+  const ob=[];const hh=vhHouse(st.sid,st.fl),hx=HX+l.h[0],hy=HY+l.h[1];ob.push({b:hy,f:()=>g.drawImage(hh.c,(hx-hh.ox)*K,(hy-hh.oy)*K,hh.c.width*K,hh.c.height*K)});
+  l.s.forEach(s=>{if(s.i!=null&&VH_IT[s.i]){const t=vhItem(s.i);ob.push({b:s.y,f:()=>g.drawImage(t.c,(s.x-t.ox)*K,(s.y-t.oy)*K,t.c.width*K,t.c.height*K)})}});
+  ob.sort((a,b)=>a.b-b.b).forEach(o=>o.f());
+  if(st.def){g.strokeStyle='#ff5';g.lineWidth=1;const dx=HX*K,dy=HY*K;g.beginPath();g.moveTo(dx-8,dy);g.lineTo(dx+8,dy);g.moveTo(dx,dy-8);g.lineTo(dx,dy+8);g.stroke()}
+  g.strokeStyle='#0ff';g.beginPath();g.moveTo(hx*K-7,hy*K);g.lineTo(hx*K+7,hy*K);g.moveTo(hx*K,hy*K-7);g.lineTo(hx*K,hy*K+7);g.stroke();
+  l.s.forEach((s,i)=>{const x=(s.x-s.w/2)*K,y=(s.y-s.h)*K,on=i===st.sel;g.lineWidth=on?3:2;g.strokeStyle=on?'#ffd23f':'#ff5ad0';g.setLineDash(s.i!=null?[]:[5,3]);g.strokeRect(x,y,s.w*K,s.h*K);g.setLineDash([]);g.fillStyle=on?'rgba(255,210,63,.18)':'rgba(255,90,208,.12)';g.fillRect(x,y,s.w*K,s.h*K);g.fillStyle='#fff';g.font='bold 13px monospace';g.fillText(i+1,x+3,y+13);g.fillStyle=on?'#ffd23f':'#ff5ad0';g.fillRect(s.x*K-3,s.y*K-3,6,6);if(on)g.fillRect(x+s.w*K-5,y-4,9,9)});
+  q('#dzi').textContent=`Kiểu: ${VH_ST[st.sid].n} · ${st.fl} tầng · điểm neo nhà (${l.h[0]>=0?'+':''}${l.h[0]}, ${l.h[1]>=0?'+':''}${l.h[1]}) so với gốc · chấm vàng = neo mặc định, chữ thập xanh = neo hiện tại · khung hồng = slot (món đứng ở đáy-giữa khung)`}
+ function ui(){list();draw();document.querySelectorAll('#vhDz [data-f]').forEach(b=>b.classList.toggle('on',+b.dataset.f===st.fl));document.querySelectorAll('#vhDz [data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===st.mode));save()}
+ const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*cv.width/r.width/K,(e.clientY-r.top)*cv.height/r.height/K]};
+ const hitSlot=(px,py)=>{const l=L();for(let i=l.s.length-1;i>=0;i--){const s=l.s[i];if(px>=s.x-s.w/2&&px<=s.x+s.w/2&&py>=s.y-s.h&&py<=s.y)return i}return -1};
+ const hitHouse=(px,py)=>{const l=L(),h=vhHouse(st.sid,st.fl),x=HX+l.h[0]-h.ox,y=HY+l.h[1]-h.oy;if(px<x||py<y||px>=x+h.c.width||py>=y+h.c.height)return false;try{const c=document.createElement('canvas');c.width=1;c.height=1;const t=c.getContext('2d');t.drawImage(h.c,Math.floor(px-x),Math.floor(py-y),1,1,0,0,1,1);return t.getImageData(0,0,1,1).data[3]>10}catch(e){return true}};
+ let drag=null;
+ cv.onpointerdown=e=>{const[px,py]=pos(e),l=L();cv.setPointerCapture(e.pointerId);
+  if(st.mode==='draw'){drag={t:'new',x0:sn(px),y0:sn(py)};l.s.push({x:drag.x0,y:drag.y0,w:4,h:4,i:null});st.sel=l.s.length-1;ui();return}
+  const sIdx=st.sel>=0?l.s[st.sel]:null;if(sIdx&&Math.abs(px-(sIdx.x+sIdx.w/2))<4&&Math.abs(py-(sIdx.y-sIdx.h))<4){drag={t:'rs'};return}
+  const hs=hitSlot(px,py);if(hs>=0){st.sel=hs;const s=l.s[hs];drag={t:'mv',dx:px-s.x,dy:py-s.y};ui();return}
+  if(hitHouse(px,py)){st.sel=-1;drag={t:'h',dx:px-(HX+l.h[0]),dy:py-(HY+l.h[1])};ui();return}
+  st.sel=-1;ui()};
+ cv.onpointermove=e=>{if(!drag)return;const[px,py]=pos(e),l=L();
+  if(drag.t==='new'){const s=l.s[st.sel],x1=sn(px),y1=sn(py);s.w=Math.max(4,Math.abs(x1-drag.x0));s.h=Math.max(4,Math.abs(y1-drag.y0));s.x=Math.round((x1+drag.x0)/2);s.y=Math.max(y1,drag.y0)}
+  else if(drag.t==='mv'){const s=l.s[st.sel];s.x=sn(px-drag.dx);s.y=sn(py-drag.dy)}
+  else if(drag.t==='rs'){const s=l.s[st.sel];s.w=Math.max(4,sn((px-s.x)*2));s.h=Math.max(4,sn(s.y-py))}
+  else if(drag.t==='h'){l.h=[sn(px-drag.dx)-HX,sn(py-drag.dy)-HY]}
+  draw();list()};
+ cv.onpointerup=()=>{if(drag&&drag.t==='new'){const s=L().s[st.sel];if(s.w<=4&&s.h<=4){s.w=30;s.h=26}}drag=null;ui()};
+ cv.ondragover=e=>e.preventDefault();
+ cv.ondrop=e=>{e.preventDefault();const id=+e.dataTransfer.getData('text/plain'),[px,py]=pos(e);let h=hitSlot(px,py);const l=L();if(h<0){let bd=1e9;l.s.forEach((s,i)=>{const d=Math.hypot(px-s.x,py-(s.y-s.h/2));if(d<bd&&d<40){bd=d;h=i}})}if(h>=0){l.s[h].i=id;st.sel=h}ui()};
+ q('#dzx').onclick=()=>ov.remove();
+ sel.onchange=()=>{st.sid=+sel.value;st.sel=-1;pal();ui()};
+ ov.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{st.fl=+b.dataset.f;ui()});ov.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{st.mode=b.dataset.m;ui()});
+ q('#dzg').onchange=e=>{st.snap=Math.max(1,+e.target.value||4);ui()};q('#dzgr').onclick=()=>{st.grid=!st.grid;draw()};q('#dzdf').onclick=()=>{st.def=!st.def;draw()};
+ const fld=(id,k)=>q(id).onchange=e=>{const s=L().s[st.sel];if(s){s[k]=+e.target.value;ui()}};fld('#dzx1','x');fld('#dzy1','y');fld('#dzw','w');fld('#dzh','h');
+ q('#dzhx').onchange=e=>{L().h[0]=+e.target.value||0;ui()};q('#dzhy').onchange=e=>{L().h[1]=+e.target.value||0;ui()};q('#dzh0').onclick=()=>{L().h=[0,0];ui()};
+ q('#dzdel').onclick=()=>{if(st.sel>=0){L().s.splice(st.sel,1);st.sel=-1;ui()}};q('#dzclr').onclick=()=>{const s=L().s[st.sel];if(s){s.i=null;ui()}};
+ addEventListener('keydown',e=>{if(!ov.isConnected||/INPUT|TEXTAREA|SELECT/.test((e.target||{}).tagName||''))return;if((e.key==='Delete'||e.key==='Backspace')&&st.sel>=0){L().s.splice(st.sel,1);st.sel=-1;ui()}const s=st.sel>=0&&L().s[st.sel],a={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(a){e.preventDefault();if(s){s.x+=a[0];s.y+=a[1]}else{L().h[0]+=a[0];L().h[1]+=a[1]}ui()}});
+ const ex=sid=>{const l=lay(sid);return{name:VH_ST[sid].n,h:[l.h[0],l.h[1]],s:l.s.map(s=>({x:s.x,y:s.y,w:s.w,h:s.h,item:s.i}))}};
+ q('#dzex').onclick=()=>{q('#dzt').value=JSON.stringify({vhLayout:{[st.sid]:ex(st.sid)}});q('#dzt').select()};
+ q('#dzea').onclick=()=>{const o={};Object.keys(D).forEach(k=>o[k]=ex(+k));q('#dzt').value=JSON.stringify({vhLayout:o});q('#dzt').select()};
+ q('#dzim').onclick=()=>{try{const o=JSON.parse(q('#dzt').value).vhLayout;for(const k in o)D[k]={h:o[k].h,s:o[k].s.map(s=>({x:s.x,y:s.y,w:s.w,h:s.h,i:s.item==null?null:s.item}))};ui()}catch(e){alert('JSON không hợp lệ')}};
+ q('#dzrs').onclick=()=>{delete D[st.sid];st.sel=-1;ui()};
+ window.__dz={st,D,lay,ui};pal();ui()}
+if(/[?&]vhdesign=1/.test(location.search))setTimeout(()=>{try{vhDesigner()}catch(e){console.error(e)}},300);
 })();
 </script>
 </body>
