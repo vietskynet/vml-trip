@@ -1121,3 +1121,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **10 loại giường**, thời gian hồi đầy 0→100% từ 30s đến 3s, giá tăng theo tốc độ: đơn 30s/48tr, tầng 26s/72tr, đôi 22s/108tr, mây 18s/160tr, king 15s/240tr, nệm nước 12s/340tr, hoàng gia 9s/520tr, từ tính 6s/800tr, vàng 4s/1,2 tỷ, mây thần tiên 3s/2 tỷ (giường đơn/đôi/king cũ được đổi tốc độ cho khớp thang mới).
 - **Bảng tên diecut:** tối đa 15 ký tự, 8 kiểu (vàng, inox, neon hồng, neon xanh, gỗ, đen viền vàng, đồng cổ, cầu vồng), 5tr mỗi lần lưu, lưu ở `vh/{lô}/pl`, đặt trước nhà.
 - **Nút VỀ NHÀ** trong MENU: dịch chuyển tới cửa villa, cooldown 10 phút (lưu localStorage). Không cần SQL.
+
+## z121 · 8 xe đặc biệt + đẩy xe + giảm phạt
+- Xe mới (VINH PHÁT): Tank Top (V2, chậm ×1.05, bắn cực mạnh), Sầu Riêng (V2, rớt sầu riêng, bắn sầu riêng), Ba Gác (V1), Honda Vision (V1), Đám Mây Tinh Hoa (V3, miễn kháng tông, không súng), Nải Chuối Cau (V2, bắn chuối, ×3 vs Khỉ Đột), Bus Phương Trang (V3, bay, pin cháy ×6 khi bay, tông đền ×3), Ghế Massage Di Động (V2, hồi năng lượng, không gây thương).
+- Xuống xe đẩy bộ (phím X / nút): tốc độ .6 như hết pin, không tông ai, không bắn; đồng bộ mạng cờ `vp`.
+- Phạt tông cao nhất giảm 20tr → 15tr.
+- Không cần chạy SQL.
