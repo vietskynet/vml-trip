@@ -1142,3 +1142,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Lỗi: đỗ xe vào ổ sạc (máy chủ ghi nhận) nhưng lưu nhân vật bị bỏ lỡ (tab/máy bị khoá), máy kia vẫn thấy xe "đang lái", không lấy ra được.
 - Sửa: `avDockCheck` đồng bộ ngược từ ổ sạc trên máy chủ (mỗi 6 giây và mỗi lần ổ sạc đổi): nếu ổ của mình có xe mà nhân vật chưa ghi nhận thì gắn lại dock, bỏ trạng thái đang lái, nút LẤY XE hoạt động.
 - Không cần SQL.
+
+## z125 · Sửa giao diện điện thoại
+- Bấm nhiều trên màn hình không còn hiện popup Copy/Writing Tools (chặn chọn chữ, menu giữ, double-tap ngoài ô nhập).
+- Ẩn huy hiệu "Powered by Netlify" che nút bấm (nếu còn: tắt trong Netlify > Site configuration).
+- Không cần SQL.
