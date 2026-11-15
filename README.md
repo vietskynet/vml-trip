@@ -1034,3 +1034,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z99 – Thêm 4 kiểu nhà: Kawaii, Avant-garde, Tổng tài Hàn Quốc, Luxury Dubai
 - 4 kiểu nhà vẽ procedural đủ 3 tầng (id 10–13), giá tầm trung → cao (tổng xây 3 tầng): Kawaii pastel 6,4 tỷ (nhà bánh kem, mái cupcake, tim, cầu vồng), Avant-garde 7,6 tỷ (hộp lệch tầng, console vươn, thanh chống chéo, mảnh mái đỏ-đen), Tổng tài Hàn Quốc 8,3 tỷ (đen-vàng, kính lớn, sân đáp trực thăng, hoa anh đào, xe sang), Luxury Dubai 9,0 tỷ (cung điện cát-vàng, vòm hành vàng, tháp đôi, lưới mashrabiya). Đắt nhất vẫn là Tương lai (đất Lô 1 + xây = 10 tỷ).
 - 14 kiểu nhà xếp theo giá kèm ★ (thang 14 bậc); lớp trang trí ngoài nhà (`VH_FXL`) tách khỏi thứ hạng giá, vành neon chỉ dành cho Tương lai. Có bảng màu nội thất riêng cho 4 kiểu. Admin tự cập nhật danh mục kiểu nhà. Không cần SQL.
+
+## z100 – Bộ trang trí đặc biệt theo kiểu nhà + bộ trang trí chung
+- **Bộ chung**: 20 món sân vườn cũ (cây, hồ & nước, tiện ích, đèn, trang trí) — mọi nhà đều mua được.
+- **Bộ đặc biệt**: 14 kiểu nhà × 4 món = 56 món vẽ riêng theo theme (vd Nhà lá: lửa trại/giàn phơi cá/chum nước/cối giã gạo; Nhật Zen: torii/vườn cát/shishi-odoshi/thông niwaki; Kawaii: kẹo mút/gấu bông/xích đu tim/cầu trượt cầu vồng; Dubai: lạc đà vàng/lều Bedouin/đèn lồng Ả Rập/đài phun vàng...). Chỉ mua/đặt được khi nhà **đã xây và đúng kiểu** (`VH_IT[].sp`); kiểu nhà không đổi được nên không lẫn bộ. Giá tăng theo hạng kiểu nhà (≈36tr → ≈550tr/món).
+- Game: tab "VƯỜN & TRANG TRÍ" có mục "★ BỘ ĐẶC BIỆT · <kiểu nhà>"; bảng kiểu nhà (đất trống & tab NHÀ) liệt kê tên bộ riêng. Admin: bảng giá vật phẩm gồm 76 món, nhóm "★ Đặc biệt · <kiểu nhà>". Không cần SQL.
