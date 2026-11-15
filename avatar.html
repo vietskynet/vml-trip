@@ -2048,7 +2048,7 @@ const VH_SL=[[28,44],[28,90],[28,136],[62,28],[300,44],[300,90],[300,136],[300,1
 /* VH_LAY.M = MASTER LAYOUT chung cho mọi kiểu nhà; kiểu nào có VH_LAY[id] riêng thì dùng riêng. Bố cục riêng từng kiểu nhà (xuất từ Trình thiết kế bố cục trong admin): VH_LAY[styleId]={h:[dx,dy],s:[[x,y],...]} — chưa khai báo thì dùng mặc định */
 const VH_LAY={M:{h:[39,-2],
  /* 14 slot vật phẩm [x,y(đáy),w,h] — thiết kế bằng Trình thiết kế bố cục (số 1–9, 11–15) */
- s:[[32,44,32,26],[32,80,32,26],[32,116,32,26],[88,56,56,36],[300,40,30,26],[300,80,30,26],[300,120,30,26],[300,160,30,26],[300,196,30,26],[80,196,36,28],[128,196,36,28],[172,196,40,28],[32,196,32,28],[236,196,76,28]],
+ s:[[32,44,30,26],[32,80,30,26],[32,116,30,26],[88,56,56,36],[300,40,30,26],[300,80,30,26],[300,120,30,26],[300,160,30,26],[300,196,30,26],[80,196,36,28],[128,196,36,28],[172,196,40,28],[32,196,32,28],[238,196,76,28]],
  /* khu VƯỜN (slot số 10): [x,y,w,h] — sau này trồng nhiều loại vườn/cây chức năng */
  g:[60,68,56,76]}};
 function vhSl(sid){const l=VH_LAY[sid],m=VH_LAY.M;return l&&l.s?l.s:m&&m.s?m.s:VH_SL}
@@ -7718,7 +7718,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z107';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z108';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

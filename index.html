@@ -2051,7 +2051,7 @@ const VH_SL=[[28,44],[28,90],[28,136],[62,28],[300,44],[300,90],[300,136],[300,1
 /* VH_LAY.M = MASTER LAYOUT chung cho mọi kiểu nhà; kiểu nào có VH_LAY[id] riêng thì dùng riêng. Bố cục riêng từng kiểu nhà (xuất từ Trình thiết kế bố cục trong admin): VH_LAY[styleId]={h:[dx,dy],s:[[x,y],...]} — chưa khai báo thì dùng mặc định */
 const VH_LAY={M:{h:[39,-2],
  /* 14 slot vật phẩm [x,y(đáy),w,h] — thiết kế bằng Trình thiết kế bố cục (số 1–9, 11–15) */
- s:[[32,44,32,26],[32,80,32,26],[32,116,32,26],[88,56,56,36],[300,40,30,26],[300,80,30,26],[300,120,30,26],[300,160,30,26],[300,196,30,26],[80,196,36,28],[128,196,36,28],[172,196,40,28],[32,196,32,28],[236,196,76,28]],
+ s:[[32,44,30,26],[32,80,30,26],[32,116,30,26],[88,56,56,36],[300,40,30,26],[300,80,30,26],[300,120,30,26],[300,160,30,26],[300,196,30,26],[80,196,36,28],[128,196,36,28],[172,196,40,28],[32,196,32,28],[238,196,76,28]],
  /* khu VƯỜN (slot số 10): [x,y,w,h] — sau này trồng nhiều loại vườn/cây chức năng */
  g:[60,68,56,76]}};
 function vhSl(sid){const l=VH_LAY[sid],m=VH_LAY.M;return l&&l.s?l.s:m&&m.s?m.s:VH_SL}
@@ -7721,7 +7721,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z107';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z108';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -9411,7 +9411,7 @@ function vhDesigner(){
  ov.style.cssText='position:fixed;inset:0;z-index:99999;background:#1b1f2a;color:#e8ecf4;font:14px/1.35 monospace;display:flex;gap:10px;padding:10px;overflow:hidden';
  ov.innerHTML=`<style>#vhDz button,#vhDz select,#vhDz input,#vhDz textarea{font:inherit;background:#2c3345;color:#fff;border:2px solid #4a5370;padding:4px 8px;cursor:pointer}#vhDz button.on{background:#ffd23f;color:#000;border-color:#fff}#vhDz .pal{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-height:230px;overflow:auto;margin:4px 0}#vhDz .pal div{background:#2c3345;border:2px solid #4a5370;padding:2px;text-align:center;font-size:10px;cursor:grab}#vhDz .pal div:hover{border-color:#ffd23f}#vhDz h4{margin:8px 0 3px;color:#ffd23f}#vhDz .r{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin:4px 0}#vhDz .sl{display:flex;gap:4px;align-items:center;font-size:12px;padding:2px 4px;border:1px solid #3a4260;cursor:pointer}#vhDz .sl.on{background:#3a4a7a}#vhDz input[type=number]{width:54px}</style>
  <div style="flex:1 1 auto;overflow:auto;min-width:0"><div class="r"><b style="color:#ffd23f">THIẾT KẾ BỐ CỤC VILLA</b><button id="dzx">THOÁT</button></div><canvas id="dzc" width="${PW*K}" height="${PH*K}" style="border:3px solid #000;image-rendering:pixelated;cursor:crosshair;background:#6cb35a;max-width:100%"></canvas><div id="dzi" style="margin-top:4px;font-size:12px;color:#aab"></div></div>
- <div style="flex:0 0 400px;overflow:auto;height:100%"><div class="r">Nhà xem thử <select id="dzs"></select></div>
+ <div style="flex:0 0 400px;overflow:auto;height:100%"><div class="r" style="position:sticky;top:0;background:#1b1f2a;z-index:2;padding:4px 0;border-bottom:2px solid #ffd23f"><button id="dzdl" class="on">💾 TẢI FILE JSON</button><button id="dzcp">📋 COPY JSON</button><button id="dzfi">📂 NHẬP FILE</button><input type="file" id="dzfile" accept=".json,application/json" style="display:none"></div><div class="r">Nhà xem thử <select id="dzs"></select></div>
  <div class="r">Sửa <button data-e="M">MASTER LAYOUT (chung mọi nhà)</button><button data-e="S">RIÊNG KIỂU NÀY</button><button id="dzuse">DÙNG MASTER</button></div><div id="dze" style="font-size:12px;color:#8fd"></div>
  <div class="r">Số tầng <button data-f="1">1</button><button data-f="2">2</button><button data-f="3">3</button></div>
  <div class="r">Chế độ <button data-m="move">DỜI / CHỌN</button><button data-m="draw">VẼ KHUNG SLOT</button></div>
@@ -9480,6 +9480,10 @@ function vhDesigner(){
  q('#dzex').onclick=()=>{const k=st.ed==='M'?'M':st.sid;q('#dzt').value=JSON.stringify({vhLayout:{[k]:ex(k)}});q('#dzt').select()};
  q('#dzea').onclick=()=>{const o={};Object.keys(D).forEach(k=>o[k]=ex(k==='M'?'M':+k));q('#dzt').value=JSON.stringify({vhLayout:o});q('#dzt').select()};
  q('#dzim').onclick=()=>{try{const o=JSON.parse(q('#dzt').value).vhLayout;for(const k in o)D[k]={_own:1,h:o[k].h,s:o[k].s.map(s=>({x:s.x,y:s.y,w:s.w,h:s.h,i:s.item==null?null:s.item,g:s.garden?1:undefined}))};ui()}catch(e){alert('JSON không hợp lệ')}};
+ const allJ=()=>{const o={};Object.keys(D).forEach(k=>o[k]=ex(k==='M'?'M':+k));if(!o.M)o.M=ex('M');return JSON.stringify({vhLayout:o},null,1)};
+ q('#dzdl').onclick=()=>{const t=allJ();q('#dzt').value=t;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'application/json'}));a.download='vh-layout.json';document.body.appendChild(a);a.click();a.remove()};
+ q('#dzcp').onclick=()=>{const t=allJ();q('#dzt').value=t;q('#dzt').select();try{navigator.clipboard.writeText(t).then(()=>{q('#dzcp').textContent='✔ ĐÃ COPY'},()=>document.execCommand('copy'))}catch(e){document.execCommand('copy')}};
+ q('#dzfi').onclick=()=>q('#dzfile').click();q('#dzfile').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{q('#dzt').value=t;q('#dzim').click()})};
  q('#dzrs').onclick=()=>{delete D[st.ed==='M'?'M':st.sid];st.sel=-1;ui()};
  window.__dz={st,D,lay,ui};pal();ui()}
 if(/[?&]vhdesign=1/.test(location.search))setTimeout(()=>{try{vhDesigner()}catch(e){console.error(e)}},300);

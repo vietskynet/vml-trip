@@ -1066,3 +1066,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - `VH_LAY.M` hard-code theo thiết kế của admin: nhà dời (+39,−2), **14 slot vật phẩm** (`[x,y,w,h]`), và **khu VƯỜN** `g:[60,68,56,76]` (slot số 10) — nền đất canh tác + biển VƯỜN vẽ sẵn mỗi lô; loại vườn/cây chức năng sẽ bổ sung sau.
 - Cửa nhà/lối đi/va chạm/bóng đèn dời theo vị trí nhà master (`vhMo`). Trình thiết kế có nút VƯỜN để đánh dấu khung vườn, nạp sẵn master hiện tại.
 - Lưu ý: slot cũ 0–9 đã đổi chỗ, vật phẩm đã gắn vẫn giữ chỉ số nhưng nằm ở vị trí slot mới. Không cần SQL.
+
+## z108 — Xuất file JSON rõ ràng + master khớp JSON admin
+- Trình thiết kế: thanh nút cố định trên cùng bên phải: 💾 TẢI FILE JSON (vh-layout.json), 📋 COPY JSON, 📂 NHẬP FILE (nạp lại). `VH_LAY.M` cập nhật đúng theo JSON admin gửi (slot 10 = vườn khớp [60,68,56,76]). Không cần SQL.
