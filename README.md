@@ -1057,3 +1057,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z105 — Ngủ ngầm khi tắt tab / thoát app
 - Đang ngủ mà chuyển tab: khi quay lại cộng bù năng lượng theo thời gian thực (rate × giây vắng, tối đa 12h) rồi toast.
 - Thoát hẳn app: state lưu thêm `sl:{t,r}` (mốc + tốc độ hồi/giây); lần đăng nhập sau cộng bù tới 100
+## z106 — Thời gian xây nhà theo tầng
+- Mỗi tầng xây mất thời gian: trung bình **3 ngày game/tầng** (1 ngày game = CFG.DAY = 60 phút thật), tầng/kiểu đắt hơn thì lâu hơn: `ngày = TB × (0.6 + 0.4 × giá/giá TB)` nên trung bình toàn bộ đúng 3.
+- Dữ liệu `vh/{n}.bq={to,st,end}` (đang xây tầng `to`). `vhDoc()` tự coi tầng là xong khi hết giờ; client của chủ nhà ghi `f=to, bq=null` (tick 5s) + thông báo. Không cần SQL (nằm dưới `vh/{n}`).
+- Đang xây: không nâng thêm tầng/đổi kiểu; công trường (giàn giáo, cần cẩu, thanh tiến độ) hiện trên lô; bảng giá hiện cột Thời gian; admin chỉnh `vhP.bd` (TB ngày/tầng) và thấy lô nào đang xây.
