@@ -1137,3 +1137,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z123 · Ghế Massage Di Động thiết kế lại
 - Vỏ đen bóng, da nâu, viền vàng hồng, ngả lưng, con lăn bắp chân, màn hình trên cần. Không súng, không bắn.
 - Không cần SQL.
+
+## z124 · Sửa mất xe khi đỗ sạc ở máy khác
+- Lỗi: đỗ xe vào ổ sạc (máy chủ ghi nhận) nhưng lưu nhân vật bị bỏ lỡ (tab/máy bị khoá), máy kia vẫn thấy xe "đang lái", không lấy ra được.
+- Sửa: `avDockCheck` đồng bộ ngược từ ổ sạc trên máy chủ (mỗi 6 giây và mỗi lần ổ sạc đổi): nếu ổ của mình có xe mà nhân vật chưa ghi nhận thì gắn lại dock, bỏ trạng thái đang lái, nút LẤY XE hoạt động.
+- Không cần SQL.
