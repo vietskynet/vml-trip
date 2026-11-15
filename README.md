@@ -1094,3 +1094,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Thêm 3 kiểu villa mới (id 14–16), 1–3 tầng, giá rẻ nhất khu: **Villa bánh mì thịt Việt Nam** (1,15/1,45/1,68 tỷ), **Villa Bitexco** (1,30/1,65/1,77 tỷ), **Villa Cafe Phin** (1,20/1,50/1,72 tỷ).
 - Mỗi kiểu có 4 vật phẩm đặc trưng (xe bánh mì, mô hình Bitexco, phin cà phê khổng lồ…), hạng 0–2, hiệu ứng riêng, nội thất riêng.
 - Không cần chạy SQL.
+
+## z115 – Sửa bản đồ nhỏ bị crop
+- Thẻ bản đồ giới hạn theo chiều cao màn hình (cuộn được), canvas co theo `100dvh`, không còn tràn mất tiêu đề và hàng villa biển phía trên.
