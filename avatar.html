@@ -1871,11 +1871,45 @@ const VH_DRAW=[
   else if(f===1){vhArch(g,cx-5,t+8,10,18,G,T);lat(x0+6,t+8,18,16);lat(x0+w-24,t+8,18,16);for(const sx of[-1,1]){const wx=cx+sx*18-3;vhArch(g,wx,t+9,6,15,G,'#2a8a96')}rr(g,x0-3,y1+1,w+6,3,G);for(let x=x0-2;x<x0+w+3;x+=4)rr(g,x,y1-4,1,5,G)}
   else{vhArch(g,cx-6,t+9,12,20,G,T);lat(x0+5,t+10,14,14);lat(x0+w-19,t+10,14,14);rr(g,x0-3,y1+1,w+6,3,G)}
   top=t;tw=w}
- rr(g,cx-40,yb-3,80,3,'#2ec6d4');rr(g,cx-40,yb-3,80,1,'#b8f4fa');for(let k=0;k<5;k++)rr(g,cx-34+k*16,yb-2,4,1,'#fff')}
+ rr(g,cx-40,yb-3,80,3,'#2ec6d4');rr(g,cx-40,yb-3,80,1,'#b8f4fa');for(let k=0;k<5;k++)rr(g,cx-34+k*16,yb-2,4,1,'#fff')},
+/* 14 Villa bánh mì thịt Việt Nam: ổ bánh mì xếp tầng, nhân (đồ chua, dưa leo, thịt, rau mùi, ớt) làm sàn */
+(g,fl)=>{const cx=75,yb=VHB,C='#d9a14a',CH='#f2c870',CD='#a8702a';
+ rr(g,cx-54,yb-3,108,3,'#f4ecd8');for(let k=0;k<9;k++)rr(g,cx-50+k*12,yb-2,7,1,k%2?'#c0392b':'#2a6ab0');rr(g,cx-54,yb-3,108,1,'#fff');
+ for(let f=0;f<fl;f++){const w=88-f*8,y1=yb-4-f*38,t=y1-30,L=cx-w/2,R=cx+w/2;
+  if(f===fl-1){ellP(g,cx,t+6,w/2,26,C);ellP(g,cx-8,t-8,w/3,9,CH);for(let k=0;k<9;k++)lineP(g,L+10+k*((w-20)/8),t-14+Math.abs(k-4)*2,L+14+k*((w-20)/8),t+4,CD,1);for(let k=0;k<12;k++)rr(g,cx-w/3+h2(k,3)*w*.66,t-12+h2(k,4)*14,2,1,'#fff6d0');
+   rr(g,cx+2,t-34,1,22,'#8a5a2a');rr(g,cx+3,t-34,13,8,'#d6334a');rr(g,cx+8,t-32,3,3,'#ffd23f');rr(g,cx+7,t-31,5,1,'#ffd23f')}
+  ellP(g,L+10,y1-15,12,15,C);ellP(g,R-10,y1-15,12,15,C);rr(g,L+10,t,w-20,30,C);rr(g,L+10,t,w-20,3,CH);rr(g,L+10,y1-5,w-20,5,CD);ellP(g,L+8,y1-16,8,10,CH);rr(g,R-6,t+5,4,18,CD);
+  for(let x=L+14;x<R-12;x+=10)lineP(g,x,t+5,x+4,t+14,CD,1);
+  if(f===0){vhArch(g,cx-7,t+7,14,23,'#8a4a1a','#3a2210');rr(g,cx-1,t+10,2,18,'#6a3a12');for(const sx of[-24,24]){ellP(g,cx+sx,t+14,6,6,CD);ellP(g,cx+sx,t+14,5,5,'#2a3a4a');rr(g,cx+sx-3,t+11,3,2,'#8fd2ea')}}
+  else{for(const sx of[-24,-8,8,24]){ellP(g,cx+sx,t+14,5,5,CD);ellP(g,cx+sx,t+14,4,4,'#2a3a4a');rr(g,cx+sx-2,t+12,2,2,'#8fd2ea')}}
+  if(f<fl-1){const fy=t-8;rr(g,L+4,fy+6,w-8,2,'#f0f0e8');rr(g,L+4,fy+4,w-8,2,'#ff9a3a');rr(g,L+2,fy+2,w-4,3,'#e8788a');rr(g,L+2,fy+1,w-4,2,'#c85a6a');for(let x=L+2;x<R-2;x+=3)rr(g,x,fy-1+((x/3|0)%2),3,2,'#6cc254');for(let k=0;k<7;k++)ellP(g,L+8+k*((w-16)/6),fy,3,2,'#2f8a3e');for(let k=0;k<5;k++)rr(g,L+10+k*((w-20)/4)+(k%2)*3,fy+1,2,2,'#e8201a')}}},
+/* 15 Villa Bitexco: tháp búp sen kính xanh, sân đáp trực thăng nhô ra */
+(g,fl)=>{const cx=75,yb=VHB,GL='#4a86b0',GH='#8ac0e0',GD='#2a5a80';
+ rr(g,cx-50,yb-10,100,10,'#3a4a5a');rr(g,cx-50,yb-10,100,2,'#6a7a8a');for(let k=0;k<7;k++)rr(g,cx-46+k*14,yb-7,8,5,'#9ad8f0');
+ let tw=0,topY=0;const W=[70,62,54];
+ for(let f=0;f<fl;f++){const wb=W[f],wt=f<2?W[f+1]+2:46,y1=yb-10-f*38,t=y1-38;
+  vhPoly(g,[[cx-wb/2,y1],[cx+wb/2,y1],[cx+wt/2,t],[cx-wt/2,t]],GL);vhPoly(g,[[cx-wb/2,y1],[cx-wb/2+10,y1],[cx-wt/2+8,t],[cx-wt/2,t]],GH);vhPoly(g,[[cx+wb/2-8,y1],[cx+wb/2,y1],[cx+wt/2,t],[cx+wt/2-6,t]],GD);
+  for(let y=t+4;y<y1;y+=6)for(let x=-wb/2+6;x<wb/2-4;x+=7){const wx=cx+x*(1-(y1-y)/(y1-t)*(1-wt/wb)),on=h2(f*31+x|0,y|0)>.55;rr(g,wx,y,5,4,on?'#ffe9a0':'#2a5a80')}
+  for(let x=-wb/2;x<=wb/2;x+=14){const wx=cx+x*(1-(0)/(1)*0);lineP(g,cx+x,y1,cx+x*(wt/wb),t,'#e8f0f8',1)}rr(g,cx-wt/2-1,t-1,wt+2,2,'#e8f0f8');rr(g,cx-wb/2-1,y1-2,wb+2,2,'#e8f0f8');
+  if(f===0)vhDoor(g,cx-7,y1-18,14,18,'#1a3a58','#9ad8f0');
+  tw=wt;topY=t}
+ vhPoly(g,[[cx-tw/2,topY],[cx+tw/2,topY],[cx+tw/2-6,topY-12],[cx+6,topY-22],[cx,topY-34],[cx-6,topY-22],[cx-tw/2+6,topY-12]],GL);vhPoly(g,[[cx-tw/2,topY],[cx-tw/2+8,topY],[cx-6,topY-22],[cx,topY-34],[cx-6,topY-22],[cx-tw/2+6,topY-12]],GH);lineP(g,cx,topY-34,cx,topY-46,'#e8f0f8',1);rr(g,cx-1,topY-48,3,3,'#ff4a4a');
+ const hy=topY+6,hx=cx+tw/2;rr(g,hx-2,hy,24,3,'#e8f0f8');lineP(g,hx+6,hy+3,hx+14,hy+16,'#c8d4e0',2);ellP(g,hx+22,hy-1,20,5,'#e8f0f8');ellP(g,hx+22,hy-1,17,4,'#4a5a6a');rr(g,hx+19,hy-4,2,6,'#fff');rr(g,hx+25,hy-4,2,6,'#fff');rr(g,hx+19,hy-2,8,1,'#fff');for(let k=0;k<5;k++)rr(g,hx+6+k*8,hy+2,2,1,k%2?'#ff4a4a':'#ffe45c')},
+/* 16 Villa shape cafe phin: ly cà phê (tầng 1) + các tầng phin inox, nắp phin + núm trên cùng */
+(g,fl)=>{const cx=75,yb=VHB,S='#c4ccd4',SH='#eef2f6',SD='#8a949e';
+ ellP(g,cx,yb-3,56,5,'#cfd6dc');ellP(g,cx,yb-5,50,4,'#e8edf1');for(let k=0;k<6;k++)rr(g,cx-30+k*11,yb-3,3,1,'#fff');
+ const y0=yb-6;let top=0,tw=0;
+ for(let f=0;f<fl;f++){const y1=y0-f*36,t=y1-34;
+  if(f===0){const wb=64,wt=74;vhPoly(g,[[cx-wb/2,y1],[cx+wb/2,y1],[cx+wt/2,t],[cx-wt/2,t]],'rgba(190,225,240,.55)');vhPoly(g,[[cx-wb/2+3,y1-2],[cx+wb/2-3,y1-2],[cx+(wt-6)/2,t+10],[cx-(wt-6)/2,t+10]],'#5a3016');rr(g,cx-wt/2+4,t+10,wt-8,3,'#f3e6c8');rr(g,cx-wt/2+4,t+8,wt-8,2,'#fff6e0');rr(g,cx-wb/2+2,t+4,3,28,'rgba(255,255,255,.55)');
+   ellP(g,cx+wt/2+3,t+14,7,9,'#c4ccd4');ellP(g,cx+wt/2+3,t+14,4,6,'#6a3a22');rr(g,cx+wt/2+1,t+8,3,12,'#6a3a22');vhArch(g,cx-7,y1-26,14,24,'#e8d8b8','#3a2412');for(const sx of[-24,24]){ellP(g,cx+sx,t+22,5,5,'#e8d8b8');ellP(g,cx+sx,t+22,4,4,'#8a5a32');rr(g,cx+sx-2,t+20,2,2,'#c8a070')}tw=wt;top=t}
+  else{const w=58-(f-1)*8;rr(g,cx-w/2,t,w,34,S);rr(g,cx-w/2,t,6,34,SH);rr(g,cx-w/2+8,t,2,34,'#dce2e8');rr(g,cx+w/2-7,t,7,34,SD);rr(g,cx-w/2-2,t,w+4,3,'#aab4be');rr(g,cx-w/2-2,t+31,w+4,3,'#aab4be');for(let k=0;k<5;k++)for(let r=0;r<2;r++)rr(g,cx-w/2+12+k*7,t+8+r*20,2,2,SD);
+   for(const sx of[-w/4,w/4]){ellP(g,cx+sx,t+17,5,5,SD);ellP(g,cx+sx,t+17,4,4,'#2a3a4a');rr(g,cx+sx-2,t+15,2,2,'#8fd2ea')}tw=w;top=t}}
+ ellP(g,cx,top-1,tw/2+4,4,'#aab4be');ellP(g,cx,top-2,tw/2+2,3,SH);rr(g,cx-2,top-9,4,7,'#8a949e');ellP(g,cx,top-11,4,3,'#aab4be');rr(g,cx-1,top-12,2,1,SH);
+ for(let k=0;k<3;k++){g.fillStyle='rgba(255,255,255,.45)';g.fillRect(cx-6+k*6,top-22-k*3-((k%2)*2),2,8)}}
 ];
 const VHC={};
 /* ---- độ hoành tráng theo bậc giá: kiểu nhà càng đắt càng nhiều chi tiết (cộng dồn) ---- */
-const VH_TIER=[0,1,2,3,6,4,7,9,11,13,5,8,10,12],VH_FXL=[0,1,2,3,5,4,6,7,8,9,4,7,7,9],VH_ORD=[0,1,2,3,5,10,4,6,11,7,12,8,13,9],vhStars=t=>{const k=Math.ceil((t+1)*5/14);return '★'.repeat(k)+'☆'.repeat(5-k)};
+const VH_TIER=[0,1,2,3,6,4,7,9,11,13,5,8,10,12,0,2,1],VH_FXL=[0,1,2,3,5,4,6,7,8,9,4,7,7,9,1,2,1],VH_ORD=[0,14,16,1,15,2,3,5,10,4,6,11,7,12,8,13,9],vhStars=t=>{const k=Math.ceil((t+1)*5/14);return '★'.repeat(k)+'☆'.repeat(5-k)};
 function vhTopY(c){try{const d=c.getContext('2d').getImageData(40,0,70,VHH).data;for(let y=0;y<VHH;y++)for(let x=0;x<70;x++)if(d[(y*70+x)*4+3]>40)return y}catch(e){}return 20}
 function vhFx(g,sid,fl,c){const t=VH_FXL[sid],cx=75,yb=VHB,top=vhTopY(c);if(t<1)return;
  /* t1: đá cuội & cỏ quanh nền */
@@ -2039,6 +2073,21 @@ const vhScream=(g,open)=>{const G='#f0b82a',L='#ffe27a',D='#b8801a',S='#fff6c0',
  if(open){ellP(g,32,16,5,5,'#7a1a1a');ellP(g,32,15,3,3,'#e8334a');rr(g,29,12,6,1,D);for(let k=0;k<3;k++){rr(g,43+k*4,8-k*3,1,6+k*6,L);rr(g,44+k*4,9-k*3,1,4+k*6,S)}for(let k=0;k<3;k++){rr(g,20-k*4,8-k*3,1,6+k*6,L);rr(g,19-k*4,9-k*3,1,4+k*6,S)}}
  else{rr(g,29,14,6,3,'#7a1a1a');rr(g,30,15,4,1,'#e8334a');rr(g,29,13,6,1,D)}};
 VH_IT.push({n:'Tượng vàng gà la hét',p:80e6,c:'viet',anim:'spin',d:g=>vhScream(g,0),d2:g=>vhScream(g,1)});
+vhSpP(14,[
+['Xe bánh mì đẩy',g=>{rr(g,6,34,52,16,'#2f8a8a');rr(g,6,34,52,3,'#4ab0b0');rr(g,8,38,26,10,'#8fd2ea');rr(g,36,38,18,10,'#e8c060');for(let k=0;k<4;k++)rr(g,38+k*4,40,2,6,'#d9a14a');vhPoly(g,[[4,34],[60,34],[56,24],[8,24]],'#d6334a');for(let k=0;k<6;k++)rr(g,8+k*9,24,4,10,'#f4ecd8');ellP(g,16,56,6,6,'#2a2a30');ellP(g,48,56,6,6,'#2a2a30');ellP(g,16,56,2,2,'#aab');ellP(g,48,56,2,2,'#aab');rr(g,4,40,3,14,'#8a5a2a');ellP(g,20,20,5,3,'#ffd23f')}],
+['Ổ bánh mì khổng lồ',g=>{ellP(g,32,46,26,12,'#d9a14a');ellP(g,28,40,18,6,'#f2c870');for(let k=0;k<6;k++)lineP(g,12+k*8,36,16+k*8,50,'#a8702a',1);for(let k=0;k<9;k++)rr(g,16+k*4,38+(k%3)*3,2,1,'#fff6d0');rr(g,8,52,48,5,'#a8702a');rr(g,12,50,40,3,'#6cc254');rr(g,14,49,36,2,'#e8788a')}],
+['Chậu rau mùi ớt',g=>{rr(g,18,44,28,16,'#c0502e');rr(g,16,42,32,4,'#d9663a');rr(g,18,44,28,1,'#e8a070');for(let k=0;k<9;k++){const x=20+k*3;lineP(g,x,42,x+(k%3-1)*2,30-(k%4)*2,'#2f8a3e',2);ellP(g,x+(k%3-1)*2,28-(k%4)*2,3,3,'#4fb05a')}for(const q of[[22,34],[40,32],[30,28]]){ellP(g,q[0],q[1],2,3,'#e8201a');rr(g,q[0],q[1]-4,1,2,'#2f8a3e')}}],
+['Đèn lồng đỏ sao vàng',g=>{rr(g,31,6,2,6,'#8a6a2a');ellP(g,32,32,17,20,'#d6334a');ellP(g,28,26,5,8,'#ee6a5e');for(const x of[-9,0,9])lineP(g,32+x,14,32+x*1.4,50,'#a82030',1);rr(g,24,12,16,3,'#e2b23c');rr(g,24,50,16,3,'#e2b23c');for(let k=0;k<5;k++)rr(g,26+k*3,53,1,8,'#e2b23c');vhPoly(g,[[32,24],[34,30],[40,30],[35,34],[37,40],[32,36],[27,40],[29,34],[24,30],[30,30]],'#ffd23f')},1]]);
+vhSpP(15,[
+['Mô hình Bitexco',g=>{rr(g,18,56,28,4,'#3a4a5a');vhPoly(g,[[22,56],[42,56],[39,26],[32,10],[25,26]],'#4a86b0');vhPoly(g,[[22,56],[27,56],[27,26],[25,26]],'#8ac0e0');for(let y=28;y<54;y+=5)for(let x=26;x<39;x+=4)rr(g,x,y,2,3,(x+y)%3?'#ffe9a0':'#2a5a80');rr(g,38,24,12,2,'#e8f0f8');ellP(g,45,23,6,2,'#e8f0f8');rr(g,32,4,1,6,'#e8f0f8');rr(g,32,3,2,2,'#ff4a4a')},1],
+['Biển báo trực thăng',g=>{rr(g,8,54,48,6,'#3a4a5a');ellP(g,32,40,24,10,'#4a5a6a');ellP(g,32,40,24,10,'#4a5a6a');ellP(g,32,40,20,8,'#2a3a4a');rr(g,24,34,3,12,'#fff');rr(g,37,34,3,12,'#fff');rr(g,24,39,16,3,'#fff');for(let k=0;k<8;k++)rr(g,10+k*6,52,3,2,k%2?'#ff4a4a':'#ffe45c')},1],
+['Cột đèn kính xanh',g=>{rr(g,29,18,6,42,'#8aa0b4');rr(g,29,18,2,42,'#c8dae8');vhPoly(g,[[22,20],[42,20],[38,6],[26,6]],'#4a86b0');vhPoly(g,[[24,19],[40,19],[37,8],[27,8]],'#cfeeff');rr(g,31,10,2,8,'#ffe9a0');ellP(g,32,60,10,3,'#5a6a7a');rr(g,30,2,4,4,'#ffe9a0')},1],
+['Đài phun kính',g=>{ellP(g,32,54,28,8,'#6a8aa0');ellP(g,32,53,25,6,'#4ab0d8');vhPoly(g,[[26,52],[38,52],[35,24],[29,24]],'#8ac0e0');vhPoly(g,[[26,52],[30,52],[30,24],[29,24]],'#cfeeff');ellP(g,32,22,6,3,'#bff4ff');for(let k=0;k<6;k++)lineP(g,32,22,32+(k-2.5)*5,38,'#bff4ff',1);for(let k=0;k<4;k++)rr(g,12+k*10,54,3,1,'#fff')}]]);
+vhSpP(16,[
+['Phin cà phê khổng lồ',g=>{ellP(g,32,58,22,4,'#9aa4ae');rr(g,12,50,40,8,'#c4ccd4');rr(g,12,50,6,8,'#eef2f6');rr(g,16,26,32,24,'#c4ccd4');rr(g,16,26,5,24,'#eef2f6');rr(g,43,26,5,24,'#8a949e');rr(g,12,22,40,5,'#aab4be');ellP(g,32,22,18,4,'#c4ccd4');rr(g,30,12,4,8,'#8a949e');ellP(g,32,12,4,2,'#aab4be');for(let k=0;k<5;k++)rr(g,22+k*5,32,2,2,'#8a949e');for(let k=0;k<3;k++)rr(g,28+k*3,2+(k%2)*2,2,8,'rgba(255,255,255,.5)')}],
+['Ly cà phê sữa đá',g=>{vhPoly(g,[[14,16],[50,16],[46,58],[18,58]],'rgba(200,230,245,.55)');vhPoly(g,[[17,36],[47,36],[45,56],[19,56]],'#5a3016');rr(g,17,30,30,6,'#f3e6c8');rr(g,17,28,30,3,'#fff6e0');for(const q of[[22,22],[32,20],[40,24]])rr(g,q[0],q[1],7,7,'rgba(255,255,255,.55)');rr(g,38,2,2,26,'#e8c060');rr(g,38,2,8,2,'#e8c060');rr(g,16,18,3,38,'rgba(255,255,255,.6)')}],
+['Ghế đẩu nhựa & bàn',g=>{rr(g,10,34,44,4,'#8a5a2a');rr(g,10,34,44,1,'#b67d46');rr(g,12,38,3,18,'#6e4a28');rr(g,49,38,3,18,'#6e4a28');rr(g,22,22,14,3,'#2a6ab0');rr(g,22,25,14,12,'#2a6ab0');rr(g,24,37,2,16,'#4a8ad0');rr(g,32,37,2,16,'#4a8ad0');ellP(g,44,30,5,3,'#fff');rr(g,40,26,8,4,'#c4ccd4');rr(g,42,22,1,4,'#fff6e0')}],
+['Hạt cà phê ánh đèn',g=>{rr(g,29,22,6,38,'#4a3018');ellP(g,32,60,10,3,'#3a2410');for(const q of[[32,14],[24,22],[40,22]]){ellP(g,q[0],q[1],8,6,'#6a3a1a');rr(g,q[0]-6,q[1]-1,12,1,'#3a1c0a');ellP(g,q[0]-2,q[1]-3,3,2,'#a0642e')}ellP(g,32,14,10,8,'#ffe9a0');ellP(g,32,14,6,5,'#fff6d0')},1]]);
 const VH_IC={};
 function vhItemV(id,v){if(v==='f')return vhItem(id);const k=id+v;if(VH_IC[k])return VH_IC[k];const b=vhItem(id);if(v==='o'){const [c,g]=mk(VH_IW,VH_IH);VH_IT[id].d2(g);outline(c);return VH_IC[k]={c,ox:b.ox,oy:b.oy}}const [c,g]=mk(VH_IW,VH_IH);g.drawImage(b.c,0,0);g.globalCompositeOperation='source-atop';g.fillStyle='rgba(60,30,0,.38)';g.fillRect(0,0,VH_IW,VH_IH);return VH_IC[k]={c,ox:b.ox,oy:b.oy}}
 const VHSC={};
@@ -2113,7 +2162,10 @@ const VH_ST=[
  {n:'Kawaii pastel',fl:[1750e6,2180e6,2470e6],d:'Nhà bánh kem hồng-mint-tím, mái cupcake, trái tim và cầu vồng.'},
  {n:'Avant-garde',fl:[2070e6,2590e6,2940e6],d:'Kiến trúc phá cách: hộp lệch tầng, console vươn, thanh chống chéo.'},
  {n:'Tổng tài Hàn Quốc',fl:[2270e6,2830e6,3200e6],d:'Biệt thự đen-vàng kính lớn, sân đáp trực thăng, hoa anh đào, xe sang.'},
- {n:'Luxury Dubai',fl:[2460e6,3070e6,3470e6],d:'Cung điện cát-vàng, vòm hành vàng, tháp đôi, cửa vòm và lưới mashrabiya.'}
+ {n:'Luxury Dubai',fl:[2460e6,3070e6,3470e6],d:'Cung điện cát-vàng, vòm hành vàng, tháp đôi, cửa vòm và lưới mashrabiya.'},
+ {n:'Villa bánh mì thịt Việt Nam',fl:[1150e6,1450e6,1680e6],d:'Ổ bánh mì xếp tầng: nhân đồ chua, dưa leo, thịt, rau mùi làm sàn; mái bánh rắc mè, cờ đỏ sao vàng.'},
+ {n:'Villa Bitexco',fl:[1300e6,1650e6,1770e6],d:'Tháp kính búp sen kiểu Sài Gòn, sân đáp trực thăng nhô ra, cửa sảnh kính.'},
+ {n:'Villa Cafe Phin',fl:[1200e6,1500e6,1720e6],d:'Tầng 1 là ly cà phê sữa, các tầng trên là phin inox với nắp và núm, hơi cà phê bay lên.'}
 ];
 const VH_PL=[...Array(6)].map((_,i)=>{const x0=2656,y0=480+i*263;return{n:i+1,x0,y0,x1:x0+VH_PW,y1:y0+VH_PH,cx:x0+VH_PW/2,hy:y0+150}});
 const VH_SL=[[28,44],[28,90],[28,136],[62,28],[300,44],[300,90],[300,136],[300,182],[262,28],[240,196]];
@@ -2297,7 +2349,7 @@ function vhMapPaint(g,k){if(!EB)return;g.drawImage(EB,0,OY,EB_W,MH,EB_X*k,0,EB_W
  g.font='bold 10px monospace';g.textAlign='center';const tx=(VHG.x0+VHG.x1)/2*k,ty=(VHG.y0+24)*k,s='KHU VILLA RIÊNG',w=g.measureText(s).width+8;g.fillStyle='rgba(0,0,0,.75)';g.fillRect(tx-w/2,ty-8,w,13);g.fillStyle='#ffd23f';g.fillText(s,tx,ty+2);
  const gx=2562*k,gy=VHG.gy*k;g.fillStyle='#000';g.fillRect(gx-4,gy-4,9,9);g.fillStyle='#4ac8ff';g.fillRect(gx-3,gy-3,7,7)}
 /* ===== KHU VILLA RIÊNG · giai đoạn 2a: NỘI THẤT ===== */
-const VH_INP=[['#c9a860','#8a6a30','#a07a40','#8a6430'],['#a09078','#5a4a38','#6a5a48','#5a4a3a'],['#f4e2c0','#d0603a','#c8b898','#b8a888'],['#bcd9a0','#6a8a4a','#b08a58','#a07848'],['#efe6cf','#7a4a28','#d8c490','#c8b480'],['#f6f4ee','#3a9ad0','#d8c8a0','#c8b890'],['#e8d5a8','#8a5a30','#7a4a28','#6a3e20'],['#f0c050','#d98a2a','#8b5a2b','#7a4a22'],['#e9edf2','#9aa6b4','#c9c2b6','#bdb5a8'],['#2a3252','#5af0ff','#1c2238','#262e4c'],['#ffd6e8','#ff8fb8','#f4e4ee','#e8d0e0'],['#eeeeee','#d8302a','#3a3a42','#2e2e36'],['#2e303c','#d8b04a','#1c1e26','#262832'],['#f4e6c4','#28b8c0','#d8c08a','#c8b078']];
+const VH_INP=[['#c9a860','#8a6a30','#a07a40','#8a6430'],['#a09078','#5a4a38','#6a5a48','#5a4a3a'],['#f4e2c0','#d0603a','#c8b898','#b8a888'],['#bcd9a0','#6a8a4a','#b08a58','#a07848'],['#efe6cf','#7a4a28','#d8c490','#c8b480'],['#f6f4ee','#3a9ad0','#d8c8a0','#c8b890'],['#e8d5a8','#8a5a30','#7a4a28','#6a3e20'],['#f0c050','#d98a2a','#8b5a2b','#7a4a22'],['#e9edf2','#9aa6b4','#c9c2b6','#bdb5a8'],['#2a3252','#5af0ff','#1c2238','#262e4c'],['#ffd6e8','#ff8fb8','#f4e4ee','#e8d0e0'],['#eeeeee','#d8302a','#3a3a42','#2e2e36'],['#2e303c','#d8b04a','#1c1e26','#262832'],['#f4e6c4','#28b8c0','#d8c08a','#c8b078'],['#f6dca0','#c96a2a','#c8a060','#b89050'],['#dff0f8','#2a7aa8','#b8c8d4','#a8b8c4'],['#f0e6d6','#6a3a22','#8a6a48','#7a5a3a']];
 const VH_FSL=[[80,192],[240,192],[400,192],[110,250],[240,250],[370,250]];
 const VH_FU=[
  {n:'Giường đơn',p:48e6,k:'bed',rg:100/100,w:64,d:(g,x,y)=>vhBedD(g,x,y,60,'#3f8fd0')},
@@ -7795,7 +7847,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z113';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='15.11.2026-z114';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

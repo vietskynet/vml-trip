@@ -1089,3 +1089,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Nhạc nền đổi sang Noel khi `xmOn()` (đến hết 10/1/2027, tắt bằng `config/xmas=0`): Jingle Bells + Deck the Halls, chuông xe trượt tuyết.
 - Ông già Noel cưỡi tuần lộc bay ngang map ngẫu nhiên (80–170s/lượt, thưa hơn nếu đã hết quà), thả quà xuống người chơi gần nhất: tiền 50–300k, +20–45 năng lượng, hoặc item Thương Xá ≤ 3 triệu. Mỗi người tối đa **2 quà/ngày** (ngày lịch theo máy người chơi), lưu `players/{uid}/state/xg`.
 - Giảm NPC: nhân viên resort mặc định 2→1, khách nghỉ dưỡng 2→1, bot offline 16→8 (config/npc của admin vẫn ghi đè). Không cần SQL.
+
+## z114 – 3 villa giá thấp (Việt Nam)
+- Thêm 3 kiểu villa mới (id 14–16), 1–3 tầng, giá rẻ nhất khu: **Villa bánh mì thịt Việt Nam** (1,15/1,45/1,68 tỷ), **Villa Bitexco** (1,30/1,65/1,77 tỷ), **Villa Cafe Phin** (1,20/1,50/1,72 tỷ).
+- Mỗi kiểu có 4 vật phẩm đặc trưng (xe bánh mì, mô hình Bitexco, phin cà phê khổng lồ…), hạng 0–2, hiệu ứng riêng, nội thất riêng.
+- Không cần chạy SQL.
