@@ -1030,3 +1030,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z98 – Nâng giá nội thất & vật phẩm trang trí vườn lên 300%
 - 20 món nội thất và 20 vật phẩm sân vườn nhân 3 so với bản z97 (ví dụ giường đơn 16 → 48tr, giường king 80 → 240tr, đàn piano 120 → 360tr, hồ bơi mini 80 → 240tr). Rào, cổng, đất và chi phí xây giữ nguyên. Admin hiển thị giá mặc định mới; giá đã lưu ở `config/vhP` (nếu có) vẫn ưu tiên. Không cần SQL.
+
+## z99 – Thêm 4 kiểu nhà: Kawaii, Avant-garde, Tổng tài Hàn Quốc, Luxury Dubai
+- 4 kiểu nhà vẽ procedural đủ 3 tầng (id 10–13), giá tầm trung → cao (tổng xây 3 tầng): Kawaii pastel 6,4 tỷ (nhà bánh kem, mái cupcake, tim, cầu vồng), Avant-garde 7,6 tỷ (hộp lệch tầng, console vươn, thanh chống chéo, mảnh mái đỏ-đen), Tổng tài Hàn Quốc 8,3 tỷ (đen-vàng, kính lớn, sân đáp trực thăng, hoa anh đào, xe sang), Luxury Dubai 9,0 tỷ (cung điện cát-vàng, vòm hành vàng, tháp đôi, lưới mashrabiya). Đắt nhất vẫn là Tương lai (đất Lô 1 + xây = 10 tỷ).
+- 14 kiểu nhà xếp theo giá kèm ★ (thang 14 bậc); lớp trang trí ngoài nhà (`VH_FXL`) tách khỏi thứ hạng giá, vành neon chỉ dành cho Tương lai. Có bảng màu nội thất riêng cho 4 kiểu. Admin tự cập nhật danh mục kiểu nhà. Không cần SQL.
