@@ -1156,3 +1156,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Thời gian giữ tóc ×3 cho mọi kiểu (tóc đã làm trước đó giữ nguyên hạn cũ).
 - Shop thú cưng và thời trang xếp giá thấp đến cao.
 - Không cần SQL.
+
+## z128 · Phượng Hoàng chỉ bắn trong tầm gần
+- Tầm bắn quái 480 → 260, tàu hải tặc 620 → 300.
+- Không cần SQL.
