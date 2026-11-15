@@ -1113,3 +1113,11 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z119 – Thế Giới Thụ không còn bonus +12%
 - Thế Giới Thụ là cây cân bằng nên không có kênh sở trường (chỉ 6 cây còn lại có +12%).
+
+## z120 – Khu villa: tiếp khách, giường 2–4, bảng tên diecut, về nhà
+- **Tiếp khách:** mời bạn về nhà (tối đa 3 khách). Khách tham quan, dùng toilet nhà chủ và ngủ ké trên giường còn trống (cùng tầng). Khách trả phí theo lượt thẳng cho chủ qua `gifts/{chủ}` (cờ `vhf` = v/s/w), chủ nhận thông báo và cộng dồn thống kê `vh/{lô}/gs` (số lượt, tổng thu).
+- **Phí do chủ đặt** (tab MỜI KHÁCH, trường `vh/{lô}/gf`): vào tham quan tối đa 1tr (mặc định 100k), ngủ ké tối đa 3tr (mặc định 300k), toilet tối đa 1tr (mặc định 100k). Hằng `VH_GFC`/`VH_GFD`.
+- **Phòng ngủ tối đa 4 giường** (`VH_MAXBED`, chỉ chặn mua thêm, nhà cũ giữ nguyên). Đồng bộ giường đang nằm qua `pos/{uid}.vs`.
+- **10 loại giường**, thời gian hồi đầy 0→100% từ 30s đến 3s, giá tăng theo tốc độ: đơn 30s/48tr, tầng 26s/72tr, đôi 22s/108tr, mây 18s/160tr, king 15s/240tr, nệm nước 12s/340tr, hoàng gia 9s/520tr, từ tính 6s/800tr, vàng 4s/1,2 tỷ, mây thần tiên 3s/2 tỷ (giường đơn/đôi/king cũ được đổi tốc độ cho khớp thang mới).
+- **Bảng tên diecut:** tối đa 15 ký tự, 8 kiểu (vàng, inox, neon hồng, neon xanh, gỗ, đen viền vàng, đồng cổ, cầu vồng), 5tr mỗi lần lưu, lưu ở `vh/{lô}/pl`, đặt trước nhà.
+- **Nút VỀ NHÀ** trong MENU: dịch chuyển tới cửa villa, cooldown 10 phút (lưu localStorage). Không cần SQL.
