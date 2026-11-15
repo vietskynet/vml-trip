@@ -1102,3 +1102,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Thêm kênh buff thứ 6 **Sức khoẻ** (♥, tối đa 30%): giảm số lần buồn đi tiểu/ị (đồng hồ vệ sinh chạy chậm lại) và tăng thời gian chịu (thời gian tìm toilet ×(1+2×buff)).
 - Hạt mới **Sâm Ngọc Linh** (18tr): điểm gốc Sức khoẻ 3 + Năng lượng 1, ưa Sức khoẻ/Năng lượng, kỵ Tiền, kênh Sức khoẻ mạnh ×1,5 (tới −45% lần đi, +90% thời gian chịu). Quả đỏ hình trái tim, rễ củ lộ trên đất.
 - Thế Giới Thụ nay cân bằng 6 kênh (cây đã trồng giữ nguyên điểm). Không cần SQL.
+
+## z117 – Làm lại toàn bộ hình 7 cây Liên Minh
+- Mỗi cây có silhouette riêng, vẽ theo ý tưởng cây gốc + điểm mạnh: Dừa Vàng (cọ cao, thân vòng vàng, xu treo), Anh Đào (cây hoa xoắn, cành rủ, cỏ bốn lá), Thông Gió (tầng thông bị gió thổi, cờ xanh, vệt gió), Sồi Chiến (thân vạm vỡ, khiên, kiếm, cờ chiến), Bồ Đề (tán lá tim, rễ trụ, hào quang, hoa sen), Sâm Ngọc Linh (củ sâm người, tán lá chân vịt, chùm quả đỏ), Thế Giới Thụ (thân đôi xoắn, tán thiên hà, vành quỹ đạo 6 viên ngọc).
+- Kích thước theo từng cây (dừa cao ~195, thế giới thụ ~205), 4 giai đoạn theo cùng bộ vẽ. Quả theo kênh vẫn hiện trên tán. Không cần SQL.
