@@ -1567,7 +1567,13 @@ function xmNoise(x,y){const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,u=
 const xmN=(x,y)=>.6*xmNoise(x/70,y/70)+.4*xmNoise(x/20+31,y/20+7);
 /* --- tuyết nền theo chunk 256px --- */
 const XMC=256,xmChunks=new Map();let xmBuilt=0,xmQ=-1,xmTm=0;
-function xmWalk(x,y){if(!canStand(x,y))return false;if(x>=POOL.x0-6&&x<=POOL.x1+6&&y>=POOL.y0-6&&y<=POOL.y1+6)return false;try{if(inWt(x,y)||onPier(x,y)||inR(JETTY,x,y))return false}catch(e){}return true}
+function xmKeep(x,y){if(x<2140||y<430)return false;const in_=(a,b,c,d)=>x>=a&&x<=c&&y>=b&&y<=d;
+ if(in_(2150,1200,2590,1280)||in_(2236,1250,2364,1330))return true;/* đại lộ vào cổng + biển chỉ đường */
+ if(x<2556)return false;
+ if(in_(2530,VHG.gy-110,2700,VHG.gy+70)||in_(2566,VHG.y0,2634,VHG.y1))return true;/* cổng, bảo vệ, lối đi chính */
+ for(const p of VH_PL){if(in_(2606,p.y0+35,2676,p.y0+100)||in_(2606,p.hy-6,2676,p.hy+50)||in_(p.x0,p.hy+4,p.cx+16,p.hy+40)||in_(p.cx-70,p.hy-60,p.cx+70,p.hy+14))return true}/* cầu, lối vào lô, bảng lô */
+ return false}
+function xmWalk(x,y){if(!canStand(x,y))return false;try{if(xmKeep(x,y))return false}catch(e){}if(x>=POOL.x0-6&&x<=POOL.x1+6&&y>=POOL.y0-6&&y<=POOL.y1+6)return false;try{if(inWt(x,y)||onPier(x,y)||inR(JETTY,x,y))return false}catch(e){}return true}
 function xmVillaSnow(g,ox,oy,lv){const k=2+Math.round(lv*9),f=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(Math.round(x-ox),Math.round(y-oy),w,h)};
  const tier=(cxx,top,wT,wB,h,kk,i)=>{for(let r=0;r<kk;r++){const w=Math.round(wT+(wB-wT)*r/(h-1));f(cxx-w/2-1,top+r,w+2,1,r===kk-1?'#cddcf0':'#f6faff')}
   if(lv>.25)for(let x=Math.round(cxx-wB/2);x<cxx+wB/2;x+=4){const ln=1+Math.floor(h2(x,i+7)*3*lv);f(x,top+h-1,3,ln+1,'#f6faff');f(x,top+h+ln,3,1,'#cddcf0')}};
@@ -2096,13 +2102,13 @@ function vhBuildEstate(b){
  for(let y=VHG.y0+30;y<VHG.y1-30;y+=46){for(const x of[2578,2616]){rr(g,x,y,6,4,'#7fcf6a');for(let k=0;k<3;k++)rr(g,x+k*2,y-2+(k%2)*2,2,3,['#ff4f8a','#ffd23f','#b46bff','#fff'][((y/46|0)+k)%4])}}
  /* lô đất: thảm cỏ + lối vào từ cầu */
  VH_PL.forEach(p=>{rr(g,p.x0,p.y0,VH_PW,VH_PH,'#79c95f');for(let k=0;k<90;k++)rr(g,p.x0+h2(p.n,k)*VH_PW,p.y0+h2(k,p.n)*VH_PH,2,2,k%5?'#93dc78':k%3?'#fff3b0':'#6bb852');rr(g,p.x0,p.y0,VH_PW,2,'#5fae4a');rr(g,p.x0,p.y1-2,VH_PW,2,'#5fae4a');rr(g,p.x0,p.y0,2,VH_PH,'#5fae4a');rr(g,p.x1-2,p.y0,2,VH_PH,'#5fae4a');
-  cob(g,p.x0,p.hy+10,p.cx-p.x0+13,24,'#e4d6ae','#bcae84',p.n);cob(g,p.cx-13,p.hy+4,26,30,'#e4d6ae','#bcae84',p.n+7);addBlock(p.cx-48,p.hy-26,p.cx+48,p.hy)});
+  cob(g,p.x0,p.hy+10,p.cx-p.x0+13,24,'#e4d6ae','#bcae84',p.n);cob(g,p.x0,p.y0+55,22,24,'#e4d6ae','#bcae84',p.n+3);cob(g,p.cx-13,p.hy+4,26,30,'#e4d6ae','#bcae84',p.n+7);addBlock(p.cx-48,p.hy-26,p.cx+48,p.hy)});
  /* kênh nước dọc + suối giữa các lô + cầu gỗ */
  const wat=(x,y,w,h)=>{rr(g,x-3,y-3,w+6,h+6,'#9aa0ae');rr(g,x-3,y-3,w+6,2,'#c4c9d6');rr(g,x,y,w,h,'#2fa8d8');for(let k=0;k<(w*h)/14;k++)rr(g,x+h2(k,x)*w,y+h2(k,y)*h,2,1,k%3?'#58c8ea':'#a8ecfa')};
  const CY0=VHG.y0+16,CY1=VHG.y1-14;wat(VH_CX-8,CY0,16,CY1-CY0);for(let i=0;i<5;i++)wat(VH_PL[0].x0,VH_YS(i)-8,VH_PW,16);
  const bridgeV=(sx,y)=>{rr(g,sx-26,y-15,52,30,'#b67d46');for(let x=sx-26;x<sx+26;x+=5)rr(g,x,y-15,1,30,'#8f5f32');rr(g,sx-26,y-15,52,2,'#d39b5f');rr(g,sx-26,y+13,52,2,'#6e4423');rr(g,sx-26,y-18,52,3,'#8a5a2a');rr(g,sx-26,y+13,52,3,'#8a5a2a');for(const px of[sx-26,sx+22]){rr(g,px,y-20,4,6,'#6e4423');rr(g,px,y+11,4,6,'#6e4423')}};
- VH_PL.forEach(p=>bridgeV(VH_CX,p.hy+22));
- {const gaps=VH_PL.map(p=>p.hy+22).sort((p,q)=>p-q);let a=CY0;gaps.forEach(gp=>{const lo=gp-17,hi=gp+17;if(lo>a)addBlock(VH_CX-9,a,VH_CX+9,lo);a=hi});if(a<CY1)addBlock(VH_CX-9,a,VH_CX+9,CY1);for(let i=0;i<5;i++)addBlock(VH_PL[0].x0,VH_YS(i)-9,VH_PL[0].x0+VH_PW,VH_YS(i)+9)}
+ VH_PL.forEach(p=>{bridgeV(VH_CX,p.hy+22);bridgeV(VH_CX,p.y0+67)});
+ {const gaps=VH_PL.flatMap(p=>[p.hy+22,p.y0+67]).sort((p,q)=>p-q);let a=CY0;gaps.forEach(gp=>{const lo=gp-17,hi=gp+17;if(lo>a)addBlock(VH_CX-9,a,VH_CX+9,lo);a=hi});if(a<CY1)addBlock(VH_CX-9,a,VH_CX+9,CY1);for(let i=0;i<5;i++)addBlock(VH_PL[0].x0,VH_YS(i)-9,VH_PL[0].x0+VH_PW,VH_YS(i)+9)}
  /* đèn đường dọc lối đi */
  const lamp=(x,y)=>{rr(g,x-1,y-30,3,30,'#2a2a34');rr(g,x-4,y-4,9,4,'#2a2a34');rr(g,x-4,y-40,9,11,'#fff3b8');rr(g,x-4,y-40,9,2,'#2a2a34');rr(g,x-4,y-30,9,2,'#2a2a34');rr(g,x-2,y-38,3,7,'#fff');LIGHTS.push({x,y:y-34,r:96});VHNL.push([x,y-34])};
  for(let y=560;y<2010;y+=263){lamp(2600,y);addBlock(2597,y-3,2604,y)}lamp(2600,1196);addBlock(2597,1193,2604,1196);lamp(2600,1286);addBlock(2597,1283,2604,1286);
@@ -7682,7 +7688,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z103';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z104';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

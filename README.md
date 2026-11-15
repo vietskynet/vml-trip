@@ -1049,3 +1049,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z103 — Gắn thử item & chụp ảnh promote
 - Trình thiết kế: bấm 1 món rồi bấm khung để gắn nhanh (hoặc kéo thả), GẮN NGẪU NHIÊN / GẮN MÓN ĐANG CẦM VÀO MỌI SLOT TRỐNG, GỠ HẾT MÓN; ẨN KHUNG/LƯỚI, NỀN TRONG SUỐT, TẢI ẢNH PNG ×3–×8. Không cần SQL.
+
+## z104 — Tuyết không che lối đi + 2 cầu mỗi lô
+- Tuyết nền (xmWalk/xmKeep) không phủ đại lộ vào cổng, biển chỉ đường, cổng bảo vệ, lối đi chính khu villa, cầu, lối vào và bảng từng lô.
+- Mỗi lô villa có 2 cầu gỗ bắc qua kênh (cầu cũ ở hy+22 và cầu mới ở y0+67, có thêm lối lát đá). Không cần SQL.
