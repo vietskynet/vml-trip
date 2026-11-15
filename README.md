@@ -1061,3 +1061,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Mỗi tầng xây mất thời gian: trung bình **3 ngày game/tầng** (1 ngày game = CFG.DAY = 60 phút thật), tầng/kiểu đắt hơn thì lâu hơn: `ngày = TB × (0.6 + 0.4 × giá/giá TB)` nên trung bình toàn bộ đúng 3.
 - Dữ liệu `vh/{n}.bq={to,st,end}` (đang xây tầng `to`). `vhDoc()` tự coi tầng là xong khi hết giờ; client của chủ nhà ghi `f=to, bq=null` (tick 5s) + thông báo. Không cần SQL (nằm dưới `vh/{n}`).
 - Đang xây: không nâng thêm tầng/đổi kiểu; công trường (giàn giáo, cần cẩu, thanh tiến độ) hiện trên lô; bảng giá hiện cột Thời gian; admin chỉnh `vhP.bd` (TB ngày/tầng) và thấy lô nào đang xây.
+
+## z107 — Master Layout chính thức + khu Vườn
+- `VH_LAY.M` hard-code theo thiết kế của admin: nhà dời (+39,−2), **14 slot vật phẩm** (`[x,y,w,h]`), và **khu VƯỜN** `g:[60,68,56,76]` (slot số 10) — nền đất canh tác + biển VƯỜN vẽ sẵn mỗi lô; loại vườn/cây chức năng sẽ bổ sung sau.
+- Cửa nhà/lối đi/va chạm/bóng đèn dời theo vị trí nhà master (`vhMo`). Trình thiết kế có nút VƯỜN để đánh dấu khung vườn, nạp sẵn master hiện tại.
+- Lưu ý: slot cũ 0–9 đã đổi chỗ, vật phẩm đã gắn vẫn giữ chỉ số nhưng nằm ở vị trí slot mới. Không cần SQL.

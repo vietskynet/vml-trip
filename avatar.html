@@ -1571,7 +1571,7 @@ function xmKeep(x,y){if(x<2140||y<430)return false;const in_=(a,b,c,d)=>x>=a&&x<
  if(in_(2150,1200,2590,1280)||in_(2236,1250,2364,1330))return true;/* đại lộ vào cổng + biển chỉ đường */
  if(x<2556)return false;
  if(in_(2530,VHG.gy-110,2700,VHG.gy+70)||in_(2566,VHG.y0,2634,VHG.y1))return true;/* cổng, bảo vệ, lối đi chính */
- for(const p of VH_PL){if(in_(2606,p.y0+35,2676,p.y0+100)||in_(2606,p.hy-6,2676,p.hy+50)||in_(p.x0,p.hy+4,p.cx+16,p.hy+40)||in_(p.cx-70,p.hy-60,p.cx+70,p.hy+14))return true}/* cầu, lối vào lô, bảng lô */
+ for(const p of VH_PL){if(in_(2606,p.y0+35,2676,p.y0+100)||in_(2606,p.hy-6,2676,p.hy+50)||in_(p.x0,p.hy+4,p.cx+60,p.hy+40)||in_(p.cx-70,p.hy-60,p.cx+70,p.hy+14))return true}/* cầu, lối vào lô, bảng lô */
  return false}
 function xmWalk(x,y){if(!canStand(x,y))return false;try{if(xmKeep(x,y))return false}catch(e){}if(x>=POOL.x0-6&&x<=POOL.x1+6&&y>=POOL.y0-6&&y<=POOL.y1+6)return false;try{if(inWt(x,y)||onPier(x,y)||inR(JETTY,x,y))return false}catch(e){}return true}
 function xmVillaSnow(g,ox,oy,lv){const k=2+Math.round(lv*9),f=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(Math.round(x-ox),Math.round(y-oy),w,h)};
@@ -2046,8 +2046,14 @@ const VH_ST=[
 const VH_PL=[...Array(6)].map((_,i)=>{const x0=2656,y0=480+i*263;return{n:i+1,x0,y0,x1:x0+VH_PW,y1:y0+VH_PH,cx:x0+VH_PW/2,hy:y0+150}});
 const VH_SL=[[28,44],[28,90],[28,136],[62,28],[300,44],[300,90],[300,136],[300,182],[262,28],[240,196]];
 /* VH_LAY.M = MASTER LAYOUT chung cho mọi kiểu nhà; kiểu nào có VH_LAY[id] riêng thì dùng riêng. Bố cục riêng từng kiểu nhà (xuất từ Trình thiết kế bố cục trong admin): VH_LAY[styleId]={h:[dx,dy],s:[[x,y],...]} — chưa khai báo thì dùng mặc định */
-const VH_LAY={};
+const VH_LAY={M:{h:[39,-2],
+ /* 14 slot vật phẩm [x,y(đáy),w,h] — thiết kế bằng Trình thiết kế bố cục (số 1–9, 11–15) */
+ s:[[32,44,32,26],[32,80,32,26],[32,116,32,26],[88,56,56,36],[300,40,30,26],[300,80,30,26],[300,120,30,26],[300,160,30,26],[300,196,30,26],[80,196,36,28],[128,196,36,28],[172,196,40,28],[32,196,32,28],[236,196,76,28]],
+ /* khu VƯỜN (slot số 10): [x,y,w,h] — sau này trồng nhiều loại vườn/cây chức năng */
+ g:[60,68,56,76]}};
 function vhSl(sid){const l=VH_LAY[sid],m=VH_LAY.M;return l&&l.s?l.s:m&&m.s?m.s:VH_SL}
+const vhMo=()=>vhHo(-1);
+function vhGz(sid){const l=VH_LAY[sid],m=VH_LAY.M;return l&&l.g?l.g:m&&m.g?m.g:null}
 function vhHo(sid){const l=VH_LAY[sid],m=VH_LAY.M;return l&&l.h?l.h:m&&m.h?m.h:[0,0]}
 const VH_CATS={cay:'Cây & hoa',nuoc:'Hồ & nước',tien:'Tiện ích',den:'Đèn',deco:'Trang trí'};
 const VH_ALL=()=>NET.vhAll||(NET.vhAll={});
@@ -2102,7 +2108,8 @@ function vhBuildEstate(b){
  for(let y=VHG.y0+30;y<VHG.y1-30;y+=46){for(const x of[2578,2616]){rr(g,x,y,6,4,'#7fcf6a');for(let k=0;k<3;k++)rr(g,x+k*2,y-2+(k%2)*2,2,3,['#ff4f8a','#ffd23f','#b46bff','#fff'][((y/46|0)+k)%4])}}
  /* lô đất: thảm cỏ + lối vào từ cầu */
  VH_PL.forEach(p=>{rr(g,p.x0,p.y0,VH_PW,VH_PH,'#79c95f');for(let k=0;k<90;k++)rr(g,p.x0+h2(p.n,k)*VH_PW,p.y0+h2(k,p.n)*VH_PH,2,2,k%5?'#93dc78':k%3?'#fff3b0':'#6bb852');rr(g,p.x0,p.y0,VH_PW,2,'#5fae4a');rr(g,p.x0,p.y1-2,VH_PW,2,'#5fae4a');rr(g,p.x0,p.y0,2,VH_PH,'#5fae4a');rr(g,p.x1-2,p.y0,2,VH_PH,'#5fae4a');
-  cob(g,p.x0,p.hy+10,p.cx-p.x0+13,24,'#e4d6ae','#bcae84',p.n);cob(g,p.x0,p.y0+55,22,24,'#e4d6ae','#bcae84',p.n+3);cob(g,p.cx-13,p.hy+4,26,30,'#e4d6ae','#bcae84',p.n+7);addBlock(p.cx-48,p.hy-26,p.cx+48,p.hy)});
+  const mo=vhMo(),hx=p.cx+mo[0];cob(g,p.x0,p.hy+10,hx-p.x0+13,24,'#e4d6ae','#bcae84',p.n);cob(g,p.x0,p.y0+55,22,24,'#e4d6ae','#bcae84',p.n+3);cob(g,hx-13,p.hy+4,26,30,'#e4d6ae','#bcae84',p.n+7);addBlock(hx-48,p.hy-26,hx+48,p.hy);
+  const gz=vhGz(-1);if(gz){const bx=p.x0+gz[0],by=p.y0+gz[1],bw=gz[2],bh=gz[3];rr(g,bx-3,by-3,bw+6,bh+6,'#8a5a2a');rr(g,bx-3,by-3,bw+6,2,'#b67d46');rr(g,bx,by,bw,bh,'#6b4a2c');for(let yy=by+4;yy<by+bh-2;yy+=8){rr(g,bx+2,yy,bw-4,3,'#82603a');rr(g,bx+2,yy+3,bw-4,1,'#4e341c')}for(let k=0;k<40;k++)rr(g,bx+h2(k,p.n)*bw,by+h2(p.n,k)*bh,2,1,'#a07a4a');for(const[qx,qy]of[[-3,-3],[bw,-3],[-3,bh],[bw,bh]])rr(g,bx+qx-1,by+qy-3,5,6,'#5a3a1c');rr(g,bx+bw/2-1,by-12,3,10,'#6e4a28');rr(g,bx+bw/2-14,by-20,28,10,'#fff3d0');rr(g,bx+bw/2-14,by-20,28,1,'#8a5a2a');rr(g,bx+bw/2-14,by-11,28,1,'#8a5a2a');ptext(g,'VƯỜN',bx+bw/2,by-12,7,'#5a3a1c','center','monospace',null)}});
  /* kênh nước dọc + suối giữa các lô + cầu gỗ */
  const wat=(x,y,w,h)=>{rr(g,x-3,y-3,w+6,h+6,'#9aa0ae');rr(g,x-3,y-3,w+6,2,'#c4c9d6');rr(g,x,y,w,h,'#2fa8d8');for(let k=0;k<(w*h)/14;k++)rr(g,x+h2(k,x)*w,y+h2(k,y)*h,2,1,k%3?'#58c8ea':'#a8ecfa')};
  const CY0=VHG.y0+16,CY1=VHG.y1-14;wat(VH_CX-8,CY0,16,CY1-CY0);for(let i=0;i<5;i++)wat(VH_PL[0].x0,VH_YS(i)-8,VH_PW,16);
@@ -2134,8 +2141,8 @@ function vhList(cx,cy,list){if(!vhVis(cx,cy))return;
  list.push({vh:1,k:'gate',base:VHG.gy+30});
  try{vhGuards().forEach(c=>{if(c.x>cx-40&&c.x<cx+VW+40&&c.y>cy-40&&c.y<cy+VH+60)list.push({am:c,base:c.y})})}catch(e){}}
 function drawVhObj(o,cx,cy,t){const g=ctx;
- if(o.k==='c'){vhSite(g,Math.round(o.p.cx-cx),Math.round(o.p.hy-cy),o.d,0);return}
- if(o.k==='h'){const h=vhHouse(o.d.s,o.d.f),ho=vhHo(o.d.s),x=Math.round(o.p.cx+ho[0]-cx),y=Math.round(o.p.hy+ho[1]-cy);g.drawImage(h.c,x-h.ox,y-h.oy);if(o.d.bq)vhSite(g,x,y,o.d,h.c.height-8);const dd=dist(P,{x:o.p.cx,y:o.p.hy+40});if(dd<190)label((o.d.on?'VILLA '+o.d.on:'Lô '+o.p.n),x,y-(h.c.height-20)-2,'#fff3a0','rgba(40,30,70,.88)');return}
+ if(o.k==='c'){vhSite(g,Math.round(o.p.cx+vhMo()[0]-cx),Math.round(o.p.hy-cy),o.d,0);return}
+ if(o.k==='h'){const h=vhHouse(o.d.s,o.d.f),ho=vhHo(o.d.s),x=Math.round(o.p.cx+ho[0]-cx),y=Math.round(o.p.hy+ho[1]-cy);g.drawImage(h.c,x-h.ox,y-h.oy);if(o.d.bq)vhSite(g,x,y,o.d,h.c.height-8);const dd=dist(P,{x:o.p.cx+ho[0],y:o.p.hy+40});if(dd<190)label((o.d.on?'VILLA '+o.d.on:'Lô '+o.p.n),x,y-(h.c.height-20)-2,'#fff3a0','rgba(40,30,70,.88)');return}
  if(o.k==='s'){const x=Math.round(o.p.cx-cx),y=Math.round(o.p.hy-cy);if(o.d){rr(g,x-30,y-4,60,10,'#c9b88a');rr(g,x-30,y-4,60,2,'#e4d6ae');for(let k=-2;k<=2;k++)rr(g,x+k*12-1,y-12,3,8,'#8a5a2a');rr(g,x-24,y-18,48,10,'#a07a40');ptext(g,'ĐANG XÂY',x,y-10,8,'#fff','center','monospace','#000')}else{
    rr(g,x-1,y-26,3,28,'#6e4a28');rr(g,x-24,y-44,48,22,'#fff3d0');rr(g,x-24,y-44,48,2,'#d6334a');rr(g,x-24,y-24,48,2,'#d6334a');rr(g,x-24,y-44,2,22,'#d6334a');rr(g,x+22,y-44,2,22,'#d6334a');ptext(g,'LÔ '+o.p.n,x,y-33,9,'#8a1f2c','center','monospace',null);ptext(g,'ĐẤT TRỐNG',x,y-25,7,'#2a2a34','center','monospace',null);for(const q of[[-40,-6],[40,-6],[-40,-30],[40,-30]]){rr(g,x+q[0]-1,y+q[1],3,10,'#d6334a');rr(g,x+q[0]-1,y+q[1],3,2,'#fff')}if(dist(P,{x:o.p.cx,y:o.p.y1})<120)label(VND(VH_LAND)+' · bấm để mua',x,y-48,'#ffe9a8','rgba(40,30,70,.88)')}return}
  if(o.k==='g'){const s=vhGate(o.d.gt|0);g.drawImage(s.c,Math.round(o.p.x0-cx)-s.ox,Math.round(o.p.hy+36-cy)-s.oy);return}
@@ -2153,12 +2160,12 @@ function vhGround(cx,cy,t){if(!vhVis(cx,cy))return;const g=ctx;
 let VGL=null;
 function vhNight(cx,cy,t,nf,vis){if(!vhVis(cx,cy)||nf<.05)return;const g=ctx;if(!VGL){const [c,q]=mk(64,64),gr=q.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,'rgba(255,225,150,.95)');gr.addColorStop(.5,'rgba(255,190,90,.35)');gr.addColorStop(1,'rgba(255,170,60,0)');q.fillStyle=gr;q.fillRect(0,0,64,64);VGL=c}
  const a=Math.min(1,nf*1.2);VHNL.forEach(([x,y])=>{if(x<cx-80||x>cx+VW+80||y<cy-80||y>cy+VH+80)return;g.globalAlpha=a*.7;g.drawImage(VGL,Math.round(x-cx-24),Math.round(y-cy-24),48,48)});
- VH_PL.forEach(p=>{const d=vhDoc(p.n);if(!d)return;if(p.x1<cx-100||p.x0>cx+VW+100||p.y1<cy-60||p.y0>cy+VH+200)return;if(d.f>0){g.globalAlpha=a*.55;g.drawImage(VGL,Math.round(p.cx-cx-70),Math.round(p.hy-cy-90),140,120)}const it=d.it||{};for(const s in it){if(VH_IT[+it[s]]&&VH_IT[+it[s]].lamp){const sl=vhSl(d.s)[+s];if(!sl)continue;g.globalAlpha=a*.8;g.drawImage(VGL,Math.round(p.x0+sl[0]-cx-24),Math.round(p.y0+sl[1]-cy-48),48,48)}}});g.globalAlpha=1}
+ VH_PL.forEach(p=>{const d=vhDoc(p.n);if(!d)return;if(p.x1<cx-100||p.x0>cx+VW+100||p.y1<cy-60||p.y0>cy+VH+200)return;if(d.f>0){g.globalAlpha=a*.55;g.drawImage(VGL,Math.round(p.cx+vhHo(d.s)[0]-cx-70),Math.round(p.hy-cy-90),140,120)}const it=d.it||{};for(const s in it){if(VH_IT[+it[s]]&&VH_IT[+it[s]].lamp){const sl=vhSl(d.s)[+s];if(!sl)continue;g.globalAlpha=a*.8;g.drawImage(VGL,Math.round(p.x0+sl[0]-cx-24),Math.round(p.y0+sl[1]-cy-48),48,48)}}});g.globalAlpha=1}
 /* ---- tương tác ---- */
 function vhNear(add){
  add(P2(2546,VHG.gy),80,{k:'vhgate',label:VHX.open?'Cổng Khu Villa Riêng · bảo vệ 24/7':'Khu Villa Riêng · sắp khai trương'});
  if(VHX.open)VH_PL.forEach(p=>{const d=vhDoc(p.n),o={k:'vhplot',n:p.n,label:d?(d.o===lmMe()?'Villa của bạn · Lô '+p.n+' · quản lý':'Villa của '+(d.on||'?')+' · Lô '+p.n):'Lô '+p.n+' · đất trống '+VND(vhLand(p.n))+' · E để mua'};
-  add(P2(p.cx,p.hy+40),70,o);add(P2(p.x0+14,p.hy+22),70,o);add(P2(p.x0-24,p.hy+22),48,o);add(P2(p.x0+70,p.hy+22),60,o)})}
+  add(P2(p.cx+vhMo()[0],p.hy+40),70,o);add(P2(p.x0+14,p.hy+22),70,o);add(P2(p.x0-24,p.hy+22),48,o);add(P2(p.x0+70,p.hy+22),60,o)})}
 function vhGateTalk(){if(!VHX.open){toast('Bảo vệ: Khu Villa Riêng sắp khai trương, xin quý khách quay lại sau!',false,4000);return}toast('Bảo vệ: Khu vực an ninh 24/7. Không có người lạ, không có lừa đảo. Chúc quý khách vui vẻ!',false,4500)}
 /* ---- dữ liệu / hành động ---- */
 const VHU={n:0,tab:'ov',slot:0,arm:null};
@@ -2258,7 +2265,7 @@ const vhHasWc=d=>{const fu=(d&&d.fu)||{};return Object.keys(fu).some(k=>(+k.spli
 const vhBeds=d=>{const fu=(d&&d.fu)||{};return Object.keys(fu).filter(k=>(+k.split('_')[0])<=vhFloors(d)&&VH_FU[+fu[k]]&&VH_FU[+fu[k]].k==='bed').length};
 function vhFuList(d,fl){const o=[],fu=(d&&d.fu)||{};VH_FSL.forEach((q,i)=>{const id=fu[fl+'_'+i];if(id!=null&&VH_FU[+id])o.push({i,id:+id,x:q[0],y:q[1],f:VH_FU[+id]})});return o}
 function vhBlk(x,y){if(x<14||x>466||y<168||y>268)return true;const d=vhDoc(ROOM.i);return vhFuList(d,ROOM.fl).some(o=>!o.f.fl&&x>o.x-o.f.w/2+4&&x<o.x+o.f.w/2-4&&y>o.y-12&&y<o.y+3)}
-function vhDoorPos(n){const p=VH_PL[n-1];return p?{x:p.cx,y:p.hy+14}:null}
+function vhDoorPos(n){const p=VH_PL[n-1];return p?{x:p.cx+vhMo()[0],y:p.hy+14}:null}
 function vhEnter(n){const d=vhDoc(n);if(!d||d.o!==lmMe()||!(d.f>0)){toast('Chỉ chủ nhà mới vào được (và nhà phải đã xây).',true);return}if(mode!=='world'||ROOM)return;if(smelly(P)){toast('Đang bốc mùi, hãy đi tắm trước khi vào nhà!',false,3500);return}
  $('#vhOv').hidden=true;mode='room';ROOM={type:'vh',i:n,fl:1,sleep:false,x:70,y:238,dir:'right',anim:0,mv:false,tx:null,ty:null,cd:{},rg:CFG.REGEN.vh};P.hidden=true;P.path=[];keys={};$('#roomBar').hidden=false;updRoomBar();beep(523,.08);toast('Chào mừng về nhà!',false,2500)}
 function vhNearAct(){const R=ROOM;if(!R||R.type!=='vh'||R.sleep)return null;const d=vhDoc(R.i);if(!d)return null;
@@ -7711,7 +7718,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z106';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z107';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
