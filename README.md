@@ -1075,3 +1075,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z110 — Biểu tượng Gen Z Việt (10 vật phẩm, id 86–95)
 - Nhóm `viet`: trend Việt (xấu lạ, cây hot, cà phê muối, blind box, Tết, mèo thần tài, bottle flip, máy ảnh 2016) được làm thành tượng/vật trang trí vườn: Tượng gà cao su gào thét, Luống rau củ biết cười, Cổng mặt nạ cá xanh, Kệ cây hot, Ly cà phê muối khổng lồ (sáng đêm), Tháp chai bottle flip, Tủ kính blind box, Cây quất Tết & câu đối, Mèo thần tài đèn lồng (sáng đêm), Máy ảnh 2016 (sáng đêm). Giá 30–120 triệu, admin chỉnh được. Không cần SQL.
+
+## z111 — Chỉnh 3 biểu tượng Gen Z Việt
+- id 86: Tháp 3 gà cao su ốm đu nhau (tháp cao 3 con); id 90: Vòi nước cà phê muối (ly có quai, vòi phun cà phê, đá bay, sáng đêm); id 92: Tháp tủ blind box (tủ kiểu tháp chùa 3 tầng, hộp "?" trên đỉnh). Giá giữ nguyên. Không cần SQL.
