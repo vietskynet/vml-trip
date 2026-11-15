@@ -1150,3 +1150,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z126 · Ẩn mạnh hơn huy hiệu Netlify
 - Ẩn mọi phần tử lạ do bên ngoài chèn vào body (custom element / shadow DOM / fixed sát đáy) và tắt chạm của chúng; quét 0,7s/lần.
+
+## z127 · 12 kiểu tóc mới, tóc giữ lâu ×3, shop xếp theo giá
+- Thêm 12 kiểu tóc tạo hình ở Hair Salon Tóc Thề: Nam: Cây Thông Noel, Rồng Thiêng, Cây Chuối, Núi Lửa, Bánh Mì Baguette, Kem Ốc Quế. Nữ: Tai Thỏ Dài, Medusa Rắn, Hoa Sen, Bạch Tuộc, Hoa Hướng Dương, Phượng Hoàng Lửa. Mỗi kiểu có 3 góc nhìn (trước, sau, nghiêng). Tổng 15 kiểu nam, 15 kiểu nữ.
+- Thời gian giữ tóc ×3 cho mọi kiểu (tóc đã làm trước đó giữ nguyên hạn cũ).
+- Shop thú cưng và thời trang xếp giá thấp đến cao.
+- Không cần SQL.
