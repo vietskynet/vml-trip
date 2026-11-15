@@ -1110,3 +1110,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z118 – Mỗi cây 1 kênh sở trường +12%
 - Mỗi hạt có 1 kênh vượt mức tối đa của các cây khác 12% (hằng `LM_SIG`/`boost`): Dừa Vàng→Tiền 8,96%, Anh Đào→May mắn 33,6%, Thông Gió→Tốc độ 16,8%, Sồi Chiến→Khổng Lồ ×1,28, Bồ Đề→Năng lượng 33,6%, Sâm Ngọc Linh→Sức khoẻ 33,6% (trước là +50%), Thế Giới Thụ→kênh đang cao điểm nhất.
 - Bảng chọn hạt hiển thị dòng "Sở trường". Không cần SQL.
+
+## z119 – Thế Giới Thụ không còn bonus +12%
+- Thế Giới Thụ là cây cân bằng nên không có kênh sở trường (chỉ 6 cây còn lại có +12%).
