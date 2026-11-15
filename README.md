@@ -1133,3 +1133,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - CyberShade (92tr): đom đóm trên nóc, đèn pha. Ban ngày cháy pin ×0.7, ban đêm không tốn pin và sạc ngược +2/s, tốc độ 2.4.
 - Nút/phím G "TỰ LÁI": tự đi qua các khu chính rồi về VINH PHÁT, bấm phím di chuyển để dừng, hồi 2 phút.
 - Không cần SQL.
+
+## z123 · Ghế Massage Di Động thiết kế lại
+- Vỏ đen bóng, da nâu, viền vàng hồng, ngả lưng, con lăn bắp chân, màn hình trên cần. Không súng, không bắn.
+- Không cần SQL.
