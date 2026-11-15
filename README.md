@@ -1147,3 +1147,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Bấm nhiều trên màn hình không còn hiện popup Copy/Writing Tools (chặn chọn chữ, menu giữ, double-tap ngoài ô nhập).
 - Ẩn huy hiệu "Powered by Netlify" che nút bấm (nếu còn: tắt trong Netlify > Site configuration).
 - Không cần SQL.
+
+## z126 · Ẩn mạnh hơn huy hiệu Netlify
+- Ẩn mọi phần tử lạ do bên ngoài chèn vào body (custom element / shadow DOM / fixed sát đáy) và tắt chạm của chúng; quét 0,7s/lần.
