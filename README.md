@@ -1127,3 +1127,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Xuống xe đẩy bộ (phím X / nút): tốc độ .6 như hết pin, không tông ai, không bắn; đồng bộ mạng cờ `vp`.
 - Phạt tông cao nhất giảm 20tr → 15tr.
 - Không cần chạy SQL.
+
+## z122 · CyberSun & CyberShade (V3) + Tự lái
+- CyberSun (85tr): xe thép góc cạnh, mặt trời trên nóc. Ban ngày không tốn pin, ban đêm cháy pin ×3, tốc độ 2.2.
+- CyberShade (92tr): đom đóm trên nóc, đèn pha. Ban ngày cháy pin ×0.7, ban đêm không tốn pin và sạc ngược +2/s, tốc độ 2.4.
+- Nút/phím G "TỰ LÁI": tự đi qua các khu chính rồi về VINH PHÁT, bấm phím di chuyển để dừng, hồi 2 phút.
+- Không cần SQL.
