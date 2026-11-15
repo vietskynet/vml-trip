@@ -144,6 +144,12 @@ begin
   if s[1] = 'skylb' then                                   -- bảng xếp hạng mùa Sky Bar: mỗi người chỉ ghi dòng của mình, điểm chỉ được tăng
     return n = 3 and s[3] = u and nv is not null and (cur is null or (nv ->> 's')::numeric >= (cur ->> 's')::numeric);
   end if;
+  if s[1] = 'stk' then                                     -- Sàn Đầu Tư: mỗi người chỉ ghi mức hoạt động của mình (chỉ tăng); giá chốt phiên ghi 1 lần sau khi hết ngày
+    if s[2] !~ '^[0-9]{1,7}$' then return false; end if;
+    if n = 5 and s[3] = 'act' then return s[4] ~ '^[A-Z0-9]{2,5}$' and s[5] = u and nv is not null and (nv #>> '{}') ~ '^[1-3]$' and (cur is null or (nv #>> '{}')::int > (cur #>> '{}')::int); end if;
+    if n = 4 and s[3] = 'px' then return s[4] ~ '^[A-Z0-9]{2,5}$' and cur is null and nv is not null and jsonb_typeof(nv) = 'object' and abs((nv ->> 'r')::numeric) <= 15 and (s[2]::bigint + 1) * 3600000 <= public.now_ms(); end if;
+    return false;
+  end if;
   if s[1] = 'market' then return s[2] = u; end if;          -- chỉ đăng/huỷ tin rao của mình
   if s[1] = 'deco' then                                     -- ai có giường trong căn đó mới được trang trí
     if s[2] = 'castle' then return n = 4 and s[4] in ('top', 'base', 'plate') and public.rt_castle_member(u, s[3]); end if;

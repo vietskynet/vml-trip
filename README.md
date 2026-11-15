@@ -1163,3 +1163,12 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z129 · Hạn mức gửi tiết kiệm 500tr
 - `BANK_CAP` 300tr → 500tr (tổng số dư gửi tối đa). Không cần SQL.
+
+## z130 · Sàn Đầu Tư (chứng khoán Bò & Gấu)
+- Toà nhà nhỏ nằm ngay **phía trên Techcombank**: tượng **Bò vàng** và **Gấu vàng** hai bên, **đồng xu vàng xoay** trên nóc, bảng điện chạy mã. Bấm vào để mở sàn.
+- **17 mã**: 13 minigame (COCO Dừa Rơi, SURF Lướt Sóng, CRAB Đập Cua, GULL Hải Âu Vượt, BFSH Cá Nuốt Cá, FISH Câu Cá, BAR Pha Chế, DIG Săn Kho Báu, CAST Lâu Đài Cát, SPY Tình Báo, DARK Pháp Thuật Hắc Ám, BROM Đua Chổi, TURT Đua Rùa) + 4 cửa hàng (XE Showroom Xe, PET Thú Cưng, FASH Tiệm Quần Áo, HAIR Tiệm Tóc). Mỗi mã ghi rõ tên mã, loại (MINIGAME / CỬA HÀNG) và tên game/cửa hàng.
+- 1 phiên = 1 ngày game (60 phút thật). Cuối ngày hệ thống **chốt lời/lỗ**, cộng dồn vào vốn của từng mã cho tới khi người chơi **bán/rút**. Tối đa **300 triệu** vốn, tối thiểu 1 triệu/lệnh. 10% cuối phiên là **chốt sổ** (ngưng khớp lệnh).
+- Luật lên xuống: `r = −0,4% + 3%·tanh((người chơi mã đó − trung vị)/…) + nhiễu(σ theo rủi ro ★) + sự kiện sập/bơm (xác suất 2%·★)`, kẹp ±15%. Hoàn toàn xác định theo (mã, ngày) nên mọi máy ra cùng kết quả; giá chốt được ghi 1 lần vào `stk/<ngày>/px/<mã>`.
+- Hoạt động: chơi minigame / mua xe, thuê, sạc / mua thú / mua đồ / làm tóc / cược rùa → ghi `stk/<ngày>/act/<mã>/<uid>` (mức 1-3).
+- Danh mục lưu trong `players/<uid>/state.stk`, tính vào Tổng tài sản. Sàn có hiệu ứng tiền/đồng xu rơi, bò-gấu động, biểu đồ nhỏ từng mã.
+- **Cần chạy SQL**: `sql-cu/supabase-update-stock.sql` (thêm luật `stk` vào `rt_can`).
