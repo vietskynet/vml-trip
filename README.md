@@ -1069,3 +1069,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z108 — Xuất file JSON rõ ràng + master khớp JSON admin
 - Trình thiết kế: thanh nút cố định trên cùng bên phải: 💾 TẢI FILE JSON (vh-layout.json), 📋 COPY JSON, 📂 NHẬP FILE (nạp lại). `VH_LAY.M` cập nhật đúng theo JSON admin gửi (slot 10 = vườn khớp [60,68,56,76]). Không cần SQL.
+
+## z109 — Bộ Craft & Gen Z (10 vật phẩm vườn mới, id 76–85)
+- Nhóm mới `craft` trong bộ trang trí chung: Nấm đèn khổng lồ (mushroomcore, phát sáng ban đêm), Cây chai thủy tinh, Giỏ macramé treo, Vòm đèn dây (fairy lights, phát sáng), Chậu lốp xe pastel (upcycle), Sofa pallet cozy, Bảng phấn vẽ tay, Chuông gió tre & vỏ sò, Chồng chậu gốm vẽ tay, Terrarium vòm kính (phát sáng nhẹ). Giá 24–72 triệu, chỉnh được ở admin (bảng giá vật phẩm). Không cần SQL.
