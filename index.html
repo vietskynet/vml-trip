@@ -7175,13 +7175,13 @@ const LM_CH=[
  {id:'sk',n:'Sức khoẻ',ic:'♥',c:'#ff6f91',mx:.30}];
 const LM_CH_BY={};LM_CH.forEach(k=>LM_CH_BY[k.id]=k);
 const LM_SEEDS=[
- {id:'dua',n:'Dừa Vàng',p:12000000,base:{tien:3,may:1},fav:['tien','may'],bad:'toc',shape:'palm',trunk:'#8a5a2a',leaf:['#2f8a3a','#4fb84f','#9adf6a'],note:'Cây kiếm tiền. Quả dừa vàng lấp lánh'},
- {id:'dao',n:'Anh Đào',p:7500000,base:{may:3,nl:1},fav:['may','nl'],bad:'kl',shape:'round',trunk:'#7a4a3a',leaf:['#d9689a','#ff9ad5','#ffd0ec'],note:'Cây may mắn. Hoa hồng nở quanh năm'},
- {id:'thong',n:'Thông Gió',p:7500000,base:{toc:3,nl:1},fav:['toc','nl'],bad:'tien',shape:'pine',trunk:'#6a4a2a',leaf:['#1f6a4a','#2f9a5a','#6fd38a'],note:'Cây nhanh nhẹn. Tán nhọn, hương thơm mát'},
- {id:'soi',n:'Sồi Chiến',p:7500000,base:{kl:3,toc:1},fav:['kl','toc'],bad:'nl',shape:'oak',trunk:'#6a4a2a',leaf:['#3f7a2a','#6aa83a','#a8d855'],note:'Cây to xác. Thân sồi vạm vỡ'},
- {id:'bode',n:'Bồ Đề',p:7500000,base:{nl:2,kl:2},fav:['nl','kl'],bad:'may',shape:'banyan',trunk:'#8a6a4a',leaf:['#3f9a6a','#6fc98a','#c8f0a8'],note:'Cây bền bỉ. Rễ phụ rủ xuống như râu'},
- {id:'the',n:'Thế Giới Thụ',p:30000000,base:{tien:1,may:1,toc:1,nl:1,kl:1,sk:1},fav:[],bad:'',shape:'world',trunk:'#5a3a7a',leaf:['#5a3aa8','#8a6ad8','#d9c8ff'],note:'Hạt hiếm. Cân bằng cả 6 kênh, không ưa không kỵ'}];
-LM_SEEDS.splice(5,0,{id:'sam',n:'Sâm Ngọc Linh',p:18000000,base:{sk:3,nl:1},fav:['sk','nl'],bad:'tien',boost:{sk:1.5},shape:'sam',trunk:'#8a5a3a',leaf:['#2f8a4a','#5fc07a','#c8f0b8'],note:'Cây thuốc quý của người Việt. Kênh Sức khoẻ mạnh hơn 50% so với mọi cây khác. Quả đỏ mọng, rễ củ lộ trên đất'});
+ {id:'dua',n:'Dừa Vàng',p:12000000,base:{tien:3,may:1},fav:['tien','may'],bad:'toc',boost:{tien:1.12},shape:'palm',trunk:'#8a5a2a',leaf:['#2f8a3a','#4fb84f','#9adf6a'],note:'Cây kiếm tiền. Quả dừa vàng lấp lánh'},
+ {id:'dao',n:'Anh Đào',p:7500000,base:{may:3,nl:1},fav:['may','nl'],bad:'kl',boost:{may:1.12},shape:'round',trunk:'#7a4a3a',leaf:['#d9689a','#ff9ad5','#ffd0ec'],note:'Cây may mắn. Hoa hồng nở quanh năm'},
+ {id:'thong',n:'Thông Gió',p:7500000,base:{toc:3,nl:1},fav:['toc','nl'],bad:'tien',boost:{toc:1.12},shape:'pine',trunk:'#6a4a2a',leaf:['#1f6a4a','#2f9a5a','#6fd38a'],note:'Cây nhanh nhẹn. Tán nhọn, hương thơm mát'},
+ {id:'soi',n:'Sồi Chiến',p:7500000,base:{kl:3,toc:1},fav:['kl','toc'],bad:'nl',boost:{kl:1.12},shape:'oak',trunk:'#6a4a2a',leaf:['#3f7a2a','#6aa83a','#a8d855'],note:'Cây to xác. Thân sồi vạm vỡ'},
+ {id:'bode',n:'Bồ Đề',p:7500000,base:{nl:2,kl:2},fav:['nl','kl'],bad:'may',boost:{nl:1.12},shape:'banyan',trunk:'#8a6a4a',leaf:['#3f9a6a','#6fc98a','#c8f0a8'],note:'Cây bền bỉ. Rễ phụ rủ xuống như râu'},
+ {id:'the',n:'Thế Giới Thụ',p:30000000,base:{tien:1,may:1,toc:1,nl:1,kl:1,sk:1},fav:[],bad:'',boost:{dyn:1.12},shape:'world',trunk:'#5a3a7a',leaf:['#5a3aa8','#8a6ad8','#d9c8ff'],note:'Hạt hiếm. Cân bằng cả 6 kênh, không ưa không kỵ'}];
+LM_SEEDS.splice(5,0,{id:'sam',n:'Sâm Ngọc Linh',p:18000000,base:{sk:3,nl:1},fav:['sk','nl'],bad:'tien',boost:{sk:1.12},shape:'sam',trunk:'#8a5a3a',leaf:['#2f8a4a','#5fc07a','#c8f0b8'],note:'Cây thuốc quý của người Việt. Kênh Sức khoẻ mạnh hơn mọi cây khác 12%. Quả đỏ mọng, rễ củ lộ trên đất'});
 const LM_SEED_BY={};LM_SEEDS.forEach(k=>LM_SEED_BY[k.id]=k);
 const LM_LAND=[{p:67500000,cap:30,n:'Đất Thường'},{p:135000000,cap:40,n:'Đất Vàng'}];
 const LM_MIN=1,LM_ACT=3,LM_MAXM=10,LM_LVM=8,LM_CHMAX=10,LM_TOPCH=3,LM_BASE=735000,LM_GROW=1.11,LM_JOIN=250000,LM_TX=[.03,.06,.10],LM_TXLV=[0,15,30],LM_DUR0=1800000,LM_DURG=1.12;
@@ -7212,7 +7212,8 @@ const lmStageN=['Mầm','Cây con','Trưởng thành','Cổ thụ'];
 function lmFactor(d,n){const t=lmPts(d),cap=lmCap(d,n);return(t>cap?cap/t:1)*(lmDorm(d)?0:1)}
 function lmCost(d,ch){const k=LM_SEED_BY[d.sd]||{fav:[],bad:''};return Math.round(LM_BASE*Math.pow(LM_GROW,lmPts(d))*(k.fav.includes(ch)?.8:k.bad===ch?1.3:1)/1000)*1000}
 function lmDom(d){let b='tien',v=-1;LM_CH.forEach(k=>{const x=lmPt(d,k.id);if(x>v){v=x;b=k.id}});return b}
-const lmSdB=(d,ch)=>{const k=LM_SEED_BY[d&&d.sd];return(k&&k.boost&&k.boost[ch])||1};
+const LM_SIG=1.12;
+const lmSdB=(d,ch)=>{const k=LM_SEED_BY[d&&d.sd],b=k&&k.boost;if(!b)return 1;if(b.dyn)return ch===lmDom(d)?b.dyn:1;return b[ch]||1};
 function lmB(ch,uid){uid=uid||lmMe();const r=LMC.u[uid];if(!r||r.d.st!=='grow')return 0;const v=Math.min(1,lmEffPt(r.d,ch)/LM_CHMAX);return LM_CH_BY[ch].mx*lmSdB(r.d,ch)*v*lmFactor(r.d,r.n)}
 const LMICO={};
 function lmIcon(sid){if(LMICO[sid])return LMICO[sid];const k=LM_SEED_BY[sid]||LM_SEEDS[0],[c,g]=mk(13,13);ellP(g,6,6,6,6,'#2a1a30');ellP(g,6,6,5,5,'#ffd23f');ellP(g,6,6,4,4,'#173a2a');ellP(g,6,5,3,3,k.leaf[1]);rr(g,4,3,2,1,k.leaf[2]);rr(g,6,8,1,3,'#c8a070');rr(g,5,10,3,1,'#c8a070');return LMICO[sid]=c}
@@ -7409,7 +7410,7 @@ function renderLm(){const el=$('#lmBody');if(!el)return;if(document.activeElemen
    +(my?'<p style="color:#ff9f43">Bạn đã ở trong một liên minh, mỗi người chỉ có một.</p>':'')
    +`<div class="lbl">TÊN LIÊN MINH</div><input id="lmNm" class="lminp" maxlength="18" placeholder="Liên Minh ${esc(cleanName(P.name).slice(0,10))}" value="${esc(LM.nm||'')}">`
    +`<div class="lbl">CHỌN HẠT GIỐNG</div><div class="offer">${LM_SEEDS.map(s=>`<button class="chip${s.id===sd.id?' on':''}" data-act="seed" data-s="${s.id}">${s.n} · ${VND(s.p)}</button>`).join('')}</div>`
-   +`<div class="detail"><h3>${sd.n}</h3><p>${sd.note}.<br>Điểm gốc: ${LM_CH.filter(k=>sd.base[k.id]).map(k=>k.n+' '+sd.base[k.id]).join(', ')}.<br>${sd.fav.length?'Ưa (giá −20%): <b>'+sd.fav.map(f=>LM_CH_BY[f].n).join(', ')+'</b> · Kỵ (giá +30%): <b>'+LM_CH_BY[sd.bad].n+'</b>':'Không ưa, không kỵ kênh nào.'}</p></div>`
+   +`<div class="detail"><h3>${sd.n}</h3><p>${sd.note}.<br>Điểm gốc: ${LM_CH.filter(k=>sd.base[k.id]).map(k=>k.n+' '+sd.base[k.id]).join(', ')}.<br>${sd.fav.length?'Ưa (giá −20%): <b>'+sd.fav.map(f=>LM_CH_BY[f].n).join(', ')+'</b> · Kỵ (giá +30%): <b>'+LM_CH_BY[sd.bad].n+'</b>':'Không ưa, không kỵ kênh nào.'}<br>Sở trường: <b>'+(sd.boost&&sd.boost.dyn?'kênh cao điểm nhất của cây (+12% so với cây khác)':Object.keys(sd.boost||{}).map(c=>LM_CH_BY[c].n+' vượt max cây khác 12%').join(', '))+'</b></p></div>`
    +`<div class="row"><button class="btn ok" data-act="buy" ${my||P.money<cost?'disabled':''}>MUA ĐẤT + HẠT · ${VND(cost)}</button><button class="btn ghost" data-act="back">DANH SÁCH</button></div>`}
   else{const mem=lmMem(d),lead=d.h===me,im=!!(d.m&&d.m[me]),t=lmPts(d),cap=lmCap(d,n),fund=lmFund(d),sd=LM_SEED_BY[d.sd],grow=d.st==='grow',tx=lmRate(d),pend=!!(d.up&&!lmUpDone(d));
    const rank=mem.slice().sort((a,b)=>((d.c&&d.c[b])||0)-((d.c&&d.c[a])||0)||(a===d.h?-1:b===d.h?1:0));
@@ -7908,11 +7909,11 @@ function walkNear(p){const pa=findPath(P.x,P.y,p.x,p.y);if(pa){P.path=pa;P.autoA
 $('#annGo').onclick=()=>{$('#annOv').hidden=true;try{if(ANN_CUR&&mode==='world'){const pt=ANN_CUR.go();if(pt)walkNear(pt)}}catch(e){console.warn(e)}};
 function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').innerHTML=`<div><b>CÂU CHUYỆN</b>Ngày xưa, bên trong khu resort có một mảnh đất hoang mà ai đi ngang cũng bảo: một người trồng cây thì chỉ được bóng mát, nhưng nhiều người trồng chung thì được cả một khu rừng. Từ đó, những người bạn ở VML gom tiền mua đất, mỗi người đóng một góp, cùng gieo xuống một hạt giống. Cây lớn lên nhờ <strong>sự liên minh</strong>: ai góp nhiều quỹ thì cây nhanh lớn, mọi thành viên cùng hưởng quả ngọt.</div>
 <div><b>CÁCH CHƠI</b>1. Mua <strong>đất</strong> (Thường 67,5tr, tối đa 30 điểm; Vàng 135tr, tối đa 40 điểm) và chọn <strong>hạt giống</strong>.<br>2. Cần <strong>tối thiểu 3 thành viên</strong> mới trồng được (tối đa 10). Gốc Chủ mời hoặc mở đăng ký, người vào trả phí tham gia theo số điểm cây.<br>3. Mọi người <strong>góp quỹ</strong>. Quỹ chỉ để mua dinh dưỡng nâng cấp cây, mỗi lần nâng cần thời gian chờ.<br>4. Cây đạt 10 điểm ở kênh nào thì cả liên minh nhận buff kênh đó.</div>
-<div><b>6 KÊNH BUFF</b>Tiền +8% thưởng · May mắn +30% nhặt thưởng và vé số · Tốc độ +15% · Năng lượng giảm 30% hao, +25% hồi khi ngủ · Khổng Lồ nhân vật to ×1,25 và +30% sát thương quái · <b>Sức khoẻ</b> giảm tới 30% số lần buồn đi tiểu / ị và chịu được lâu hơn (thời gian tìm toilet +60%); hạt <b>Sâm Ngọc Linh</b> mạnh hơn 50% (tới −45% lần đi, +90% thời gian chịu). Hạt giống "ưa" kênh nào thì mua dinh dưỡng kênh đó rẻ hơn 20%, kênh "kỵ" thì đắt thêm 30%.</div>
+<div><b>6 KÊNH BUFF</b>Tiền +8% thưởng · May mắn +30% nhặt thưởng và vé số · Tốc độ +15% · Năng lượng giảm 30% hao, +25% hồi khi ngủ · Khổng Lồ nhân vật to ×1,25 và +30% sát thương quái · <b>Sức khoẻ</b> giảm tới 30% số lần buồn đi tiểu / ị và chịu được lâu hơn (thời gian tìm toilet +60%); mỗi loại cây có <b>1 kênh sở trường mạnh hơn mức tối đa của cây khác 12%</b>: Dừa Vàng (Tiền), Anh Đào (May mắn), Thông Gió (Tốc độ), Sồi Chiến (Khổng Lồ), Bồ Đề (Năng lượng), Sâm Ngọc Linh (Sức khoẻ), Thế Giới Thụ (kênh đang cao điểm nhất). Hạt giống "ưa" kênh nào thì mua dinh dưỡng kênh đó rẻ hơn 20%, kênh "kỵ" thì đắt thêm 30%.</div>
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='15.11.2026-z117';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='15.11.2026-z118';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

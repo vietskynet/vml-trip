@@ -1106,3 +1106,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z117 – Làm lại toàn bộ hình 7 cây Liên Minh
 - Mỗi cây có silhouette riêng, vẽ theo ý tưởng cây gốc + điểm mạnh: Dừa Vàng (cọ cao, thân vòng vàng, xu treo), Anh Đào (cây hoa xoắn, cành rủ, cỏ bốn lá), Thông Gió (tầng thông bị gió thổi, cờ xanh, vệt gió), Sồi Chiến (thân vạm vỡ, khiên, kiếm, cờ chiến), Bồ Đề (tán lá tim, rễ trụ, hào quang, hoa sen), Sâm Ngọc Linh (củ sâm người, tán lá chân vịt, chùm quả đỏ), Thế Giới Thụ (thân đôi xoắn, tán thiên hà, vành quỹ đạo 6 viên ngọc).
 - Kích thước theo từng cây (dừa cao ~195, thế giới thụ ~205), 4 giai đoạn theo cùng bộ vẽ. Quả theo kênh vẫn hiện trên tán. Không cần SQL.
+
+## z118 – Mỗi cây 1 kênh sở trường +12%
+- Mỗi hạt có 1 kênh vượt mức tối đa của các cây khác 12% (hằng `LM_SIG`/`boost`): Dừa Vàng→Tiền 8,96%, Anh Đào→May mắn 33,6%, Thông Gió→Tốc độ 16,8%, Sồi Chiến→Khổng Lồ ×1,28, Bồ Đề→Năng lượng 33,6%, Sâm Ngọc Linh→Sức khoẻ 33,6% (trước là +50%), Thế Giới Thụ→kênh đang cao điểm nhất.
+- Bảng chọn hạt hiển thị dòng "Sở trường". Không cần SQL.
