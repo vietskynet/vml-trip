@@ -1053,3 +1053,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z104 — Tuyết không che lối đi + 2 cầu mỗi lô
 - Tuyết nền (xmWalk/xmKeep) không phủ đại lộ vào cổng, biển chỉ đường, cổng bảo vệ, lối đi chính khu villa, cầu, lối vào và bảng từng lô.
 - Mỗi lô villa có 2 cầu gỗ bắc qua kênh (cầu cũ ở hy+22 và cầu mới ở y0+67, có thêm lối lát đá). Không cần SQL.
+
+## z105 — Ngủ ngầm khi tắt tab / thoát app
+- Đang ngủ mà chuyển tab: khi quay lại cộng bù năng lượng theo thời gian thực (rate × giây vắng, tối đa 12h) rồi toast.
+- Thoát hẳn app: state lưu thêm `sl:{t,r}` (mốc + tốc độ hồi/giây); lần đăng nhập sau cộng bù tới 100
