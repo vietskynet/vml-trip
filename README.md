@@ -1072,3 +1072,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z109 — Bộ Craft & Gen Z (10 vật phẩm vườn mới, id 76–85)
 - Nhóm mới `craft` trong bộ trang trí chung: Nấm đèn khổng lồ (mushroomcore, phát sáng ban đêm), Cây chai thủy tinh, Giỏ macramé treo, Vòm đèn dây (fairy lights, phát sáng), Chậu lốp xe pastel (upcycle), Sofa pallet cozy, Bảng phấn vẽ tay, Chuông gió tre & vỏ sò, Chồng chậu gốm vẽ tay, Terrarium vòm kính (phát sáng nhẹ). Giá 24–72 triệu, chỉnh được ở admin (bảng giá vật phẩm). Không cần SQL.
+
+## z110 — Biểu tượng Gen Z Việt (10 vật phẩm, id 86–95)
+- Nhóm `viet`: trend Việt (xấu lạ, cây hot, cà phê muối, blind box, Tết, mèo thần tài, bottle flip, máy ảnh 2016) được làm thành tượng/vật trang trí vườn: Tượng gà cao su gào thét, Luống rau củ biết cười, Cổng mặt nạ cá xanh, Kệ cây hot, Ly cà phê muối khổng lồ (sáng đêm), Tháp chai bottle flip, Tủ kính blind box, Cây quất Tết & câu đối, Mèo thần tài đèn lồng (sáng đêm), Máy ảnh 2016 (sáng đêm). Giá 30–120 triệu, admin chỉnh được. Không cần SQL.
