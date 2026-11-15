@@ -1043,3 +1043,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z101 — Trình thiết kế bố cục villa (admin)
 - Admin › SỰ KIỆN › QUẢN LÝ BĐS VILLA: nút mở `index.html?vhdesign=1`. Chọn kiểu nhà + 1/2/3 tầng, kéo nhà trên đất, vẽ khung slot (chế độ VẼ KHUNG), kéo thả vật phẩm từ bảng vào khung, chỉnh số/phím mũi tên, lưới snap. Bản nháp lưu localStorage; XUẤT JSON gửi lại để hard-code.
 - Game đã hỗ trợ `VH_LAY[styleId]={h:[dx,dy],s:[[x,y],...]}` (mặc định rỗng = bố cục cũ). Không cần SQL.
+
+## z102 — Master Layout
+- Trình thiết kế có chế độ MASTER LAYOUT (cấu trúc chung mọi kiểu nhà) và RIÊNG KIỂU NÀY (tách riêng, hoặc DÙNG MASTER để bỏ riêng). Game: `VH_LAY.M` là mặc định chung, `VH_LAY[id]` ghi đè. XUẤT TẤT CẢ gồm key M. Không cần SQL.
