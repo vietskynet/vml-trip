@@ -2614,8 +2614,8 @@ function askPrice(o,type){const base=CFG.PRICE[type];const k=(type==='villa'?1.3
 function transferBed(seller,buyer,price,type,i,k){if(type==null){type=seller.lodge.type;i=seller.lodge.i;k=LIST(type)[i].indexOf(seller)}if(buyer!==P&&!buyer.remote&&buyer.lodge)leaveLodge(buyer);leaveBed(seller,type,i,k);LIST(type)[i][k]=buyer;buyer.lodge={type,i};if(buyer===P)P.lodgePref={type,i};buyer.money-=price;seller.money+=price;seller.haggle=0;if(seller!==P&&!['cabin','private','duel'].includes(seller.state)){seller.state='idle';seller.t=1}}
 
 /* ================= needs ================= */
-const needCd=c=>c===P&&bufOn('tea')?90:CFG.NEED_CD;
-function tickNeeds(c,dt){if(c.need)return;c.peeNext-=dt;c.pooNext-=dt;
+const needCd=c=>(c===P&&bufOn('tea')?90:CFG.NEED_CD)*(c===P?1+lmHealth()*2:1);
+function tickNeeds(c,dt){if(c.need)return;if(c===P)dt*=1-Math.min(.6,lmHealth());c.peeNext-=dt;c.pooNext-=dt;
  if(c.pooNext<=0){c.need={type:'poo',cd:needCd(c)};c.pooNext=CFG.POO*rnd(.95,1.05)}
  else if(c.peeNext<=0){c.need={type:'pee',cd:needCd(c)};c.peeNext=CFG.PEE*rnd(.95,1.05)}
  if(c.need&&c===P){P.needAt=performance.now()/1000;P.preWarn=false;alarm();if(ROOM&&ROOM.sleep){ROOM.sleep=false;updRoomBar()}}}
@@ -7168,7 +7168,8 @@ const LM_CH=[
  {id:'may',n:'May mắn',ic:'♣',c:'#7ad151',mx:.30},
  {id:'toc',n:'Tốc độ',ic:'»',c:'#5fd4ff',mx:.15},
  {id:'nl',n:'Năng lượng',ic:'+',c:'#ff9f43',mx:.30},
- {id:'kl',n:'Khổng Lồ',ic:'▲',c:'#c99bff',mx:.25}];
+ {id:'kl',n:'Khổng Lồ',ic:'▲',c:'#c99bff',mx:.25},
+ {id:'sk',n:'Sức khoẻ',ic:'♥',c:'#ff6f91',mx:.30}];
 const LM_CH_BY={};LM_CH.forEach(k=>LM_CH_BY[k.id]=k);
 const LM_SEEDS=[
  {id:'dua',n:'Dừa Vàng',p:12000000,base:{tien:3,may:1},fav:['tien','may'],bad:'toc',shape:'palm',trunk:'#8a5a2a',leaf:['#2f8a3a','#4fb84f','#9adf6a'],note:'Cây kiếm tiền. Quả dừa vàng lấp lánh'},
@@ -7176,7 +7177,8 @@ const LM_SEEDS=[
  {id:'thong',n:'Thông Gió',p:7500000,base:{toc:3,nl:1},fav:['toc','nl'],bad:'tien',shape:'pine',trunk:'#6a4a2a',leaf:['#1f6a4a','#2f9a5a','#6fd38a'],note:'Cây nhanh nhẹn. Tán nhọn, hương thơm mát'},
  {id:'soi',n:'Sồi Chiến',p:7500000,base:{kl:3,toc:1},fav:['kl','toc'],bad:'nl',shape:'oak',trunk:'#6a4a2a',leaf:['#3f7a2a','#6aa83a','#a8d855'],note:'Cây to xác. Thân sồi vạm vỡ'},
  {id:'bode',n:'Bồ Đề',p:7500000,base:{nl:2,kl:2},fav:['nl','kl'],bad:'may',shape:'banyan',trunk:'#8a6a4a',leaf:['#3f9a6a','#6fc98a','#c8f0a8'],note:'Cây bền bỉ. Rễ phụ rủ xuống như râu'},
- {id:'the',n:'Thế Giới Thụ',p:30000000,base:{tien:1,may:1,toc:1,nl:1,kl:1},fav:[],bad:'',shape:'world',trunk:'#5a3a7a',leaf:['#5a3aa8','#8a6ad8','#d9c8ff'],note:'Hạt hiếm. Cân bằng cả 5 kênh, không ưa không kỵ'}];
+ {id:'the',n:'Thế Giới Thụ',p:30000000,base:{tien:1,may:1,toc:1,nl:1,kl:1,sk:1},fav:[],bad:'',shape:'world',trunk:'#5a3a7a',leaf:['#5a3aa8','#8a6ad8','#d9c8ff'],note:'Hạt hiếm. Cân bằng cả 6 kênh, không ưa không kỵ'}];
+LM_SEEDS.splice(5,0,{id:'sam',n:'Sâm Ngọc Linh',p:18000000,base:{sk:3,nl:1},fav:['sk','nl'],bad:'tien',boost:{sk:1.5},shape:'sam',trunk:'#8a5a3a',leaf:['#2f8a4a','#5fc07a','#c8f0b8'],note:'Cây thuốc quý của người Việt. Kênh Sức khoẻ mạnh hơn 50% so với mọi cây khác. Quả đỏ mọng, rễ củ lộ trên đất'});
 const LM_SEED_BY={};LM_SEEDS.forEach(k=>LM_SEED_BY[k.id]=k);
 const LM_LAND=[{p:67500000,cap:30,n:'Đất Thường'},{p:135000000,cap:40,n:'Đất Vàng'}];
 const LM_MIN=1,LM_ACT=3,LM_MAXM=10,LM_LVM=8,LM_CHMAX=10,LM_TOPCH=3,LM_BASE=735000,LM_GROW=1.11,LM_JOIN=250000,LM_TX=[.03,.06,.10],LM_TXLV=[0,15,30],LM_DUR0=1800000,LM_DURG=1.12;
@@ -7207,7 +7209,8 @@ const lmStageN=['Mầm','Cây con','Trưởng thành','Cổ thụ'];
 function lmFactor(d,n){const t=lmPts(d),cap=lmCap(d,n);return(t>cap?cap/t:1)*(lmDorm(d)?0:1)}
 function lmCost(d,ch){const k=LM_SEED_BY[d.sd]||{fav:[],bad:''};return Math.round(LM_BASE*Math.pow(LM_GROW,lmPts(d))*(k.fav.includes(ch)?.8:k.bad===ch?1.3:1)/1000)*1000}
 function lmDom(d){let b='tien',v=-1;LM_CH.forEach(k=>{const x=lmPt(d,k.id);if(x>v){v=x;b=k.id}});return b}
-function lmB(ch,uid){uid=uid||lmMe();const r=LMC.u[uid];if(!r||r.d.st!=='grow')return 0;const v=Math.min(1,lmEffPt(r.d,ch)/LM_CHMAX);return LM_CH_BY[ch].mx*v*lmFactor(r.d,r.n)}
+const lmSdB=(d,ch)=>{const k=LM_SEED_BY[d&&d.sd];return(k&&k.boost&&k.boost[ch])||1};
+function lmB(ch,uid){uid=uid||lmMe();const r=LMC.u[uid];if(!r||r.d.st!=='grow')return 0;const v=Math.min(1,lmEffPt(r.d,ch)/LM_CHMAX);return LM_CH_BY[ch].mx*lmSdB(r.d,ch)*v*lmFactor(r.d,r.n)}
 const LMICO={};
 function lmIcon(sid){if(LMICO[sid])return LMICO[sid];const k=LM_SEED_BY[sid]||LM_SEEDS[0],[c,g]=mk(13,13);ellP(g,6,6,6,6,'#2a1a30');ellP(g,6,6,5,5,'#ffd23f');ellP(g,6,6,4,4,'#173a2a');ellP(g,6,5,3,3,k.leaf[1]);rr(g,4,3,2,1,k.leaf[2]);rr(g,6,8,1,3,'#c8a070');rr(g,5,10,3,1,'#c8a070');return LMICO[sid]=c}
 function lmBadge(c,x,y,lf){const u=c===P?lmMe():c.uid,r=u&&LMC.u[u];if(!r)return;const bub=c.bubbleT>0&&c.bubble,lab=c===P||dist(c,P)<90||c.remote;const yy=y-(bub?58:lab?47:32)-lf-(lmScale(c)-1)*30;ctx.drawImage(lmIcon(r.d.sd),Math.round(x-6),Math.round(yy-6))}
@@ -7216,8 +7219,10 @@ const lmDrain=()=>Math.max(.4,(1-lmB('nl'))*(1+lmB('kl')/.25*.1)*fitEnd());
 const lmRegen=()=>1+lmB('nl')*(.25/.3);
 const lmDmg=()=>(1+lmB('kl')/.25*.3)*fitDmg();
 const lmBon=(ch)=>1+lmB(ch);
+const lmHealth=()=>lmB('sk');
 function lmEffTxt(ch,f){const m=LM_CH_BY[ch].mx*f,p=x=>(Math.round(x*1000)/10).toString().replace('.',',');
  switch(ch){case'tien':return'+'+p(m)+'% thưởng ván game & Team Building';case'may':return'+'+p(m)+'% thưởng nhặt (gián, ông già, Bụt…) & tỉ lệ trúng vé số';case'toc':return'+'+p(m)+'% tốc độ di chuyển';
+  case'sk':return'−'+p(m)+'% số lần buồn đi tiểu / ị, chịu được lâu hơn +'+p(m*2)+'% thời gian tìm toilet';
   case'nl':return'−'+p(m)+'% hao năng lượng khi đứng/đi, hồi khi ngủ nhanh hơn +'+p(m*25/30)+'%';default:return'Nhân vật ×'+(Math.round((1+m)*100)/100)+', +'+p(m/.25*.3)+'% sát thương quái, nhưng hao năng lượng +'+p(m/.25*.1)+'%'}}
 function lmSync(){LMC.u={};const all=LM_ALL();for(const n in all){const d=all[n];if(!d||!d.h)continue;lmMem(d).forEach(u=>{LMC.u[u]={n:+n,d}});if(!LMC.u[d.h]&&d.m)LMC.u[d.h]={n:+n,d}}
  if(NET.on&&!lmSync.busy){lmSync.busy=1;try{const me=lmMe();for(const n in all){const d=all[n];if(!d||d.h!==me)continue;const o={};lmMem(d).forEach(u=>{if(u!==me&&!(d.jt&&d.jt[u]))o['jt/'+u]=serverNow()});Object.keys(d.jt||{}).forEach(u=>{if(!(d.m&&d.m[u]))o['jt/'+u]=null});if(Object.keys(o).length)lmUp(+n,o)}}finally{lmSync.busy=0}}
@@ -7285,7 +7290,7 @@ function lmTick(dt){if(!P||!S)return;try{stepTick(dt)}catch(e){}try{annTick(dt)}
  if(d.h===me&&LM.t-LM.sT>=20){LM.sT=LM.t;lmFin(n)}}
 /* ---- hình cây ---- */
 const LMSPR={};
-function lmSpr(sid,stg,dom,wi,d){const EFF=d?LM_CH.map(k=>lmEffPt(d,k.id)):[0,0,0,0,0],key=sid+stg+EFF.join('')+(wi?1:0);if(LMSPR[key])return LMSPR[key];
+function lmSpr(sid,stg,dom,wi,d){const EFF=d?LM_CH.map(k=>lmEffPt(d,k.id)):[0,0,0,0,0,0],key=sid+stg+EFF.join('')+(wi?1:0);if(LMSPR[key])return LMSPR[key];
  const k=LM_SEED_BY[sid]||LM_SEEDS[0],SZ=[[36,46],[66,86],[98,120],[128,150]][stg],w=SZ[0],h=SZ[1],[c,g]=mk(w,h),bx=w>>1,by=h-3,tc=k.trunk;
  let [l0,l1,l2]=k.leaf;if(wi){l0='#6a5a3a';l1='#8a7a4a';l2='#a89a5a'}
  const th=Math.round(h*(stg===0?.52:.36)),tw=[2,3,5,7][stg];
@@ -7294,7 +7299,8 @@ function lmSpr(sid,stg,dom,wi,d){const EFF=d?LM_CH.map(k=>lmEffPt(d,k.id)):[0,0,
   else if(ci===1){[[-r,0],[r,0],[0,-r],[0,r]].forEach(([a,b])=>ellP(g,x+a,y+b,1,1,'#5fc43a'));rr(g,x,y,1,1,'#e8ffd0')}
   else if(ci===2){rr(g,x-r-1,y,2*r+3,1,'#5fd4ff');rr(g,x,y-r-1,1,2*r+3,'#5fd4ff');rr(g,x-1,y-1,3,3,'#9fe8ff');rr(g,x,y,1,1,'#fff')}
   else if(ci===3){ellP(g,x,y,r+1,r+1,'#c8660a');ellP(g,x,y,r,r,'#ff9f43');rr(g,x-1,y-1,1,1,'#ffe0b0');rr(g,x,y-r-2,1,2,'#3a7a2a')}
-  else{ellP(g,x-r,y,r,r,'#8a5ad8');ellP(g,x+r,y,r,r,'#8a5ad8');ellP(g,x,y+r,r,r,'#c99bff');rr(g,x-r,y-1,1,1,'#f0dcff')}};
+  else if(ci===4){ellP(g,x-r,y,r,r,'#8a5ad8');ellP(g,x+r,y,r,r,'#8a5ad8');ellP(g,x,y+r,r,r,'#c99bff');rr(g,x-r,y-1,1,1,'#f0dcff')}
+  else{ellP(g,x-r,y-1,r,r,'#e8325a');ellP(g,x+r,y-1,r,r,'#e8325a');ellP(g,x,y+r,r,r,'#ff6f91');rr(g,x-r,y-2,1,1,'#ffd0dc')}};
  const fr=(cx,cy,rx,ry)=>{const list=[];LM_CH.forEach((k,ci)=>{const n=Math.min(16,Math.round(EFF[ci]*[0,.5,.9,1.4][stg]));for(let j=0;j<n;j++)list.push([ci,j])});
   list.sort((a,b)=>h2(a[0]*31+a[1],stg)-h2(b[0]*31+b[1],stg));
   list.forEach(([ci,j],i)=>{const a=h2(i+ci*7,stg+9)*6.28,r=Math.sqrt(h2(stg+5,i*3+ci));fruit(ci,Math.round(cx+Math.cos(a)*rx*.85*r),Math.round(cy+Math.sin(a)*ry*.85*r))})};
@@ -7309,12 +7315,13 @@ function lmSpr(sid,stg,dom,wi,d){const EFF=d?LM_CH.map(k=>lmEffPt(d,k.id)):[0,0,
    const blobs=[[0,0,1,1,l0],[-.5,.15,.6,.7,l0],[.5,.15,.6,.7,l0],[-.3,-.2,.65,.7,l1],[.35,-.2,.6,.7,l1],[0,-.4,.55,.6,l1],[-.1,-.45,.3,.3,l2],[.25,-.35,.25,.25,l2]];
    if(stg>=2)blobs.push([-.75,.2,.35,.45,l0],[.75,.2,.35,.45,l0],[-.2,-.55,.3,.3,l2]);if(stg>=3)blobs.push([.55,-.45,.3,.3,l2],[-.55,-.35,.3,.3,l2],[0,.5,.6,.35,l1]);
    blobs.forEach(([ox,oy,sx,sy,col])=>ellP(g,Math.round(bx+ox*rx),Math.round(cy+oy*ry),Math.max(2,rx*sx),Math.max(2,ry*sy),col));
+   if(k.shape==='sam'){for(let q=0;q<4+stg*3;q++){const bx2=Math.round(bx+(h2(q,5)*2-1)*rx*.8),by2=Math.round(cy+(h2(5,q)*2-1)*ry*.8);ellP(g,bx2,by2,1,1,'#d6283c');rr(g,bx2,by2-1,1,1,'#ff9aa8')}for(let q=0;q<2+stg;q++){const rx2=bx-3+q*3;ellP(g,rx2,by,2,2,'#e8c88a');rr(g,rx2,by-1,1,1,'#fff0c8')}}
    if(k.shape==='world')for(let q=0;q<10+stg*5;q++)rr(g,Math.round(bx+(h2(q,1)*2-1)*rx*.9),Math.round(cy+(h2(1,q)*2-1)*ry*.9),1,1,q%2?'#ffffff':'#ffd23f');
    fr(bx,cy,rx,ry)}}
  outline(c,[30,20,30]);return LMSPR[key]={c,ox:bx,oy:by}}
 function lmList(cx,cy,list){if(Math.abs(GARD.gx-(cx+VW/2))>VW/2+900||GARD.y1+100<cy||GARD.y0-200>cy+VH)return;GPLOTS.forEach(q=>{if(q.x<cx-100||q.x>cx+VW+100||q.y<cy-130||q.y>cy+VH+100)return;list.push({lmt:q,base:q.y+30})})}
 const lmRgba=(h,a)=>'rgba('+parseInt(h.slice(1,3),16)+','+parseInt(h.slice(3,5),16)+','+parseInt(h.slice(5,7),16)+','+Math.max(0,a).toFixed(3)+')';
-function lmFx(x,y,stg,d,sp,pn){if(stg<1)return;const t=performance.now()/1000+pn*1.3,hh=sp.c.height,ww=sp.c.width,cx=x,cy=Math.round(y-hh*.55),rx=ww*.4,ry=hh*.3,eff=LM_CH.map(k=>lmEffPt(d,k.id)),tot=eff.reduce((a,b)=>a+b,0)||1,pick=i=>{let r=h2(i,7)*tot,k=0;while(k<4&&r>eff[k]){r-=eff[k];k++}return LM_CH[k].c},dom=LM_CH_BY[lmDom(d)].c;
+function lmFx(x,y,stg,d,sp,pn){if(stg<1)return;const t=performance.now()/1000+pn*1.3,hh=sp.c.height,ww=sp.c.width,cx=x,cy=Math.round(y-hh*.55),rx=ww*.4,ry=hh*.3,eff=LM_CH.map(k=>lmEffPt(d,k.id)),tot=eff.reduce((a,b)=>a+b,0)||1,pick=i=>{let r=h2(i,7)*tot,k=0;while(k<5&&r>eff[k]){r-=eff[k];k++}return LM_CH[k].c},dom=LM_CH_BY[lmDom(d)].c;
  ctx.save();ctx.globalCompositeOperation='lighter';
  if(stg>=2){const R=stg===3?ww*.85:ww*.7,a=(stg-1)*(.07+.04*Math.sin(t*1.7)),gr=ctx.createRadialGradient(cx,cy,2,cx,cy,R);gr.addColorStop(0,lmRgba(dom,a*1.8));gr.addColorStop(1,lmRgba(dom,0));ctx.fillStyle=gr;ctx.fillRect(cx-R,cy-R,R*2,R*2);
   if(stg===3){const g2=ctx.createRadialGradient(cx,y,2,cx,y,ww*.5);g2.addColorStop(0,lmRgba('#fff2b0',.22+.08*Math.sin(t*2)));g2.addColorStop(1,lmRgba('#fff2b0',0));ctx.fillStyle=g2;ctx.save();ctx.translate(0,y);ctx.scale(1,.3);ctx.translate(0,-y);ctx.fillRect(cx-ww*.5,y-ww*.5,ww,ww);ctx.restore()}}
@@ -7332,7 +7339,7 @@ function drawLmPlot(q,cx,cy){const d=lmDoc(q.n),x=Math.round(q.x-cx),y=Math.roun
 /* ---- giao diện ---- */
 function openLm(n){if(!S||!P)return;LM.n=n==null?(LMC.u[lmMe()]?LMC.u[lmMe()].n:null):n;LM.arm=null;renderLm();$('#lmOv').hidden=false;keys={}}
 function renderLm(){const el=$('#lmBody');if(!el)return;if(document.activeElement&&/^lm(Nm|Rn)$/.test(document.activeElement.id))return;const me=lmMe(),my=LMC.u[me];let h='';
- const bar=(ch,d,n)=>{const v=lmPt(d,ch.id),ev=lmEffPt(d,ch.id),lk=lmMaxed(d)>=LM_TOPCH&&v<LM_CHMAX-0&&v>=LM_CHMAX-1,f=Math.min(1,ev/LM_CHMAX)*(d.st==='grow'?lmFactor(d,n):0);return`<div class="lmrow"><span class="lmic" style="color:${ch.c}">${ch.ic}</span><b>${ch.n}</b><span class="lmbar"><i style="width:${v*10}%;background:${ch.c}"></i></span><span>${v}/${LM_CHMAX}${ev<v?' (tính '+ev+')':lk?' 🔒':''}</span></div><div class="lmeff">${d.st==='grow'?lmEffTxt(ch.id,f):'Chưa trồng, chưa có hiệu ứng'}</div>`};
+ const bar=(ch,d,n)=>{const v=lmPt(d,ch.id),ev=lmEffPt(d,ch.id),lk=lmMaxed(d)>=LM_TOPCH&&v<LM_CHMAX-0&&v>=LM_CHMAX-1,f=Math.min(1,ev/LM_CHMAX)*(d.st==='grow'?lmFactor(d,n):0);return`<div class="lmrow"><span class="lmic" style="color:${ch.c}">${ch.ic}</span><b>${ch.n}</b><span class="lmbar"><i style="width:${v*10}%;background:${ch.c}"></i></span><span>${v}/${LM_CHMAX}${ev<v?' (tính '+ev+')':lk?' 🔒':''}</span></div><div class="lmeff">${d.st==='grow'?lmEffTxt(ch.id,f*lmSdB(d,ch.id)):'Chưa trồng, chưa có hiệu ứng'}</div>`};
  if(LM.n==null){
   h=`<p>Mỗi người chỉ ở <b>1 liên minh</b>. Gốc Chủ mua đất và hạt giống, có thể trồng một mình, nhưng cây chỉ phát buff khi có <b>${LM_ACT} đến ${LM_MAXM} thành viên</b>. Thành viên đóng thuế theo % tiền thưởng ván game và Team Building để nuôi cây; cây lớn đem lại buff cho cả liên minh.</p>`
    +(my?`<div class="detail"><h3>Liên minh của bạn: ${esc(lmName(my.d))}</h3><p>Lô ${my.n} · ${LM_SEED_BY[my.d.sd].n} · ${my.d.st==='grow'?'Lv '+lmPts(my.d):'chưa trồng'} · Gốc Chủ ${esc(cleanName(my.d.hn))}</p><div class="row"><button class="btn ok" data-act="view" data-n="${my.n}">XEM CÂY CỦA TÔI</button></div></div>`:'')
@@ -7835,7 +7842,7 @@ function statShow(c){if(!c)return;const me=c===P,uid=me?lmMe():c.uid,r=uid?LMC.u
  $('#rankOv').hidden=true;$('#statOv').hidden=false}
 $('#rbStair').onclick=vhAct;$('#rbInv').onclick=()=>{if(!ROOM||ROOM.type!=='vh'||ROOM.guest)return;VHU.n=ROOM.i;VHU.tab='inv';renderVh();$('#vhOv').hidden=false;keys={}};$('#rbDeco').onclick=()=>{if(ROOM&&ROOM.type==='vh'){VHU.n=ROOM.i;VHU.tab='furn';VHU.fl=ROOM.fl;renderVh();$('#vhOv').hidden=false;keys={};return}if(!ROOM||ROOM.type==='castle')return;if(!canDeco(ROOM.type,ROOM.i)){toast('Bạn cần có giường ở đây mới trang trí được.');return}EST.dm='in';openDeco(ROOM.type,ROOM.i)};$('#rbSleep').onclick=toggleSleep;$('#rbToilet').onclick=roomToilet;$('#rbExit').onclick=exitRoom;
 const ANN=[
- {id:'lm',t:'KHAI TRƯƠNG VƯỜN LIÊN MINH!',b:'<p>Cổng <b>Vườn Liên Minh</b> (phía đông khu VIP, qua hàng rào) đã mở cửa! Mua đất (67,5tr / 135tr), góp ít nhất <b>3 người</b> trồng chung một cây, đóng góp quỹ để nâng cấp 5 kênh buff: Tiền, May mắn, Tốc độ, Năng lượng, Khổng Lồ.</p><p>Đọc <b>bảng hướng dẫn</b> trước cổng vườn để nghe câu chuyện và cách chơi.</p>',go:()=>P2(GARD.gx,FENCE_Y-30)},
+ {id:'lm',t:'KHAI TRƯƠNG VƯỜN LIÊN MINH!',b:'<p>Cổng <b>Vườn Liên Minh</b> (phía đông khu VIP, qua hàng rào) đã mở cửa! Mua đất (67,5tr / 135tr), góp ít nhất <b>3 người</b> trồng chung một cây, đóng góp quỹ để nâng cấp 6 kênh buff: Tiền, May mắn, Tốc độ, Năng lượng, Khổng Lồ, Sức khoẻ.</p><p>Đọc <b>bảng hướng dẫn</b> trước cổng vườn để nghe câu chuyện và cách chơi.</p>',go:()=>P2(GARD.gx,FENCE_Y-30)},
  {id:'deco1',t:'PHÒNG NGỦ ĐÃ CÓ TRANG TRÍ TUYỆT ĐẸP!',b:'<p>Phòng của bạn giờ có thể <b>đi lại thoải mái</b> và trang trí: giấy dán tường, vật treo, đèn ngủ nhiều màu, TV LED, màu nệm, gối, <b>bàn thờ</b> và <b>bùa chống ma</b>. Có thêm nhiều đồ trang trí ngoài nhà.</p><p>Vào phòng rồi bấm <b>TRANG TRÍ NỘI THẤT</b>, hoặc mở menu <b>NHÂN VẬT</b> › <b>BẤT ĐỘNG SẢN</b>. Muốn mua nhà đẹp có sẵn đồ thì vào menu <b>CHỢ</b>.</p>',go:()=>lodgeDoor(P)||P}];
 function annTick(dt){if(location.hash==='#debug'&&!window.__annOn)return;if(!S||!P||mode!=='world'||!running||modalOpen()||!$('#annOv').hidden)return;ANN_T=(window.ANN_T||0)+dt;window.ANN_T=ANN_T;if(ANN_T<15)return;P.an=P.an||[];const a=ANN.find(x=>!P.an.includes(x.id)&&(!x.own||x.own()));if(!a)return;P.an.push(a.id);window.ANN_T=0;$('#annT').textContent=a.t;$('#annB').innerHTML=a.b;ANN_CUR=a;$('#annOv').hidden=false;if(NET.on)saveState()}
 var ANN_CUR=null,ANN_T=0;
@@ -7843,11 +7850,11 @@ function walkNear(p){const pa=findPath(P.x,P.y,p.x,p.y);if(pa){P.path=pa;P.autoA
 $('#annGo').onclick=()=>{$('#annOv').hidden=true;try{if(ANN_CUR&&mode==='world'){const pt=ANN_CUR.go();if(pt)walkNear(pt)}}catch(e){console.warn(e)}};
 function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').innerHTML=`<div><b>CÂU CHUYỆN</b>Ngày xưa, bên trong khu resort có một mảnh đất hoang mà ai đi ngang cũng bảo: một người trồng cây thì chỉ được bóng mát, nhưng nhiều người trồng chung thì được cả một khu rừng. Từ đó, những người bạn ở VML gom tiền mua đất, mỗi người đóng một góp, cùng gieo xuống một hạt giống. Cây lớn lên nhờ <strong>sự liên minh</strong>: ai góp nhiều quỹ thì cây nhanh lớn, mọi thành viên cùng hưởng quả ngọt.</div>
 <div><b>CÁCH CHƠI</b>1. Mua <strong>đất</strong> (Thường 67,5tr, tối đa 30 điểm; Vàng 135tr, tối đa 40 điểm) và chọn <strong>hạt giống</strong>.<br>2. Cần <strong>tối thiểu 3 thành viên</strong> mới trồng được (tối đa 10). Gốc Chủ mời hoặc mở đăng ký, người vào trả phí tham gia theo số điểm cây.<br>3. Mọi người <strong>góp quỹ</strong>. Quỹ chỉ để mua dinh dưỡng nâng cấp cây, mỗi lần nâng cần thời gian chờ.<br>4. Cây đạt 10 điểm ở kênh nào thì cả liên minh nhận buff kênh đó.</div>
-<div><b>5 KÊNH BUFF</b>Tiền +8% thưởng · May mắn +30% nhặt thưởng và vé số · Tốc độ +15% · Năng lượng giảm 30% hao, +25% hồi khi ngủ · Khổng Lồ nhân vật to ×1,25 và +30% sát thương quái. Hạt giống "ưa" kênh nào thì mua dinh dưỡng kênh đó rẻ hơn 20%, kênh "kỵ" thì đắt thêm 30%.</div>
+<div><b>6 KÊNH BUFF</b>Tiền +8% thưởng · May mắn +30% nhặt thưởng và vé số · Tốc độ +15% · Năng lượng giảm 30% hao, +25% hồi khi ngủ · Khổng Lồ nhân vật to ×1,25 và +30% sát thương quái · <b>Sức khoẻ</b> giảm tới 30% số lần buồn đi tiểu / ị và chịu được lâu hơn (thời gian tìm toilet +60%); hạt <b>Sâm Ngọc Linh</b> mạnh hơn 50% (tới −45% lần đi, +90% thời gian chịu). Hạt giống "ưa" kênh nào thì mua dinh dưỡng kênh đó rẻ hơn 20%, kênh "kỵ" thì đắt thêm 30%.</div>
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='15.11.2026-z115';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='15.11.2026-z116';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

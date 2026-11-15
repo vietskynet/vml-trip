@@ -1097,3 +1097,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z115 – Sửa bản đồ nhỏ bị crop
 - Thẻ bản đồ giới hạn theo chiều cao màn hình (cuộn được), canvas co theo `100dvh`, không còn tràn mất tiêu đề và hàng villa biển phía trên.
+
+## z116 – Cây Liên Minh: kênh Sức khoẻ + hạt Sâm Ngọc Linh
+- Thêm kênh buff thứ 6 **Sức khoẻ** (♥, tối đa 30%): giảm số lần buồn đi tiểu/ị (đồng hồ vệ sinh chạy chậm lại) và tăng thời gian chịu (thời gian tìm toilet ×(1+2×buff)).
+- Hạt mới **Sâm Ngọc Linh** (18tr): điểm gốc Sức khoẻ 3 + Năng lượng 1, ưa Sức khoẻ/Năng lượng, kỵ Tiền, kênh Sức khoẻ mạnh ×1,5 (tới −45% lần đi, +90% thời gian chịu). Quả đỏ hình trái tim, rễ củ lộ trên đất.
+- Thế Giới Thụ nay cân bằng 6 kênh (cây đã trồng giữ nguyên điểm). Không cần SQL.
