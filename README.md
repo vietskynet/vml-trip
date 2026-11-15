@@ -1081,3 +1081,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z112 — Tượng vàng gà la hét (id 96, 80 triệu)
 - Vật phẩm động đầu tiên (`anim:'spin'`): xoay liên tục (co giãn ngang theo cos, mặt sau tối), cứ ~5,2 giây hét một lần: mở miệng + sóng âm + tiếng squeak (to dần khi người chơi lại gần, trong 230px). Không cần SQL.
+
+## z112 — Tượng vàng gà la hét (id 96, 80 triệu)
+- Vật phẩm vẽ động: xoay liên tục (lật ngang theo cos, mặt sau tối hơn) và cứ ~5 giây hét: mở miệng + sóng âm, kèm tiếng kêu (beep trượt tần số) nếu người chơi trong ~230px, to nhỏ theo khoảng cách. Cờ `anim:'spin'` + `d2` (khung mở miệng) trong VH_IT. Không cần SQL.
