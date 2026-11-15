@@ -7685,7 +7685,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z102';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z103';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -9362,9 +9362,9 @@ fontsReady.then(()=>new Promise(r=>setTimeout(r,30))).then(async()=>{buildGrid()
  if(AUTOGO){$('#startOv').classList.remove('auto');enterResort();const rs=()=>{try{audio&&audio.state==='suspended'&&audio.resume()}catch(e){}};addEventListener('pointerdown',rs,{once:true});addEventListener('keydown',rs,{once:true})}});
 /* ===== TRÌNH THIẾT KẾ BỐ CỤC VILLA (?vhdesign=1) — dùng đúng hình nhà/vật phẩm thật của game ===== */
 function vhDesigner(){
- const K=3,PW=VH_PW,PH=VH_PH,HX=Math.round(PW/2),HY=150,KEY='vhDesignV1';
+ let K=3;const PW=VH_PW,PH=VH_PH,HX=Math.round(PW/2),HY=150,KEY='vhDesignV1';
  let D={};try{D=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
- const st={ed:'M',sid:0,fl:3,sel:-1,mode:'move',snap:4,grid:true,def:true};
+ const st={pick:null,promo:false,tr:false,ed:'M',sid:0,fl:3,sel:-1,mode:'move',snap:4,grid:true,def:true};
  const base=()=>D.M||{h:[0,0],s:VH_SL.map(q=>({x:q[0],y:q[1],w:30,h:26,i:null}))};
  const lay=sid=>{if(sid==='M'){if(!D.M)D.M={h:[0,0],s:VH_SL.map(q=>({x:q[0],y:q[1],w:30,h:26,i:null}))};return D.M}if(!D[sid]&&D.M){D[sid]=JSON.parse(JSON.stringify(D.M))}if(!D[sid]){D[sid]={h:[(VH_LAY[sid]&&VH_LAY[sid].h||[0,0])[0],(VH_LAY[sid]&&VH_LAY[sid].h||[0,0])[1]],s:VH_SL.map(q=>({x:q[0],y:q[1],w:30,h:26,i:null}))};if(VH_LAY[sid]&&VH_LAY[sid].s)D[sid].s=VH_LAY[sid].s.map(q=>({x:q[0],y:q[1],w:30,h:26,i:null}))}return D[sid]};
  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
@@ -9380,7 +9380,8 @@ function vhDesigner(){
  <div class="r">Nhà: dx <input type="number" id="dzhx"> dy <input type="number" id="dzhy"> <button id="dzh0">VỀ GỐC</button></div>
  <h4>SLOT (khung)</h4><div id="dzl"></div>
  <div class="r">Slot chọn: x <input type="number" id="dzx1"> y <input type="number" id="dzy1"> rộng <input type="number" id="dzw"> cao <input type="number" id="dzh"> <button id="dzdel">XOÁ</button><button id="dzclr">GỠ MÓN</button></div>
- <h4>VẬT PHẨM — kéo thả vào khung</h4><div id="dzp"></div>
+ <h4>VẬT PHẨM — kéo thả vào khung</h4><div id="dzpk" style="font-size:12px;color:#8fd">Bấm 1 món rồi bấm khung để gắn nhanh (hoặc kéo thả)</div><div class="r"><button id="dzfill">GẮN NGẪU NHIÊN TẤT CẢ SLOT</button><button id="dzfill2">GẮN MÓN ĐANG CẦM VÀO MỌI SLOT TRỐNG</button><button id="dzclall">GỠ HẾT MÓN</button></div><div id="dzp"></div>
+ <h4>CHỤP HÌNH PROMOTE</h4><div class="r"><button id="dzpr">ẨN KHUNG/LƯỚI (xem sạch)</button><button id="dztr">NỀN TRONG SUỐT</button> Cỡ <select id="dzsc"><option value="3">×3</option><option value="4" selected>×4</option><option value="6">×6</option><option value="8">×8</option></select><button id="dzpng" class="on">📷 TẢI ẢNH PNG</button></div>
  <h4>XUẤT / NHẬP</h4><div class="r"><button id="dzex">XUẤT JSON (mục đang sửa)</button><button id="dzea">XUẤT TẤT CẢ</button><button id="dzim">NHẬP</button><button id="dzrs">RESET MỤC NÀY</button></div><textarea id="dzt" rows="7" style="width:100%" placeholder="JSON xuất ra hiện ở đây — copy gửi lại cho Claude"></textarea></div>`;
  document.body.appendChild(ov);const q=s=>ov.querySelector(s),cv=q('#dzc'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
  const sel=q('#dzs');VH_ORD.forEach(i=>{const o=document.createElement('option');o.value=i;o.textContent=VH_ST[i].n;sel.appendChild(o)});sel.value=st.sid;
@@ -9388,20 +9389,20 @@ function vhDesigner(){
  function pal(){const sid=st.sid;let h='';for(const ck in VH_CATS){h+=`<small>${VH_CATS[ck]}</small><div class="pal">${VH_IT.map((t,i)=>t.c===ck?`<div draggable="true" data-i="${i}"><canvas width="64" height="64" data-i="${i}"></canvas><br>${esc(t.n)}</div>`:'').join('')}</div>`}
   h+=`<small style="color:#ffd23f">★ Đặc biệt kiểu này</small><div class="pal">${VH_IT.map((t,i)=>t.sp===sid?`<div draggable="true" data-i="${i}"><canvas width="64" height="64" data-i="${i}"></canvas><br>${esc(t.n)}</div>`:'').join('')}</div>`;
   q('#dzp').innerHTML=h;q('#dzp').querySelectorAll('canvas').forEach(c=>{const s=vhItem(+c.dataset.i);c.getContext('2d').drawImage(s.c,0,0)});
-  q('#dzp').querySelectorAll('[draggable]').forEach(d=>d.ondragstart=e=>{e.dataTransfer.setData('text/plain',d.dataset.i)})}
+  q('#dzp').querySelectorAll('[draggable]').forEach(d=>{d.ondragstart=e=>{e.dataTransfer.setData('text/plain',d.dataset.i)};d.onclick=()=>{st.pick=st.pick===+d.dataset.i?null:+d.dataset.i;q('#dzp').querySelectorAll('[draggable]').forEach(x=>x.style.borderColor=+x.dataset.i===st.pick?'#ffd23f':'');q('#dzpk').textContent=st.pick!=null?'Đang cầm: '+VH_IT[st.pick].n+' — bấm vào khung slot để gắn':'Bấm 1 món rồi bấm khung để gắn nhanh (hoặc kéo thả)'}})}
  function list(){const l=L();q('#dzl').innerHTML=l.s.map((s,i)=>`<div class="sl ${i===st.sel?'on':''}" data-i="${i}">#${i+1} (${s.x},${s.y}) ${s.w}×${s.h} ${s.i!=null?'· '+esc(VH_IT[s.i].n):'· trống'}</div>`).join('')||'<small>Chưa có slot — bấm VẼ KHUNG SLOT rồi kéo trên đất</small>';
   q('#dzl').querySelectorAll('.sl').forEach(d=>d.onclick=()=>{st.sel=+d.dataset.i;ui()});
   const s=l.s[st.sel];['x1','y1','w','h'].forEach(k=>{const e=q('#dz'+k);e.disabled=!s;e.value=s?s[{x1:'x',y1:'y',w:'w',h:'h'}[k]]:''});q('#dzhx').value=l.h[0];q('#dzhy').value=l.h[1]}
- function draw(){const l=L();g.clearRect(0,0,cv.width,cv.height);g.fillStyle='#6cb35a';g.fillRect(0,0,cv.width,cv.height);
-  g.fillStyle='#62a851';for(let y=0;y<PH;y+=8)for(let x=((y/8)%2)*8;x<PW;x+=16)g.fillRect(x*K,y*K,8*K,8*K);
-  if(st.grid){g.strokeStyle='rgba(255,255,255,.14)';g.lineWidth=1;for(let x=0;x<=PW;x+=st.snap*2){g.beginPath();g.moveTo(x*K+.5,0);g.lineTo(x*K+.5,PH*K);g.stroke()}for(let y=0;y<=PH;y+=st.snap*2){g.beginPath();g.moveTo(0,y*K+.5);g.lineTo(PW*K,y*K+.5);g.stroke()}}
-  g.strokeStyle='#fff';g.setLineDash([6,4]);g.strokeRect(1,1,PW*K-2,PH*K-2);g.setLineDash([]);
+ function draw(){const l=L();g.imageSmoothingEnabled=false;g.clearRect(0,0,cv.width,cv.height);const ed=!st.promo;if(!st.tr){g.fillStyle='#6cb35a';g.fillRect(0,0,cv.width,cv.height);
+  g.fillStyle='#62a851';for(let y=0;y<PH;y+=8)for(let x=((y/8)%2)*8;x<PW;x+=16)g.fillRect(x*K,y*K,8*K,8*K)}
+  if(st.grid&&ed){g.strokeStyle='rgba(255,255,255,.14)';g.lineWidth=1;for(let x=0;x<=PW;x+=st.snap*2){g.beginPath();g.moveTo(x*K+.5,0);g.lineTo(x*K+.5,PH*K);g.stroke()}for(let y=0;y<=PH;y+=st.snap*2){g.beginPath();g.moveTo(0,y*K+.5);g.lineTo(PW*K,y*K+.5);g.stroke()}}
+  if(ed){g.strokeStyle='#fff';g.setLineDash([6,4]);g.strokeRect(1,1,PW*K-2,PH*K-2);g.setLineDash([])}
   const ob=[];const hh=vhHouse(st.sid,st.fl),hx=HX+l.h[0],hy=HY+l.h[1];ob.push({b:hy,f:()=>g.drawImage(hh.c,(hx-hh.ox)*K,(hy-hh.oy)*K,hh.c.width*K,hh.c.height*K)});
   l.s.forEach(s=>{if(s.i!=null&&VH_IT[s.i]){const t=vhItem(s.i);ob.push({b:s.y,f:()=>g.drawImage(t.c,(s.x-t.ox)*K,(s.y-t.oy)*K,t.c.width*K,t.c.height*K)})}});
   ob.sort((a,b)=>a.b-b.b).forEach(o=>o.f());
-  if(st.def){g.strokeStyle='#ff5';g.lineWidth=1;const dx=HX*K,dy=HY*K;g.beginPath();g.moveTo(dx-8,dy);g.lineTo(dx+8,dy);g.moveTo(dx,dy-8);g.lineTo(dx,dy+8);g.stroke()}
-  g.strokeStyle='#0ff';g.beginPath();g.moveTo(hx*K-7,hy*K);g.lineTo(hx*K+7,hy*K);g.moveTo(hx*K,hy*K-7);g.lineTo(hx*K,hy*K+7);g.stroke();
-  l.s.forEach((s,i)=>{const x=(s.x-s.w/2)*K,y=(s.y-s.h)*K,on=i===st.sel;g.lineWidth=on?3:2;g.strokeStyle=on?'#ffd23f':'#ff5ad0';g.setLineDash(s.i!=null?[]:[5,3]);g.strokeRect(x,y,s.w*K,s.h*K);g.setLineDash([]);g.fillStyle=on?'rgba(255,210,63,.18)':'rgba(255,90,208,.12)';g.fillRect(x,y,s.w*K,s.h*K);g.fillStyle='#fff';g.font='bold 13px monospace';g.fillText(i+1,x+3,y+13);g.fillStyle=on?'#ffd23f':'#ff5ad0';g.fillRect(s.x*K-3,s.y*K-3,6,6);if(on)g.fillRect(x+s.w*K-5,y-4,9,9)});
+  if(ed&&st.def){g.strokeStyle='#ff5';g.lineWidth=1;const dx=HX*K,dy=HY*K;g.beginPath();g.moveTo(dx-8,dy);g.lineTo(dx+8,dy);g.moveTo(dx,dy-8);g.lineTo(dx,dy+8);g.stroke()}
+  if(ed){g.strokeStyle='#0ff';g.beginPath();g.moveTo(hx*K-7,hy*K);g.lineTo(hx*K+7,hy*K);g.moveTo(hx*K,hy*K-7);g.lineTo(hx*K,hy*K+7);g.stroke()}
+  if(ed)l.s.forEach((s,i)=>{const x=(s.x-s.w/2)*K,y=(s.y-s.h)*K,on=i===st.sel;g.lineWidth=on?3:2;g.strokeStyle=on?'#ffd23f':'#ff5ad0';g.setLineDash(s.i!=null?[]:[5,3]);g.strokeRect(x,y,s.w*K,s.h*K);g.setLineDash([]);g.fillStyle=on?'rgba(255,210,63,.18)':'rgba(255,90,208,.12)';g.fillRect(x,y,s.w*K,s.h*K);g.fillStyle='#fff';g.font='bold 13px monospace';g.fillText(i+1,x+3,y+13);g.fillStyle=on?'#ffd23f':'#ff5ad0';g.fillRect(s.x*K-3,s.y*K-3,6,6);if(on)g.fillRect(x+s.w*K-5,y-4,9,9)});
   q('#dzi').textContent=`${st.ed==='M'?'MASTER':'Riêng'} · xem thử: ${VH_ST[st.sid].n} · ${st.fl} tầng · điểm neo nhà (${l.h[0]>=0?'+':''}${l.h[0]}, ${l.h[1]>=0?'+':''}${l.h[1]}) so với gốc · chấm vàng = neo mặc định, chữ thập xanh = neo hiện tại · khung hồng = slot (món đứng ở đáy-giữa khung)`}
  function ui(){list();draw();document.querySelectorAll('#vhDz [data-f]').forEach(b=>b.classList.toggle('on',+b.dataset.f===st.fl));document.querySelectorAll('#vhDz [data-e]').forEach(b=>b.classList.toggle('on',b.dataset.e===st.ed));q('#dze').textContent=st.ed==='M'?'Đang sửa MASTER: áp dụng cho mọi kiểu nhà chưa có bố cục riêng.':(D[st.sid]&&D[st.sid]._own?'Kiểu này đang dùng bố cục RIÊNG.':'Kiểu này đang dùng MASTER (sửa ở chế độ RIÊNG để tách ra).');document.querySelectorAll('#vhDz [data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===st.mode));save()}
  const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*cv.width/r.width/K,(e.clientY-r.top)*cv.height/r.height/K]};
@@ -9411,7 +9412,7 @@ function vhDesigner(){
  cv.onpointerdown=e=>{const[px,py]=pos(e),l=L();cv.setPointerCapture(e.pointerId);
   if(st.mode==='draw'){drag={t:'new',x0:sn(px),y0:sn(py)};l.s.push({x:drag.x0,y:drag.y0,w:4,h:4,i:null});st.sel=l.s.length-1;ui();return}
   const sIdx=st.sel>=0?l.s[st.sel]:null;if(sIdx&&Math.abs(px-(sIdx.x+sIdx.w/2))<4&&Math.abs(py-(sIdx.y-sIdx.h))<4){drag={t:'rs'};return}
-  const hs=hitSlot(px,py);if(hs>=0){st.sel=hs;const s=l.s[hs];drag={t:'mv',dx:px-s.x,dy:py-s.y};ui();return}
+  const hs=hitSlot(px,py);if(hs>=0&&st.pick!=null){l.s[hs].i=st.pick;st.sel=hs;ui();return}if(hs>=0){st.sel=hs;const s=l.s[hs];drag={t:'mv',dx:px-s.x,dy:py-s.y};ui();return}
   if(hitHouse(px,py)){st.sel=-1;drag={t:'h',dx:px-(HX+l.h[0]),dy:py-(HY+l.h[1])};ui();return}
   st.sel=-1;ui()};
  cv.onpointermove=e=>{if(!drag)return;const[px,py]=pos(e),l=L();
@@ -9424,6 +9425,10 @@ function vhDesigner(){
  cv.ondragover=e=>e.preventDefault();
  cv.ondrop=e=>{e.preventDefault();const id=+e.dataTransfer.getData('text/plain'),[px,py]=pos(e);let h=hitSlot(px,py);const l=L();if(h<0){let bd=1e9;l.s.forEach((s,i)=>{const d=Math.hypot(px-s.x,py-(s.y-s.h/2));if(d<bd&&d<40){bd=d;h=i}})}if(h>=0){l.s[h].i=id;st.sel=h}ui()};
  q('#dzx').onclick=()=>ov.remove();
+ q('#dzpr').onclick=()=>{st.promo=!st.promo;q('#dzpr').classList.toggle('on',st.promo);draw()};q('#dztr').onclick=()=>{st.tr=!st.tr;q('#dztr').classList.toggle('on',st.tr);draw()};
+ q('#dzfill').onclick=()=>{const sid=st.sid,ids=VH_IT.map((t,i)=>i).filter(i=>VH_IT[i].sp==null||VH_IT[i].sp===sid);L().s.forEach(s=>s.i=ids[Math.floor(Math.random()*ids.length)]);ui()};
+ q('#dzfill2').onclick=()=>{if(st.pick==null)return;L().s.forEach(s=>{if(s.i==null)s.i=st.pick});ui()};q('#dzclall').onclick=()=>{L().s.forEach(s=>s.i=null);ui()};
+ q('#dzpng').onclick=()=>{const k0=K,p0=st.promo;K=+q('#dzsc').value;st.promo=true;cv.width=PW*K;cv.height=PH*K;draw();let u;try{u=cv.toDataURL('image/png')}catch(e){}K=k0;st.promo=p0;cv.width=PW*K;cv.height=PH*K;draw();if(!u)return;const a=document.createElement('a');a.href=u;a.download='villa-'+(VH_ST[st.sid].n.replace(/[^a-z0-9]+/gi,'-'))+'-'+st.fl+'tang.png';document.body.appendChild(a);a.click();a.remove()};
  sel.onchange=()=>{st.sid=+sel.value;st.sel=-1;pal();ui()};
  ov.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{st.ed=b.dataset.e;st.sel=-1;if(st.ed==='S')lay(st.sid)._own=1;ui()});q('#dzuse').onclick=()=>{delete D[st.sid];st.ed='M';st.sel=-1;ui()};
  ov.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{st.fl=+b.dataset.f;ui()});ov.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{st.mode=b.dataset.m;ui()});

@@ -1046,3 +1046,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z102 — Master Layout
 - Trình thiết kế có chế độ MASTER LAYOUT (cấu trúc chung mọi kiểu nhà) và RIÊNG KIỂU NÀY (tách riêng, hoặc DÙNG MASTER để bỏ riêng). Game: `VH_LAY.M` là mặc định chung, `VH_LAY[id]` ghi đè. XUẤT TẤT CẢ gồm key M. Không cần SQL.
+
+## z103 — Gắn thử item & chụp ảnh promote
+- Trình thiết kế: bấm 1 món rồi bấm khung để gắn nhanh (hoặc kéo thả), GẮN NGẪU NHIÊN / GẮN MÓN ĐANG CẦM VÀO MỌI SLOT TRỐNG, GỠ HẾT MÓN; ẨN KHUNG/LƯỚI, NỀN TRONG SUỐT, TẢI ẢNH PNG ×3–×8. Không cần SQL.
