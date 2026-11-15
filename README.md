@@ -1078,3 +1078,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z111 — Chỉnh 3 biểu tượng Gen Z Việt
 - id 86: Tháp 3 gà cao su ốm đu nhau (tháp cao 3 con); id 90: Vòi nước cà phê muối (ly có quai, vòi phun cà phê, đá bay, sáng đêm); id 92: Tháp tủ blind box (tủ kiểu tháp chùa 3 tầng, hộp "?" trên đỉnh). Giá giữ nguyên. Không cần SQL.
+
+## z112 — Tượng vàng gà la hét (id 96, 80 triệu)
+- Vật phẩm động đầu tiên (`anim:'spin'`): xoay liên tục (co giãn ngang theo cos, mặt sau tối), cứ ~5,2 giây hét một lần: mở miệng + sóng âm + tiếng squeak (to dần khi người chơi lại gần, trong 230px). Không cần SQL.

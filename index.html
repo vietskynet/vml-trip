@@ -2000,7 +2000,21 @@ VH_IT.push(
 {n:'Mèo thần tài đèn lồng',p:120e6,c:'viet',lamp:1,d:g=>{vhPlinth(g,'#b8b0a0','#d8d0c0');ellP(g,32,38,12,12,'#fff6e8');ellP(g,32,24,10,9,'#fff6e8');rr(g,23,14,4,6,'#fff6e8');rr(g,37,14,4,6,'#fff6e8');rr(g,24,15,2,3,'#ff9ab0');rr(g,38,15,2,3,'#ff9ab0');rr(g,28,22,2,2,'#2a2a34');rr(g,35,22,2,2,'#2a2a34');rr(g,31,26,2,1,'#ff6f91');rr(g,26,28,2,1,'#ff9ab0');rr(g,36,28,2,1,'#ff9ab0');rr(g,26,33,12,3,'#d6334a');rr(g,30,36,4,4,'#ffd23f');rr(g,42,24,5,16,'#fff6e8');rr(g,41,16,8,10,'#ffd23f');rr(g,42,18,6,6,'#c0392b');rr(g,43,19,4,4,'#ffd23f');ellP(g,18,34,5,6,'#c0392b');rr(g,14,28,9,3,'#ffd23f');rr(g,16,26,5,2,'#ffd23f');rr(g,17,31,3,3,'#ffd23f');ellP(g,18,30,3,3,'#ffd23f')}},
 {n:'Máy ảnh 2016 flash nhấp nháy',p:66e6,c:'viet',lamp:1,d:g=>{lineP(g,32,40,16,60,'#3a3a44',2);lineP(g,32,40,48,60,'#3a3a44',2);lineP(g,32,40,32,60,'#3a3a44',2);rr(g,12,20,40,20,'#2a2d3a');rr(g,12,20,40,3,'#ff4f8a');rr(g,12,23,40,2,'#fff');ellP(g,32,32,8,8,'#1a1c28');ellP(g,32,32,6,6,'#3a5a8a');ellP(g,30,30,2,2,'#bfeaff');rr(g,40,18,8,4,'#ffe45c');rr(g,41,16,6,2,'#fff6c0');rr(g,16,17,6,3,'#8a8a96');for(let k=0;k<4;k++){lineP(g,8,10,56,10,'#8a5a2a',1);rr(g,12+k*12,10,10,12,'#fff');rr(g,13+k*12,11,8,8,['#ff9ad5','#7ad3ff','#ffd23f','#5ad16a'][k]);rr(g,15+k*12,5,1,5,'#8a5a2a')}}}
 );
+
+/* Tượng vàng gà la hét (id 96): xoay liên tục + hét định kỳ (mở miệng, âm thanh) — vẽ động trong drawVhObj */
+const vhScream=(g,open)=>{const G='#f0b82a',L='#ffe27a',D='#b8801a',S='#fff6c0',R='#c8501e';rr(g,14,57,36,4,D);rr(g,14,57,36,1,L);rr(g,17,54,30,4,G);rr(g,17,54,30,1,S);
+ rr(g,29,38,2,17,D);rr(g,34,38,2,17,D);rr(g,25,53,9,2,R);rr(g,31,53,9,2,R);rr(g,24,55,3,1,R);rr(g,37,55,3,1,R);
+ ellP(g,32,38,11,14,G);ellP(g,28,34,5,9,L);rr(g,24,30,2,10,S);ellP(g,32,44,8,6,D);rr(g,21,34,3,10,D);rr(g,41,34,3,10,D);rr(g,21,34,1,10,L);
+ rr(g,29,16,6,14,G);rr(g,29,16,2,14,L);rr(g,33,16,2,14,D);rr(g,27,24,10,3,R);rr(g,29,27,6,2,R);rr(g,26,25,2,3,R);rr(g,36,25,2,3,R);
+ ellP(g,32,11,7,6,G);ellP(g,30,9,3,3,L);rr(g,31,1,3,3,R);rr(g,29,3,2,2,R);rr(g,34,3,2,2,R);
+ ellP(g,28,9,3,3,'#fff');ellP(g,36,9,3,3,'#fff');rr(g,28,9,1,2,'#2a2a34');rr(g,37,9,1,2,'#2a2a34');
+ if(open){ellP(g,32,16,5,5,'#7a1a1a');ellP(g,32,15,3,3,'#e8334a');rr(g,29,12,6,1,D);for(let k=0;k<3;k++){rr(g,43+k*4,8-k*3,1,6+k*6,L);rr(g,44+k*4,9-k*3,1,4+k*6,S)}for(let k=0;k<3;k++){rr(g,20-k*4,8-k*3,1,6+k*6,L);rr(g,19-k*4,9-k*3,1,4+k*6,S)}}
+ else{rr(g,29,14,6,3,'#7a1a1a');rr(g,30,15,4,1,'#e8334a');rr(g,29,13,6,1,D)}};
+VH_IT.push({n:'Tượng vàng gà la hét',p:80e6,c:'viet',anim:'spin',d:g=>vhScream(g,0),d2:g=>vhScream(g,1)});
 const VH_IC={};
+function vhItemV(id,v){if(v==='f')return vhItem(id);const k=id+v;if(VH_IC[k])return VH_IC[k];const b=vhItem(id);if(v==='o'){const [c,g]=mk(VH_IW,VH_IH);VH_IT[id].d2(g);outline(c);return VH_IC[k]={c,ox:b.ox,oy:b.oy}}const [c,g]=mk(VH_IW,VH_IH);g.drawImage(b.c,0,0);g.globalCompositeOperation='source-atop';g.fillStyle='rgba(60,30,0,.38)';g.fillRect(0,0,VH_IW,VH_IH);return VH_IC[k]={c,ox:b.ox,oy:b.oy}}
+const VHSC={};
+function vhScreamTick(o,t){const k=o.p.n+'_'+o.s,cyc=5.2,ph=(t+h2(o.p.n,o.s)*cyc)%cyc,idx=Math.floor((t+h2(o.p.n,o.s)*cyc)/cyc),open=ph<.75;const st=VHSC[k]||(VHSC[k]={i:-1});if(st.i!==idx){st.i=idx;try{if(mode==='world'&&dist(P,{x:o.x,y:o.y})<230){const a=1-dist(P,{x:o.x,y:o.y})/230;beep(820,.32,'sawtooth',.05*a+.01,1100);setTimeout(()=>beep(1500,.22,'square',.022*a+.004,-700),40);setTimeout(()=>beep(1250,.18,'sawtooth',.03*a+.004,400),230)}}catch(e){}}return open}
 function vhItem(id){if(VH_IC[id])return VH_IC[id];const [c,g]=mk(VH_IW,VH_IH);VH_IT[id].d(g);outline(c);return VH_IC[id]={c,ox:VH_IW/2,oy:VH_IB+2}}
 /* rào */
 const VH_FN=[
@@ -2176,7 +2190,7 @@ function drawVhObj(o,cx,cy,t){const g=ctx;
  if(o.k==='s'){const x=Math.round(o.p.cx-cx),y=Math.round(o.p.hy-cy);if(o.d){rr(g,x-30,y-4,60,10,'#c9b88a');rr(g,x-30,y-4,60,2,'#e4d6ae');for(let k=-2;k<=2;k++)rr(g,x+k*12-1,y-12,3,8,'#8a5a2a');rr(g,x-24,y-18,48,10,'#a07a40');ptext(g,'ĐANG XÂY',x,y-10,8,'#fff','center','monospace','#000')}else{
    rr(g,x-1,y-26,3,28,'#6e4a28');rr(g,x-24,y-44,48,22,'#fff3d0');rr(g,x-24,y-44,48,2,'#d6334a');rr(g,x-24,y-24,48,2,'#d6334a');rr(g,x-24,y-44,2,22,'#d6334a');rr(g,x+22,y-44,2,22,'#d6334a');ptext(g,'LÔ '+o.p.n,x,y-33,9,'#8a1f2c','center','monospace',null);ptext(g,'ĐẤT TRỐNG',x,y-25,7,'#2a2a34','center','monospace',null);for(const q of[[-40,-6],[40,-6],[-40,-30],[40,-30]]){rr(g,x+q[0]-1,y+q[1],3,10,'#d6334a');rr(g,x+q[0]-1,y+q[1],3,2,'#fff')}if(dist(P,{x:o.p.cx,y:o.p.y1})<120)label(VND(VH_LAND)+' · bấm để mua',x,y-48,'#ffe9a8','rgba(40,30,70,.88)')}return}
  if(o.k==='g'){const s=vhGate(o.d.gt|0);g.drawImage(s.c,Math.round(o.p.x0-cx)-s.ox,Math.round(o.p.hy+36-cy)-s.oy);return}
- if(o.k==='i'){const s=vhItem(o.id);g.drawImage(s.c,Math.round(o.x-cx)-s.ox,Math.round(o.y-cy)-s.oy);return}
+ if(o.k==='i'){const q0=VH_IT[o.id];if(q0&&q0.anim==='spin'){const t=performance.now()/1000,sx=Math.cos(t*1.7),open=vhScreamTick(o,t),s=vhItemV(o.id,open?'o':'f'),b=sx<0?vhItemV(o.id,'b'):null,W=VH_IW,w=Math.max(3,Math.round(Math.abs(sx)*W)),X=Math.round(o.x-cx),Y=Math.round(o.y-cy)-s.oy;if(sx>=0)g.drawImage(s.c,0,0,W,VH_IH,X-w/2,Y,w,VH_IH);else{g.save();g.translate(X,0);g.scale(-1,1);g.drawImage(b.c,0,0,W,VH_IH,-w/2,Y,w,VH_IH);g.restore()}return}const s=vhItem(o.id);g.drawImage(s.c,Math.round(o.x-cx)-s.ox,Math.round(o.y-cy)-s.oy);return}
  if(o.k==='gate'){const x=Math.round(2562-cx),y=Math.round(VHG.gy-cy),open=VHX.open;
   if(!open){rr(g,x-4,y-22,8,44,'#1a1a28');for(let k=-20;k<=20;k+=4)rr(g,x-6,y+k,12,1,'#55556a');rr(g,x-1,y-22,2,44,'#ffd23f');rr(g,x-6,y-22,12,2,'#ffd23f');rr(g,x-6,y+20,12,2,'#ffd23f')}
   rr(g,x-58,y-86,116,14,'#2a2640');rr(g,x-58,y-86,116,2,'#ffd23f');rr(g,x-58,y-74,116,2,'#ffd23f');ptext(g,'VML ESTATE · KHU VILLA RIÊNG',x,y-76,9,'#ffe9a8','center','monospace','#000');rr(g,x-50,y-72,4,28,'#6a6684');rr(g,x+46,y-72,4,28,'#6a6684');
@@ -7748,7 +7762,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z111';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='14.11.2026-z112';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
