@@ -1172,3 +1172,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Hoạt động: chơi minigame / mua xe, thuê, sạc / mua thú / mua đồ / làm tóc / cược rùa → ghi `stk/<ngày>/act/<mã>/<uid>` (mức 1-3).
 - Danh mục lưu trong `players/<uid>/state.stk`, tính vào Tổng tài sản. Sàn có hiệu ứng tiền/đồng xu rơi, bò-gấu động, biểu đồ nhỏ từng mã.
 - **Cần chạy SQL**: `sql-cu/supabase-update-stock.sql` (thêm luật `stk` vào `rt_can`).
+
+## z131 · Sàn Đầu Tư: danh mục, lịch sử, toà nhà thấp hơn
+- Toà nhà thu nhỏ (×0,78) cho thấp lại; đồng xu, bảng điện, nhãn dời theo.
+- Giá mỗi mã là chỉ số tuyệt đối (gốc 1000 từ ngày `STK_E0`), chuỗi theo lợi suất từng phiên. Mỗi lệnh mua là 1 **lô** `{id,c,t,e,a}` (e = giá mua) nên mỗi lô có giá vốn, lãi/lỗ riêng; giá trị lô = a·giá nay/e.
+- Tab **DANH MỤC & LỊCH SỬ**: tổng lời đang giữ, tổng lỗ đang giữ, ròng, đã chốt cộng dồn, tổng tất cả; từng mã có giá vốn TB (bình quân gia quyền theo số đơn vị), giá nay, lãi/lỗ; mở mã để xem từng lô và **bán từng lô**; lịch sử mua/bán/chốt phiên (80 dòng gần nhất).
+- Bán theo mã đi theo thứ tự lô cũ trước (FIFO). Dữ liệu cũ (p/b) tự chuyển sang lô. Không cần SQL mới.
