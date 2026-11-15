@@ -1160,3 +1160,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z128 · Phượng Hoàng chỉ bắn trong tầm gần
 - Tầm bắn quái 480 → 260, tàu hải tặc 620 → 300.
 - Không cần SQL.
+
+## z129 · Hạn mức gửi tiết kiệm 500tr
+- `BANK_CAP` 300tr → 500tr (tổng số dư gửi tối đa). Không cần SQL.
