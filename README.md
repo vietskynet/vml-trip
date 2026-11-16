@@ -1220,3 +1220,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z141 — Brochure kiểu nhà + ô đất cây liên minh rộng hơn
 - Khu Villa riêng: bấm vào thẻ kiểu nhà trong danh sách mở brochure (phong cách, câu chuyện thiết kế, điểm nhấn, bộ nội thất riêng, dành cho ai, bảng giá xây + đất lô đang xem). Dữ liệu ở `VH_BR`.
 - Vườn Cây Liên Minh: ô đất 133×84 → 180×122, giãn hàng/cột, gốc cây hạ thấp để cây không lấn ra ngoài. Không cần SQL.
+
+## z142 — 2 nhà vệ sinh 1 người
+- Thêm WC5 (góc phải dưới, ~2470,1940) và WC6 (góc trái, ~85,1880): mỗi nhà 1 buồng, dùng chung hệ thống hàng chờ/WC công cộng (NPC và người chơi tự chọn WC gần/ít người nhất; mũi tên chỉ đường cũng tính 2 WC mới). Không cần SQL.
