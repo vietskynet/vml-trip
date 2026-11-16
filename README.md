@@ -1185,3 +1185,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z133 · Sửa lỗi chuyển danh mục z130 → z131
 - Lô chuyển từ bản z130 trước đây được gán giá mua = giá hôm nay nên mất lãi/lỗ của các ngày đã qua (toast báo lãi nhưng danh mục hiện 0). Nay lô chuyển dùng giá tại ngày chốt cuối (`s.d`), và các lô đã chuyển sai (`id` bắt đầu bằng `m`, chưa có cờ `fx`) tự được tính lại bằng cách dò ngày gốc khớp với khoản lãi đã báo (`s.l.v`). Không cần SQL.
+
+## z134 · Sàn Đầu Tư: gọn giao diện, giấu cơ chế
+- Bỏ đoạn giải thích luật; chỉ còn kết quả phiên gần nhất + hạn mức vốn. Bỏ số người chơi/sức hút khỏi danh sách và chi tiết mã (cơ chế giá không lộ cho người chơi).
