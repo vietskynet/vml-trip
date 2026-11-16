@@ -1216,3 +1216,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Cá đắt chỉ xuất hiện khi bơi ra xa (x0: 0 / 1200 / 4000 / 6500 / 9000 px) kèm giới hạn độ sâu; vùng xa có cá đắt xuất hiện nhiều hơn, cá rẻ giảm; cá cơm không còn đi thành đàn lớn.
 - Trần thu nhập: tối đa 120tr mỗi lần lặn (≈15 phút, 120tr/900s theo thời gian lặn). Kho báu/ảnh quái vật vẫn ×0,325.
 - Không cần SQL.
+
+## z141 — Brochure kiểu nhà + ô đất cây liên minh rộng hơn
+- Khu Villa riêng: bấm vào thẻ kiểu nhà trong danh sách mở brochure (phong cách, câu chuyện thiết kế, điểm nhấn, bộ nội thất riêng, dành cho ai, bảng giá xây + đất lô đang xem). Dữ liệu ở `VH_BR`.
+- Vườn Cây Liên Minh: ô đất 133×84 → 180×122, giãn hàng/cột, gốc cây hạ thấp để cây không lấn ra ngoài. Không cần SQL.
