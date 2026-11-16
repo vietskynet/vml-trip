@@ -1243,3 +1243,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Mỗi bungalow còn giường trống có biển xanh nhấp nhô **"TRỐNG 2 GIƯỜNG" / "TRỐNG 1 GIƯỜNG"** phía trên mái + vệt sáng xanh nhịp thở dưới cửa. Bungalow đã đầy hoặc là chỗ của chính mình thì không hiện.
 - Bản đồ nhỏ: chấm bungalow còn trống sáng xanh lớn, bungalow đầy xám xanh tối.
 - Không cần SQL.
+
+## z147 — Đợt QA toàn diện: sửa lỗi
+- **Cược rùa 2 con (chế độ offline/thử nghiệm)**: `b.picks.every(i=o...)` thiếu `=>` làm lỗi khi chốt kết quả → đã sửa. (Chế độ online dùng RPC server nên không bị.)
+- Thông báo thu hồi nhà: chỉ chấp nhận khi quà do `from:'admin'` (người chơi không giả mạo được), và toast ≥10s không còn bị cắt còn 3,6s.
+- Bảng hướng dẫn: giá Villa/Bungalow/KS hiển thị theo giá thật trong config (trước đó ghi cứng Villa 25tr, thực tế 37,5tr).
