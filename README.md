@@ -1182,3 +1182,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z132 · Sàn Đầu Tư: thị trường tự vận hành
 - Công thức giá mỗi phiên: `r = −0,4% + hút khách + xu hướng thị trường chung + xu hướng nhóm (minigame/cửa hàng) + sức mua toàn đảo + nhiễu + sự kiện`, kẹp ±15%.
 - Xu hướng chung/nhóm là chuỗi ngẫu nhiên có hạt giống theo ngày (mượt 6 ngày), **không cần ai online**; sức mua toàn đảo = tổng hoạt động hôm nay so với trung bình 7 ngày. Mọi máy tính ra cùng kết quả. Không cần SQL mới.
+
+## z133 · Sửa lỗi chuyển danh mục z130 → z131
+- Lô chuyển từ bản z130 trước đây được gán giá mua = giá hôm nay nên mất lãi/lỗ của các ngày đã qua (toast báo lãi nhưng danh mục hiện 0). Nay lô chuyển dùng giá tại ngày chốt cuối (`s.d`), và các lô đã chuyển sai (`id` bắt đầu bằng `m`, chưa có cờ `fx`) tự được tính lại bằng cách dò ngày gốc khớp với khoản lãi đã báo (`s.l.v`). Không cần SQL.

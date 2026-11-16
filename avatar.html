@@ -6546,7 +6546,10 @@ function stkPrice(code,D){D=D==null?stkDay():D;if(D<=STK_E0)return 1000;const pc
 const stkLv=l=>(+l.a||0)*stkPrice(l.c)/(+l.e||1000);
 function stkSt(){if(!P)return{lots:[],h:[],r:0,d:0};if(!P.stk||typeof P.stk!=='object'){let o=null;if(!NET.on)try{o=JSON.parse(localStorage.getItem('vmlTripStk')||'null')}catch(e){}P.stk=o&&typeof o==='object'?o:{lots:[],h:[],r:0,d:stkDay()}}const s=P.stk;
  s.lots=stkArr(s.lots).filter(l=>l&&STK_BY[l.c]);s.h=stkArr(s.h).filter(Boolean);s.r=+s.r||0;s.d=s.d|0||stkDay();
- if(s.p&&typeof s.p==='object'){for(const c in s.p){const v=+s.p[c]||0,a=+(s.b&&s.b[c])||v;if(v>0&&STK_BY[c])s.lots.push({id:'m'+c,c,t:bankNow(),e:stkPrice(c)*a/v,a})}delete s.p;delete s.b}return s}
+ if(s.p&&typeof s.p==='object'){for(const c in s.p){const v=+s.p[c]||0,a=+(s.b&&s.b[c])||v;if(v>0&&STK_BY[c])s.lots.push({id:'m'+c,c,t:bankNow(),e:stkPrice(c,s.d)*a/v,a,fx:1})}delete s.p;delete s.b}
+ stkFix(s);return s}
+function stkFix(s){const m=s.lots.filter(l=>String(l.id)[0]==='m'&&!l.fx);if(!m.length)return;let best=498547;if(s.l&&s.l.d){const T=s.l.d+1;let bd=1e18,b2=null;for(let D0=498540;D0<T;D0++){let tot=0;m.forEach(l=>{tot+=l.a*(stkPrice(l.c,T)/stkPrice(l.c,D0)-1)});const d=Math.abs(tot-s.l.v);if(d<bd){bd=d;b2=D0}}if(b2!=null&&bd<=3000)best=b2}
+ m.forEach(l=>{l.e=stkPrice(l.c,best);l.fx=1});stkPersist()}
 const stkTotal=s=>s.lots.reduce((a,l)=>a+stkLv(l),0);
 function stkVal(s){return s&&s.lots?stkArr(s.lots).filter(l=>l&&STK_BY[l.c]).reduce((a,l)=>a+stkLv(l),0):0}
 function stkPersist(){if(NET.on)saveState();else try{localStorage.setItem('vmlTripStk',JSON.stringify(P.stk))}catch(e){}}
@@ -8369,7 +8372,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z132';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z133';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
