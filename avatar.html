@@ -4837,7 +4837,7 @@ function rcPauseT(on){const R=RC;if(on===undefined)on=$('#rcPause').hidden;if(!R
 $('#rcOnline').onclick=()=>{if(!NET.on){toast('Chưa kết nối máy chủ nên chưa đua online được.');return}rcView(2)};$('#rcOpt').onclick=()=>rcView(1);$('#rcBack').onclick=()=>rcView(0);
 /* ===== TRẠM LẶN NGỤP (dv*) · màn chơi dưới biển ===== */
 let DV=null;
-const DV_WL=12000,DV_M=4,DV_EN=6,DV_VS=.325,DV_CHEST=.05,DV_RATE=260e6/3600;/* giá thu mua ×0,325 + trần thu nhập theo thời gian lặn: tối đa ~260tr cho 1 giờ lặn */
+const DV_WL=12000,DV_M=4,DV_EN=6,DV_VS=.325,DV_CHEST=.05,DV_RATE=120e6/900,DV_MAXD=120e6;/* kho báu ×0,325; cá giá thật 500k–5tr, càng xa càng đắt; trần thu nhập 120tr/lần lặn (≈15 phút) */
 const DV_T=[{n:'Bình lặn Mini',o:60,d:40,p:2e5},{n:'Bình lặn Đôi',o:110,d:90,p:1.5e6},{n:'Bình Tech Pro',o:180,d:160,p:6e6},{n:'Bình Rebreather',o:280,d:260,p:2e7}];
 const DV_S=[{n:'Tàu ngầm Mini',o:300,d:200,h:4,p:6e7,sp:1,lt:115},{n:'Tàu ngầm Explorer',o:480,d:380,h:6,p:2e8,sp:1.1,lt:140},{n:'Tàu ngầm Abyss',o:800,d:700,h:9,p:8e8,sp:1.2,lt:170}];
 const DV_B=[{n:'Túi ba gang',c:14,p:1e5},{n:'Túi ba gang lớn',c:24,p:5e5},{n:'Túi lưới siêu bền',c:40,p:3e6},{n:'Túi không đáy',c:64,p:1.5e7}];
@@ -4846,20 +4846,21 @@ const DV_F=[{n:'Chân vịt thường',m:1,p:0},{n:'Chân vịt Carbon',m:1.25,p
 const DV_ZN=[[0,'Rạn san hô',[86,208,240]],[40,'Biển xanh',[40,148,226]],[100,'Vùng chạng vạng',[34,96,190]],[180,'Vùng nửa đêm',[24,52,128]],[300,'Vực thẳm',[14,24,70]]];
 const DV_L={nugget:{n:'Vàng cục',v:12e4,s:1},bar:{n:'Thỏi vàng',v:6e5,s:1},pearl:{n:'Ngọc trai',v:9e5,s:1},gem:{n:'Đá quý',v:2e6,s:1},amph:{n:'Bình cổ',v:1.5e6,s:1},comp:{n:'La bàn cổ',v:3e6,s:1},chest:{n:'Rương kho báu (tàu đắm)',v:0,s:2},kchest:{n:'Rương của Draken',v:15e6,s:3},o2:{n:'Bình oxy dự phòng',v:0,s:0}};
 const DV_C={
- sardine:{n:'Cá cơm',w:10,h:6,a:0,b:70,sp:30,fish:1,v:15e3,wt:1.4},
- clown:{n:'Cá hề',w:14,h:10,a:0,b:45,sp:22,fish:1,v:6e4,wt:1},
- tuna:{n:'Cá ngừ',w:26,h:12,a:15,b:130,sp:48,fish:1,v:25e4,wt:.8},
- bow:{n:'Cá Nơ Hồng',w:20,h:12,a:0,b:60,sp:26,fish:1,v:2e5,wt:.7},
- ring:{n:'Cá Phao Bơi',w:20,h:14,a:0,b:55,sp:22,fish:1,v:15e4,wt:.7},
- toilet:{n:'Cá Bồn Cầu',w:28,h:24,a:20,b:140,sp:20,fish:1,v:6e5,wt:.6},
- cowboy:{n:'Cá Cao Bồi',w:25,h:15,a:30,b:150,sp:30,fish:1,v:5e5,wt:.6},
- chef:{n:'Cá Đầu Bếp',w:25,h:15,a:40,b:200,sp:28,fish:1,v:9e5,wt:.5},
- shades:{n:'Cá Kính Râm',w:28,h:16,a:60,b:230,sp:36,fish:1,v:12e5,wt:.5},
- gent:{n:'Cá Quý Ông',w:30,h:18,a:120,b:380,sp:30,fish:1,v:2e6,wt:.4},
- crown:{n:'Cá Vương Miện',w:38,h:21,a:200,b:560,sp:24,fish:1,v:5e6,wt:.25},
- lantern:{n:'Cá đèn lồng',w:18,h:12,a:100,b:320,sp:26,fish:1,v:8e5,wt:.8,glow:1},
- oarfish:{n:'Cá mè hố khổng lồ',w:52,h:9,a:150,b:420,sp:24,fish:1,v:4e6,wt:.12},
- coel:{n:'Cá vây tay cổ đại',w:28,h:16,a:230,b:620,sp:18,fish:1,v:6e6,wt:.1},
+ sardine:{n:'Cá cơm',w:10,h:6,a:0,b:70,sp:30,fish:1,v:500000,x0:0,x1:5000,wt:1.4},
+ clown:{n:'Cá hề',w:14,h:10,a:0,b:45,sp:22,fish:1,v:600000,x0:0,x1:5000,wt:1},
+ tuna:{n:'Cá ngừ',w:26,h:12,a:15,b:130,sp:48,fish:1,v:1.1e6,x0:1200,x1:0,wt:.8},
+ bow:{n:'Cá Nơ Hồng',w:20,h:12,a:0,b:60,sp:26,fish:1,v:750000,x0:0,x1:5000,wt:.7},
+ ring:{n:'Cá Phao Bơi',w:20,h:14,a:0,b:55,sp:22,fish:1,v:900000,x0:0,x1:5000,wt:.7},
+ toilet:{n:'Cá Bồn Cầu',w:28,h:24,a:20,b:140,sp:20,fish:1,v:1.3e6,x0:1200,x1:0,wt:.6},
+ cowboy:{n:'Cá Cao Bồi',w:25,h:15,a:30,b:150,sp:30,fish:1,v:1.6e6,x0:1200,x1:0,wt:.6},
+ chef:{n:'Cá Đầu Bếp',w:25,h:15,a:40,b:200,sp:28,fish:1,v:1.9e6,x0:1200,x1:0,wt:.5},
+ shades:{n:'Cá Kính Râm',w:28,h:16,a:60,b:230,sp:36,fish:1,v:2.2e6,x0:4000,x1:0,wt:.5},
+ gent:{n:'Cá Quý Ông',w:30,h:18,a:120,b:380,sp:30,fish:1,v:3e6,x0:4000,x1:0,wt:.4},
+ crown:{n:'Cá Vương Miện',w:38,h:21,a:120,b:560,sp:24,fish:1,v:4.5e6,x0:9000,x1:0,wt:.25},
+ lantern:{n:'Cá đèn lồng',w:18,h:12,a:100,b:320,sp:26,fish:1,v:2.6e6,x0:4000,x1:0,wt:.8,glow:1},
+ oarfish:{n:'Cá mè hố khổng lồ',w:52,h:9,a:150,b:420,sp:24,fish:1,v:4e6,x0:6500,x1:0,wt:.12},
+ coel:{n:'Cá vây tay cổ đại',w:28,h:16,a:150,b:620,sp:18,fish:1,v:5e6,x0:9000,x1:0,wt:.1},
+ sturgeon:{n:'Cá Tầm',w:40,h:13,a:100,b:480,sp:26,fish:1,v:35e5,x0:6500,x1:0,wt:.3},
  puffer:{n:'Cá nóc',w:16,h:14,a:8,b:90,sp:14,dmg:1,bad:1,wt:.6},
  jelly:{n:'Sứa độc',w:16,h:18,a:15,b:220,sp:10,dmg:1,stun:1,bad:1,wt:.6,glow:1},
  shark:{n:'Cá mập',w:40,h:16,a:35,b:260,sp:62,dmg:1,chase:210,bad:1,wt:.55},
@@ -4935,6 +4936,7 @@ function dvSpr(t){if(DVS[t])return DVS[t];let c;
  case'tuna':c=F(26,12,{body:'#2a5ab0',belly:'#cfe0f0',dorsal:'#1c3c78'});break;
  case'lantern':c=F(18,12,{body:'#6a3cc0',lure:1,teeth:1,belly:'#8a5ce0'});break;
  case'oarfish':c=F(52,9,{body:'#cfe0ec',belly:'#eef6fb',dorsal:'#ff3a50'});break;
+ case'sturgeon':c=F(40,13,{body:'#7a7a68',belly:'#d8d4b4',dorsal:'#4e4e40',fin:'#56564a'});break;
  case'coel':c=F(28,16,{body:'#4a5a8a',belly:'#7a8ab0',fin:'#2a3460'});break;
  case'puffer':c=F(16,14,{body:'#e8d070',belly:'#fff4c0',spikes:1});break;
  case'shark':c=dvShark(42,18,{body:'#7d8ea0',belly:'#e8eef4',fin:'#66768a'});break;
@@ -4980,7 +4982,7 @@ function dvStart(){const G=dvGear(),D=DV;
  Object.assign(D.p,{x:70,y:24,vx:0,vy:0,dir:1,inv:0,stun:0,net:0,shot:0});D.cam.x=0;D.cam.y=-40;D.k={l:0,r:0,u:0,d:0};
  D.spent=0;D.refill=null;dvWorld(D);dvPets(D);D.ph='dive';D.t=0;D.hint=14;$('#dvMenu').hidden=true;$('#dvEnd').hidden=true;$('#dvPause').hidden=true;$('#dvPad').hidden=false;dvSay('Bơi ra xa để xuống sâu hơn. Nhớ quay lại mặt nước trước khi hết oxy!','#bff',4);dvGreet()}
 function dvBagS(){return DV.bag.reduce((a,b)=>a+b.s,0)}
-function dvTake(id,name,v,s,from){const D=DV;if(v>0)v=Math.max(1000,Math.round(v*DV_VS/1000)*1000);
+function dvTake(id,name,v,s,from){const D=DV;if(v>0&&!DV_C[id])v=Math.max(1000,Math.round(v*DV_VS/1000)*1000);
  if(id==='o2'){D.o=Math.min(D.omax,D.o+25);dvFloat(D.p.x,D.p.y-14,'+25s OXY','#7ae0ff');try{beep(880,.1,'sine',.05,300)}catch(e){}return true}
  if(dvBagS()+s>D.cap){if(D.t-(D.fullT||-9)>1.2){D.fullT=D.t;dvSay('Túi đầy! ('+dvBagS()+'/'+D.cap+')','#ff9a9a',1.6);try{beep(180,.12,'square',.04)}catch(e){}}return false}
  D.bag.push({id,n:name,v,s});D.col[id]=(D.col[id]||0)+1;dvFloat(from.x,from.y-10,'+'+kfmt(v),'#ffe45c');try{coin()}catch(e){}
@@ -4992,7 +4994,7 @@ function dvHurt(n,why){const D=DV,p=D.p;if(p.inv>0||D.ph!=='dive')return;p.inv=1
 function dvFaint(why){const D=DV;if(D.ph!=='dive')return;const n=Math.floor(D.bag.length/2);for(let i=0;i<n;i++)D.bag.splice(Math.floor(Math.random()*D.bag.length),1);dvFinish('faint',why)}
 function dvFinish(kind,why){const D=DV;if(D.ph==='end')return;D.ph='end';D.endKind=kind;D.why=why||'';
  const lines={};let sum=D.bag.reduce((a,b)=>a+b.v,0)+D.photo;D.bag.forEach(b=>{const q=lines[b.id]||(lines[b.id]={n:b.n,c:0,v:0});q.c++;q.v+=b.v});
- let cut=0;{const cap=Math.round(D.t*DV_RATE/1000)*1000;if(sum>cap){cut=sum-cap;sum=cap}}D.cut=cut;D.sum=sum;D.lines=lines;
+ let cut=0;{const cap=Math.min(DV_MAXD,Math.round(D.t*DV_RATE/1000)*1000);if(sum>cap){cut=sum-cap;sum=cap}}D.cut=cut;D.sum=sum;D.lines=lines;
  if(sum>0){P.money+=sum;try{coin();setTimeout(coin,150)}catch(e){}}
  Object.keys(D.col).forEach(id=>{if(kind==='faint'&&!D.bag.some(b=>b.id===id))return;const k='dv_c_'+id;dvSet(k,dvLv(k)+D.col[id])});
  Object.keys(D.shots).forEach(id=>dvSet('dv_c_'+id,Math.max(1,dvLv('dv_c_'+id))));
@@ -5007,9 +5009,10 @@ function dvBackMenu(){const D=DV;D.gr=0;$('#dvGreet').hidden=true;D.ph='menu';D.
 function dvSpawn(){const D=DV,p=D.ph==='dive'?D.p:{x:D.cam.x+D.W/2,y:D.cam.y+D.H/2};
  const side=Math.random()<.5?-1:1,x=Math.max(20,Math.min(DV_WL-20,p.x+side*(D.W/2+30+Math.random()*90)));
  const yl=D.ph==='dive'?D.cam.y:20,yy=yl+Math.random()*D.H,y=Math.max(18,Math.min(dvFloor(x)-16,yy)),m=y/DV_M;
- const ids=Object.keys(DV_C).filter(k=>{const d=DV_C[k];return !d.mon&&d.a<=m&&m<=d.b&&(D.ph==='dive'||d.fish)});if(!ids.length)return;
- let tot=0;ids.forEach(k=>tot+=DV_C[k].wt);let r=Math.random()*tot,t=ids[0];for(const k of ids){r-=DV_C[k].wt;if(r<=0){t=k;break}}
- const n=t==='sardine'?4+Math.floor(Math.random()*4):1,dir=Math.random()<.5?-1:1;
+ const ids=Object.keys(DV_C).filter(k=>{const d=DV_C[k];return !d.mon&&d.a<=m&&m<=d.b&&(D.ph==='dive'||d.fish)&&(D.ph!=='dive'||!d.x0||x>=d.x0)});if(!ids.length)return;
+ const W=k=>{const d=DV_C[k];return d.wt*(D.ph==='dive'&&d.x1&&x>d.x1?.3:1)*(D.ph==='dive'&&d.fish&&d.x0&&x>=d.x0?1.6:1)};
+ let tot=0;ids.forEach(k=>tot+=W(k));let r=Math.random()*tot,t=ids[0];for(const k of ids){r-=W(k);if(r<=0){t=k;break}}
+ const n=t==='sardine'?(D.ph==='dive'?1+Math.floor(Math.random()*2):4+Math.floor(Math.random()*4)):1,dir=Math.random()<.5?-1:1;
  for(let i=0;i<n;i++)D.cr.push({t,x:x+i*7*side,y:y+(Math.random()-.5)*20,vx:0,vy:0,dir,ph:Math.random()*6,cd:0})}
 function dvMegaSpawn(){const D=DV,p=D.p,side=Math.random()<.5?-1:1;D.meg={x:p.x+side*(D.W/2+140),y:Math.max(60,Math.min(dvFloor(p.x)-40,p.y+(Math.random()-.5)*60)),vx:0,vy:0,dir:-side,ph:0,cd:0,t:'mega',st:'stalk',tm:0,life:50,lx:0,ly:0};D.cr.push(D.meg);dvSay('Bóng khổng lồ lướt qua phía sau bạn...','#ff6a6a',3);D.shake=.5;try{beep(70,.6,'sawtooth',.07,-20)}catch(e){}}
 function dvHit(c,d,hw,hh){const p=DV.p,pw=DV.kind==='s'?18:8,ph=DV.kind==='s'?9:5;return Math.abs(p.x-c.x)<d.w*hw+pw&&Math.abs(p.y-c.y)<d.h*hh+ph}
@@ -5166,6 +5169,7 @@ function dvSpr2raw(t){let c;
  case'tuna':c=F(28,13,{c:['#1c3e90','#3a6ac8','#e8f0f8'],fin:'#1c3478',dorsal:1,scales:1,band:'rgba(255,230,80,.55)',eye:'#222'});break;
  case'lantern':c=F(20,13,{c:['#2a1860','#5a30b0','#8a60e0'],fin:'#4a2898',dorsal:1,lure:1,teeth:5,dots:'#7affff',eye:'#40ffd0'});break;
  case'oarfish':c=F(56,10,{c:['#a8c0d8','#d8e8f4','#fafcff'],fin:'#ff3a50',crest:'#ff3a50',scales:1,eye:'#222'});break;
+ case'sturgeon':c=F(42,14,{c:['#5a5a4a','#7e7e6a','#d8d4b4'],fin:'#4e4e40',dorsal:1,scales:1,spots:['rgba(30,30,20,.5)'],eye:'#222'});break;
  case'coel':c=F(30,17,{c:['#2a3a78','#4a5a9a','#8a9acb'],fin:'#2a3470',dorsal:1,spots:['rgba(255,255,255,.7)'],scales:1,eye:'#ffd040'});break;
  case'puffer':c=F(17,15,{c:['#c89a30','#e8c860','#fff4c0'],fin:'#d8a840',spikes:1,spots:['rgba(110,70,10,.6)'],eye:'#3a8ad8'});break;
  case'shark':c=dvSharkHD(44,18,{body:'#6a7e94',belly:'#e8eef4',fin:'#56687c',teeth:6});break;
@@ -5627,7 +5631,7 @@ function dvFit(g,t,sz,mw){g.font=sz+'px '+FONT;const w=g.measureText(t).width;re
 /* ---------- menu UI ---------- */
 function dvView(n){if(!DV)return;DV.view=n;[0,1,2].forEach(i=>{$('#dvV'+i).hidden=i!==n});if(n===1)dvShopDom();if(n===2)dvColDom();if(n===0)dvMenuDom();$('#dvMenu').scrollTo&&$('#dvMenu').scrollTo(0,0)}
 function dvColDom(){let h='',tot=0,got=0;const row=(id,n,v,sub)=>{const c=dvLv('dv_c_'+id);tot++;if(c)got++;h+=`<div class="dvit${c?' own':''}"><div><b>${c?esc(n):'???'}</b><small>${c?sub:'Chưa gặp'}</small></div><em>${c?'×'+c:''}</em></div>`};
- h+='<div class="dvh">SINH VẬT</div>';Object.keys(DV_C).forEach(k=>{const d=DV_C[k];row(k,d.n,d.v,d.fish?'Cá bắt được · '+VND(dvSc(d.v))+(d.a!==undefined?' · '+d.a+'–'+d.b+'m':''):(d.mon?'QUÁI VẬT huyền thoại · ảnh '+VND(dvSc(d.photo)):'Nguy hiểm'+(d.a!==undefined?' · '+d.a+'–'+d.b+'m':'')))});
+ h+='<div class="dvh">SINH VẬT</div>';Object.keys(DV_C).forEach(k=>{const d=DV_C[k];row(k,d.n,d.v,d.fish?'Cá bắt được · '+VND(d.v)+(d.x0?' · xa trên '+d.x0+'px':'')+(d.a!==undefined?' · '+d.a+'–'+d.b+'m':''):(d.mon?'QUÁI VẬT huyền thoại · ảnh '+VND(dvSc(d.photo)):'Nguy hiểm'+(d.a!==undefined?' · '+d.a+'–'+d.b+'m':'')))});
  h+='<div class="dvh">KHO BÁU</div>';Object.keys(DV_L).filter(k=>k!=='o2').forEach(k=>{const l=DV_L[k];row(k,l.n,l.v,l.v?VND(dvSc(l.v)):'Giá trị tuỳ rương')});
  $('#dvCol').innerHTML=`<div class="dvfoot">Đã khám phá <b>${got}/${tot}</b></div>`+h}
 function dvBuy(key,lv){const G=dvGear();let arr,cur;
@@ -8386,7 +8390,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z139';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z140';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

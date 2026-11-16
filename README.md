@@ -1210,3 +1210,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z139 · Lặn biển +30%
 - `DV_VS` 0,25 → 0,325 (giá thu mua) và `DV_RATE` 200tr/giờ → 260tr/giờ (trần theo thời gian lặn).
+
+## z140 — Lặn biển: 15 loại cá, giá 500k–5tr, càng xa càng đắt
+- 15 loại cá, giá thu mua thật (không nhân hệ số): Cá cơm 500k, Cá hề 600k, Nơ Hồng 750k, Phao Bơi 900k, Cá ngừ 1,1tr, Bồn Cầu 1,3tr, Cao Bồi 1,6tr, Đầu Bếp 1,9tr, Kính Râm 2,2tr, Đèn lồng 2,6tr, Quý Ông 3tr, **Cá Tầm 3,5tr (mới)**, Mè hố 4tr, Vương Miện 4,5tr, Vây tay cổ đại 5tr.
+- Cá đắt chỉ xuất hiện khi bơi ra xa (x0: 0 / 1200 / 4000 / 6500 / 9000 px) kèm giới hạn độ sâu; vùng xa có cá đắt xuất hiện nhiều hơn, cá rẻ giảm; cá cơm không còn đi thành đàn lớn.
+- Trần thu nhập: tối đa 120tr mỗi lần lặn (≈15 phút, 120tr/900s theo thời gian lặn). Kho báu/ảnh quái vật vẫn ×0,325.
+- Không cần SQL.
