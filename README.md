@@ -1222,4 +1222,4 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Vườn Cây Liên Minh: ô đất 133×84 → 180×122, giãn hàng/cột, gốc cây hạ thấp để cây không lấn ra ngoài. Không cần SQL.
 
 ## z142 — 2 nhà vệ sinh 1 người
-- Thêm WC5 (góc phải dưới, ~2470,1940) và WC6 (góc trái, ~85,1880): mỗi nhà 1 buồng, dùng chung hệ thống hàng chờ/WC công cộng (NPC và người chơi tự chọn WC gần/ít người nhất; mũi tên chỉ đường cũng tính 2 WC mới). Không cần SQL.
+- Thêm WC5 (góc phải trên gần biển cạnh Trung tâm đua rùa, ~2440,560) và WC6 (góc trái trên gần biển cạnh khu trò chơi, ~150,620): mỗi nhà 1 buồng, dùng chung hệ thống hàng chờ/WC công cộng (NPC và người chơi tự chọn WC gần/ít người nhất; mũi tên chỉ đường cũng tính 2 WC mới). Không cần SQL.
