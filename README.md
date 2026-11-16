@@ -1223,3 +1223,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z142 — 2 nhà vệ sinh 1 người
 - Thêm WC5 (góc phải trên gần biển cạnh Trung tâm đua rùa, ~2440,560) và WC6 (góc trái trên gần biển cạnh khu trò chơi, ~150,620): mỗi nhà 1 buồng, dùng chung hệ thống hàng chờ/WC công cộng (NPC và người chơi tự chọn WC gần/ít người nhất; mũi tên chỉ đường cũng tính 2 WC mới). Không cần SQL.
+
+## z144 — Villa mới: Opal Tower
+- Kiểu nhà #18 "Opal Tower" (tháp văn phòng kính xanh mặt dựng chéo + toà phụ xám), tổng xây 3 tầng = 3,5 tỷ (1,05 / 1,18 / 1,27 tỷ), rẻ nhất bảng giá, đứng đầu danh sách.
+- Chữ 3D xoay "OPAL TOWER" (nhiều lớp đùn, xoay quanh trục Y) vẽ động trên đỉnh nhà (`vhOpalSign`).
+- Bộ phụ kiện agency riêng (4 món): Bảng Brainstorm Post-it, Cúp Sư tử vàng Cannes, Bảng Deadline final_v7, Đèn neon VML (có sáng ban đêm). Có brochure. Không cần SQL.
