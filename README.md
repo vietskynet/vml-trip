@@ -1207,3 +1207,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z138 · Biểu đồ mã 24 phiên
 - Giá chốt mỗi phiên lưu ở `stk/<ngày>/px/<mã>` = `{r, w, n, p}` (r = % phiên, p = giá sau chốt; bản cũ chỉ có r). Biểu đồ giá tính chuỗi từ r nên mọi phiên cũ đều vẽ được.
 - Game: bấm vào mã (tab Thị trường) hoặc mã đang nắm (tab Danh mục) → biểu đồ đường + cột % của 24 phiên gần nhất. Admin → tab Tài chính: bấm hàng mã để mở biểu đồ. Không cần SQL mới.
+
+## z139 · Lặn biển +30%
+- `DV_VS` 0,25 → 0,325 (giá thu mua) và `DV_RATE` 200tr/giờ → 260tr/giờ (trần theo thời gian lặn).
