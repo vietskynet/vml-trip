@@ -1203,3 +1203,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z137 · Kho báu dưới biển hiếm
 - `DV_CHEST=0,05`: rương tàu đắm 5-6% mỗi tàu (trước 70-90%), rương phụ 1,5%, rương rải rác 5% mỗi điểm (trước 100%), rương Draken 10% (trước 100%). Quái vật Draken và ảnh quái vật vẫn còn.
+
+## z138 · Biểu đồ mã 24 phiên
+- Giá chốt mỗi phiên lưu ở `stk/<ngày>/px/<mã>` = `{r, w, n, p}` (r = % phiên, p = giá sau chốt; bản cũ chỉ có r). Biểu đồ giá tính chuỗi từ r nên mọi phiên cũ đều vẽ được.
+- Game: bấm vào mã (tab Thị trường) hoặc mã đang nắm (tab Danh mục) → biểu đồ đường + cột % của 24 phiên gần nhất. Admin → tab Tài chính: bấm hàng mã để mở biểu đồ. Không cần SQL mới.
