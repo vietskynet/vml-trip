@@ -1178,3 +1178,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Giá mỗi mã là chỉ số tuyệt đối (gốc 1000 từ ngày `STK_E0`), chuỗi theo lợi suất từng phiên. Mỗi lệnh mua là 1 **lô** `{id,c,t,e,a}` (e = giá mua) nên mỗi lô có giá vốn, lãi/lỗ riêng; giá trị lô = a·giá nay/e.
 - Tab **DANH MỤC & LỊCH SỬ**: tổng lời đang giữ, tổng lỗ đang giữ, ròng, đã chốt cộng dồn, tổng tất cả; từng mã có giá vốn TB (bình quân gia quyền theo số đơn vị), giá nay, lãi/lỗ; mở mã để xem từng lô và **bán từng lô**; lịch sử mua/bán/chốt phiên (80 dòng gần nhất).
 - Bán theo mã đi theo thứ tự lô cũ trước (FIFO). Dữ liệu cũ (p/b) tự chuyển sang lô. Không cần SQL mới.
+
+## z132 · Sàn Đầu Tư: thị trường tự vận hành
+- Công thức giá mỗi phiên: `r = −0,4% + hút khách + xu hướng thị trường chung + xu hướng nhóm (minigame/cửa hàng) + sức mua toàn đảo + nhiễu + sự kiện`, kẹp ±15%.
+- Xu hướng chung/nhóm là chuỗi ngẫu nhiên có hạt giống theo ngày (mượt 6 ngày), **không cần ai online**; sức mua toàn đảo = tổng hoạt động hôm nay so với trung bình 7 ngày. Mọi máy tính ra cùng kết quả. Không cần SQL mới.
