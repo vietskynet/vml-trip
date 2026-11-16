@@ -112,7 +112,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
 
  <div id="app" hidden>
   <div class="top"><h1>VML TRIP · QUẢN TRỊ</h1><div class="row"><span class="who">Admin: <b id="whoName">—</b></span><button class="ghost sm" id="logout">ĐĂNG XUẤT</button></div></div>
-  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">CỬA HÀNG</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ac">HOẠT ĐỘNG</button><button data-t="tr">ĐUA RÙA</button><button data-t="ev">SỰ KIỆN</button><button data-t="lim">LIMITED</button><button data-t="eco">KINH TẾ</button><button data-t="err">LỖI GAME</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button><button onclick="window.open('layout.html','_blank')" style="background:#1b8a45">🗺 SẮP XẾP MAP</button></nav>
+  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">CỬA HÀNG</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ac">HOẠT ĐỘNG</button><button data-t="tr">ĐUA RÙA</button><button data-t="ev">SỰ KIỆN</button><button data-t="lim">LIMITED</button><button data-t="eco">KINH TẾ</button><button data-t="fin">TÀI CHÍNH</button><button data-t="err">LỖI GAME</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button><button onclick="window.open('layout.html','_blank')" style="background:#1b8a45">🗺 SẮP XẾP MAP</button></nav>
 
   <section data-p="ov" class="card">
    <h2>TỔNG QUAN RESORT</h2>
@@ -340,6 +340,9 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    </div>
   </section>
 
+  <section data-p="fin" hidden>
+    <div id="finBody"></div>
+  </section>
   <section data-p="eco" hidden>
     <div class="card">
       <h2>KINH TẾ GAME</h2>
@@ -405,7 +408,8 @@ firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously(
  db.ref('admins/'+uid).on('value',s=>{admin=s.val()===true;if(admin&&sessionStorage.getItem(SKEY))showApp(true);else if(!admin)showApp(false)});
  if(started)return;started=true;
  db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
- db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{if(!$("[data-p=ac]").hidden)acRender()}catch(e){}try{trkRender()}catch(e){}try{limRep()}catch(e){}try{ecoRender()}catch(e){}try{stUpdate()}catch(e){}});
+ db.ref('players').on('value',s=>{players=s.val()||{};renderPl();try{if(!$("[data-p=ac]").hidden)acRender()}catch(e){}try{trkRender()}catch(e){}try{limRep()}catch(e){}try{ecoRender()}catch(e){}try{finRender()}catch(e){}try{stUpdate()}catch(e){}});
+ db.ref('stk').on('value',s=>{STKD=s.val()||{};try{finRender()}catch(e){}});
  db.ref('pos').on('value',s=>{pos=s.val()||{}});
 db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{pdRender()}catch(e){}});
  db.ref('beds').on('value',s=>{beds=s.val()||{}});
@@ -459,7 +463,49 @@ function ecoRender(){if(!$('#ecoKpi'))return;const {rows,bedTypes,hp}=ecoCalc(),
 setInterval(()=>{if(started||admin)try{ecoRender()}catch(e){}},5000);
 function renderErr(){const el=$('#errList');if(!el)return;const rows=Object.entries(errs).map(([id,e])=>Object.assign({id},e)).filter(e=>e&&e.m).sort((p,q)=>(q.t||0)-(p.t||0)).slice(0,300);$('#errCount').textContent=rows.length+' lỗi';el.innerHTML=rows.map(e=>`<tr><td>${new Date(e.t||0).toLocaleString('vi-VN')}</td><td>${esc(e.n||'?')}</td><td>${esc(e.k||'')}</td><td><b>${esc(e.m)}</b><details><summary>stack</summary><pre style="white-space:pre-wrap;font-size:11px">${esc(e.s||'')}</pre></details></td><td>${e.x},${e.y} · ${esc(e.md||'')} · ${esc(e.vw||'')}</td><td>${esc(e.v||'')}</td><td><small>${esc((e.ua||'').slice(0,90))}</small></td></tr>`).join('')||'<tr><td colspan="7">Chưa có lỗi nào.</td></tr>'}
 $('#errClr').onclick=()=>{if(!confirm('Xoá toàn bộ nhật ký lỗi?'))return;db.ref('errlog').remove().then(()=>say('#errMsg','Đã xoá.')).catch(e=>say('#errMsg','Lỗi: '+e.message,1))};
-function tab(t){if(t==='ac')acRender();if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}if(t==='tr'){setTimeout(trLoad,0);trCfgFill()}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices();if(t==='lim')limCatRender()}
+
+/* ===== TÀI CHÍNH: ngân hàng + sàn đầu tư ===== */
+let STKD={};const FIN_E0=498540,FIN_RATES={1:1,3:2,5:3,15:5};
+const FIN_T=[['COCO','Dừa Rơi','MINIGAME'],['SURF','Lướt Sóng','MINIGAME'],['CRAB','Đập Cua','MINIGAME'],['GULL','Hải Âu Vượt','MINIGAME'],['BFSH','Cá Nuốt Cá','MINIGAME'],['FISH','Câu Cá','MINIGAME'],['BAR','Pha Chế','MINIGAME'],['DIG','Săn Kho Báu','MINIGAME'],['CAST','Lâu Đài Cát','MINIGAME'],['SPY','Tình Báo','MINIGAME'],['DARK','Pháp Thuật Hắc Ám','MINIGAME'],['BROM','Đua Chổi','MINIGAME'],['TURT','Đua Rùa','MINIGAME'],['XE','Showroom Xe','CỬA HÀNG'],['PET','Thú Cưng','CỬA HÀNG'],['FASH','Tiệm Quần Áo','CỬA HÀNG'],['HAIR','Tiệm Tóc','CỬA HÀNG']];
+const finArr=x=>Array.isArray(x)?x:(x&&typeof x==='object'?Object.values(x):[]);
+const finDay=()=>Math.floor((Date.now()+(off||0))/3600000);
+const finUp=v=>v>=0?'#3ddc84':'#ff5a5a',finSg=v=>(v>=0?'+':'-')+VND(Math.abs(v)).replace('-','');
+function finPrice(c,D){let v=1000;for(let d=FIN_E0;d<D;d++){const px=STKD[d]&&STKD[d].px&&STKD[d].px[c];if(px&&typeof px.r==='number')v*=1+px.r/100}return v}
+function finRender(){const root=$('#finBody');if(!root||$('[data-p=fin]').hidden)return;const D=finDay(),now=Date.now()+(off||0),DM=3600000;
+ const PX={};FIN_T.forEach(t=>PX[t[0]]=finPrice(t[0],D));
+ /* --- ngân hàng --- */
+ const bk=[],bu={};let bkTot=0,bkGain=0,bkDue=0,bkDueAmt=0,bkWt=0;const byTerm={};
+ for(const u in players){const p=players[u];if(!p||!p.bank)continue;for(const id in p.bank){const d=p.bank[id];if(!d||!(+d.a>0)||!(+d.e>0))continue;const a=+d.a,g=Math.round(a*(+d.r)/100/1000)*1000,due=now>=+d.e;bk.push({u,a,g,r:+d.r,t:+d.t,e:+d.e,due});bkTot+=a;bkGain+=g;bkWt+=a*(+d.r);if(due){bkDue++;bkDueAmt+=a+g}
+  const T=byTerm[d.t]=byTerm[d.t]||{n:0,a:0,g:0,r:+d.r};T.n++;T.a+=a;T.g+=g;const B=bu[u]=bu[u]||{n:0,a:0,g:0,due:0};B.n++;B.a+=a;B.g+=g;if(due)B.due++}}
+ /* --- chứng khoán --- */
+ const sk={},su={};let invTot=0,valTot=0,realTot=0,nInv=0;FIN_T.forEach(t=>sk[t[0]]={n:0,cost:0,val:0,lots:0});
+ for(const u in players){const p=players[u],s=p&&p.state&&p.state.stk;if(!s||typeof s!=='object')continue;const L=finArr(s.lots).filter(l=>l&&sk[l.c]);const r=+s.r||0;if(!L.length&&!r)continue;let cost=0,val=0;const mine={};
+  L.forEach(l=>{const a=+l.a||0,v=a*PX[l.c]/(+l.e||1000);cost+=a;val+=v;const K=sk[l.c];K.cost+=a;K.val+=v;K.lots++;mine[l.c]=1});Object.keys(mine).forEach(c=>sk[c].n++);
+  su[u]={cost,val,r,n:L.length,m:Object.keys(mine).length};invTot+=cost;valTot+=val;realTot+=r;if(L.length)nInv++}
+ const k=(l,v,s,c)=>`<div style="background:var(--panel2);border:3px solid #000;padding:8px 10px"><small style="color:var(--muted)">${l}</small><div style="font-size:22px;color:${c||'var(--sun)'}">${v}</div>${s?'<small style="color:var(--muted)">'+s+'</small>':''}</div>`;
+ const unr=valTot-invTot,nm=u=>esc(String((players[u]&&players[u].name)||u.slice(0,6)));
+ let h=`<div class="card"><h2>TỔNG QUAN TÀI CHÍNH</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px">`
+ +k('TIỀN GỬI NGÂN HÀNG',VND(bkTot),bk.length+' sổ · '+Object.keys(bu).length+' người')+k('LÃI NGÂN HÀNG PHẢI TRẢ',VND(bkGain),'nếu giữ đủ kỳ hạn')+k('LÃI SUẤT BÌNH QUÂN',(bkTot?bkWt/bkTot:0).toFixed(2)+'%','gia quyền theo tiền gửi')+k('SỔ ĐÃ ĐẾN HẠN',bkDue,'chưa rút: '+VND(bkDueAmt))
+ +k('VỐN ĐANG ĐẦU TƯ',VND(invTot),nInv+' người đang giữ mã')+k('GIÁ TRỊ HIỆN TẠI',VND(valTot))+k('LÃI/LỖ ĐANG GIỮ',finSg(unr),invTot?(unr/invTot*100).toFixed(2)+'%':'',finUp(unr))+k('ĐÃ CHỐT CỘNG DỒN',finSg(realTot),'người chơi đã bán',finUp(realTot))
+ +k('TỔNG LÃI/LỖ SÀN',finSg(unr+realTot),'người chơi lời = hệ thống lỗ',finUp(unr+realTot))+`</div></div>`;
+ /* bảng mã */
+ const last=D-1,rows=FIN_T.map(t=>{const K=sk[t[0]],px=STKD[last]&&STKD[last].px&&STKD[last].px[t[0]],r=px&&typeof px.r==='number'?px.r:null,act=STKD[D]&&STKD[D].act&&STKD[D].act[t[0]]?Object.keys(STKD[D].act[t[0]]).length:0;return{c:t[0],n:t[1],k:t[2],K,pr:PX[t[0]],r,act}}).sort((x,y)=>y.K.cost-x.K.cost);
+ h+=`<div class="card" style="margin-top:12px"><h2>SÀN ĐẦU TƯ · THEO MÃ (phiên #${D})</h2><p style="color:var(--muted);margin:0 0 6px">Giá ước tính từ giá chốt đã ghi trên máy chủ (nếu có ngày chưa ai chốt thì tính 0%). Xếp theo vốn đang được mua nhiều nhất.</p><table><thead><tr><th>Mã</th><th>Tên</th><th>Loại</th><th>Giá</th><th>Phiên trước</th><th>Người giữ</th><th>Vốn</th><th>Giá trị</th><th>Lãi/lỗ</th><th>Chơi hôm nay</th></tr></thead><tbody>`
+ +rows.map(x=>{const pl=x.K.val-x.K.cost;return`<tr><td><b>${x.c}</b></td><td>${esc(x.n)}</td><td>${x.k}</td><td>${Math.round(x.pr)}</td><td style="color:${x.r==null?'inherit':finUp(x.r)}">${x.r==null?'—':(x.r>=0?'▲ +':'▼ ')+Math.abs(x.r).toFixed(2)+'%'}</td><td>${x.K.n}</td><td>${VND(x.K.cost)}</td><td>${VND(x.K.val)}</td><td style="color:${finUp(pl)}">${x.K.cost?finSg(pl)+' ('+(pl/x.K.cost*100).toFixed(1)+'%)':'—'}</td><td>${x.act} người</td></tr>`}).join('')+`</tbody></table></div>`;
+ /* thành viên đầu tư */
+ const inv=Object.entries(su).sort((a,b)=>b[1].cost-a[1].cost);
+ h+=`<div class="card" style="margin-top:12px"><h2>THÀNH VIÊN ĐẦU TƯ (${inv.length})</h2><table><thead><tr><th>#</th><th>Người chơi</th><th>Số mã</th><th>Số lệnh</th><th>Vốn</th><th>Giá trị</th><th>Lãi/lỗ giữ</th><th>Đã chốt</th><th>Tổng</th></tr></thead><tbody>`
+ +inv.slice(0,50).map(([u,s],i)=>{const g=s.val-s.cost,t=g+s.r;return`<tr><td>${i+1}</td><td>${nm(u)}</td><td>${s.m}</td><td>${s.n}</td><td>${VND(s.cost)}</td><td>${VND(s.val)}</td><td style="color:${finUp(g)}">${finSg(g)}</td><td style="color:${finUp(s.r)}">${finSg(s.r)}</td><td style="color:${finUp(t)}"><b>${finSg(t)}</b></td></tr>`}).join('')+(inv.length?'':'<tr><td colspan="9">Chưa có ai đầu tư.</td></tr>')+`</tbody></table></div>`;
+ const wl=Object.entries(su).map(([u,s])=>[u,s.val-s.cost+s.r]).sort((a,b)=>b[1]-a[1]);
+ h+=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:12px"><div class="card"><h2>LỜI NHẤT</h2><table><tbody>`+wl.slice(0,5).map(([u,v])=>`<tr><td>${nm(u)}</td><td style="color:${finUp(v)}">${finSg(v)}</td></tr>`).join('')+`</tbody></table></div><div class="card"><h2>LỖ NHẤT</h2><table><tbody>`+wl.slice(-5).reverse().map(([u,v])=>`<tr><td>${nm(u)}</td><td style="color:${finUp(v)}">${finSg(v)}</td></tr>`).join('')+`</tbody></table></div></div>`;
+ /* ngân hàng */
+ h+=`<div class="card" style="margin-top:12px"><h2>NGÂN HÀNG · LÃI SUẤT & TIỀN GỬI THEO KỲ HẠN</h2><table><thead><tr><th>Kỳ hạn</th><th>Lãi suất</th><th>Số sổ</th><th>Tiền gửi</th><th>Lãi phải trả</th></tr></thead><tbody>`
+ +Object.keys(FIN_RATES).map(t=>{const T=byTerm[t]||{n:0,a:0,g:0};return`<tr><td>${t} ngày game</td><td>${FIN_RATES[t]}%</td><td>${T.n}</td><td>${VND(T.a)}</td><td>${VND(T.g)}</td></tr>`}).join('')+`</tbody></table></div>`;
+ const bl=Object.entries(bu).sort((a,b)=>b[1].a-a[1].a);
+ h+=`<div class="card" style="margin-top:12px"><h2>NGƯỜI GỬI NHIỀU NHẤT (${bl.length})</h2><table><thead><tr><th>#</th><th>Người chơi</th><th>Số sổ</th><th>Tiền gửi</th><th>Lãi dự chi</th><th>Đã đến hạn</th></tr></thead><tbody>`
+ +bl.slice(0,50).map(([u,b],i)=>`<tr><td>${i+1}</td><td>${nm(u)}</td><td>${b.n}</td><td>${VND(b.a)}</td><td>${VND(b.g)}</td><td>${b.due||'—'}</td></tr>`).join('')+(bl.length?'':'<tr><td colspan="6">Chưa có sổ tiết kiệm.</td></tr>')+`</tbody></table></div>`;
+ root.innerHTML=h}
+function tab(t){if(t==='fin'){finRender()}if(t==='ac')acRender();if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}if(t==='tr'){setTimeout(trLoad,0);trCfgFill()}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices();if(t==='lim')limCatRender()}
 const now=()=>Date.now()+off;
 function clock(){const NF=(VC&&VC.game&&VC.game.nightMinutes!=null)?Math.min(.9,Math.max(.05,VC.game.nightMinutes/((VC.game.dayMinutes)||60))):.25,A=(1-NF)*11/14,t=(now()-EPOCH)/1000,p=((t/DAY)%1+1)%1,o=p<A?11*p/A:p<A+NF?11+10*(p-A)/NF:21+3*(p-A-NF)/(1-A-NF),h=(8+o)%24,m=Math.floor(h*60);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function bedsOf(u){let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(un=>Object.values(un||{}).forEach(x=>{if(x===u)n++})));return n}

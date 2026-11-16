@@ -1192,3 +1192,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z135 · Tuyết: nhẹ nền, dày trên mái
 - Tuyết nền giảm còn ~16% độ phủ cũ, **né đường gỗ/cầu** (lấy mẫu màu nền `xmWood`), nhiều lớp shade (lõi sáng/trung/bóng, viền dưới xanh nhạt).
 - Tuyết mái nhà (bungalow, khách sạn, villa) dày hơn ×1,35, có 3 lớp shade.
+
+## Admin: tab TÀI CHÍNH
+- Tab mới **TÀI CHÍNH** trong `admin.html` (không đụng game, không cần SQL): KPI ngân hàng + sàn; bảng **theo mã** (giá, % phiên trước, số người giữ, vốn, giá trị, lãi/lỗ, số người chơi hôm nay), **thành viên đầu tư** (vốn, giá trị, lãi/lỗ giữ, đã chốt, tổng), lời nhất/lỗ nhất, **ngân hàng theo kỳ hạn** (lãi suất, số sổ, tiền gửi, lãi phải trả), **người gửi nhiều nhất** (số sổ, lãi dự chi, sổ đã đến hạn).
+- Giá mã ở admin tính từ giá chốt `stk/<ngày>/px` đã ghi trên máy chủ (ngày chưa có giá chốt tính 0%), nên có thể lệch nhẹ so với game cho tới khi có người mở game chốt ngày đó.
