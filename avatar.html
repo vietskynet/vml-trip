@@ -4836,7 +4836,7 @@ function rcPauseT(on){const R=RC;if(on===undefined)on=$('#rcPause').hidden;if(!R
 $('#rcOnline').onclick=()=>{if(!NET.on){toast('Chưa kết nối máy chủ nên chưa đua online được.');return}rcView(2)};$('#rcOpt').onclick=()=>rcView(1);$('#rcBack').onclick=()=>rcView(0);
 /* ===== TRẠM LẶN NGỤP (dv*) · màn chơi dưới biển ===== */
 let DV=null;
-const DV_WL=12000,DV_M=4,DV_EN=6,DV_VS=.25,DV_RATE=200e6/3600;/* giá thu mua ×0,25 + trần thu nhập theo thời gian lặn: tối đa ~200tr cho 1 giờ lặn */
+const DV_WL=12000,DV_M=4,DV_EN=6,DV_VS=.25,DV_CHEST=.05,DV_RATE=200e6/3600;/* giá thu mua ×0,25 + trần thu nhập theo thời gian lặn: tối đa ~200tr cho 1 giờ lặn */
 const DV_T=[{n:'Bình lặn Mini',o:60,d:40,p:2e5},{n:'Bình lặn Đôi',o:110,d:90,p:1.5e6},{n:'Bình Tech Pro',o:180,d:160,p:6e6},{n:'Bình Rebreather',o:280,d:260,p:2e7}];
 const DV_S=[{n:'Tàu ngầm Mini',o:300,d:200,h:4,p:6e7,sp:1,lt:115},{n:'Tàu ngầm Explorer',o:480,d:380,h:6,p:2e8,sp:1.1,lt:140},{n:'Tàu ngầm Abyss',o:800,d:700,h:9,p:8e8,sp:1.2,lt:170}];
 const DV_B=[{n:'Túi ba gang',c:14,p:1e5},{n:'Túi ba gang lớn',c:24,p:5e5},{n:'Túi lưới siêu bền',c:40,p:3e6},{n:'Túi không đáy',c:64,p:1.5e7}];
@@ -4964,9 +4964,9 @@ function dvWorld(D){D.items=[];D.wrecks=[];
  wr.forEach((x,wi)=>{const fy=dvFloor(x);D.wrecks.push({x,y:fy-26,fl:Math.random()<.5?-1:1,sc:.85+Math.random()*.35});const m=fy/DV_M;
   for(let i=0;i<3;i++){const ix=x-40+i*45+Math.random()*10;D.items.push({t:dvPickItemType(m),x:ix,y:dvFloor(ix)-7})}
   D.items.push({t:'o2',x:x+60,y:dvFloor(x+60)-9});
-  if(Math.random()<(wi<DV_WR.length?.9:.7))D.items.push({t:'chest',x:x+8,y:fy-8,v:trv()});if(Math.random()<.25)D.items.push({t:'chest',x:x-50,y:dvFloor(x-50)-8,v:trv()})});
- for(let x=420;x<DV_WL-300;x+=780+Math.random()*900){const y=dvFloor(x)-8;D.items.push({t:'chest',x:Math.round(x),y,v:trv()})}
- const kx=10400,ky=dvFloor(kx);D.items.push({t:'kchest',x:kx+210,y:dvFloor(kx+210)-10,v:15e6});
+  if(Math.random()<DV_CHEST*(wi<DV_WR.length?1.2:1))D.items.push({t:'chest',x:x+8,y:fy-8,v:trv()});if(Math.random()<DV_CHEST*.3)D.items.push({t:'chest',x:x-50,y:dvFloor(x-50)-8,v:trv()})});
+ for(let x=420;x<DV_WL-300;x+=780+Math.random()*900){const y=dvFloor(x)-8;if(Math.random()<DV_CHEST)D.items.push({t:'chest',x:Math.round(x),y,v:trv()})}
+ const kx=10400,ky=dvFloor(kx);if(Math.random()<DV_CHEST*2)D.items.push({t:'kchest',x:kx+210,y:dvFloor(kx+210)-10,v:15e6});
  D.stn=DV_STX.map(x=>({x,y:dvFloor(x)}));D.cr=[];D.cr.push({t:'kraken',x:kx,y:ky-70,vx:0,vy:0,dir:1,ph:0,cd:0,atk:[],at:2})}
 function dvDim(){const a=innerWidth/Math.max(1,innerHeight);if(a<1.2)return[250,Math.min(560,Math.round(250/a))];return[Math.round(225*Math.min(2.4,a)),225]}
 function dvNew(){const G=dvGear(),[W,H0]=dvDim();
@@ -8375,7 +8375,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z136';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z137';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

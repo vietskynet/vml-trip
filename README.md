@@ -1200,3 +1200,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z136 · Cân bằng Lặn Biển
 - Giá thu mua mọi món lặn (cá, vàng, ngọc, rương, ảnh quái vật) và bảng sưu tầm ×0,25 (`DV_VS`).
 - Trần thu nhập theo thời gian: tối đa `DV_RATE = 200tr / 3600s` cho mỗi giây lặn (~200tr cho 1 giờ lặn liên tục, cần nạp oxy ở trạm). Lên bờ sớm mà nhặt vượt trần thì phần dư bị cắt, hiển thị "Giới hạn thu mua theo thời gian lặn".
+
+## z137 · Kho báu dưới biển hiếm
+- `DV_CHEST=0,05`: rương tàu đắm 5-6% mỗi tàu (trước 70-90%), rương phụ 1,5%, rương rải rác 5% mỗi điểm (trước 100%), rương Draken 10% (trước 100%). Quái vật Draken và ảnh quái vật vẫn còn.
