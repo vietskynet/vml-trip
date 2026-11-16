@@ -1188,3 +1188,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z134 · Sàn Đầu Tư: gọn giao diện, giấu cơ chế
 - Bỏ đoạn giải thích luật; chỉ còn kết quả phiên gần nhất + hạn mức vốn. Bỏ số người chơi/sức hút khỏi danh sách và chi tiết mã (cơ chế giá không lộ cho người chơi).
+
+## z135 · Tuyết: nhẹ nền, dày trên mái
+- Tuyết nền giảm còn ~16% độ phủ cũ, **né đường gỗ/cầu** (lấy mẫu màu nền `xmWood`), nhiều lớp shade (lõi sáng/trung/bóng, viền dưới xanh nhạt).
+- Tuyết mái nhà (bungalow, khách sạn, villa) dày hơn ×1,35, có 3 lớp shade.
