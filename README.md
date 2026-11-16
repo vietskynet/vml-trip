@@ -1238,3 +1238,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Khi thu hồi: xoá `beds/<loại>/<nhà>/<giường>` (hoặc ghế `castle/<tháp>/s/<k>` + tên + tiền đã trả, tháp về trạng thái chưa đủ người), huỷ tin rao bán của chủ ở nhà đó, xoá đồ: nếu nhà không còn ai khác → xoá toàn bộ trang trí/nội thất/bảng tên; nếu còn người ở chung → chỉ xoá đồ của chủ này (nội thất theo giường + đồ `by` trùng tên), đồ chung giữ lại.
 - Hoàn tiền = giá giường/chỗ hiện tại (Lâu đài: số tiền đã trả `pp`, mặc định giá tháp) + giá hiện tại của các món đã xoá (admin nhân đôi đồ cao cấp ở villa như trong game). Tiền gửi qua `gifts/<uid>/rv…` `{amount, rev:1, msg}`; người chơi nhận **thông báo trong game** ("Admin đã thu hồi … hoàn …") ngay khi online hoặc lần đăng nhập kế tiếp.
 - Không cần SQL mới (admin có toàn quyền ghi). Khu Villa Riêng (lô đất) vẫn dùng nút thu hồi cũ ở tab SỰ KIỆN.
+
+## z146 — Bungalow còn trống nổi bật cho người mới
+- Mỗi bungalow còn giường trống có biển xanh nhấp nhô **"TRỐNG 2 GIƯỜNG" / "TRỐNG 1 GIƯỜNG"** phía trên mái + vệt sáng xanh nhịp thở dưới cửa. Bungalow đã đầy hoặc là chỗ của chính mình thì không hiện.
+- Bản đồ nhỏ: chấm bungalow còn trống sáng xanh lớn, bungalow đầy xám xanh tối.
+- Không cần SQL.
