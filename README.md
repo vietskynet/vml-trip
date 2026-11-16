@@ -1228,3 +1228,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Kiểu nhà #18 "Opal Tower" (tháp văn phòng kính xanh mặt dựng chéo + toà phụ xám), tổng xây 3 tầng = 3,5 tỷ (1,05 / 1,18 / 1,27 tỷ), rẻ nhất bảng giá, đứng đầu danh sách.
 - Chữ 3D xoay "OPAL TOWER" (nhiều lớp đùn, xoay quanh trục Y) vẽ động trên đỉnh nhà (`vhOpalSign`).
 - Bộ phụ kiện agency riêng (4 món): Bảng Brainstorm Post-it, Cúp Sư tử vàng Cannes, Bảng Deadline final_v7, Đèn neon VML (có sáng ban đêm). Có brochure. Không cần SQL.
+
+## z144b — Sửa admin: tab TÀI CHÍNH trống lần mở đầu
+- `tab('fin')` gọi `finRender()` trước khi hiện section nên bị thoát sớm (section còn `hidden`) → nội dung trống cho tới khi bấm lần 2. Nay render sau khi hiện section.
