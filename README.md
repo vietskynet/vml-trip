@@ -1248,3 +1248,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Cược rùa 2 con (chế độ offline/thử nghiệm)**: `b.picks.every(i=o...)` thiếu `=>` làm lỗi khi chốt kết quả → đã sửa. (Chế độ online dùng RPC server nên không bị.)
 - Thông báo thu hồi nhà: chỉ chấp nhận khi quà do `from:'admin'` (người chơi không giả mạo được), và toast ≥10s không còn bị cắt còn 3,6s.
 - Bảng hướng dẫn: giá Villa/Bungalow/KS hiển thị theo giá thật trong config (trước đó ghi cứng Villa 25tr, thực tế 37,5tr).
+
+## z148 — Chống in tiền: cảnh báo admin + chặn quà vượt số dư
+- **Admin › KINH TẾ › "Cảnh báo tiền bất thường"**: so ví hiện tại với lần admin thấy trước (lưu trong trình duyệt admin); cờ đỏ khi ví tăng nhanh hơn ngưỡng (mặc định 1.500 triệu ₫/giờ) hoặc vượt ngưỡng (mặc định 10 tỷ ₫). Cả 2 ngưỡng chỉnh được.
+- **SQL mới `sql-cu/supabase-update-gift-guard.sql`** (chạy 1 lần trong Supabase SQL Editor): bọc `rt_can`, người chơi chỉ gửi được quà ≤ 2 × ví đã lưu trên server + 5 triệu ₫. Admin không bị giới hạn. **Chạy lại file này sau mỗi lần chạy file update khác có định nghĩa lại `rt_can`.**
+- Hạn chế: ví vẫn do máy người chơi tự báo, nên đây là lớp ngăn + phát hiện, chưa phải chống gian lận tuyệt đối (cần chuyển tiền sang server).

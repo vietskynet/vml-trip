@@ -352,6 +352,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
       <p style="color:var(--muted);margin:0 0 8px">Tính từ ví và tài sản của người chơi đang lưu trên máy chủ. Tự cập nhật. Lịch sử tổng tiền chỉ ghi trong lúc trang này mở.</p>
       <div class="kpis" id="ecoKpi" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px"></div>
     </div>
+    <div class="card" style="margin-top:12px"><h2>CẢNH BÁO TIỀN BẤT THƯỜNG</h2><p style="color:var(--muted);margin:0 0 6px">So ví hiện tại với lần admin thấy trước (lưu trên trình duyệt này). Cờ đỏ khi ví tăng nhanh hơn <input id="ecoWr" type="number" min="1" value="1500" style="width:80px"> triệu ₫/giờ, hoặc ví vượt <input id="ecoWm" type="number" min="1" value="10" style="width:60px"> tỷ ₫. Mở trang này đều đặn để có mốc so sánh.</p><div id="ecoWarn"></div></div>
     <div class="card" style="margin-top:12px"><h2>PHÂN BỐ VÍ</h2><div id="ecoDist"></div></div>
     <div class="card" style="margin-top:12px"><h2>AI MUA ĐƯỢC GÌ</h2><p style="color:var(--muted);margin:0 0 6px">Tỉ lệ người chơi đủ tiền mua ngay (theo giá hiện tại).</p><div id="ecoAfford"></div></div>
     <div class="card" style="margin-top:12px"><h2>TÀI SẢN ĐÃ SỞ HỮU</h2><div id="ecoAsset"></div></div>
@@ -441,7 +442,17 @@ function ecoCalc(){const ps=Object.entries(players).filter(([u,p])=>p&&p.state&&
  const rows=ps.map(([u,p])=>{const m=Math.max(0,+p.state.money||0),pl=Array.isArray(p.state.pets)?p.state.pets:(Array.isArray(p.pets)?p.pets:[]),petV=pl.reduce((a,i)=>a+pet(i),0),skN=p.sk&&p.sk.own?String(p.sk.own).split(',').filter(Boolean).length:0,houseV=(bedOwner[u]||[]).reduce((a,t)=>a+(hp[t]||0),0),cr=p.state.cr?1:0;return{u,name:String(p.name||'?'),m,petV,petN:pl.length,skN,houseV,cr,asset:petV+houseV,tot:m+petV+houseV,on:pos[u]?1:0}});
  return{rows,bedTypes,hp}}
 function getPrice(path,d){const parts=path.split('.');let v=config&&config.prices;for(const k of parts){v=v&&v[k]}return Number.isFinite(+v)&&v!=null?+v:d}
-function ecoRender(){if(!$('#ecoKpi'))return;const {rows,bedTypes,hp}=ecoCalc(),n=rows.length,ms=rows.map(r=>r.m).sort((a,b)=>a-b),sum=ms.reduce((a,b)=>a+b,0),med=n?ms[Math.floor(n/2)]:0,p90=n?ms[Math.min(n-1,Math.floor(n*.9))]:0,avg=n?sum/n:0;
+function ecoWarn(){const box=$('#ecoWarn');if(!box)return;let base={};try{base=JSON.parse(localStorage.getItem('vmlEcoBase')||'{}')}catch(e){}
+const now=Date.now(),thr=(+$('#ecoWr').value||1500)*1e6,cap=(+$('#ecoWm').value||10)*1e9,fl=[],nb={};
+Object.entries(players).forEach(([u,p])=>{if(!p||!p.state||p.name==null)return;const m=+p.state.money||0,b=base[u];let keep=b;
+ if(!b||now-b[0]>=36e5*6){keep=[now,m]}
+ nb[u]=keep;
+ if(b&&now-b[0]>=120000){const h=(now-b[0])/36e5,r=(m-b[1])/h;if(r>thr)fl.push({u,n:p.name,m,r,why:'Ví tăng '+VND(m-b[1])+' trong '+(h<1?Math.round(h*60)+' phút':h.toFixed(1)+' giờ')+' (~'+VND(r)+'/giờ)'})}
+ if(m>cap&&!fl.some(x=>x.u===u))fl.push({u,n:p.name,m,r:0,why:'Ví vượt '+VND(cap)})});
+try{localStorage.setItem('vmlEcoBase',JSON.stringify(nb))}catch(e){}
+fl.sort((a,b)=>b.m-a.m);
+box.innerHTML=fl.length?'<table style="width:100%"><tr><th>NGƯỜI CHƠI</th><th>VÍ</th><th>LÝ DO</th></tr>'+fl.map(x=>'<tr><td>'+esc(x.n)+'</td><td>'+VND(x.m)+'</td><td style="color:#ff7a7a">'+x.why+'</td></tr>').join('')+'</table>':'<p style="color:var(--muted)">Chưa thấy ai bất thường.</p>'}
+function ecoRender(){if(!$('#ecoKpi'))return;try{ecoWarn()}catch(e){}const {rows,bedTypes,hp}=ecoCalc(),n=rows.length,ms=rows.map(r=>r.m).sort((a,b)=>a-b),sum=ms.reduce((a,b)=>a+b,0),med=n?ms[Math.floor(n/2)]:0,p90=n?ms[Math.min(n-1,Math.floor(n*.9))]:0,avg=n?sum/n:0;
  let g=0;if(n>1&&sum>0){let cum=0;ms.forEach((v,i)=>cum+=(i+1)*v);g=(2*cum)/(n*sum)-(n+1)/n}
  const now0=Date.now();if(now0-ecoLast>30000){ecoLast=now0;ecoHist.push([now0,sum]);if(ecoHist.length>240)ecoHist.shift()}
  let rate='—';if(ecoHist.length>=2){const a=ecoHist[0],b=ecoHist[ecoHist.length-1],dt=(b[0]-a[0])/3600000;if(dt>.02)rate=(b[1]-a[1]>=0?'+':'')+VND(Math.round((b[1]-a[1])/dt))+'/giờ'}
