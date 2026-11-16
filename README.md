@@ -1231,3 +1231,10 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z144b — Sửa admin: tab TÀI CHÍNH trống lần mở đầu
 - `tab('fin')` gọi `finRender()` trước khi hiện section nên bị thoát sớm (section còn `hidden`) → nội dung trống cho tới khi bấm lần 2. Nay render sau khi hiện section.
+
+## z145 — Admin: trang BẤT ĐỘNG SẢN + thu hồi nhà/giường người vắng quá N ngày
+- Tab mới **BẤT ĐỘNG SẢN** (admin): thống kê giường/chỗ, ngưỡng vắng mặt chỉnh được (mặc định **5 ngày thực**, lưu trong trình duyệt admin), cảnh báo đỏ liệt kê từng chủ nhà vắng quá ngưỡng (lần online cuối = `players/<uid>/state.ts`), bảng tất cả nhà & giường (lọc theo loại / chỉ quá hạn) và lịch sử thu hồi (`reclaim/*`).
+- Nút **THU HỒI** (từng giường/chỗ) và **THU HỒI TẤT CẢ** (của 1 người) chỉ hiện/chạy khi người đó vắng ≥ ngưỡng. Áp dụng: Bungalow, Villa biển, Khách sạn, Lâu đài.
+- Khi thu hồi: xoá `beds/<loại>/<nhà>/<giường>` (hoặc ghế `castle/<tháp>/s/<k>` + tên + tiền đã trả, tháp về trạng thái chưa đủ người), huỷ tin rao bán của chủ ở nhà đó, xoá đồ: nếu nhà không còn ai khác → xoá toàn bộ trang trí/nội thất/bảng tên; nếu còn người ở chung → chỉ xoá đồ của chủ này (nội thất theo giường + đồ `by` trùng tên), đồ chung giữ lại.
+- Hoàn tiền = giá giường/chỗ hiện tại (Lâu đài: số tiền đã trả `pp`, mặc định giá tháp) + giá hiện tại của các món đã xoá (admin nhân đôi đồ cao cấp ở villa như trong game). Tiền gửi qua `gifts/<uid>/rv…` `{amount, rev:1, msg}`; người chơi nhận **thông báo trong game** ("Admin đã thu hồi … hoàn …") ngay khi online hoặc lần đăng nhập kế tiếp.
+- Không cần SQL mới (admin có toàn quyền ghi). Khu Villa Riêng (lô đất) vẫn dùng nút thu hồi cũ ở tab SỰ KIỆN.

@@ -112,7 +112,7 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
 
  <div id="app" hidden>
   <div class="top"><h1>VML TRIP · QUẢN TRỊ</h1><div class="row"><span class="who">Admin: <b id="whoName">—</b></span><button class="ghost sm" id="logout">ĐĂNG XUẤT</button></div></div>
-  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">CỬA HÀNG</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ac">HOẠT ĐỘNG</button><button data-t="tr">ĐUA RÙA</button><button data-t="ev">SỰ KIỆN</button><button data-t="lim">LIMITED</button><button data-t="eco">KINH TẾ</button><button data-t="fin">TÀI CHÍNH</button><button data-t="err">LỖI GAME</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button><button onclick="window.open('layout.html','_blank')" style="background:#1b8a45">🗺 SẮP XẾP MAP</button></nav>
+  <nav id="tabs" style="margin:12px 0"><button data-t="ov" class="on">TỔNG QUAN</button><button data-t="pl">NGƯỜI CHƠI</button><button data-t="pr">CỬA HÀNG</button><button data-t="re">BẤT ĐỘNG SẢN</button><button data-t="lg">LỊCH SỬ TIỀN</button><button data-t="ac">HOẠT ĐỘNG</button><button data-t="tr">ĐUA RÙA</button><button data-t="ev">SỰ KIỆN</button><button data-t="lim">LIMITED</button><button data-t="eco">KINH TẾ</button><button data-t="fin">TÀI CHÍNH</button><button data-t="err">LỖI GAME</button><button data-t="tst">THỬ NGHIỆM</button><button data-t="sys">HỆ THỐNG</button><button onclick="window.open('layout.html','_blank')" style="background:#1b8a45">🗺 SẮP XẾP MAP</button></nav>
 
   <section data-p="ov" class="card">
    <h2>TỔNG QUAN RESORT</h2>
@@ -340,6 +340,9 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
    </div>
   </section>
 
+  <section data-p="re" hidden>
+    <div id="reBody"></div>
+  </section>
   <section data-p="fin" hidden>
     <div id="finBody"></div>
   </section>
@@ -412,7 +415,8 @@ firebase.auth().onAuthStateChanged(u=>{if(!u){firebase.auth().signInAnonymously(
  db.ref('stk').on('value',s=>{STKD=s.val()||{};try{finRender()}catch(e){}});
  db.ref('pos').on('value',s=>{pos=s.val()||{}});
 db.ref('lm').on('value',s=>{LMA=s.val()||{};if(sel)try{pdRender()}catch(e){}});
- db.ref('beds').on('value',s=>{beds=s.val()||{}});
+ db.ref('beds').on('value',s=>{beds=s.val()||{};reLive()});
+ db.ref('deco').on('value',s=>{DECOD=s.val()||{};reLive()});db.ref('castle').on('value',s=>{CASD=s.val()||{};reLive()});db.ref('reclaim').on('value',s=>{RECL=s.val()||{};reLive()});
  db.ref('market').on('value',s=>{market=s.val()||{};try{trkRender()}catch(e){}});
  db.ref('event').on('value',s=>{event=s.val()||{}});
  db.ref('errlog').on('value',s=>{errs=s.val()||{};renderErr()});
@@ -514,7 +518,80 @@ function finRender(){const root=$('#finBody');if(!root||$('[data-p=fin]').hidden
  h+=`<div class="card" style="margin-top:12px"><h2>NGƯỜI GỬI NHIỀU NHẤT (${bl.length})</h2><table><thead><tr><th>#</th><th>Người chơi</th><th>Số sổ</th><th>Tiền gửi</th><th>Lãi dự chi</th><th>Đã đến hạn</th></tr></thead><tbody>`
  +bl.slice(0,50).map(([u,b],i)=>`<tr><td>${i+1}</td><td>${nm(u)}</td><td>${b.n}</td><td>${VND(b.a)}</td><td>${VND(b.g)}</td><td>${b.due||'—'}</td></tr>`).join('')+(bl.length?'':'<tr><td colspan="6">Chưa có sổ tiết kiệm.</td></tr>')+`</tbody></table></div>`;
  root.innerHTML=h;root.querySelectorAll('tr[data-fc]').forEach(r=>r.onclick=()=>{FIN_SEL=FIN_SEL===r.dataset.fc?null:r.dataset.fc;finRender()})}
-function tab(t){if(t==='ac')acRender();if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}if(t==='tr'){setTimeout(trLoad,0);trCfgFill()}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices();if(t==='lim')limCatRender();if(t==='fin')finRender()}
+/* ===== BẤT ĐỘNG SẢN: thu hồi giường / nhà của người vắng quá N ngày (thực) ===== */
+let DECOD={},CASD={},RECL={},RE_H=[],RE_F={ty:'all',od:0},RE_BUSY=false;const RE_C={};
+const RE_ROOMS=['P101','P102','P103','P104','P105','P201','P202','P203','P204','P205','P106','P107','P108','P109','P110','P206','P207','P208','P209','P210'];
+const RE_CAST=['Tháp Quạ Đen','Tháp Trăng Máu','Tháp Pha Lê Đen','Tháp Rồng Ngủ','Tháp Tối Thượng'];
+const RE_TY={villa:['🏡','Villa biển'],tent:['⛺','Bungalow'],room:['🏨','Khách sạn'],castle:['🏰','Lâu đài']},RE_ORD=['tent','villa','room','castle'];
+const reDays=()=>{let v=5;try{v=+localStorage.getItem('vmlReDays')||5}catch(e){}return v>0?v:5};
+const reName=(t,i)=>t==='villa'?'V'+(i+1):t==='room'?(RE_ROOMS[i]||'P'+i):t==='castle'?(RE_CAST[i]||'Tháp '+(i+1)):'B'+String(i+1).padStart(2,'0');
+const reNow=()=>Date.now()+(off||0);
+const reSeen=u=>{const p=players[u]||{};return +(p.state&&p.state.ts)||+p.created||0};
+const reAge=u=>{const s=reSeen(u);return s?(reNow()-s)/864e5:null};
+const reArr=o=>Array.isArray(o)?o.map((v,i)=>[String(i),v]).filter(x=>x[1]!=null):Object.entries(o||{});
+const reTm=ts=>ts?new Date(ts).toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+const reAgoTxt=u=>{const s=reSeen(u);if(!s)return'chưa rõ';const ms=reNow()-s;if(ms<3e5)return'đang online';const d=ms/864e5;return d<1?Math.max(1,Math.round(ms/36e5))+' giờ trước':d.toFixed(1).replace('.',',')+' ngày trước'};
+const reOver=u=>{const a=reAge(u);return a!=null&&a>=reDays()};
+const reDecoBy={},reIcBy={};let reInitD=false;
+function reInit(){if(reInitD)return;reInitD=true;CAT.deco.forEach(r=>{reDecoBy[r[0]]={n:r[1],p:r[2],pm:r[5]}});(CAT.ic||[]).forEach(r=>{reIcBy[r[0]]={n:r[1],p:r[2]}})}
+function reHold(){const H=[];['villa','tent','room'].forEach(t=>reArr(beds[t]).forEach(([i,un])=>reArr(un).forEach(([k,u])=>{if(typeof u==='string'&&u)H.push({kind:'bed',t,i:+i,k:+k,u})})));
+ reArr(CASD).forEach(([t,d])=>reArr(d&&d.s).forEach(([k,u])=>{if(typeof u==='string'&&u)H.push({kind:'cas',t:'castle',i:+t,k:+k,u,done:!!(d&&d.done)})}));return H}
+function reBedPrice(h){if(h.kind==='cas'){const d=CASD[h.i],pp=d&&d.pp&&+d.pp[h.k];return pp>0?pp:getPrice('castle.'+h.i,(h.i+1)*3e7)}
+ let p=getPrice('house.'+h.t,HOUSES.find(x=>x[0]===h.t)[2]);if(h.t==='villa'&&h.i>=10)p*=1.5;return Math.round(p/5e4)*5e4}
+function reItems(h){reInit();const t=h.t,i=h.i,k=h.k,d=((DECOD[t]||{})[i])||{},me=String((players[h.u]||{}).name||'').trim().toLowerCase();let others=0;
+ if(h.kind==='bed')reArr((beds[t]||{})[i]).forEach(([kk,u])=>{if(+kk!==k&&u)others++});else reArr((CASD[i]||{}).s).forEach(([kk,u])=>{if(+kk!==k&&u)others++});
+ const empty=others===0,L=[],add=(path,n,p)=>L.push({path:'deco/'+t+'/'+i+'/'+path,n,p:Math.round(p)}),own=v=>empty||String((v&&v.by)||'').trim().toLowerCase()===me;
+ for(const slot in d){const v=d[slot];if(v==null)continue;
+  if(slot==='in'&&typeof v==='object'){for(const key in v){const id=v[key],ic=reIcBy[id];if(!ic)continue;const m=/^[lacmp](\d)$/.exec(key),hh=/^h([12])$/.exec(key),idx=m?+m[1]:hh?+hh[1]-1:null;if(empty||(idx!=null?idx===k:k===0))add('in/'+key,ic.n,getPrice('deco.'+id,ic.p))}continue}
+  if(slot==='plate'){if(own(v))add('plate','Bảng tên'+(v.t?' "'+v.t+'"':''),t==='castle'?getPrice('cplate',2e6):getPrice('plate',2e5));continue}
+  const id=v.id;if(t==='castle'){const c=CDECO_DATA.find(x=>x[0]===id);if(c&&own(v))add(slot,c[1],getPrice('cdeco.'+id,c[2]))}
+  else{const c=reDecoBy[id];if(c&&own(v))add(slot,c.n,getPrice('deco.'+id,c.p)*((c.pm&&t==='villa')?2:1))}}
+ return{L,empty,sum:L.reduce((a,x)=>a+x.p,0)}}
+function reCalc(h){const bed=reBedPrice(h),it=reItems(h);return{bed,it,total:bed+it.sum}}
+function reDelLocal(path){const a=path.split('/');let o=a[0]==='deco'?DECOD:null;if(!o)return;for(let q=1;q<a.length-1;q++){o=o&&o[a[q]];if(!o)return}try{delete o[a[a.length-1]]}catch(e){}}
+async function reRevoke(h,silent){const p=players[h.u]||{},nm=p.name||h.u.slice(0,6),what=RE_TY[h.t][1]+' '+reName(h.t,h.i),c=reCalc(h),days=reDays(),ag=reAge(h.u);
+ if(!silent&&!confirm('THU HỒI '+what.toUpperCase()+'\nChủ: '+nm+' · vắng '+reAgoTxt(h.u)+'\n\nHoàn cho chủ: '+VND(c.total)+'\n  · giường/chỗ: '+VND(c.bed)+'\n  · đồ trang trí/nội thất ('+c.it.L.length+' món): '+VND(c.it.sum)+(c.it.empty?'\n\nNhà không còn ai khác → toàn bộ đồ trong nhà bị xoá.':'\n\nCòn người khác ở chung → chỉ xoá đồ của chủ này (đồ chung giữ lại).')+'\nChủ sẽ nhận thông báo trong game.'))return false;
+ try{const path=h.kind==='bed'?'beds/'+h.t+'/'+h.i+'/'+h.k:'castle/'+h.i+'/s/'+h.k;
+  const r=await db.ref(path).transaction(v=>v===h.u?null:undefined);if(!r.committed){say('#reMsg','Chỗ này vừa đổi chủ, không thu hồi.',1);return false}
+  const up={};c.it.L.forEach(x=>{up[x.path]=null});
+  if(h.kind==='cas'){up['castle/'+h.i+'/n/'+h.k]=null;up['castle/'+h.i+'/pp/'+h.k]=null;up['castle/'+h.i+'/done']=false;[0,1,2].forEach(q=>{up['castle/'+h.i+'/lv/'+q]=null})}
+  reArr(market[h.u]).forEach(([lid,L])=>{if(L&&L.type===h.t&&+L.i===h.i)up['market/'+h.u+'/'+lid]=null});
+  if(Object.keys(up).length)await db.ref().update(up);
+  if(h.kind==='bed'){try{delete beds[h.t][h.i][h.k]}catch(e){}}else{try{CASD[h.i].s[h.k]=null;CASD[h.i].done=false}catch(e){}}c.it.L.forEach(x=>reDelLocal(x.path));
+  const msg='Admin đã thu hồi '+what+' của bạn vì bạn không online hơn '+days+' ngày. Đã hoàn '+VND(c.total)+' (giường '+VND(c.bed)+' + đồ '+VND(c.it.sum)+').';
+  await db.ref('gifts/'+h.u+'/rv'+Date.now()+Math.floor(Math.random()*1000)).set({amount:c.total,ts:TS,rev:1,ty:h.t,i:h.i,msg,from:'admin'});
+  await db.ref('reclaim/'+Date.now()+Math.floor(Math.random()*1000)).set({u:h.u,nm,w:what,a:c.total,b:c.bed,it:c.it.sum,n:c.it.L.length,d:ag==null?0:Math.round(ag*10)/10,ts:TS});
+  return c.total}catch(e){say('#reMsg','Lỗi thu hồi '+what+': '+(e&&e.message||e),1);return false}}
+function reRender(){const root=$('#reBody');if(!root||$('[data-p=re]').hidden)return;reInit();const TH=reDays(),H=reHold();RE_H=H;const per={};H.forEach((h,ix)=>{(per[h.u]=per[h.u]||[]).push(ix);RE_C[ix]=reCalc(h)});
+ const cnt={villa:0,tent:0,room:0,castle:0};H.forEach(h=>cnt[h.t]++);const over=Object.keys(per).filter(reOver).sort((a,b)=>reAge(b)-reAge(a));let overSum=0,overN=0;over.forEach(u=>per[u].forEach(ix=>{overSum+=RE_C[ix].total;overN++}));
+ const k=(l,v,s,c)=>`<div style="background:var(--panel2);border:3px solid #000;padding:8px 10px"><small style="color:var(--muted)">${l}</small><div style="font-size:22px;color:${c||'var(--sun)'}">${v}</div>${s?'<small style="color:var(--muted)">'+s+'</small>':''}</div>`;
+ const nmU=u=>esc(String((players[u]&&players[u].name)||u.slice(0,6)))+(accs[u]?' <small style="color:var(--muted)">@'+esc(accs[u])+'</small>':'');
+ let h=`<div class="card"><h2>QUẢN LÝ BẤT ĐỘNG SẢN</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px">`+k('GIƯỜNG / CHỖ ĐANG CÓ CHỦ',H.length,'🏡 '+cnt.villa+' · ⛺ '+cnt.tent+' · 🏨 '+cnt.room+' · 🏰 '+cnt.castle)+k('CHỦ NHÀ',Object.keys(per).length,'người đang sở hữu')+k('VẮNG ≥ '+TH+' NGÀY',over.length,overN+' giường/chỗ',over.length?'#ff5a5a':'#3ddc84')+k('HOÀN NẾU THU HỒI HẾT',VND(overSum),'giường + đồ trong nhà',over.length?'#ffd23f':'')+`</div>
+  <div class="row" style="margin-top:10px;align-items:center;gap:8px"><label for="reTh" style="margin:0">Ngưỡng vắng mặt (ngày thực):</label><input id="reTh" type="number" min="1" max="365" value="${TH}" style="width:80px"><small style="color:var(--muted)">Tính từ lần cuối người chơi lưu trạng thái (online). Admin chỉ thu hồi được khi người đó vắng đủ ngưỡng.</small></div><p class="msg" id="reMsg"></p></div>`;
+ /* cảnh báo */
+ h+=`<div class="card"><h2 style="color:${over.length?'#ff5a5a':'#3ddc84'}">${over.length?'⚠ '+over.length+' CHỦ NHÀ QUÁ '+TH+' NGÀY KHÔNG ONLINE':'✔ KHÔNG AI VẮNG QUÁ '+TH+' NGÀY'}</h2>`;
+ over.forEach(u=>{const ixs=per[u],tot=ixs.reduce((a,ix)=>a+RE_C[ix].total,0);
+  h+=`<div style="border:3px solid #6a2a2a;background:rgba(255,90,90,.07);padding:8px 10px;margin:8px 0"><div class="row" style="justify-content:space-between;align-items:center;gap:8px"><div><b style="font-size:20px">${nmU(u)}</b><br><small>Online lần cuối: <b style="color:#ff9a9a">${reAgoTxt(u)}</b> (${reTm(reSeen(u))}) · Ví: ${VND(((players[u]||{}).state||{}).money)}</small></div><button class="warn sm" data-reall="${u}">THU HỒI TẤT CẢ (${ixs.length}) · HOÀN ${VND(tot)}</button></div>
+   <div class="tbl"><table><thead><tr><th>LOẠI</th><th>NƠI Ở</th><th>GIƯỜNG</th><th>ĐỒ TRONG NHÀ</th><th>HOÀN</th><th></th></tr></thead><tbody>${ixs.map(ix=>{const x=H[ix],c=RE_C[ix];return`<tr><td>${RE_TY[x.t][0]} ${RE_TY[x.t][1]}</td><td>${esc(reName(x.t,x.i))}${x.kind==='cas'?(x.done?' <small>(liên minh đủ 3)</small>':''):''}</td><td>${VND(c.bed)}</td><td>${c.it.L.length} món · ${VND(c.it.sum)}</td><td><b>${VND(c.total)}</b></td><td><button class="warn sm" data-re="${ix}">THU HỒI</button></td></tr>`}).join('')}</tbody></table></div></div>`});
+ h+=`</div>`;
+ /* toàn bộ nhà */
+ const U={};H.forEach((x,ix)=>{const key=x.t+':'+x.i;(U[key]=U[key]||{t:x.t,i:x.i,o:[]}).o.push(ix)});let rows=Object.values(U).filter(u=>(RE_F.ty==='all'||u.t===RE_F.ty)&&(!RE_F.od||u.o.some(ix=>reOver(H[ix].u)))).sort((a,b)=>RE_ORD.indexOf(a.t)-RE_ORD.indexOf(b.t)||a.i-b.i);
+ const fb=(v,l)=>`<button class="${RE_F.ty===v?'ok':'ghost'} sm" data-reft="${v}">${l}</button>`;
+ h+=`<div class="card"><h2>TẤT CẢ NHÀ & GIƯỜNG</h2><div class="row" style="gap:6px;flex-wrap:wrap;margin-bottom:8px">${fb('all','TẤT CẢ')}${RE_ORD.map(t=>fb(t,RE_TY[t][0]+' '+RE_TY[t][1]+' ('+cnt[t]+')')).join('')}<button class="${RE_F.od?'warn':'ghost'} sm" data-reod="1">CHỈ QUÁ HẠN</button></div>
+  <div class="tbl"><table><thead><tr><th>LOẠI</th><th>NƠI Ở</th><th>CHỦ</th><th>ĐỒ</th><th></th></tr></thead><tbody>${rows.map(u=>{const dd=((DECOD[u.t]||{})[u.i])||{};let itemN=0;for(const sl in dd){const v=dd[sl];if(v==null)continue;itemN+=(sl==='in'&&typeof v==='object')?Object.keys(v).length:1}return`<tr><td>${RE_TY[u.t][0]} ${RE_TY[u.t][1]}</td><td><b>${esc(reName(u.t,u.i))}</b></td><td>${u.o.map(ix=>{const x=H[ix],o=reOver(x.u);return`<div style="color:${o?'#ff9a9a':'inherit'}">${nmU(x.u)} · <small>${reAgoTxt(x.u)}</small>${o?' <button class="warn sm" data-re="'+ix+'">THU HỒI · '+VND(RE_C[ix].total)+'</button>':''}</div>`}).join('')}</td><td>${itemN?itemN+' món':'<small>—</small>'}</td><td></td></tr>`}).join('')||'<tr><td colspan="5"><small>Không có nhà nào khớp bộ lọc.</small></td></tr>'}</tbody></table></div></div>`;
+ /* lịch sử */
+ const hist=reArr(RECL).map(([id,v])=>v).filter(Boolean).sort((a,b)=>(+b.ts||0)-(+a.ts||0)).slice(0,30);
+ h+=`<div class="card"><h2>LỊCH SỬ THU HỒI</h2>${hist.length?`<div class="tbl"><table><thead><tr><th>GIỜ</th><th>CHỦ</th><th>NƠI Ở</th><th>VẮNG</th><th>ĐÃ HOÀN</th></tr></thead><tbody>${hist.map(x=>`<tr><td>${reTm(x.ts)}</td><td>${esc(x.nm||'?')}</td><td>${esc(x.w||'')}</td><td>${x.d} ngày</td><td>${VND(x.a)} <small>(giường ${VND(x.b)} + ${x.n|0} món ${VND(x.it)})</small></td></tr>`).join('')}</tbody></table></div>`:'<small style="color:var(--muted)">Chưa có lần thu hồi nào.</small>'}</div>`;
+ root.innerHTML=h}
+function reLive(){try{if(!$('[data-p=re]').hidden&&!RE_BUSY)reRender()}catch(e){}}
+$('#reBody').addEventListener('click',async e=>{const b=e.target.closest('[data-re],[data-reall],[data-reft],[data-reod]');if(!b||RE_BUSY)return;
+ if(b.dataset.reft){RE_F.ty=b.dataset.reft;reRender();return}if(b.dataset.reod){RE_F.od=RE_F.od?0:1;reRender();return}
+ if(b.dataset.re!=null){const h=RE_H[+b.dataset.re];if(!h)return;if(!reOver(h.u)){say('#reMsg','Người này chưa vắng đủ '+reDays()+' ngày.',1);return}RE_BUSY=true;const r=await reRevoke(h);RE_BUSY=false;if(r!==false)say('#reMsg','Đã thu hồi '+RE_TY[h.t][1]+' '+reName(h.t,h.i)+' của '+((players[h.u]||{}).name||'?')+', hoàn '+VND(r)+'.');reRender();return}
+ if(b.dataset.reall){const u=b.dataset.reall;if(!reOver(u))return;const hs=reHold().filter(x=>x.u===u);if(!hs.length)return;const tot=hs.reduce((a,x)=>a+reCalc(x).total,0);if(!confirm('THU HỒI TẤT CẢ '+hs.length+' chỗ của '+((players[u]||{}).name||'?')+'?\nVắng: '+reAgoTxt(u)+'\nTổng hoàn: '+VND(tot)+'\nChủ nhận thông báo cho từng chỗ.'))return;
+  RE_BUSY=true;let n=0,sum=0;for(const x of hs){const r=await reRevoke(x,true);if(r===false)break;n++;sum+=r}RE_BUSY=false;say('#reMsg','Đã thu hồi '+n+'/'+hs.length+' chỗ của '+((players[u]||{}).name||'?')+', hoàn '+VND(sum)+'.');reRender()}});
+$('#reBody').addEventListener('change',e=>{if(e.target.id==='reTh'){const v=Math.max(1,Math.min(365,+e.target.value||5));try{localStorage.setItem('vmlReDays',String(v))}catch(x){}reRender()}});
+setInterval(reLive,60000);
+function tab(t){if(t==='ac')acRender();if(t==='err')renderErr();if(t==='tst')renderTst();if(t==='lg'){lgFill();setTimeout(lgLoad,0)}if(t==='tr'){setTimeout(trLoad,0);trCfgFill()}$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==t);if(t==='pr')renderPrices();if(t==='lim')limCatRender();if(t==='fin')finRender();if(t==='re')reRender()}
 const now=()=>Date.now()+off;
 function clock(){const NF=(VC&&VC.game&&VC.game.nightMinutes!=null)?Math.min(.9,Math.max(.05,VC.game.nightMinutes/((VC.game.dayMinutes)||60))):.25,A=(1-NF)*11/14,t=(now()-EPOCH)/1000,p=((t/DAY)%1+1)%1,o=p<A?11*p/A:p<A+NF?11+10*(p-A)/NF:21+3*(p-A-NF)/(1-A-NF),h=(8+o)%24,m=Math.floor(h*60);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function bedsOf(u){let n=0;Object.values(beds).forEach(tp=>Object.values(tp||{}).forEach(un=>Object.values(un||{}).forEach(x=>{if(x===u)n++})));return n}
