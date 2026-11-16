@@ -4839,7 +4839,7 @@ function rcPauseT(on){const R=RC;if(on===undefined)on=$('#rcPause').hidden;if(!R
 $('#rcOnline').onclick=()=>{if(!NET.on){toast('Chưa kết nối máy chủ nên chưa đua online được.');return}rcView(2)};$('#rcOpt').onclick=()=>rcView(1);$('#rcBack').onclick=()=>rcView(0);
 /* ===== TRẠM LẶN NGỤP (dv*) · màn chơi dưới biển ===== */
 let DV=null;
-const DV_WL=12000,DV_M=4,DV_EN=6;
+const DV_WL=12000,DV_M=4,DV_EN=6,DV_VS=.25,DV_RATE=200e6/3600;/* giá thu mua ×0,25 + trần thu nhập theo thời gian lặn: tối đa ~200tr cho 1 giờ lặn */
 const DV_T=[{n:'Bình lặn Mini',o:60,d:40,p:2e5},{n:'Bình lặn Đôi',o:110,d:90,p:1.5e6},{n:'Bình Tech Pro',o:180,d:160,p:6e6},{n:'Bình Rebreather',o:280,d:260,p:2e7}];
 const DV_S=[{n:'Tàu ngầm Mini',o:300,d:200,h:4,p:6e7,sp:1,lt:115},{n:'Tàu ngầm Explorer',o:480,d:380,h:6,p:2e8,sp:1.1,lt:140},{n:'Tàu ngầm Abyss',o:800,d:700,h:9,p:8e8,sp:1.2,lt:170}];
 const DV_B=[{n:'Túi ba gang',c:14,p:1e5},{n:'Túi ba gang lớn',c:24,p:5e5},{n:'Túi lưới siêu bền',c:40,p:3e6},{n:'Túi không đáy',c:64,p:1.5e7}];
@@ -4871,6 +4871,7 @@ const DV_C={
  mega:{n:'Megalodon',w:150,h:56,sp:150,dmg:4,bad:1,mon:1,photo:8e6,glow:0},
  kraken:{n:'Draken (Kraken)',w:200,h:170,dmg:2,bad:1,mon:1,photo:15e6}
 };
+const dvSc=v=>Math.max(1000,Math.round(v*DV_VS/1000)*1000);
 const dvLv=k=>((P&&P.buys&&P.buys[k])|0);
 const dvSet=(k,v)=>{P.buys=P.buys||{};P.buys[k]=v};
 const dvH=(a,b)=>{const h=Math.sin(a*127.1+b*311.7)*43758.5453;return h-Math.floor(h)};
@@ -4981,7 +4982,7 @@ function dvStart(){const G=dvGear(),D=DV;
  Object.assign(D.p,{x:70,y:24,vx:0,vy:0,dir:1,inv:0,stun:0,net:0,shot:0});D.cam.x=0;D.cam.y=-40;D.k={l:0,r:0,u:0,d:0};
  D.spent=0;D.refill=null;dvWorld(D);dvPets(D);D.ph='dive';D.t=0;D.hint=14;$('#dvMenu').hidden=true;$('#dvEnd').hidden=true;$('#dvPause').hidden=true;$('#dvPad').hidden=false;dvSay('Bơi ra xa để xuống sâu hơn. Nhớ quay lại mặt nước trước khi hết oxy!','#bff',4);dvGreet()}
 function dvBagS(){return DV.bag.reduce((a,b)=>a+b.s,0)}
-function dvTake(id,name,v,s,from){const D=DV;
+function dvTake(id,name,v,s,from){const D=DV;if(v>0)v=Math.max(1000,Math.round(v*DV_VS/1000)*1000);
  if(id==='o2'){D.o=Math.min(D.omax,D.o+25);dvFloat(D.p.x,D.p.y-14,'+25s OXY','#7ae0ff');try{beep(880,.1,'sine',.05,300)}catch(e){}return true}
  if(dvBagS()+s>D.cap){if(D.t-(D.fullT||-9)>1.2){D.fullT=D.t;dvSay('Túi đầy! ('+dvBagS()+'/'+D.cap+')','#ff9a9a',1.6);try{beep(180,.12,'square',.04)}catch(e){}}return false}
  D.bag.push({id,n:name,v,s});D.col[id]=(D.col[id]||0)+1;dvFloat(from.x,from.y-10,'+'+kfmt(v),'#ffe45c');try{coin()}catch(e){}
@@ -4992,8 +4993,8 @@ function dvHurt(n,why){const D=DV,p=D.p;if(p.inv>0||D.ph!=='dive')return;p.inv=1
  if(D.hp<=0)dvFaint(why);else dvSay((why||'Bị tấn công')+'!','#ff9a9a',1.8)}
 function dvFaint(why){const D=DV;if(D.ph!=='dive')return;const n=Math.floor(D.bag.length/2);for(let i=0;i<n;i++)D.bag.splice(Math.floor(Math.random()*D.bag.length),1);dvFinish('faint',why)}
 function dvFinish(kind,why){const D=DV;if(D.ph==='end')return;D.ph='end';D.endKind=kind;D.why=why||'';
- const lines={},sum=D.bag.reduce((a,b)=>a+b.v,0)+D.photo;D.bag.forEach(b=>{const q=lines[b.id]||(lines[b.id]={n:b.n,c:0,v:0});q.c++;q.v+=b.v});
- D.sum=sum;D.lines=lines;
+ const lines={};let sum=D.bag.reduce((a,b)=>a+b.v,0)+D.photo;D.bag.forEach(b=>{const q=lines[b.id]||(lines[b.id]={n:b.n,c:0,v:0});q.c++;q.v+=b.v});
+ let cut=0;{const cap=Math.round(D.t*DV_RATE/1000)*1000;if(sum>cap){cut=sum-cap;sum=cap}}D.cut=cut;D.sum=sum;D.lines=lines;
  if(sum>0){P.money+=sum;try{coin();setTimeout(coin,150)}catch(e){}}
  Object.keys(D.col).forEach(id=>{if(kind==='faint'&&!D.bag.some(b=>b.id===id))return;const k='dv_c_'+id;dvSet(k,dvLv(k)+D.col[id])});
  Object.keys(D.shots).forEach(id=>dvSet('dv_c_'+id,Math.max(1,dvLv('dv_c_'+id))));
@@ -5001,7 +5002,7 @@ function dvFinish(kind,why){const D=DV;if(D.ph==='end')return;D.ph='end';D.endKi
  try{alog('mini','dive',{w:sum,v:sum,n:1});sysLog('Trạm Lặn Ngụp · '+(kind==='faint'?'ngất xỉu ('+why+')':kind==='abort'?'cứu hộ kéo lên':'lên bờ')+' · sâu nhất '+bm+'m · thu '+VND(sum))}catch(e){}
  if(NET.on)saveState();
  $('#dvPad').hidden=true;const T={ok:'LÊN BỜ AN TOÀN!',faint:'BẠN BỊ NGẤT!',abort:'ĐỘI CỨU HỘ KÉO LÊN'}[kind];
- let h=Object.keys(lines).map(id=>{const q=lines[id];return`<div><span>${esc(q.n)}${q.c>1?' ×'+q.c:''}</span><b>${q.v?VND(q.v):'—'}</b></div>`}).join('');if(D.photo)h+=`<div><span>Ảnh quái vật</span><b>${VND(D.photo)}</b></div>`;if(D.spent)h+=`<div><span>Phí nạp oxy tại trạm</span><b style="color:#ff9a9a">−${VND(D.spent)}</b></div>`;if(!h)h='<div><span>Không mang được gì lên bờ.</span><b></b></div>';
+ let h=Object.keys(lines).map(id=>{const q=lines[id];return`<div><span>${esc(q.n)}${q.c>1?' ×'+q.c:''}</span><b>${q.v?VND(q.v):'—'}</b></div>`}).join('');if(D.photo)h+=`<div><span>Ảnh quái vật</span><b>${VND(D.photo)}</b></div>`;if(D.cut)h+=`<div><span>Giới hạn thu mua theo thời gian lặn</span><b style="color:#ff9a9a">−${VND(D.cut)}</b></div>`;if(D.spent)h+=`<div><span>Phí nạp oxy tại trạm</span><b style="color:#ff9a9a">−${VND(D.spent)}</b></div>`;if(!h)h='<div><span>Không mang được gì lên bờ.</span><b></b></div>';
  $('#dvEndT').textContent=T;{const net=sum-(D.spent||0);try{toast((sum>0?'Lên bờ! Bạn kiếm được '+VND(sum)+' từ lặn biển'+(D.spent?' (ròng '+VND(net)+')':''):'Lên bờ nhưng không kiếm được đồng nào.'),false,6000)}catch(e){}}$('#dvEndL').innerHTML=h;$('#dvEndP').innerHTML=`<div style="font-size:1.45em;color:${sum>0?'#7dff9a':'#ff9a9a'};margin:2px 0 6px">${sum>0?'KIẾM ĐƯỢC +'+VND(sum):'KHÔNG KIẾM ĐƯỢC TIỀN'}</div>`+(kind==='faint'?'Bạn mất một nửa đồ trong túi ('+esc(why)+'). ':kind==='abort'?'Mất một nửa đồ trong túi. ':'')+(D.spent?'Tổng thu: <b>'+VND(sum)+'</b> · phí oxy <b>−'+VND(D.spent)+'</b> · ròng <b>'+VND(sum-D.spent)+'</b>':'Tổng thu: <b>'+VND(sum)+'</b>')+' · sâu nhất <b>'+bm+' m</b>';$('#dvEnd').hidden=false}
 function dvBackMenu(){const D=DV;D.gr=0;$('#dvGreet').hidden=true;D.ph='menu';D.p.x=-1e4;D.p.y=-1e4;D.cr=[];D.items=[];D.wrecks=[];D.cam.x=220;D.cam.y=0;D.parts=[];D.floats=[];D.pets=[];D.stn=[];$('#dvEnd').hidden=true;$('#dvPause').hidden=true;$('#dvMenu').hidden=false;$('#dvPad').hidden=true;dvMenuDom()}
 /* ---------- spawning & AI ---------- */
@@ -5061,7 +5062,7 @@ function dvGrab(){const D=DV;if(!D||D.ph!=='dive'||D.pause||D.p.net>0)return;con
  if(best){const d=DV_C[best.t];if(dvTake(best.t,d.n,d.v,1,best)){D.cr.splice(D.cr.indexOf(best),1);if(d.v>=4e6)dvSay('HIẾM! Bạn bắt được '+d.n+'!','#ffe45c',3)}}}
 function dvPhoto(){const D=DV;if(!D||D.ph!=='dive'||D.pause||D.p.shot>0)return;D.p.shot=1;D.flash=.25;try{beep(1200,.05,'square',.05)}catch(e){}
  const mon=D.cr.find(c=>DV_C[c.t].mon&&Math.abs(c.x-D.cam.x-D.W/2)<D.W/2+60&&Math.abs(c.y-D.cam.y-D.H/2)<D.H/2+60);
- if(mon&&!D.shots[mon.t]){D.shots[mon.t]=1;const v=DV_C[mon.t].photo;D.photo+=v;dvSay('ẢNH QUÁI VẬT '+DV_C[mon.t].n.toUpperCase()+'! +'+VND(v)+' (nhận khi lên bờ)','#ffe45c',3.6);try{coin();setTimeout(coin,120)}catch(e){}}
+ if(mon&&!D.shots[mon.t]){D.shots[mon.t]=1;const v=Math.round(DV_C[mon.t].photo*DV_VS/1000)*1000;D.photo+=v;dvSay('ẢNH QUÁI VẬT '+DV_C[mon.t].n.toUpperCase()+'! +'+VND(v)+' (nhận khi lên bờ)','#ffe45c',3.6);try{coin();setTimeout(coin,120)}catch(e){}}
  else if(mon)dvSay('Bạn đã chụp quái vật này rồi.','#cfd8ff',1.8);else dvSay('Không có gì đáng chụp.','#cfd8ff',1.2)}
 function dvSurface(){const D=DV;if(!D||D.ph!=='dive'||D.pause)return;if(D.p.y/DV_M<3)dvFinish('ok');else dvSay('Hãy bơi lên mặt nước rồi bấm E để lên bờ.','#bff',2)}
 /* ---------- render (16-bit hi-res) ---------- */
@@ -5628,8 +5629,8 @@ function dvFit(g,t,sz,mw){g.font=sz+'px '+FONT;const w=g.measureText(t).width;re
 /* ---------- menu UI ---------- */
 function dvView(n){if(!DV)return;DV.view=n;[0,1,2].forEach(i=>{$('#dvV'+i).hidden=i!==n});if(n===1)dvShopDom();if(n===2)dvColDom();if(n===0)dvMenuDom();$('#dvMenu').scrollTo&&$('#dvMenu').scrollTo(0,0)}
 function dvColDom(){let h='',tot=0,got=0;const row=(id,n,v,sub)=>{const c=dvLv('dv_c_'+id);tot++;if(c)got++;h+=`<div class="dvit${c?' own':''}"><div><b>${c?esc(n):'???'}</b><small>${c?sub:'Chưa gặp'}</small></div><em>${c?'×'+c:''}</em></div>`};
- h+='<div class="dvh">SINH VẬT</div>';Object.keys(DV_C).forEach(k=>{const d=DV_C[k];row(k,d.n,d.v,d.fish?'Cá bắt được · '+VND(d.v)+(d.a!==undefined?' · '+d.a+'–'+d.b+'m':''):(d.mon?'QUÁI VẬT huyền thoại · ảnh '+VND(d.photo):'Nguy hiểm'+(d.a!==undefined?' · '+d.a+'–'+d.b+'m':'')))});
- h+='<div class="dvh">KHO BÁU</div>';Object.keys(DV_L).filter(k=>k!=='o2').forEach(k=>{const l=DV_L[k];row(k,l.n,l.v,l.v?VND(l.v):'Giá trị tuỳ rương')});
+ h+='<div class="dvh">SINH VẬT</div>';Object.keys(DV_C).forEach(k=>{const d=DV_C[k];row(k,d.n,d.v,d.fish?'Cá bắt được · '+VND(dvSc(d.v))+(d.a!==undefined?' · '+d.a+'–'+d.b+'m':''):(d.mon?'QUÁI VẬT huyền thoại · ảnh '+VND(dvSc(d.photo)):'Nguy hiểm'+(d.a!==undefined?' · '+d.a+'–'+d.b+'m':'')))});
+ h+='<div class="dvh">KHO BÁU</div>';Object.keys(DV_L).filter(k=>k!=='o2').forEach(k=>{const l=DV_L[k];row(k,l.n,l.v,l.v?VND(dvSc(l.v)):'Giá trị tuỳ rương')});
  $('#dvCol').innerHTML=`<div class="dvfoot">Đã khám phá <b>${got}/${tot}</b></div>`+h}
 function dvBuy(key,lv){const G=dvGear();let arr,cur;
  if(key==='dv_t'){arr=DV_T;cur=G.t}else if(key==='dv_s'){arr=DV_S;cur=G.s}else if(key==='dv_b'){arr=DV_B;cur=G.b}else if(key==='dv_f'){arr=DV_F.slice(1);cur=G.f}else return;
@@ -8377,7 +8378,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z135';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z136';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}

@@ -1196,3 +1196,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## Admin: tab TÀI CHÍNH
 - Tab mới **TÀI CHÍNH** trong `admin.html` (không đụng game, không cần SQL): KPI ngân hàng + sàn; bảng **theo mã** (giá, % phiên trước, số người giữ, vốn, giá trị, lãi/lỗ, số người chơi hôm nay), **thành viên đầu tư** (vốn, giá trị, lãi/lỗ giữ, đã chốt, tổng), lời nhất/lỗ nhất, **ngân hàng theo kỳ hạn** (lãi suất, số sổ, tiền gửi, lãi phải trả), **người gửi nhiều nhất** (số sổ, lãi dự chi, sổ đã đến hạn).
 - Giá mã ở admin tính từ giá chốt `stk/<ngày>/px` đã ghi trên máy chủ (ngày chưa có giá chốt tính 0%), nên có thể lệch nhẹ so với game cho tới khi có người mở game chốt ngày đó.
+
+## z136 · Cân bằng Lặn Biển
+- Giá thu mua mọi món lặn (cá, vàng, ngọc, rương, ảnh quái vật) và bảng sưu tầm ×0,25 (`DV_VS`).
+- Trần thu nhập theo thời gian: tối đa `DV_RATE = 200tr / 3600s` cho mỗi giây lặn (~200tr cho 1 giờ lặn liên tục, cần nạp oxy ở trạm). Lên bờ sớm mà nhặt vượt trần thì phần dư bị cắt, hiển thị "Giới hạn thu mua theo thời gian lặn".
