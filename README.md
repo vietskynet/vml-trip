@@ -1284,3 +1284,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Xoá hẳn trần thu nhập theo thời gian lặn (`min(120tr, t×133.333₫/giây)`): lên bờ nhận **đủ 100%** giá trị túi (cá, kho báu, ảnh quái vật).
 - Bỏ dòng "trả ≤/TRẦN" trên khung túi và cảnh báo khi bấm E lên bờ (z151). Giới hạn còn lại là sức chứa túi và oxy.
 - Không cần SQL.
+
+## z153 — Lặn biển: thu nhập mỗi lượt ×2
+- Hằng số `DV_X=2`: **giá cá nhân đôi** (1tr → 10tr; cá cơm 1tr, cá ngừ 2,2tr…), **kho báu/vật phẩm và ảnh quái vật nhân đôi** (hệ số `DV_VS` .325 → .65). Cả thu nhập trung bình mỗi lượt lặn ≈ ×2 vì tốc độ xuất hiện cá, sức chứa túi và oxy giữ nguyên.
+- Bảng sinh vật/kho báu trong menu tự hiện giá mới. Thông báo "HIẾM!" nâng ngưỡng theo hệ số (≥8tr).
+- Chỉ đổi lặn biển; câu cá thuyền, minigame câu cá và các nguồn thu khác không đổi. Không cần SQL.
