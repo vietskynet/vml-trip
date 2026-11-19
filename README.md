@@ -1273,3 +1273,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Khi quái trong tầm (260px), Phượng Hoàng **vung cánh nhanh** (animation cánh gấp đôi tốc độ ~1 giây) kèm 7 vòng cung cầu vồng quét ra hai bên, rồi **bắn loạt 7 quả cầu lửa 7 màu** (đỏ, cam, vàng, lục, lam, tím, hồng) toả quạt về phía quái, mỗi quả có đuôi sao chổi và nổ cánh hoa lửa riêng khi trúng.
 - Sát thương **mỗi loạt = 7 × 5 = 35 (nhân sức mạnh liên minh)**, hồi chiêu 2,2s (trước: 6 sát thương mỗi 1,4s) ⇒ gấp ~3,7 lần DPS cũ. Số sát thương từng quả + dòng 🔥 tổng loạt hiện trên đầu quái, quái rung mạnh.
 - Cầu lửa dùng chế độ trộn sáng khi ban đêm, ban ngày vẽ đặc để không bị chói trắng. Hải tặc (PIR) vẫn bị bắn đơn như cũ.
+
+## z151 — Lặn biển: hiện rõ trần thu mua, cảnh báo trước khi lên bờ
+- Nguyên nhân báo cáo "câu ~50tr chỉ nhận 20tr": trần thu mua theo thời gian lặn (`min(120tr, thời_gian × 133.333₫/giây)`) đang hoạt động đúng, nhưng HUD chỉ hiện giá trị túi nên người chơi không biết. Lặn ~150 giây có trần ≈20tr, phần dư 28tr bị cắt (dòng "Giới hạn thu mua theo thời gian lặn" ở màn kết thúc).
+- HUD túi giờ hiện thêm dòng **"trả ≤ X"** (xanh) hoặc **"TRẦN X"** (đỏ khi giá trị túi đã vượt trần).
+- Bấm E lên bờ khi túi vượt trần: hiện cảnh báo (giá trị túi, hạn mức hiện tại, phần sẽ mất, số giây cần lặn thêm), **bấm E lần nữa trong 8 giây mới lên bờ**.
+- Không đổi công thức trần; không cần SQL.
