@@ -1268,3 +1268,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Lệnh MUA tạm giữ tiền ngay (hoàn khi hủy/hết hạn). Lệnh chỉ khớp khi bạn **đang online**, ngưng khớp ở giờ chốt sổ. Khớp xong có thông báo + ghi vào "Lệnh đã khớp".
 - Tab mới **LỆNH CHỜ** (danh sách + nút HỦY + lịch sử lệnh khớp). Lệnh lưu trong `players/<uid>/state.stk.o`, không cần SQL.
 - Lưu ý: giá hiện tại của mã giờ là giá trong phiên, nên giá trị danh mục thay đổi liên tục; lãi/lỗ chốt cuối phiên vẫn tính như cũ.
+
+## z150 — Phượng Hoàng Delulu: vung cánh bung loạt cầu lửa
+- Khi quái trong tầm (260px), Phượng Hoàng **vung cánh nhanh** (animation cánh gấp đôi tốc độ ~1 giây) kèm 7 vòng cung cầu vồng quét ra hai bên, rồi **bắn loạt 7 quả cầu lửa 7 màu** (đỏ, cam, vàng, lục, lam, tím, hồng) toả quạt về phía quái, mỗi quả có đuôi sao chổi và nổ cánh hoa lửa riêng khi trúng.
+- Sát thương **mỗi loạt = 7 × 5 = 35 (nhân sức mạnh liên minh)**, hồi chiêu 2,2s (trước: 6 sát thương mỗi 1,4s) ⇒ gấp ~3,7 lần DPS cũ. Số sát thương từng quả + dòng 🔥 tổng loạt hiện trên đầu quái, quái rung mạnh.
+- Cầu lửa dùng chế độ trộn sáng khi ban đêm, ban ngày vẽ đặc để không bị chói trắng. Hải tặc (PIR) vẫn bị bắn đơn như cũ.
