@@ -1253,3 +1253,18 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - **Admin › KINH TẾ › "Cảnh báo tiền bất thường"**: so ví hiện tại với lần admin thấy trước (lưu trong trình duyệt admin); cờ đỏ khi ví tăng nhanh hơn ngưỡng (mặc định 1.500 triệu ₫/giờ) hoặc vượt ngưỡng (mặc định 10 tỷ ₫). Cả 2 ngưỡng chỉnh được.
 - **SQL mới `sql-cu/supabase-update-gift-guard.sql`** (chạy 1 lần trong Supabase SQL Editor): bọc `rt_can`, người chơi chỉ gửi được quà ≤ 2 × ví đã lưu trên server + 5 triệu ₫. Admin không bị giới hạn. **Chạy lại file này sau mỗi lần chạy file update khác có định nghĩa lại `rt_can`.**
 - Hạn chế: ví vẫn do máy người chơi tự báo, nên đây là lớp ngăn + phát hiện, chưa phải chống gian lận tuyệt đối (cần chuyển tiền sang server).
+
+## z149 — Sàn chứng khoán kiểu chuyên nghiệp + sửa lưới lặn + bắn quái đẹp hơn
+**Lặn biển:** lưới cá (Space) giờ vẽ sóng đúng cả hướng trái lẫn phải (trước chỉ vẽ hướng phải dù bắt cá vẫn đúng 2 phía).
+
+**Bắn quái (xe + Phượng Hoàng Delulu):**
+- Tâm ngắm đỏ xoay quanh quái + đường canh nét đứt khi quái trong tầm (xám nếu xa). Xe tự quay mặt về phía quái khi bắn.
+- Đạn canh đầu (lead) theo hướng quái đang đi nên trúng đúng chỗ; mỗi xe vẫn có loại đạn riêng, nay to hơn, có hào quang theo màu và đuôi sáng; có tia lửa nòng.
+- Trúng đạn: quái nháy trắng + giật lùi, hào quang, 2 vòng sóng xung kích, 14 tia lửa rơi, vệt sáng; thêm tiếng như cũ.
+
+**Sàn đầu tư:**
+- **Giá chạy trong phiên**: dao động quanh giá tham chiếu (TC = giá mở phiên) theo từng mã (mã rủi ro cao dao động mạnh hơn), vào giờ chốt sổ (10% cuối phiên) kéo về giá đóng cửa nên khớp giá mở phiên sau. Biên **trần/sàn ±15%**. Biểu đồ trong phiên có vạch TC/Trần/Sàn và các mức giá lệnh chờ.
+- **Loại lệnh**: Thị trường (như cũ) · MUA giới hạn (khi giá ≤ X) · Stop mua (khi giá ≥ X) · BÁN chốt lời (≥ X) · BÁN cắt lỗ (≤ X) · **OCO** (chốt lời + cắt lỗ, chạm cái nào trước thì bán, cái kia hủy). Hiệu lực: trong phiên / 3 phiên / 7 phiên. Tối đa 12 lệnh chờ.
+- Lệnh MUA tạm giữ tiền ngay (hoàn khi hủy/hết hạn). Lệnh chỉ khớp khi bạn **đang online**, ngưng khớp ở giờ chốt sổ. Khớp xong có thông báo + ghi vào "Lệnh đã khớp".
+- Tab mới **LỆNH CHỜ** (danh sách + nút HỦY + lịch sử lệnh khớp). Lệnh lưu trong `players/<uid>/state.stk.o`, không cần SQL.
+- Lưu ý: giá hiện tại của mã giờ là giá trong phiên, nên giá trị danh mục thay đổi liên tục; lãi/lỗ chốt cuối phiên vẫn tính như cũ.

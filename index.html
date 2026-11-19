@@ -398,6 +398,11 @@ body.m-room .pad{display:none!important}
 .stknm{display:flex;flex-direction:column;min-width:0}.stknm b{font-size:15px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.stknm small{font-size:12px;color:#9fb6c9}.stknm em{font-style:normal;color:#ffd23f}
 .stksp{width:60px;height:24px}.stkpx{display:flex;flex-direction:column;text-align:right}.stkpx b{font-size:14px}.stkpx small,.stkhd small{font-size:12px;color:#9fb6c9}.stkhd{display:flex;flex-direction:column;text-align:right}.stkhd b{font-size:14px;color:#ffe36a}
 .stkdet{grid-column:1/-1;border-top:1px dashed #ffd23f;padding-top:6px;cursor:default}.stkdet p{font-size:14px;line-height:1.3;margin:0 0 6px;color:#dbe9f7}.stkamts{flex-wrap:wrap;gap:5px;margin:4px 0}.stkamts .chip{background:#173a5f;color:#fff;border:2px solid #000;cursor:pointer}.stkamts .chip.on{background:#ffd23f;color:#000}.stkgo{flex-wrap:wrap;gap:6px}
+.stkboard{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:6px 0}.stkboard div{background:rgba(0,0,0,.3);border:2px solid #000;padding:3px 6px;text-align:center}.stkboard small{display:block;font-size:10px;color:#9fb6c9;letter-spacing:.5px}.stkboard b{font-size:15px;color:#fff}.stkboard .ce0{color:#ffd23f}.stkboard .ce1{color:#c77dff}.stkboard .ce2{color:#5fd4ff}
+.stktk{margin-top:8px;border:2px solid #1d3a5c;background:rgba(0,0,0,.22);padding:8px}.stkseg{display:flex;gap:0;margin-bottom:6px}.stkseg button{flex:1;padding:7px 4px;background:#173a5f;color:#cfe3f5;border:2px solid #000;cursor:pointer;font-family:inherit;font-size:14px}.stkseg button.on{background:#ffd23f;color:#000}.stkseg.sd button.on.b{background:#3ddc84}.stkseg.sd button.on.s{background:#ff6a5a;color:#fff}
+.stkpx2{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin:6px 0}.stkpx2 label{display:flex;flex-direction:column;font-size:12px;color:#9fb6c9;gap:2px}.stkpx2 input{flex:none;width:130px;height:38px;min-height:0;box-sizing:border-box;background:#0a1626;color:#ffe36a;border:2px solid #000;padding:6px;font-family:inherit;font-size:16px}.stkadj{display:flex;gap:4px}.stkadj button{padding:6px 8px;background:#173a5f;color:#fff;border:2px solid #000;cursor:pointer;font-family:inherit;font-size:13px}.stkadj button:hover{background:#245a8f}
+.stkexp{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin:6px 0;font-size:13px;color:#9fb6c9}.stkexp button{padding:5px 8px;background:#173a5f;color:#fff;border:2px solid #000;cursor:pointer;font-family:inherit;font-size:13px}.stkexp button.on{background:#ffd23f;color:#000}.stksum2{font-size:14px;line-height:1.35;color:#dbe9f7;margin:6px 0}.stksum2 b{color:#ffe36a}
+.stkods{display:flex;flex-direction:column;gap:6px}.stkod{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:8px;align-items:center;background:rgba(255,255,255,.06);border:2px solid #1d3a5c;padding:5px 6px}.stkod small{display:block}#stkOn{font-style:normal;color:#ffd23f}
 @media (max-width:560px){.stkbar{grid-template-columns:repeat(2,minmax(0,1fr))}.stkrow{grid-template-columns:52px minmax(0,1fr) 78px;row-gap:3px}.stksp{display:none}.stkhd{grid-column:2/-1;text-align:left;flex-direction:row;gap:8px}}
 .stktabs{display:flex;gap:6px;margin:6px 0}.stktabs button{flex:1;font:inherit;font-size:15px;padding:6px;background:#173a5f;color:#fff;border:2px solid #000;cursor:pointer}.stktabs button.on{background:#ffd23f;color:#000}
 .stksum{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}.stksum>div{background:rgba(255,255,255,.07);border:2px solid rgba(255,210,63,.45);padding:4px 6px;display:flex;flex-direction:column}.stksum small{font-size:11px;color:#ffd23f}.stksum b{font-size:15px}
@@ -798,7 +803,7 @@ new MutationObserver(nb).observe(document.documentElement,{childList:true,subtre
     <div class="stkmq"><div id="stkMq"></div></div>
     <div class="stkbar" id="stkBar"></div>
     <p class="stkinfo" id="stkInfo"></p>
-    <div class="stktabs" id="stkTabs"><button data-tab="mk" class="on">📈 THỊ TRƯỜNG</button><button data-tab="pf">💼 DANH MỤC &amp; LỊCH SỬ</button></div>
+    <div class="stktabs" id="stkTabs"><button data-tab="mk" class="on">📈 THỊ TRƯỜNG</button><button data-tab="od">📋 LỆNH CHỜ <i id="stkOn"></i></button><button data-tab="pf">💼 DANH MỤC &amp; LỊCH SỬ</button></div>
     <div id="stkList"></div>
     <div class="row" style="margin-top:10px"><button class="btn ghost" data-close="stkOv">ĐÓNG</button><span style="color:#ffe9a0">Ví: <span class="price" id="stkMoney">0₫</span></span></div>
   </div>
@@ -4080,7 +4085,7 @@ function applyConfig(cfg){if(!PRICE_DEF)PRICE_DEF={house:Object.assign({},CFG.PR
 const MONS=[{k:'kraken',n:'Bạch Tuộc Khổng Lồ'},{k:'crab',n:'Cua Hoàng Đế Đột Biến'},{k:'gorilla',n:'Khỉ Đột Say Rượu'},{k:'slime',n:'Vua Thạch Rau Câu'},{k:'shark',n:'Cá Mập Có Chân'},{k:'coco',n:'Trái Dừa Nổi Loạn'}];
 const MON_BY={};MONS.forEach(m=>MON_BY[m.k]=m);
 const monRng=seed=>{let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}};
-let MONP={id:null},monHitCd=0,monBumpCd=0,monSync=0,monShake=0,monFx=[];
+let MONP={id:null},monHitCd=0,monBumpCd=0,monSync=0,monShake=0,monFx=[],monFlash=0,monKick=0;
 /* Quái vật tự động: mỗi chu kỳ (mặc định 20 phút) tất cả máy cùng tính ra 1 con từ số thứ tự chu kỳ (không cần máy chủ), cấu hình ở admin: config/mon */
 function monAutoCfg(){const c=(NET.config&&NET.config.mon)||{},n=(v,d,lo,hi)=>{v=+v;return Number.isFinite(v)&&v>=lo?Math.min(hi,v):d};return{on:c.on==null?1:+c.on,every:Math.round(n(c.every,20,1,1440)),min:n(c.min,3000000,0,1e9),max:n(c.max,10000000,0,1e9),hp:Math.round(n(c.hp,200,5,100000)),dur:Math.round(n(c.dur,240,60,1800))}}
 let MAUTO=null;
@@ -4090,7 +4095,8 @@ function curMon(){let m;if(NET.on){m=NET.event&&NET.event.monster;if(!(m&&m.id&&
 function monT(m){return NET.on?(serverNow()-m.start)/1000:S.time-m.start}
 function monPath(m){if(MONP.id===m.id)return MONP;const rnd2=monRng(m.seed||m.id),pts=[],sp=36;let tries=0;const pickPt=()=>{for(let k=0;k<200;k++){const x=120+rnd2()*(MW-240),y=300+rnd2()*880;if(canStand(x,y)&&!inPool(x,y))return P2(x,y)}return P2(880,760)};
  pts.push(pickPt());let tot=0;while(tot<(m.dur||300)*sp+200&&tries<400){tries++;const a=pts[pts.length-1],b=pickPt(),d=dist(a,b);if(d<60||d>420)continue;pts.push(b);tot+=d}MONP={id:m.id,pts,sp};return MONP}
-function monPos(m){const mp=monPath(m),t=Math.max(0,monT(m));let left=t*mp.sp;for(let k=0;k<mp.pts.length-1;k++){const a=mp.pts[k],b=mp.pts[k+1],d=dist(a,b);if(left<=d){const f=left/d;return{x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f,dir:b.x>=a.x?1:-1}}left-=d}const z=mp.pts[mp.pts.length-1];return{x:z.x,y:z.y,dir:1}}
+function monPos(m){return monPosT(m,0)}
+function monPosT(m,dt){const mp=monPath(m),t=Math.max(0,monT(m)+dt);let left=t*mp.sp;for(let k=0;k<mp.pts.length-1;k++){const a=mp.pts[k],b=mp.pts[k+1],d=dist(a,b);if(left<=d){const f=left/d;return{x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f,dir:b.x>=a.x?1:-1}}left-=d}const z=mp.pts[mp.pts.length-1];return{x:z.x,y:z.y,dir:1}}
 function monHits(m){let tot=0,mine=P&&P.mh&&P.mh.id===m.id?P.mh.n:0;if(NET.on){for(const u in NET.players){if(u===NET.uid)continue;const h=NET.players[u]&&NET.players[u].mh;if(h&&h.id===m.id)tot+=+h.n||0}}else tot+=m.botHits||0;return{tot:tot+mine,mine}}
 function monState(m){const t=monT(m),h=monHits(m);if(h.tot>=m.hp)return'dead';if(t>m.dur)return'gone';if(t<0)return'wait';return'live'}
 function hitMonster(){const m=curMon();if(!m||monState(m)!=='live'||monHitCd>0)return;const p=monPos(m);if(dist(P,p)>Math.max(54,vehGunR())){toast('Lại gần quái vật hơn để đánh!');return}
@@ -4100,7 +4106,7 @@ function monCheck(){const m=curMon();if(!m||!P)return;const st=monState(m);
  if(st==='dead'&&P.monDone!==m.id){P.monDone=m.id;const h=monHits(m),mm=MON_BY[m.kind];let share=0;if(h.mine>0&&P.monPaid!==m.id){share=Math.round(m.reward*h.mine/Math.max(h.tot,1)/1000)*1000;P.monPaid=m.id;P.money+=share;coin();setTimeout(coin,200)}
   toast(mm.n+' đã bị hạ gục!'+(share?' Bạn đánh '+h.mine+' đòn, nhận '+VND(share)+'.':' Lần sau nhớ tham gia nhé!'),false,7000);sysLog(mm.n+' bị hạ gục'+(share?', bạn nhận '+VND(share):''));alog('mini','mon',{w:share||0,x:mm.n});for(let k=0;k<26;k++)monFx.push({x:0,y:0,t:1.2,burst:k,ox:monPos(m)});if(NET.on)saveState()}
  if(st==='gone'&&P.monDone!==m.id&&P.monSeen===m.id){P.monDone=m.id;toast(MON_BY[m.kind].n+' đã bỏ chạy khỏi resort!',false,5000)}}
-function updMonster(dt){if(monHitCd>0)monHitCd-=dt;if(monBumpCd>0)monBumpCd-=dt;if(monShake>0)monShake-=dt;monFx.forEach(f=>{f.t-=dt;if(f.pr&&f.t<=0&&!f.hit){f.hit=1;fxImpact(f.pr)}});monFx=monFx.filter(f=>f.t>0);
+function updMonster(dt){if(monFlash>0)monFlash-=dt;if(monKick>0)monKick-=dt;if(monHitCd>0)monHitCd-=dt;if(monBumpCd>0)monBumpCd-=dt;if(monShake>0)monShake-=dt;monFx.forEach(f=>{f.t-=dt;if(f.pr&&f.t<=0&&!f.hit){f.hit=1;fxImpact(f.pr)}});monFx=monFx.filter(f=>f.t>0);
  if(!NET.on&&S){if(!S.mon||(monT(S.mon)>S.mon.dur+30)||S.mon.dead){S.monNext=S.monNext||S.time+rnd(300,600);if(S.time>=S.monNext){S.monNext=S.time+rnd(420,780);S.mon={id:Date.now(),kind:pick(MONS).k,seed:Math.random()*1e9|0,start:S.time,dur:240,hp:60,reward:1500000,botHits:0}}}}
  const m=curMon();if(!m)return;monCheck();if(monState(m)!=='live')return;const p=monPos(m);
  if(!NET.on){S.monBotT=(S.monBotT||0)-dt;if(S.monBotT<=0){S.monBotT=1;S.chars.forEach(c=>{if(c===P||c.remote||c.hidden)return;const d=dist(c,p);if(d<60&&Math.random()<.6){m.botHits++;monFx.push({x:p.x+rnd(-14,14),y:p.y-40,t:.6,txt:'-1'})}else if(d<420&&c.state==='idle'&&Math.random()<.25)goTo(c,P2(p.x+rnd(-30,30),p.y+rnd(10,30)),'mon')})}}
@@ -4108,6 +4114,11 @@ function updMonster(dt){if(monHitCd>0)monHitCd-=dt;if(monBumpCd>0)monBumpCd-=dt;
  if(NET.on&&P.mh&&P.mh.id===m.id){monSync-=dt;if(monSync<=0&&P.mh.n!==P.mh.sent){monSync=.6;P.mh.sent=P.mh.n;NET.db.ref('players/'+NET.uid+'/mh').set({id:m.id,n:P.mh.n})}}}
 function monList(cx,cy,list){const m=curMon();if(!m)return;const st=monState(m);if(st!=='live'&&!(st==='dead'&&monFx.some(f=>f.burst!=null)))return;const p=monPos(m);if(p.x<cx-100||p.x>cx+VW+100||p.y<cy-120||p.y>cy+VH+80)return;list.push({mon:{m,p,st},base:p.y})}
 let MONC=null;
+function drawAim(x,y,m,p,t){try{if(mode!=='world'||!P||P.hidden)return;let R=0;const V=vehGunCur();if(V)R=V.r;else if(typeof phoOwned==='function'&&phoOwned(P)&&typeof PHO_ORB!=='undefined')R=PHO_ORB.r;if(!R)return;const d=dist(P,p),inr=d<=Math.max(54,R),cy=y-58,sx=x+(P.x-p.x),sy=y+(P.y-p.y)-20,col=inr?'255,70,70':'170,170,170';
+ ctx.save();ctx.shadowColor='#000';ctx.shadowBlur=3;
+ if(inr){ctx.strokeStyle='rgba(255,90,90,.75)';ctx.lineWidth=1.4;ctx.setLineDash([5,5]);ctx.lineDashOffset=-t*40;ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(x,cy);ctx.stroke();ctx.setLineDash([])}
+ const r=26+Math.sin(t*6)*(inr?3:1),a=t*(inr?2.4:.8);ctx.translate(x,cy);ctx.rotate(a);ctx.strokeStyle='rgba('+(inr?'255,60,60':'200,200,200')+',1)';ctx.lineWidth=2.6;for(let i=0;i<4;i++){ctx.rotate(Math.PI/2);ctx.beginPath();ctx.moveTo(r,-r*.45);ctx.lineTo(r,-r);ctx.lineTo(r*.45,-r);ctx.stroke()}
+ ctx.rotate(-a);ctx.lineWidth=1.4;ctx.beginPath();ctx.arc(0,0,r*.55,0,6.283);ctx.stroke();ctx.fillStyle='rgba('+col+',.9)';ctx.fillRect(-1,-1,3,3);ctx.fillRect(-r*.9-3,-1,6,2);ctx.fillRect(r*.9-3,-1,6,2);ctx.fillRect(-1,-r*.9-3,2,6);ctx.fillRect(-1,r*.9-3,2,6);ctx.restore()}catch(e){}}
 function drawMonster(o,x,y,t){const {m,p,st}=o;if(st!=='live')return;if(!MONC)MONC=mk(120,110);const [mcv,g]=MONC;const k=m.kind,f=p.dir,sh=monShake>0&&monHitCd>.1?Math.round(Math.sin(t*90)*2):0;x+=sh;const Y0=y;y=104;
  ctx.fillStyle='rgba(20,10,30,.35)';ctx.fillRect(x-38,Y0-3,76,7);g.clearRect(0,0,120,110);g.save();g.translate(60,0);const X=0,b=Math.round(Math.sin(t*5)*2);
  if(k==='kraken'){for(let i=0;i<8;i++){const bx=X-21+i*6;for(let j=0;j<12;j++)rr(g,Math.round(bx+Math.sin(t*4+i+j*.5)*3),y-14+j,4,2,j%3?'#9b4fd8':'#c77dff')}ellP(g,X,y-30,20,17,'#9b4fd8');ellP(g,X-6,y-38,8,6,'#b878f0');rr(g,X-9,y-32,7,7,'#fff');rr(g,X+3,y-32,7,7,'#fff');rr(g,X-6,y-30,3,4,'#000');rr(g,X+6,y-30,3,4,'#000');rr(g,X-10,y-35,8,2,'#3a1060');rr(g,X+3,y-35,8,2,'#3a1060')}
@@ -4119,14 +4130,18 @@ function drawMonster(o,x,y,t){const {m,p,st}=o;if(st!=='live')return;if(!MONC)MO
  else if(k==='shark'){const st2=Math.floor(t*8)%2;rr(g,X-10,y-10,4,10-st2*3,'#e0b088');rr(g,X+6,y-10,4,7+st2*3,'#e0b088');rr(g,X-12,y-1,7,2,'#ff5f6d');rr(g,X+4,y-1,7,2,'#ff5f6d');ellP(g,X,y-20,26,11,'#6a8aa8');ellP(g,X+2,y-15,18,5,'#e8f0f8');
   for(let i=0;i<10;i++)rr(g,X-24+(i<5?0:0)-i,y-21-i,2+i,1,'#6a8aa8');rr(g,X-4,y-40,3,12,'#6a8aa8');rr(g,X-6,y-36,8,8,'#6a8aa8');rr(g,X+16,y-24,3,3,'#000');for(let i=0;i<5;i++)rr(g,X+12+i*3,y-15,2,3,'#fff')}
  else{rr(g,X-9,y-8,3,8,'#6e4423');rr(g,X+6,y-8,3,8,'#6e4423');ellP(g,X,y-24,18,17,'#7a4a22');ellP(g,X-6,y-30,7,5,'#9a6a3a');for(let i=0;i<5;i++)lineP(g,X,y-40,X-14+i*7,y-52-(i%2)*4,'#2f9a3e',2);rr(g,X-10,y-28,7,3,'#000');rr(g,X+4,y-28,7,3,'#000');rr(g,X-8,y-26,3,3,'#ff3b3b');rr(g,X+6,y-26,3,3,'#ff3b3b');rr(g,X-6,y-18,13,3,'#2a1408');rr(g,X-4,y-18,2,2,'#fff');rr(g,X+2,y-18,2,2,'#fff')}
- g.restore();y=Y0;ctx.save();ctx.imageSmoothingEnabled=false;ctx.translate(x,0);if(f<0)ctx.scale(-1,1);ctx.drawImage(mcv,-96,y-166,192,176);ctx.restore();const g2=ctx;
+ g.restore();if(monFlash>0){g.save();g.globalCompositeOperation='source-atop';g.fillStyle='rgba(255,255,255,'+Math.min(.85,monFlash/.14*.85)+')';g.fillRect(0,0,120,110);g.restore()}
+ y=Y0;if(monKick>0)x+=Math.round(Math.sin(monKick*60)*3*(monKick/.18))*-p.dir;ctx.save();ctx.imageSmoothingEnabled=false;ctx.translate(x,0);if(f<0)ctx.scale(-1,1);ctx.drawImage(mcv,-96,y-166,192,176);ctx.restore();const g2=ctx;drawAim(x,Y0,m,p,t);
  const h=monHits(m),left=Math.max(0,m.hp-h.tot),w2=64;rr(g2,x-w2/2-1,y-98,w2+2,6,'#000');rr(g2,x-w2/2,y-97,Math.round(w2*left/m.hp),4,left/m.hp>.5?'#ff3b3b':left/m.hp>.2?'#ff8a3d':'#ffd23f');label(MON_BY[k].n+' · '+left+'/'+m.hp,x,y-102,'#ffffff','rgba(120,10,20,.9)')}
 /* ================= ĐẠN & HIỆU ỨNG TRÚNG ĐÍCH (mỗi xe một loại) ================= */
 const PRJ={pod:{sp:560},mole:{sp:340},rocket:{sp:400},bull:{sp:440},bolt:{sp:1000},f1:{sp:820},wing:{sp:540},candy:{sp:430},shark:{sp:360},tank:{sp:470},durian:{sp:380},banana:{sp:430},orb:{sp:340},melee:{sp:0}};
 const PRJ_IM={cast:.5,pod:.38,mole:.55,rocket:.8,bull:.55,bolt:.42,f1:.32,wing:.65,candy:.75,shark:.6,tank:.95,durian:.85,banana:.7,orb:1.1,melee:.28};
 const PRJ_ARC={shark:16,tank:26,orb:10,candy:6,durian:20,banana:14};
+function monLead(m,x0,y0,k){let p=monPos(m),T=0;for(let i=0;i<3;i++){T=clamp(Math.hypot(p.x-x0,p.y-34-y0)/(PRJ[k]||400),.1,.65);p=monPosT(m,T)}return p}
+const PRJ_RGB={pod:'95,232,255',mole:'255,210,90',rocket:'255,150,60',bull:'255,130,40',bolt:'255,240,120',f1:'255,70,70',wing:'255,160,230',candy:'255,130,200',shark:'90,190,255',tank:'200,120,255',durian:'190,230,70',banana:'255,225,70',orb:'170,90,255',cast:'255,170,90',melee:'255,255,255'};
+function fxMuzzle(k,x,y,tx,ty){const a=Math.atan2(ty-y,tx-x);monFx.push({mz:{k,x:x+Math.cos(a)*10,y:y+Math.sin(a)*10,a},t:.16,T:.16,x:0,y:0})}
 function fxShoot(k,x0,y0,x1,y1){if(![x0,y0,x1,y1].every(Number.isFinite))return;const d=Math.hypot(x1-x0,y1-y0),T=clamp(d/(PRJ[k]||400),.1,.65);monFx.push({pr:{k,x0,y0,x1,y1,sd:Math.random()*999},t:T,T,x:0,y:0})}
-function fxImpact(q){if(!Number.isFinite(q.x1)||!Number.isFinite(q.y1))return;const k=q.k,T=PRJ_IM[k]||.5;monFx.push({im:{k,x:q.x1,y:q.y1,sd:q.sd||Math.random()*999},t:T,T,x:0,y:0});
+function fxImpact(q){if(!Number.isFinite(q.x1)||!Number.isFinite(q.y1))return;const k=q.k,T=PRJ_IM[k]||.5;if(k!=='cast'){monFlash=.14;monKick=.18}monFx.push({im:{k,x:q.x1,y:q.y1,sd:q.sd||Math.random()*999},t:T,T,x:0,y:0});
  if(k==='rocket'||k==='tank'||k==='orb')monShake=Math.max(monShake,k==='tank'?.3:.2);
  const b={pod:[880,.07,'square',.04,-300],mole:[120,.1,'sawtooth',.05,-40],rocket:[90,.28,'sawtooth',.07,-60],bull:[160,.14,'square',.05,-80],bolt:[1200,.08,'sawtooth',.04,-900],f1:[520,.05,'square',.03,-200],wing:[1320,.12,'triangle',.04,400],candy:[980,.12,'triangle',.04,300],shark:[260,.14,'triangle',.05,-120],tank:[70,.34,'sawtooth',.08,-30],durian:[110,.22,'triangle',.07,-60],banana:[420,.12,'triangle',.05,-200],orb:[660,.4,'triangle',.07,900],cast:[520,.12,'triangle',.04,500],melee:[200,.05,'square',.04,-60]}[k];if(b)beep(...b)}
 const fxR=(sd,i)=>{const v=Math.sin((sd+i*7.13)*127.1)*43758.5453;return v-Math.floor(v)};
@@ -4136,7 +4151,9 @@ const fxRing=(x,y,r,c,n,s)=>{for(let i=0;i<n;i++){const a=i/n*6.283;fxPX(x+Math.
 const fxDisc=(x,y,r,c)=>{ctx.fillStyle=c;ctx.beginPath();ctx.arc(Math.round(x),Math.round(y),Math.max(.5,r),0,6.283);ctx.fill()};
 const fxNt=()=>nightF()>.35,fxLit=()=>{ctx.globalCompositeOperation=fxNt()?'lighter':'source-over'};
 function fxGlow(x,y,r,rgb,a){if(!(Number.isFinite(x)&&Number.isFinite(y)&&Number.isFinite(r)&&r>0&&Number.isFinite(a)))return;a*=fxNt()?1:.4;const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2)}
-function drawProj(f,cx,cy,t){ctx.save();try{drawProj0(f,cx,cy,t)}catch(e){f.t=0}finally{ctx.restore()}}
+function drawProj(f,cx,cy,t){ctx.save();try{const q=f.pr,u=clamp(1-f.t/f.T,0,1),ar=PRJ_ARC[q.k]||0,x=q.x0+(q.x1-q.x0)*u-cx,y=q.y0+(q.y1-q.y0)*u-cy-Math.sin(Math.PI*u)*ar,rgb=PRJ_RGB[q.k]||'255,255,255';
+ if(Number.isFinite(x+y)){ctx.save();ctx.globalCompositeOperation='lighter';fxGlow(x,y,26,rgb,.7);fxGlow(x,y,12,'255,255,255',.55);for(let i=1;i<=6;i++){const v=u-i*.035;if(v<0)break;const tx=q.x0+(q.x1-q.x0)*v-cx,ty=q.y0+(q.y1-q.y0)*v-cy-Math.sin(Math.PI*v)*ar;ctx.globalAlpha=(1-i/7)*.6;fxDisc(tx,ty,5-i*.55,'rgb('+rgb+')')}ctx.restore();ctx.translate(x,y);ctx.scale(1.55,1.55);ctx.translate(-x,-y)}
+ drawProj0(f,cx,cy,t)}catch(e){f.t=0}finally{ctx.restore()}}
 function drawProj0(f,cx,cy,t){const q=f.pr,u=clamp(1-f.t/f.T,0,1),k=q.k,ar=PRJ_ARC[k]||0,dx=q.x1-q.x0,dy=q.y1-q.y0,a=Math.atan2(dy,dx),ca=Math.cos(a),sa=Math.sin(a);
  const pos=v=>[q.x0+dx*v-cx,q.y0+dy*v-cy-Math.sin(Math.PI*v)*ar],[x,y]=pos(u),trail=(n,gap,fn)=>{for(let i=1;i<=n;i++){const v=u-i*gap;if(v<0)break;const [tx,ty]=pos(v);fn(tx,ty,1-i/n,i)}};
  ctx.save();
@@ -4161,7 +4178,15 @@ function drawProj0(f,cx,cy,t){const q=f.pr,u=clamp(1-f.t/f.T,0,1),k=q.k,ar=PRJ_A
   fxGlow(x,y,28,'150,70,255',.6);fxGlow(x,y,16,'190,120,255',.85);fxDisc(x,y,7,'#7a3dff');fxDisc(x,y,5.6,'#b86bff');fxDisc(x,y,3.6,'#e6c8ff');fxDisc(x,y,1.8,'#ffffff');
   for(let i=0;i<6;i++){const an=t*10+i*1.047,rr2=10+Math.sin(t*13+i)*2;fxCross(x+Math.cos(an)*rr2,y+Math.sin(an)*rr2*.8,i%2?'#e6c8ff':'#c77dff',1);fxPX(x+Math.cos(an+.5)*(rr2-3),y+Math.sin(an+.5)*(rr2-3)*.8,2,'#ffffff')}}
  ctx.restore()}
-function drawImpact(f,cx,cy,t){ctx.save();try{drawImpact0(f,cx,cy,t)}catch(e){f.t=0}finally{ctx.restore()}}
+function drawImpact(f,cx,cy,t){ctx.save();try{drawImpact0(f,cx,cy,t);drawImpactX(f,cx,cy)}catch(e){f.t=0}finally{ctx.restore()}}
+function drawImpactX(f,cx,cy){const q=f.im,k=q.k;if(k==='melee')return;const p=clamp(1-f.t/f.T,0,1),x=q.x-cx,y=q.y-cy,rgb=PRJ_RGB[k]||'255,255,255',e=1-(1-p)*(1-p);ctx.save();ctx.globalCompositeOperation='lighter';
+ if(p<.28){const a=1-p/.28;fxGlow(x,y,46,rgb,.95*a);fxDisc(x,y,10*(1-p/.28)+3,'rgba(255,255,255,'+a+')')}
+ ctx.globalAlpha=(1-p)*.9;ctx.strokeStyle='rgb('+rgb+')';ctx.lineWidth=3*(1-p)+1;ctx.beginPath();ctx.ellipse(x,y,6+e*44,(6+e*44)*.62,0,0,6.283);ctx.stroke();
+ ctx.globalAlpha=(1-p)*.5;ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(x,y,3+e*28,(3+e*28)*.62,0,0,6.283);ctx.stroke();
+ ctx.globalAlpha=1-p;for(let i=0;i<14;i++){const a=fxR(q.sd,i+60)*6.283,sp=26+fxR(q.sd,i+80)*52,r2=sp*e,gy=p*p*26;fxPX(x+Math.cos(a)*r2-1,y+Math.sin(a)*r2*.7+gy-1,i%3?2:3,i%2?'rgb('+rgb+')':'#ffffff')}
+ for(let i=0;i<6;i++){const a=fxR(q.sd,i+120)*6.283,l=8+e*18;ctx.globalAlpha=(1-p)*.8;ctx.strokeStyle='#fff';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x+Math.cos(a)*(4+e*10),y+Math.sin(a)*(4+e*10)*.7);ctx.lineTo(x+Math.cos(a)*(4+e*10+l*.5),y+Math.sin(a)*(4+e*10+l*.5)*.7);ctx.stroke()}
+ ctx.restore()}
+function drawMuzzle(f,cx,cy){const z=f.mz,p=clamp(1-f.t/f.T,0,1),x=z.x-cx,y=z.y-cy,rgb=PRJ_RGB[z.k]||'255,255,255',al=1-p;ctx.save();ctx.globalCompositeOperation='lighter';fxGlow(x,y,24+p*8,rgb,.9*al);ctx.translate(x,y);ctx.rotate(z.a);ctx.globalAlpha=al;ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(14+p*8,-3);ctx.lineTo(22+p*10,0);ctx.lineTo(14+p*8,3);ctx.closePath();ctx.fill();ctx.fillStyle='rgb('+rgb+')';for(const s2 of[-1,1]){ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(10,s2*(6+p*6));ctx.lineTo(4,s2*2);ctx.closePath();ctx.fill()}ctx.restore()}
 function drawImpact0(f,cx,cy,t){const q=f.im,p=clamp(1-f.t/f.T,0,1),k=q.k,x=Math.round(q.x-cx),y=Math.round(q.y-cy),al=1-p,e=1-(1-p)*(1-p),R=i=>fxR(q.sd,i);
  const burst=(n,r0,r1,cols,sz,grav,cross)=>{for(let i=0;i<n;i++){const an=R(i)*6.283,sp=r0+R(i+60)*(r1-r0),d=sp*e,px=x+Math.cos(an)*d,py=y+Math.sin(an)*d*.9+(grav||0)*p*p;ctx.globalAlpha=Math.max(0,al*1.2);const c=cols[i%cols.length];cross&&i%2===0?fxCross(px,py,c,1):fxPX(px,py,sz||2,c)}ctx.globalAlpha=1};
  ctx.save();
@@ -4189,7 +4214,7 @@ function drawImpact0(f,cx,cy,t){const q=f.im,p=clamp(1-f.t/f.T,0,1),k=q.k,x=Math
  else{fxLit();for(let i=0;i<6;i++){const an=i/6*6.283+R(0),d1=2+e*5,d2=d1+4;ctx.lineWidth=2;ctx.strokeStyle=`rgba(255,226,106,${al})`;ctx.beginPath();ctx.moveTo(x+Math.cos(an)*d1,y+Math.sin(an)*d1);ctx.lineTo(x+Math.cos(an)*d2,y+Math.sin(an)*d2);ctx.stroke()}fxCross(x,y,`rgba(255,255,255,${al})`,2)}
  ctx.restore()}
 
-function drawMonFx(cx,cy,t){monFx.forEach(f=>{if(f.pr){drawProj(f,cx,cy,t);return}if(f.im){drawImpact(f,cx,cy,t);return}if(f.dp){const X=Math.round(f.x-cx),Y=Math.round(f.y-cy),a=Math.min(1,f.t*1.2);ctx.save();ctx.globalAlpha=a;ctx.fillStyle='rgba(0,0,0,.28)';ctx.fillRect(X-5,Y+3,10,3);ctx.translate(X,Y);ctx.rotate(f.r);fxDisc(0,0,5,'#7a9a2a');fxDisc(-1,-1,3.6,'#9ab83a');for(let i=0;i<7;i++){const an=i/7*6.283;fxPX(Math.cos(an)*5.6-1,Math.sin(an)*5.6-1,2,'#5a7418')}fxPX(-2,-2,2,'#d6ec7a');ctx.restore();return}if(f.burst!=null){const a=f.burst/26*6.28,r2=(1.2-f.t)*60;ctx.fillStyle=['#ffd23f','#ff5f6d','#fff','#5fd36a'][f.burst%4];ctx.fillRect(Math.round(f.ox.x-cx+Math.cos(a)*r2),Math.round(f.ox.y-cy-45+Math.sin(a)*r2),3,3)}else{ctx.globalAlpha=Math.min(1,f.t*2);label(f.txt,Math.round(f.x-cx),Math.round(f.y-cy-(0.8-f.t)*20),'#ffd23f','rgba(0,0,0,.6)');ctx.globalAlpha=1}})}
+function drawMonFx(cx,cy,t){monFx.forEach(f=>{if(f.mz){try{drawMuzzle(f,cx,cy)}catch(e){f.t=0}return}if(f.pr){drawProj(f,cx,cy,t);return}if(f.im){drawImpact(f,cx,cy,t);return}if(f.dp){const X=Math.round(f.x-cx),Y=Math.round(f.y-cy),a=Math.min(1,f.t*1.2);ctx.save();ctx.globalAlpha=a;ctx.fillStyle='rgba(0,0,0,.28)';ctx.fillRect(X-5,Y+3,10,3);ctx.translate(X,Y);ctx.rotate(f.r);fxDisc(0,0,5,'#7a9a2a');fxDisc(-1,-1,3.6,'#9ab83a');for(let i=0;i<7;i++){const an=i/7*6.283;fxPX(Math.cos(an)*5.6-1,Math.sin(an)*5.6-1,2,'#5a7418')}fxPX(-2,-2,2,'#d6ec7a');ctx.restore();return}if(f.burst!=null){const a=f.burst/26*6.28,r2=(1.2-f.t)*60;ctx.fillStyle=['#ffd23f','#ff5f6d','#fff','#5fd36a'][f.burst%4];ctx.fillRect(Math.round(f.ox.x-cx+Math.cos(a)*r2),Math.round(f.ox.y-cy-45+Math.sin(a)*r2),3,3)}else{ctx.globalAlpha=Math.min(1,f.t*2);label(f.txt,Math.round(f.x-cx),Math.round(f.y-cy-(0.8-f.t)*20),'#ffd23f','rgba(0,0,0,.6)');ctx.globalAlpha=1}})}
 function drawMonArrow(t,cx,cy){const m=curMon();if(!m||monState(m)!=='live'||mode!=='world'||P.hidden)return;const p=monPos(m),sx=p.x-cx,sy=p.y-cy;if(sx>0&&sx<VW&&sy>0&&sy<VH)return;
  const px=P.x-cx,py=P.y-cy-14,ang=Math.atan2(p.y-P.y,p.x-P.x),r2=34+Math.sin(t*8)*3,ax=px+Math.cos(ang)*r2,ay=py+Math.sin(ang)*r2;ctx.save();ctx.translate(Math.round(ax),Math.round(ay));ctx.rotate(ang);ctx.fillStyle='#000';ctx.beginPath();ctx.moveTo(11,0);ctx.lineTo(-6,-8);ctx.lineTo(-6,8);ctx.closePath();ctx.fill();ctx.fillStyle='#ff3b3b';ctx.beginPath();ctx.moveTo(8,0);ctx.lineTo(-4,-5);ctx.lineTo(-4,5);ctx.closePath();ctx.fill();ctx.restore();
  label('QUÁI VẬT · '+Math.round(dist(P,p)/8)+'m',Math.round(px+Math.cos(ang)*56),Math.round(py+Math.sin(ang)*56+4),'#fff','rgba(150,10,20,.9)')}
@@ -5499,7 +5524,7 @@ function dvRender(){const D=DV,cv=$('#dvCv');if(!cv)return;const Z=DVZ;if(cv.wid
   if(D.ph==='dive'||D.ph==='end'){const x=p.x,y=p.y;
   if(D.kind==='s')dvDrawSub(g,x-cx,y-cy,p.dir,p.vx,p.vy,t,Math.abs(p.vx)+Math.abs(p.vy)>12,p.inv,p.net);else dvDrawDiver(g,x-cx,y-cy,p.dir,p.vx,p.vy,t,Math.abs(p.vx)+Math.abs(p.vy)>12,p.inv);
   if(p.stun>0){g.fillStyle='#ffe45c';for(let i=0;i<3;i++){g.beginPath();g.arc(x-cx+Math.cos(t*10+i*2)*11,y-cy-14+Math.sin(t*10+i*2)*3,1.4,0,7);g.fill()}}
-  if(p.net>0){g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=1.2;g.beginPath();g.arc(x-cx+p.dir*(D.kind==='s'?28:20),y-cy,(.3-p.net)*100+6,-.9,.9);g.stroke()}}
+  if(p.net>0){g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=1.2;g.beginPath();{const ox=x-cx+p.dir*(D.kind==='s'?28:20),oy=y-cy,k=(.3-p.net)/.3,rr0=(.3-p.net)*100+6,a0=p.dir>0?-.9:Math.PI-.9,a1=p.dir>0?.9:Math.PI+.9;for(let j=0;j<3;j++){g.globalAlpha=(1-k)*(1-j*.28);g.strokeStyle=j?'rgba(160,230,255,.9)':'rgba(255,255,255,.95)';g.lineWidth=2.2-j*.5;g.beginPath();g.arc(ox-p.dir*j*7,oy,Math.max(2,rr0-j*7),a0,a1);g.stroke()}g.globalAlpha=1}}}
  D.parts.forEach(q=>{const x=q.x-cx,y=q.y-cy;if(q.bub)dvBubble(g,x,y,q.s||1.6,Math.min(1,q.t*1.2));else{g.fillStyle=q.c;g.fillRect(x,y,q.s||1,q.s||1)}});
  // lớp trước (parallax 1.45) - bóng cây tối ở đáy màn hình
  if(dvFloor(cx+W/2)-cy<H+24){g.globalAlpha=.92;const x0=Math.floor((cx*1.45-30)/110),x1=Math.floor((cx*1.45+W+30)/110),mF=dvFloor(cx+W/2)/DV_M;for(let j=x0;j<=x1;j++){const r=dvH(j,51);if(r>.62)continue;const sx=j*110+dvH(j,52)*50-cx*1.45,by=H+8,h=34+r*60,col=mF<45?['#0d5a2a','#157a3a']:mF<110?['#0a4a4a','#127068']:mF<190?['#241a5a','#382a80']:['#0a1a40','#14286a'];if(sx<-40||sx>W+40)continue;if(r<.3)dKelp(g,sx,by,t,h,col[0],col[1],j);else dFan(g,sx,by,t,col[1]);}g.globalAlpha=1}
@@ -6600,17 +6625,25 @@ function stkRet(code,D){const px=(stkDoc(D).px||{})[code];if(px&&typeof px.r==='
  if(D<stkDay()){if(NET.on){const k=D+code;if(!STK.wrote[k]){STK.wrote[k]=1;try{NET.db.ref('stk/'+D+'/px/'+code).set({r:c.r,w:c.w,n:c.n,p:Math.round(stkPrice(code,D)*(1+c.r/100)*100)/100})}catch(e){}}}else{const L=stkLocal();(L.x[D]=L.x[D]||{})[code]=c.r;try{localStorage.setItem('vmlTripStkL',JSON.stringify(L))}catch(e){}}}
  return c.r}
 const STK_E0=498540;const stkArr=x=>Array.isArray(x)?x:(x&&typeof x==='object'?Object.values(x):[]);
-function stkPrice(code,D){D=D==null?stkDay():D;if(D<=STK_E0)return 1000;const pc=STK.pc=STK.pc||{};let d=D;while(d>STK_E0&&pc[code+':'+d]==null)d--;let v;if(d<=STK_E0){d=STK_E0;v=1000;pc[code+':'+d]=v}else v=pc[code+':'+d];
+function stkOpen(code,D){D=D==null?stkDay():D;if(D<=STK_E0)return 1000;const pc=STK.pc=STK.pc||{};let d=D;while(d>STK_E0&&pc[code+':'+d]==null)d--;let v;if(d<=STK_E0){d=STK_E0;v=1000;pc[code+':'+d]=v}else v=pc[code+':'+d];
  for(;d<D;d++){v*=1+stkRet(code,d)/100;pc[code+':'+(d+1)]=v}return v}
+const STK_BAND=15,stkProg=()=>clamp(1-stkLeft()/dayMs(),0,1);
+/* % lệch so với giá tham chiếu tại thời điểm p (0..1) của phiên D. Trước giờ chốt: dao động ngẫu nhiên quanh tham chiếu;
+   trong giờ chốt: kéo về giá đóng cửa r (đã biết lúc đó) nên cuối phiên = đầu phiên sau. */
+function stkLiveAt(code,D,p,r){const T=STK_BY[code],A=.9+.45*T.r,z1=stkZ(code+':i1:'+D),z2=stkZ(code+':i2:'+D),z3=stkZ(code+':i3:'+D),PI=Math.PI,H=1-STK_HALT,pp=Math.min(p,H),
+ n=A*(Math.sin(PI*pp/H)*z1*.55+Math.sin(2*PI*pp/H)*z2*.4+Math.sin(3*PI*pp/H)*z3*.3);if(p<=H)return clamp(n,-STK_BAND+.5,STK_BAND-.5);
+ const q=(p-H)/(1-H),sm=q*q*(3-2*q);return clamp(n*(1-sm)+r*sm,-STK_BAND,STK_BAND)}
+function stkLive(code){const now=Date.now();if(!STK.lc||now-STK.lc.t>900)STK.lc={t:now,m:{}};const D=stkDay(),p=stkProg(),H=1-STK_HALT;let v=STK.lc.m[code];if(v==null){v=stkLiveAt(code,D,p,p>H?stkCalc(code,D).r:0);STK.lc.m[code]=v}return v}
+function stkPrice(code,D){return D==null?stkOpen(code)*(1+stkLive(code)/100):stkOpen(code,D)}
 const stkLv=l=>(+l.a||0)*stkPrice(l.c)/(+l.e||1000);
 function stkSt(){if(!P)return{lots:[],h:[],r:0,d:0};if(!P.stk||typeof P.stk!=='object'){let o=null;if(!NET.on)try{o=JSON.parse(localStorage.getItem('vmlTripStk')||'null')}catch(e){}P.stk=o&&typeof o==='object'?o:{lots:[],h:[],r:0,d:stkDay()}}const s=P.stk;
- s.lots=stkArr(s.lots).filter(l=>l&&STK_BY[l.c]);s.h=stkArr(s.h).filter(Boolean);s.r=+s.r||0;s.d=s.d|0||stkDay();
+ s.lots=stkArr(s.lots).filter(l=>l&&STK_BY[l.c]);s.o=stkArr(s.o).filter(o=>o&&STK_BY[o.c]);s.h=stkArr(s.h).filter(Boolean);s.r=+s.r||0;s.d=s.d|0||stkDay();
  if(s.p&&typeof s.p==='object'){for(const c in s.p){const v=+s.p[c]||0,a=+(s.b&&s.b[c])||v;if(v>0&&STK_BY[c])s.lots.push({id:'m'+c,c,t:bankNow(),e:stkPrice(c,s.d)*a/v,a,fx:1})}delete s.p;delete s.b}
  stkFix(s);return s}
 function stkFix(s){const m=s.lots.filter(l=>String(l.id)[0]==='m'&&!l.fx);if(!m.length)return;let best=498547;if(s.l&&s.l.d){const T=s.l.d+1;let bd=1e18,b2=null;for(let D0=498540;D0<T;D0++){let tot=0;m.forEach(l=>{tot+=l.a*(stkPrice(l.c,T)/stkPrice(l.c,D0)-1)});const d=Math.abs(tot-s.l.v);if(d<bd){bd=d;b2=D0}}if(b2!=null&&bd<=3000)best=b2}
  m.forEach(l=>{l.e=stkPrice(l.c,best);l.fx=1});stkPersist()}
 const stkTotal=s=>s.lots.reduce((a,l)=>a+stkLv(l),0);
-function stkVal(s){return s&&s.lots?stkArr(s.lots).filter(l=>l&&STK_BY[l.c]).reduce((a,l)=>a+stkLv(l),0):0}
+function stkVal(s){return s&&s.lots?stkArr(s.lots).filter(l=>l&&STK_BY[l.c]).reduce((a,l)=>a+stkLv(l),0)+stkArr(s.o).reduce((a,o)=>a+(o&&o.sd==='B'?+o.rv||0:0),0):0}
 function stkPersist(){if(NET.on)saveState();else try{localStorage.setItem('vmlTripStk',JSON.stringify(P.stk))}catch(e){}}
 function stkHist(s,o){o.t=bankNow();s.h.push(o);if(s.h.length>80)s.h=s.h.slice(-80)}
 function stkSettle(){const s=stkSt(),today=stkDay();if(!s.lots.length){s.d=today;return 0}if(s.d>=today)return 0;const D0=s.d,n=today-D0;let tot=0;
@@ -6630,13 +6663,75 @@ function stkSellDo(lots,amt,code){const s=stkSt();let left=amt==='all'?Infinity:
  toast('Đã bán '+VND(got)+' mã '+code+(pl>=0?' · lãi ':' · lỗ ')+VND(Math.abs(pl)).replace('-',''),pl<0,3800);STK.burst&&STK.burst(pl>=0?44:14);stkRender()}
 function stkSell(code,amt){if(stkHalted()){toast('Đang chốt phiên, tạm ngưng khớp lệnh.',true);return}stkSettle();const s=stkSt();stkSellDo(s.lots.filter(l=>l.c===code),amt==='all'?'all':Math.floor(amt/1000)*1000,code)}
 function stkSellLot(id){if(stkHalted()){toast('Đang chốt phiên, tạm ngưng khớp lệnh.',true);return}stkSettle();const s=stkSt(),l=s.lots.find(x=>x.id===id);if(l)stkSellDo([l],'all',l.c)}
+
+/* ================= LỆNH CHỜ KIỂU SÀN: giới hạn · stop · cắt lỗ · OCO ================= */
+const STK_OMAX=12,STK_TY={M:'Thị trường',L:'Giới hạn',S:'Stop',O:'OCO'};
+const stkRef=c=>stkOpen(c),stkCeil=c=>stkRef(c)*(1+STK_BAND/100),stkFloor=c=>stkRef(c)*(1-STK_BAND/100);
+const stkF1=v=>(Math.round(v*10)/10).toLocaleString('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1});
+function stkOName(o){const b=o.sd==='B';return b?(o.ty==='L'?'MUA giới hạn':'MUA stop'):(o.ty==='L'?'BÁN chốt lời':o.ty==='S'?'BÁN cắt lỗ':'BÁN OCO')}
+function stkOCond(o){const b=o.sd==='B';if(b)return o.ty==='L'?'giá ≤ '+stkF1(o.px):'giá ≥ '+stkF1(o.px);if(o.ty==='L')return'giá ≥ '+stkF1(o.px);if(o.ty==='S')return'giá ≤ '+stkF1(o.px);return'giá ≥ '+stkF1(o.px)+' hoặc ≤ '+stkF1(o.px2)}
+function stkOHit(o,px){if(o.sd==='B')return o.ty==='L'?px<=o.px:px>=o.px;if(o.ty==='L')return px>=o.px;if(o.ty==='S')return px<=o.px;return px>=o.px||px<=o.px2}
+function stkOCancel(id,why){const s=stkSt(),i=s.o.findIndex(o=>o.id===id);if(i<0)return;const o=s.o[i];s.o.splice(i,1);if(o.sd==='B'&&o.rv>0){P.money+=o.rv}stkPersist();if(why)toast('Lệnh '+stkOName(o)+' '+o.c+' '+why,true,3800);else{coin();toast('Đã hủy lệnh '+stkOName(o)+' '+o.c+(o.sd==='B'?' · hoàn '+VND(o.rv):''),false,2800)}stkRender()}
+function stkOPlace(){const t=STK.tk,code=STK.sel;if(!P||!code||!STK_BY[code])return;if(stkHalted()){toast('Đang chốt phiên, tạm ngưng nhận lệnh.',true);return}stkSettle();const s=stkSt();
+ if(s.o.length>=STK_OMAX){toast('Tối đa '+STK_OMAX+' lệnh chờ cùng lúc.',true);return}
+ const px=stkPrice(code),lo=stkFloor(code),hi=stkCeil(code),o={id:'o'+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36),c:code,sd:t.sd,ty:t.ty,px:+t.px,px2:+t.px2,exp:stkDay()+(t.exp-1),t:bankNow()};
+ const bad=v=>!(v>=lo-.001&&v<=hi+.001);
+ if(!(o.px>0)||bad(o.px)){toast('Giá phải nằm trong biên sàn '+stkF1(lo)+' – trần '+stkF1(hi)+'.',true);return}
+ if(o.sd==='B'){const tot=stkTotal(s),rsv=s.o.reduce((a,x)=>a+(x.sd==='B'?+x.rv||0:0),0);let a=t.amt==='all'?1e12:+t.amt;a=Math.floor(Math.min(a,P.money,STK_MAX-tot-rsv)/1000)*1000;
+  if(a<STK_MIN){toast(P.money<STK_MIN?'Không đủ tiền (tối thiểu '+VND(STK_MIN)+').':STK_MAX-tot-rsv<STK_MIN?'Đã chạm hạn mức đầu tư '+VND(STK_MAX)+' (gồm tiền tạm giữ).':'Tối thiểu '+VND(STK_MIN)+' mỗi lệnh.',true);return}
+  if(o.ty==='S'&&o.px<=px){toast('Stop mua phải đặt TRÊN giá hiện tại ('+stkF1(px)+').',true);return}
+  o.a=a;o.rv=a;P.money-=a}
+ else{const h=stkHold(code);if(h.v<STK_MIN){toast('Bạn chưa nắm đủ '+code+' để đặt lệnh bán.',true);return}
+  if(o.ty==='S'&&o.px>=px){toast('Cắt lỗ phải đặt DƯỚI giá hiện tại ('+stkF1(px)+').',true);return}
+  if(o.ty==='O'){if(bad(o.px2)||!(o.px2>0)){toast('Giá cắt lỗ phải nằm trong biên sàn.',true);return}if(!(o.px>px&&o.px2<px)){toast('OCO: chốt lời phải TRÊN và cắt lỗ phải DƯỚI giá hiện tại ('+stkF1(px)+').',true);return}}
+  o.a=t.amt==='all'?'all':Math.min(+t.amt,h.v)}
+ s.o.push(o);stkPersist();coin();toast('✅ Đã đặt lệnh '+stkOName(o)+' '+code+' · khi '+stkOCond(o),false,3800);STK.tk.px=null;STK.tk.px2=null;stkOrdRun();stkRender()}
+function stkOrdRun(){if(!P||!P.stk||!stkArr(P.stk.o).length||stkHalted())return;const s=stkSt(),D=stkDay();let ch=0;
+ for(const o of s.o.slice()){if(D>o.exp){stkOCancel(o.id,'đã hết hạn'+(o.sd==='B'?' · hoàn '+VND(o.rv):''));ch=1;continue}
+  const px=stkPrice(o.c);if(!stkOHit(o,px))continue;ch=1;s.o.splice(s.o.indexOf(o),1);
+  if(o.sd==='B'){const tot=stkTotal(s);let a=o.rv;if(tot+a>STK_MAX+1){P.money+=a;toast('Lệnh MUA '+o.c+' bị hủy: vượt hạn mức đầu tư · hoàn '+VND(a),true,4200);continue}
+   s.lots.push({id:'l'+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36),c:o.c,t:bankNow(),e:px,a});stkHist(s,{k:'b',c:o.c,a,e:px,ty:stkOName(o)});coin();setTimeout(coin,160);
+   toast('⚡ Lệnh '+stkOName(o)+' '+o.c+' KHỚP '+VND(a)+' @ '+stkF1(px),false,4800);STK.burst&&STK.burst(40)}
+  else{const L=s.lots.filter(l=>l.c===o.c),h=L.reduce((x,l)=>x+stkLv(l),0);if(h<STK_MIN){toast('Lệnh '+stkOName(o)+' '+o.c+' bị hủy: không còn cổ phần.',true,3800);continue}
+   const prev=s.h[s.h.length-1];stkSellDo(L,o.a==='all'?'all':Math.min(o.a,h),o.c);let last=s.h[s.h.length-1];if(last===prev)last=null;else last.ty=stkOName(o);
+   toast('⚡ Lệnh '+stkOName(o)+' '+o.c+' KHỚP @ '+stkF1(px)+(last&&last.pl!=null?(last.pl>=0?' · lãi ':' · lỗ ')+VND(Math.abs(last.pl)).replace('-',''):''),last&&last.pl<0,4800)}}
+ if(ch){stkPersist();if(!$('#stkOv').hidden)stkRender()}}
+function stkTkInit(){if(!STK.tk)STK.tk={sd:'B',ty:'M',px:null,px2:null,exp:1,amt:5e6}}
+function stkTkDef(code){const t=STK.tk,px=stkPrice(code),f=(k)=>Math.round(px*(1+k/100)*10)/10;if(t.ty==='O'){if(t.px==null)t.px=f(5);if(t.px2==null)t.px2=f(-3)}else if(t.px==null)t.px=t.sd==='B'?(t.ty==='L'?f(-2):f(2)):(t.ty==='L'?f(3):f(-3))}
+function stkTkSum(code){const t=STK.tk,px=stkPrice(code),n=v=>{const x=+v;return x>0?stkF1(x)+' ('+(x>=px?'+':'')+((x/px-1)*100).toFixed(1)+'%)':'—'};
+ if(t.sd==='B'){const a=t.amt==='all'?'tối đa':VND(+t.amt);return t.ty==='L'?`Khi giá ≤ <b>${n(t.px)}</b> sẽ MUA ${a} mã ${code}. Tiền được tạm giữ ngay, hoàn nếu hủy/hết hạn.`:`Khi giá ≥ <b>${n(t.px)}</b> sẽ MUA ${a} mã ${code} (đua theo xu hướng). Tiền được tạm giữ ngay.`}
+ const a=t.amt==='all'?'toàn bộ':VND(+t.amt);return t.ty==='L'?`Khi giá ≥ <b>${n(t.px)}</b> sẽ BÁN ${a} mã ${code} (chốt lời).`:t.ty==='S'?`Khi giá ≤ <b>${n(t.px)}</b> sẽ BÁN ${a} mã ${code} (cắt lỗ).`:`Chốt lời khi giá ≥ <b>${n(t.px)}</b>, cắt lỗ khi ≤ <b>${n(t.px2)}</b>: lệnh nào chạm trước thì bán ${a} mã ${code}, lệnh còn lại tự hủy.`}
+function stkIntraSvg(code){const D=stkDay(),p=stkProg(),H=1-STK_HALT,ref=stkRef(code),r=p>H?stkCalc(code,D).r:0,N=48,pts=[];for(let i=0;i<=N;i++){const q=p*i/N;pts.push(ref*(1+stkLiveAt(code,D,q,r)/100))}
+ const s=stkSt(),ords=s.o.filter(o=>o.c===code),lv=[ref,stkCeil(code),stkFloor(code)].concat(ords.flatMap(o=>o.ty==='O'?[o.px,o.px2]:[o.px]));const lo0=Math.min(...pts,ref*.97,...ords.map(o=>Math.min(o.px,o.ty==='O'?o.px2:o.px))),hi0=Math.max(...pts,ref*1.03,...ords.map(o=>Math.max(o.px,o.ty==='O'?o.px2:o.px))),pad=(hi0-lo0)*.08,lo=lo0-pad,hi=hi0+pad;
+ const W=320,Hh=88,L=44,R=6,T=6,B=14,x=i=>L+i*(W-L-R)/N,xp=q=>L+q*(W-L-R),y=v=>T+(1-(v-lo)/(hi-lo))*(Hh-T-B),up=pts[pts.length-1]>=ref,col=up?'#3ddc84':'#ff5a5a';
+ let g=`<svg class="stkch" viewBox="0 0 ${W} ${Hh}"><rect width="${W}" height="${Hh}" fill="rgba(0,0,0,.25)"/>`;
+ const line=(v,c,lb,dash)=>{if(v<lo||v>hi)return'';const yy=y(v).toFixed(1);return`<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="${c}" stroke-width="1" ${dash?'stroke-dasharray="4 3"':''}/><text x="${L-3}" y="${(+yy+3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="${c}">${lb}</text>`};
+ g+=line(ref,'#ffd23f','TC '+Math.round(ref),1)+line(stkCeil(code),'#c77dff','Trần '+Math.round(stkCeil(code)),1)+line(stkFloor(code),'#5fd4ff','Sàn '+Math.round(stkFloor(code)),1);
+ ords.forEach(o=>{const c=o.sd==='B'?'#3ddc84':'#ff8a5a';g+=line(o.px,c,(o.sd==='B'?'M ':'B ')+stkF1(o.px));if(o.ty==='O')g+=line(o.px2,'#ff5a5a','CL '+stkF1(o.px2))});
+ g+=`<polyline fill="none" stroke="${col}" stroke-width="2" points="${pts.map((v,i)=>x(i).toFixed(1)+','+y(v).toFixed(1)).join(' ')}"/><circle cx="${x(N).toFixed(1)}" cy="${y(pts[N]).toFixed(1)}" r="3.2" fill="${col}"/>`;
+ g+=`<rect x="${xp(H).toFixed(1)}" y="${T}" width="${(xp(1)-xp(H)).toFixed(1)}" height="${Hh-T-B}" fill="rgba(255,90,90,.1)"/><text x="${L}" y="${Hh-3}" font-size="8.5" fill="#9fb6c9">mở phiên</text><text x="${W-R}" y="${Hh-3}" font-size="8.5" text-anchor="end" fill="#ff9a9a">chốt sổ ▸</text></svg>`;return g}
+
+function stkTicket(t,h,lim,halt){stkTkInit();const k=STK.tk,code=t.c;if(k.sd==='S'&&k.ty==='M'&&h.v<=0){}stkTkDef(code);const amts=[1e6,5e6,10e6,50e6,100e6],M=k.ty==='M',B=k.sd==='B';
+ const tys=B?[['M','Thị trường'],['L','Giới hạn'],['S','Stop mua']]:[['M','Thị trường'],['L','Chốt lời'],['S','Cắt lỗ'],['O','OCO']];if(!tys.some(x=>x[0]===k.ty)){k.ty='M'}
+ let h2=`<div class="stktk"><div class="stkseg sd"><button class="${B?'on b':''}" data-tk-sd="B">MUA</button><button class="${!B?'on s':''}" data-tk-sd="S">BÁN</button></div><div class="stkseg ty">${tys.map(x=>`<button class="${k.ty===x[0]?'on':''}" data-tk-ty="${x[0]}">${x[1]}</button>`).join('')}</div>`;
+ h2+=`<div class="row stkamts">${amts.map(v=>`<button class="chip${k.amt===v?' on':''}" data-sa="${v}">${kfmt(v)}</button>`).join('')}<button class="chip${k.amt==='all'?' on':''}" data-sa="all">${B?'TẤT CẢ':'HẾT'}</button></div>`;
+ if(M){h2+=`<div class="row stkgo"><button class="btn ok" data-sb="${code}" ${halt||!B?'disabled':''} style="${B?'':'display:none'}">MUA ${VND(k.amt==='all'?Math.floor(Math.max(0,lim)/1000)*1000:Math.min(k.amt,Math.max(0,lim)))}</button><button class="btn ghost" data-ss="${code}" ${h.v<=0||halt?'disabled':''} style="${B?'display:none':''}">BÁN ${k.amt==='all'?'HẾT':kfmt(Math.min(+k.amt||0,h.v))}</button><button class="btn ghost" data-sx="${code}" ${h.v<=0||halt?'disabled':''} style="${B?'display:none':''}">RÚT HẾT ${VND(h.v)}</button></div>`}
+ else{const px=stkPrice(code),adj=[['-5%',-5],['-1%',-1],['+1%',1],['+5%',5]],lab1=k.ty==='O'?'Giá chốt lời':k.ty==='S'&&!B?'Giá cắt lỗ':B&&k.ty==='S'?'Giá kích hoạt':B?'Giá mua tối đa':'Giá bán tối thiểu';
+  h2+=`<div class="stkpx2"><label>${lab1}<input type="number" step="0.1" inputmode="decimal" data-tk-px="px" value="${k.px}"></label><div class="stkadj">${adj.map(a=>`<button data-tk-adj="px" data-v="${a[1]}">${a[0]}</button>`).join('')}</div></div>`;
+  if(k.ty==='O')h2+=`<div class="stkpx2"><label>Giá cắt lỗ<input type="number" step="0.1" inputmode="decimal" data-tk-px="px2" value="${k.px2}"></label><div class="stkadj">${adj.map(a=>`<button data-tk-adj="px2" data-v="${a[1]}">${a[0]}</button>`).join('')}</div></div>`;
+  h2+=`<div class="stkexp"><span>Hiệu lực</span>${[[1,'Trong phiên'],[3,'3 phiên'],[7,'7 phiên']].map(e=>`<button class="${k.exp===e[0]?'on':''}" data-tk-exp="${e[0]}">${e[1]}</button>`).join('')}</div><p class="stksum2" id="stkTkSum">${stkTkSum(code)}</p><div class="row"><button class="btn ${B?'ok':'ghost'}" data-tk-go="1" ${halt||(!B&&h.v<=0)?'disabled':''}>ĐẶT LỆNH ${stkOName({sd:k.sd,ty:k.ty}).toUpperCase()}</button></div>`}
+ return h2+'</div>'}
+function stkOdTab(){const s=stkSt(),D=stkDay(),halt=stkHalted();let h=`<h4 class="stkh">LỆNH ĐANG CHỜ (${s.o.length}/${STK_OMAX})</h4>`;
+ if(!s.o.length)h+='<p class="stkempty">Chưa có lệnh chờ. Mở một mã ở tab THỊ TRƯỜNG, chọn Giới hạn / Stop / Cắt lỗ / OCO để đặt. Lệnh chỉ khớp khi bạn đang online trong game; ngưng khớp ở giờ chốt sổ.</p>';
+ else h+='<div class="stkods">'+s.o.map(o=>{const px=stkPrice(o.c),left=o.exp-D+1,b=o.sd==='B';return`<div class="stkod"><div class="stkbd ${STK_BY[o.c].k==='MINIGAME'?'mg':'sh'}"><span>${STK_BY[o.c].i}</span><b>${o.c}</b></div><div class="stknm"><b class="${b?'up':'dn'}">${stkOName(o)}</b><small>Khi ${stkOCond(o)} · giá nay ${stkF1(px)}</small><small>${b?'Tạm giữ '+VND(o.rv):'Bán '+(o.a==='all'?'toàn bộ':VND(o.a))} · còn ${left} phiên${halt?' · đang chốt sổ':''}</small></div><button class="btn ghost sm" data-od-x="${o.id}">HỦY</button></div>`}).join('')+'</div>';
+ const hs=s.h.filter(o=>o.ty).slice().reverse().slice(0,20);h+=`<h4 class="stkh">LỆNH ĐÃ KHỚP</h4>`+(hs.length?`<div class="stkhist">`+hs.map(o=>`<div class="stkhr"><span>${stkTm(o.t)}</span><b class="${o.k==='b'?'bu':'se'}">${esc(o.ty)}</b><span>${o.c}</span><span>${VND(o.a)}</span><span class="${(o.pl||0)>=0?'up':'dn'}">${o.k==='b'?'giá '+stkF1(o.e||0):stkSg(o.pl||0)}</span></div>`).join('')+'</div>':'<p class="stkempty">Chưa có lệnh nào khớp.</p>');return h}
 function openStk(){STK.sel=null;STK.tab='mk';stkSettle();stkRender();$('#stkOv').hidden=false;keys={};stkAnimStart()}
 const stkPct=r=>(r>=0?'▲ +':'▼ ')+Math.abs(r).toFixed(2)+'%';
 function stkSpark(code){const a=stkIdx(code,8),mn=Math.min(...a),mx=Math.max(...a),sp=Math.max(.01,mx-mn);const pts=a.map((v,i)=>(2+i*(56/(a.length-1))).toFixed(1)+','+(22-(v-mn)/sp*20).toFixed(1)).join(' ');const up=a[a.length-1]>=a[0];return`<svg class="stksp" viewBox="0 0 60 24"><polyline fill="none" stroke="${up?'#3ddc84':'#ff5a5a'}" stroke-width="2" points="${pts}"/></svg>`}
 const stkTm=t=>{const d=new Date(t);return d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})};
 const stkSg=v=>(v>=0?'+':'-')+VND(Math.abs(v)).replace('-','');
 const stkPc=(v,b)=>b>0?((v-b)/b*100>=0?'+':'')+((v-b)/b*100).toFixed(2)+'%':'0%';
-function stkChartSvg(code,N){N=N||24;const D=stkDay(),P0=[],R0=[];for(let d=D-N+1;d<=D;d++){P0.push(stkPrice(code,d));R0.push(d>STK_E0?stkRet(code,d-1):0)}
+function stkChartSvg(code,N){N=N||24;const D=stkDay(),P0=[],R0=[];for(let d=D-N+1;d<=D;d++){P0.push(d===D?stkPrice(code):stkPrice(code,d));R0.push(d>STK_E0?stkRet(code,d-1):0)}
  const W=320,H=150,L=34,Rr=8,T=10,B=44,mn=Math.min(...P0),mx=Math.max(...P0),sp=Math.max(1,mx-mn),pad=sp*.1,lo=mn-pad,hi=mx+pad,x=i=>L+i*(W-L-Rr)/(N-1),y=v=>T+(1-(v-lo)/(hi-lo))*(H-T-B),up=P0[N-1]>=P0[0],col=up?'#3ddc84':'#ff5a5a';
  const pts=P0.map((v,i)=>x(i).toFixed(1)+','+y(v).toFixed(1)).join(' '),area=`${L},${H-B} ${pts} ${x(N-1).toFixed(1)},${H-B}`;
  let g=`<svg class="stkch" viewBox="0 0 ${W} ${H}"><rect x="0" y="0" width="${W}" height="${H}" fill="rgba(0,0,0,.25)"/>`;
@@ -6648,12 +6743,13 @@ function stkChartSvg(code,N){N=N||24;const D=stkDay(),P0=[],R0=[];for(let d=D-N+
  return g}
 function stkRender(){if(!P)return;const s=stkSt(),D=stkDay(),tot=stkTotal(s),cost=s.lots.reduce((a,l)=>a+(+l.a||0),0),unr=tot-cost,left=Math.max(0,stkLeft()),halt=stkHalted();
  let gain=0,loss=0;s.lots.forEach(l=>{const d=stkLv(l)-(+l.a||0);if(d>=0)gain+=d;else loss+=-d});
- $('#stkMoney').textContent=VND(P.money);$('#stkTabs').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.tab===STK.tab));
+ $('#stkMoney').textContent=VND(P.money);$('#stkTabs').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.tab===STK.tab));{const bn=$('#stkOn');if(bn)bn.textContent=s.o.length?'('+s.o.length+')':''}
  const mq=STKT.map(t=>{const r=stkRet(t.c,D-1),up=r>=0;return`<span class="${up?'up':'dn'}">${t.c} ${stkPct(r)}</span>`}).join('');$('#stkMq').innerHTML=mq+mq;
  $('#stkBar').innerHTML=`<div><small>VỐN ĐANG ĐẦU TƯ</small><b>${VND(tot)}</b><i>/ ${kfmt(STK_MAX)}</i></div><div><small>LÃI/LỖ ĐANG GIỮ</small><b class="${unr>=0?'up':'dn'}">${stkSg(unr)}</b></div><div><small>ĐÃ CHỐT CỘNG DỒN</small><b class="${s.r>=0?'up':'dn'}">${stkSg(Math.round(s.r))}</b></div><div><small>PHIÊN #${D} ${halt?'· CHỐT SỔ':'· CÒN'}</small><b class="${halt?'dn':''}">${halt?'NGƯNG KHỚP':mmss(Math.ceil(left/1000))}</b></div>`;
  const last=s.l?`Phiên gần nhất #${s.l.d}: <b class="${s.l.v>=0?'up':'dn'}">${s.l.v>=0?'LÃI +':'LỖ '}${VND(Math.abs(s.l.v)).replace('-','')}</b>. `:'';
  $('#stkInfo').innerHTML=`${last}Vốn tối đa ${VND(STK_MAX)}. Lãi/lỗ được chốt vào cuối mỗi phiên.`;
  const keep=$('#stkList').scrollTop;
+ if(STK.tab==='od'){$('#stkList').innerHTML=stkOdTab();$('#stkList').scrollTop=keep;return}
  if(STK.tab==='pf'){const gs=STKT.map(t=>({t,h:stkHold(t.c),L:s.lots.filter(l=>l.c===t.c)})).filter(g=>g.L.length);
   let h=`<div class="stksum"><div><small>TỔNG LỜI ĐANG GIỮ</small><b class="up">+${VND(gain)}</b></div><div><small>TỔNG LỖ ĐANG GIỮ</small><b class="dn">-${VND(loss)}</b></div><div><small>RÒNG ĐANG GIỮ</small><b class="${unr>=0?'up':'dn'}">${stkSg(unr)} (${stkPc(tot,cost)})</b></div><div><small>ĐÃ CHỐT CỘNG DỒN</small><b class="${s.r>=0?'up':'dn'}">${stkSg(Math.round(s.r))}</b></div><div><small>TỔNG LÃI/LỖ TẤT CẢ</small><b class="${unr+s.r>=0?'up':'dn'}">${stkSg(Math.round(unr+s.r))}</b></div></div>`;
   h+=`<h4 class="stkh">MÃ ĐANG NẮM GIỮ (${gs.length})</h4>`;
@@ -6663,24 +6759,32 @@ function stkRender(){if(!P)return;const s=stkSt(),D=stkDay(),tot=stkTotal(s),cos
    if(open){h+=`<div class="stklots">${stkChartSvg(T.c)}<div class="stklh"><span>Ngày mua</span><span>Vốn</span><span>Giá mua</span><span>Giá trị</span><span>Lãi/lỗ</span><span></span></div>`+g.L.map(l=>{const v=stkLv(l),d=v-l.a;return`<div class="stkl"><span>${stkTm(l.t)}</span><span>${VND(l.a)}</span><span>${Math.round(l.e)}</span><span>${VND(v)}</span><span class="${d>=0?'up':'dn'}">${stkSg(d)}<br>${stkPc(v,l.a)}</span><span><button class="btn ghost sm" data-sl="${l.id}" ${halt?'disabled':''}>BÁN</button></span></div>`}).join('')+`<div class="row"><button class="btn ghost sm" data-sx="${T.c}" ${halt?'disabled':''}>BÁN HẾT ${T.c} · ${VND(H.v)}</button></div></div>`}
    h+='</div>'});
   h+=`<h4 class="stkh">LỊCH SỬ GIAO DỊCH</h4>`;const hs=s.h.slice().reverse();
-  h+=hs.length?`<div class="stkhist">`+hs.map(o=>{const k=o.k;return`<div class="stkhr"><span>${stkTm(o.t)}</span><b class="${k==='b'?'bu':k==='s'?'se':'ch'}">${k==='b'?'MUA':k==='s'?'BÁN':'CHỐT PHIÊN'}</b><span>${o.c||'Tất cả mã'}</span><span>${k==='c'?'':VND(o.a)}</span><span class="${(o.pl||0)>=0?'up':'dn'}">${k==='b'?'giá '+Math.round(o.e||0):stkSg(o.pl||0)}</span></div>`}).join('')+'</div>':'<p class="stkempty">Chưa có giao dịch.</p>';
+  h+=hs.length?`<div class="stkhist">`+hs.map(o=>{const k=o.k;return`<div class="stkhr"><span>${stkTm(o.t)}</span><b class="${k==='b'?'bu':k==='s'?'se':'ch'}" title="${esc(o.ty||'')}">${k==='b'?'MUA':k==='s'?'BÁN':'CHỐT PHIÊN'}${o.ty?' ⚡':''}</b><span>${o.c||'Tất cả mã'}</span><span>${k==='c'?'':VND(o.a)}</span><span class="${(o.pl||0)>=0?'up':'dn'}">${k==='b'?'giá '+Math.round(o.e||0):stkSg(o.pl||0)}</span></div>`}).join('')+'</div>':'<p class="stkempty">Chưa có giao dịch.</p>';
   $('#stkList').innerHTML=h;$('#stkList').scrollTop=keep;return}
- $('#stkList').innerHTML=STKT.map(t=>{const h=stkHold(t.c),w=stkW(t.c,D),r1=stkRet(t.c,D-1),pl=h.v-h.b,open=STK.sel===t.c,stars='★'.repeat(t.r)+'☆'.repeat(5-t.r),px=stkPrice(t.c);
+ $('#stkList').innerHTML=STKT.map(t=>{const h=stkHold(t.c),w=stkW(t.c,D),r1=stkRet(t.c,D-1),pl=h.v-h.b,open=STK.sel===t.c,stars='★'.repeat(t.r)+'☆'.repeat(5-t.r),px=stkPrice(t.c),lvp=stkLive(t.c);
   let det='';if(open){const lim=Math.min(P.money,STK_MAX-tot),amts=[1e6,5e6,10e6,50e6,100e6],ev=[-(6+t.r*2),5+t.r*2],hist=[1,2,3,4,5].map(k=>{const r=stkRet(t.c,D-k);return`<span class="${r>=0?'up':'dn'}">${r>=0?'+':''}${r.toFixed(1)}%</span>`}).join(' ');
    det=`<div class="stkdet"><p><b>${t.i} ${t.c}</b> — ${t.k==='MINIGAME'?'Minigame':'Cửa hàng'} <b>${esc(t.n)}</b>. Giá hiện tại <b>${Math.round(px)}</b>${h.v>0?' · giá vốn TB của bạn <b>'+Math.round(h.avg)+'</b>':''}. Rủi ro <b>${stars}</b>: có thể sập tới −${Math.abs(ev[0])}% hoặc bơm +${ev[1]}%/phiên. 5 phiên trước: ${hist}</p>
-   ${stkChartSvg(t.c)}<div class="row stkamts">${amts.map(v=>`<button class="chip${STK.amt===v?' on':''}" data-sa="${v}">${kfmt(v)}</button>`).join('')}<button class="chip${STK.amt==='all'?' on':''}" data-sa="all">TẤT CẢ</button></div>
-   <div class="row stkgo"><button class="btn ok" data-sb="${t.c}" ${halt?'disabled':''}>MUA ${VND(STK.amt==='all'?Math.floor(Math.max(0,lim)/1000)*1000:Math.min(STK.amt,Math.max(0,lim)))}</button><button class="btn ghost" data-ss="${t.c}" ${h.v<=0||halt?'disabled':''}>BÁN ${STK.amt==='all'?'HẾT':kfmt(Math.min(+STK.amt||0,h.v))}</button><button class="btn ghost" data-sx="${t.c}" ${h.v<=0||halt?'disabled':''}>RÚT HẾT ${VND(h.v)}</button></div></div>`}
-  return`<div class="stkrow${open?' open':''}${h.v>0?' own':''}" data-sc="${t.c}"><div class="stkbd ${t.k==='MINIGAME'?'mg':'sh'}"><span>${t.i}</span><b>${t.c}</b></div><div class="stknm"><b>${esc(t.n)}</b><small>${t.k} · rủi ro <em>${stars}</em></small></div>${stkSpark(t.c)}<div class="stkpx"><b class="${r1>=0?'up':'dn'}">${stkPct(r1)}</b><small>${Math.round(px)}</small></div>${h.v>0?`<div class="stkhd"><b>${VND(h.v)}</b><small class="${pl>=0?'up':'dn'}">${stkSg(pl)}</small></div>`:'<div class="stkhd"></div>'}${det}</div>`}).join('');
+   ${stkIntraSvg(t.c)}<div class="stkboard"><div><small>THAM CHIẾU</small><b class="ce0">${stkF1(stkRef(t.c))}</b></div><div><small>TRẦN</small><b class="ce1">${stkF1(stkCeil(t.c))}</b></div><div><small>SÀN</small><b class="ce2">${stkF1(stkFloor(t.c))}</b></div><div><small>GIÁ KHỚP</small><b class="${lvp>=0?'up':'dn'}">${stkF1(px)}</b></div></div>${stkTicket(t,h,lim,halt)}${stkChartSvg(t.c)}</div>`}
+  return`<div class="stkrow${open?' open':''}${h.v>0?' own':''}" data-sc="${t.c}"><div class="stkbd ${t.k==='MINIGAME'?'mg':'sh'}"><span>${t.i}</span><b>${t.c}</b></div><div class="stknm"><b>${esc(t.n)}</b><small>${t.k} · rủi ro <em>${stars}</em></small></div>${stkSpark(t.c)}<div class="stkpx"><b class="${lvp>=0?'up':'dn'}">${stkPct(lvp)}</b><small>${Math.round(px)} · TC ${Math.round(stkRef(t.c))}</small></div>${h.v>0?`<div class="stkhd"><b>${VND(h.v)}</b><small class="${pl>=0?'up':'dn'}">${stkSg(pl)}</small></div>`:'<div class="stkhd"></div>'}${det}</div>`}).join('');
  $('#stkList').scrollTop=keep}
 $('#stkTabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b){STK.tab=b.dataset.tab;$('#stkList').scrollTop=0;stkRender()}});
 $('#stkList').addEventListener('click',e=>{const bb=e.target.closest('[data-sb]'),bs=e.target.closest('[data-ss]'),bx=e.target.closest('[data-sx]'),ba=e.target.closest('[data-sa]');
- if(ba){STK.amt=ba.dataset.sa==='all'?'all':+ba.dataset.sa;stkRender();return}
- if(bb){const s=stkSt();stkBuy(bb.dataset.sb,STK.amt==='all'?1e12:STK.amt);return}
- if(bs){stkSell(bs.dataset.ss,STK.amt==='all'?'all':STK.amt);return}
+ stkTkInit();const tk=STK.tk;
+ if(ba){tk.amt=ba.dataset.sa==='all'?'all':+ba.dataset.sa;STK.amt=tk.amt;stkRender();return}
+ const q=a=>e.target.closest(a);
+ if(q('[data-tk-sd]')){tk.sd=q('[data-tk-sd]').dataset.tkSd;tk.ty='M';tk.px=tk.px2=null;stkRender();return}
+ if(q('[data-tk-ty]')){tk.ty=q('[data-tk-ty]').dataset.tkTy;tk.px=tk.px2=null;stkRender();return}
+ if(q('[data-tk-exp]')){tk.exp=+q('[data-tk-exp]').dataset.tkExp;stkRender();return}
+ if(q('[data-tk-adj]')){const b=q('[data-tk-adj]'),f=b.dataset.tkAdj,base=stkPrice(STK.sel);tk[f]=Math.round(base*(1+(+b.dataset.v)/100)*10)/10;stkRender();return}
+ if(q('[data-tk-go]')){stkOPlace();return}
+ if(q('[data-od-x]')){stkOCancel(q('[data-od-x]').dataset.odX);return}
+ if(bb){stkBuy(bb.dataset.sb,tk.amt==='all'?1e12:tk.amt);return}
+ if(bs){stkSell(bs.dataset.ss,tk.amt==='all'?'all':tk.amt);return}
  if(bx){stkSell(bx.dataset.sx,'all');return}
  const sl=e.target.closest('[data-sl]');if(sl){stkSellLot(sl.dataset.sl);return}const pf=e.target.closest('[data-pf]');if(pf){STK.pf=STK.pf===pf.dataset.pf?null:pf.dataset.pf;stkRender();return}
- const r=e.target.closest('[data-sc]');if(r){STK.sel=STK.sel===r.dataset.sc?null:r.dataset.sc;stkRender()}});
-function stkTick(dt){if(!P||!S)return;STK.chk-=dt;if(STK.chk>0)return;STK.chk=3;const s=P.stk;if(s&&stkArr(s.lots).length&&stkDay()>(s.d|0))stkSettle();if(!$('#stkOv').hidden)stkRender()}
+ const r=e.target.closest('[data-sc]');if(r){STK.sel=STK.sel===r.dataset.sc?null:r.dataset.sc;stkTkInit();STK.tk.px=STK.tk.px2=null;stkRender()}});
+$('#stkList').addEventListener('input',e=>{const i=e.target.closest('[data-tk-px]');if(!i||!STK.tk)return;STK.tk[i.dataset.tkPx]=i.value===''?'':+i.value;const el=$('#stkTkSum');if(el&&STK.sel)el.innerHTML=stkTkSum(STK.sel)});
+function stkTick(dt){if(!P||!S)return;STK.chk-=dt;if(STK.chk>0)return;STK.chk=3;const s=P.stk;if(s&&stkArr(s.lots).length&&stkDay()>(s.d|0))stkSettle();stkOrdRun();if(!$('#stkOv').hidden){const ae=document.activeElement;if(!(ae&&ae.closest&&ae.closest('#stkList')&&/INPUT|SELECT/.test(ae.tagName)))stkRender()}}
 /* --- hiệu ứng: tiền rơi, đồng xu xoay, bò & gấu --- */
 function stkAnimStart(){if(STK.raf)return;const cv=$('#stkCv'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;const W=cv.width,H=cv.height;STK.fx={coins:[],bills:[],spk:[],can:[]};const F=STK.fx;let last=performance.now();
  for(let i=0;i<24;i++)F.can.push({x:i*28+8,h:10+Math.random()*34,up:Math.random()<.5,o:Math.random()*9});
@@ -7398,7 +7502,8 @@ function drvKey(e){if(!DRV||$('#drvOv').hidden)return false;const k=e.key;if(DRV
  if(k==='Escape'){DRV.done=true;DRV.pass=false;DRV.endT=.3;return true}return true}
 window.addEventListener('keydown',e=>{if(drvKey(e))e.stopImmediatePropagation()},true);
 $('#drvCv').addEventListener('pointerdown',e=>{if(!DRV)return;if(DRV.intro){DRV.intro=false;return}const r=e.target.getBoundingClientRect();drvMove(e.clientX-r.left<r.width/2?-1:1)});
-function vehBullet(p){if(!P)return;const V=vehOn()&&vehBy(avSt().cur);fxShoot(V?(V.pj||(PRJ[V.k]?V.k:'pod')):'pod',P.x,P.y-16,p.x,p.y-30)}
+function vehBullet(p){if(!P)return;const V=vehOn()&&vehBy(avSt().cur),k=V?(V.pj||(PRJ[V.k]?V.k:'pod')):'pod',m=curMon(),q=m?monLead(m,P.x,P.y-16,k):p;
+ if(Math.abs(p.x-P.x)>8)P.dir=p.x<P.x?'left':'right';fxMuzzle(k,P.x,P.y-16,q.x,q.y-30);fxShoot(k,P.x,P.y-16,q.x,q.y-30)}
 
 document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('#autoOv [data-at],#autoOv [data-anav],#autoOv [data-abuy],#autoOv [data-arent],#autoOv [data-adrive],#autoOv [data-adock],#autoOv [data-acol],#autoOv [data-astow],#autoOv [data-alic],#autoWarn [data-aw]');if(!t)return;const d=t.dataset;
  if(d.at){AU.tab=d.at;renderAuto()}else if(d.anav){NAVG={pt:AUTO.pt,name:'VINH PHÁT',t:150};$('#autoOv').hidden=true;toast('Theo mũi tên xanh về VINH PHÁT Automobile.',false,4500)}else if(d.abuy)avBuy(d.abuy);else if(d.arent)avRent(d.arent);else if(d.adrive)avDrive(d.adrive);else if(d.adock)avDock();else if(d.acol)avCollect();else if(d.astow)avStow();else if(d.alic)drvStart(+d.alic);
@@ -8442,7 +8547,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z148';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z149';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -9470,7 +9575,7 @@ function phoAtk(dt){if(phoCd>0){phoCd-=dt;return}if(!P||!S||mode!=='world'||P.hi
  const L=petList(P),o=P.flyOn?null:(P.petOs||[])[L.indexOf(PHO_I)],ox=o?o.x:P.x,oy=o?o.y-34:P.y-(P.flyOn?PHO_LIFT+14:44);
  phoCd=PHO_ORB.c;fxImpact({k:'cast',x1:ox,y1:oy,sd:Math.random()*999});
  if(m){if(!P.mh||P.mh.id!==m.id)P.mh={id:m.id,n:0};const dm=lmDmg()*PHO_ORB.d;P.mh.n+=dm;
-  fxShoot('orb',ox,oy,mp.x,mp.y-34);monFx.push({x:mp.x+rnd(-16,16),y:mp.y-64,t:.9,txt:'-'+Math.round(dm)});
+  {const q=monLead(m,ox,oy,'orb');fxMuzzle('orb',ox,oy,q.x,q.y-34);fxShoot('orb',ox,oy,q.x,q.y-34)}monFx.push({x:mp.x+rnd(-16,16),y:mp.y-64,t:.9,txt:'-'+Math.round(dm)});
   if(monHits(m).tot>=m.hp)monCheck()}
  else{fxShoot('orb',ox,oy,pr.x,pr.y-16);pirHit(1)}}
 
