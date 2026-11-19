@@ -1289,3 +1289,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Hằng số `DV_X=2`: **giá cá nhân đôi** (1tr → 10tr; cá cơm 1tr, cá ngừ 2,2tr…), **kho báu/vật phẩm và ảnh quái vật nhân đôi** (hệ số `DV_VS` .325 → .65). Cả thu nhập trung bình mỗi lượt lặn ≈ ×2 vì tốc độ xuất hiện cá, sức chứa túi và oxy giữ nguyên.
 - Bảng sinh vật/kho báu trong menu tự hiện giá mới. Thông báo "HIẾM!" nâng ngưỡng theo hệ số (≥8tr).
 - Chỉ đổi lặn biển; câu cá thuyền, minigame câu cá và các nguồn thu khác không đổi. Không cần SQL.
+
+## z154 — Chứng khoán: pha tăng 24h
+- `STK_BULL` (index.html): 24 phiên liên tiếp (mỗi phiên = 1 giờ) từ 16:00 UTC 19/11/2026 (≈23:00 giờ VN). Mỗi phiên lệch dương ≈ +0,7–1,2% (hệ số riêng từng mã), nhiễu ngẫu nhiên giảm còn 40%, sự kiện đột biến giảm một nửa, mỗi phiên bị chặn ±5%. Vẫn có phiên đỏ và mã đỏ.
+- Mô phỏng 17 mã: trung bình ≈ +23%, đa số +7..+35%, vài mã nhỉnh hơn 40% hoặc gần đi ngang. Chỉ ảnh hưởng phiên tương lai. Đổi mức tăng: sửa `g`; tắt: `n:0`.
+- Đã sửa trùng tên hàm: dùng `stkUpRun` (đã có sẵn `stkBull` vẽ linh vật bò).

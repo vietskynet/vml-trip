@@ -6622,10 +6622,13 @@ function stkW(code,D){const a=(stkDoc(D).act||{})[code]||{};let w=0,n=0;for(cons
 function stkZ(key){const R=mulberry(stkHash(key));let q=0;for(let i=0;i<6;i++)q+=R();return(q-3)/.7071}
 function stkMacro(D,sec){let m=0,k=1;for(let i=0;i<6;i++){m+=k*(stkZ('M:'+(D-i))*.9+(sec?stkZ(sec+':'+(D-i))*.8:0));k*=.7}return m*.62}
 function stkHeat(D){let tot=0,avg=0;for(let d=D-7;d<=D;d++){let w=0;STKT.forEach(t=>{w+=stkW(t.c,d).w});if(d===D)tot=w;else avg+=w/7}return .8*Math.tanh((tot-avg)/Math.max(6,avg))}
+/* PHA TĂNG 24h: 24 phiên liên tiếp (mỗi phiên = CFG.DAY) bắt đầu 16:00 UTC 19/11/2026 — lệch dương ~1%/phiên (mỗi mã hệ số riêng .7–1.3), vẫn giữ nhiễu ngẫu nhiên nên có phiên đỏ; cộng dồn ≈ +17..+36% */
+const STK_BULL={t0:Date.UTC(2026,10,19,16,0,0),n:24,g:.95};
+function stkUpRun(code,D){const d0=Math.ceil(STK_BULL.t0/dayMs());if(D<d0||D>=d0+STK_BULL.n)return 0;return STK_BULL.g*(.7+.6*(stkHash(code+':bull')%1000)/1000)}
 function stkCalc(code,D){const T=STK_BY[code],{w,n}=stkW(code,D),ws=STKT.map(t=>stkW(t.c,D).w).sort((a,b)=>a-b),med=ws[Math.floor(ws.length/2)];
  const R=mulberry(stkHash(code+':'+D)),gs=()=>{let q=0;for(let i=0;i<6;i++)q+=R();return(q-3)/.7071};
- const crowd=3*Math.tanh((w-med)/Math.max(3,med)),macro=stkMacro(D,T.k==='MINIGAME'?'G':'S'),heat=stkHeat(D),sig=1.2+.9*T.r;let r=-.4+crowd+macro+heat+gs()*sig,ev=0;const u=R(),m=.6+.4*R();
- if(u<.02*T.r)ev=-(6+T.r*2)*m;else if(u>1-.02*T.r)ev=(5+T.r*2)*m;r=clamp(r+ev,-15,15);return{r:Math.round(r*100)/100,w,n,ev:ev<0?-1:ev>0?1:0}}
+ const crowd=3*Math.tanh((w-med)/Math.max(3,med)),macro=stkMacro(D,T.k==='MINIGAME'?'G':'S'),heat=stkHeat(D),sig=1.2+.9*T.r;const up=stkUpRun(code,D);let r=up?up+.4*(crowd+macro+heat+gs()*sig):-.4+crowd+macro+heat+gs()*sig,ev=0;const u=R(),m=(.6+.4*R())*(up?.5:1);
+ if(u<.02*T.r)ev=-(6+T.r*2)*m;else if(u>1-.02*T.r)ev=(5+T.r*2)*m;r=up?clamp(r+ev,-5,5):clamp(r+ev,-15,15);return{r:Math.round(r*100)/100,w,n,ev:ev<0?-1:ev>0?1:0}}
 function stkRet(code,D){const px=(stkDoc(D).px||{})[code];if(px&&typeof px.r==='number')return clamp(px.r,-15,15);const c=stkCalc(code,D);
  if(D<stkDay()){if(NET.on){const k=D+code;if(!STK.wrote[k]){STK.wrote[k]=1;try{NET.db.ref('stk/'+D+'/px/'+code).set({r:c.r,w:c.w,n:c.n,p:Math.round(stkPrice(code,D)*(1+c.r/100)*100)/100})}catch(e){}}}else{const L=stkLocal();(L.x[D]=L.x[D]||{})[code]=c.r;try{localStorage.setItem('vmlTripStkL',JSON.stringify(L))}catch(e){}}}
  return c.r}
@@ -8552,7 +8555,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z153';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z154';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
