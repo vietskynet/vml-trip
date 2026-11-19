@@ -1279,3 +1279,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - HUD túi giờ hiện thêm dòng **"trả ≤ X"** (xanh) hoặc **"TRẦN X"** (đỏ khi giá trị túi đã vượt trần).
 - Bấm E lên bờ khi túi vượt trần: hiện cảnh báo (giá trị túi, hạn mức hiện tại, phần sẽ mất, số giây cần lặn thêm), **bấm E lần nữa trong 8 giây mới lên bờ**.
 - Không đổi công thức trần; không cần SQL.
+
+## z152 — Lặn biển: bỏ trần thu mua
+- Xoá hẳn trần thu nhập theo thời gian lặn (`min(120tr, t×133.333₫/giây)`): lên bờ nhận **đủ 100%** giá trị túi (cá, kho báu, ảnh quái vật).
+- Bỏ dòng "trả ≤/TRẦN" trên khung túi và cảnh báo khi bấm E lên bờ (z151). Giới hạn còn lại là sức chứa túi và oxy.
+- Không cần SQL.
