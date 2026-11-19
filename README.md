@@ -1297,3 +1297,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z155 — Sửa: bảng đặt lệnh chứng khoán tự thu lại
 - Bấm vào ô nhập giá / chữ / khoảng trống trong khung đặt lệnh (`.stkdet`) bị lan lên dòng cổ phiếu (`data-sc`) nên khung tự đóng. Giờ bấm trong `.stkdet` thì bỏ qua; chỉ bấm vào dòng tiêu đề mới đóng/mở.
+
+## z156 — Danh mục: nút "ĐẶT LỆNH BÁN"
+- Tab DANH MỤC & LỊCH SỬ, mở một mã đang giữ → thêm nút `data-go-od` chuyển sang tab THỊ TRƯỜNG, mở sẵn mã đó với phiếu BÁN · Chốt lời · hiệu lực 3 phiên · khối lượng HẾT (đổi sang cắt lỗ / OCO bằng các nút loại lệnh).
