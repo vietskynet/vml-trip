@@ -1300,3 +1300,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z156 — Danh mục: nút "ĐẶT LỆNH BÁN"
 - Tab DANH MỤC & LỊCH SỬ, mở một mã đang giữ → thêm nút `data-go-od` chuyển sang tab THỊ TRƯỜNG, mở sẵn mã đó với phiếu BÁN · Chốt lời · hiệu lực 3 phiên · khối lượng HẾT (đổi sang cắt lỗ / OCO bằng các nút loại lệnh).
+
+## z157 — Chứng khoán: báo rõ giờ chốt sổ
+- Khi phiên còn <10% (6 phút cuối) các nút đặt lệnh bị khóa; thêm dòng đỏ trong phiếu lệnh (`.stkhalt`) báo "ĐANG CHỐT SỔ" kèm đồng hồ đếm ngược đến phiên mới.
