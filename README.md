@@ -1307,3 +1307,8 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z158 — Admin: ẩn nhân vật khỏi bảng xếp hạng
 - Admin → tab THỬ NGHIỆM → thẻ "ẨN KHỎI BẢNG XẾP HẠNG": chọn nhân vật, bấm ẨN (ghi `config/rankHide/<uid>=1`), có nút BỎ ẨN. Không cần SQL.
 - `rankList()` bỏ các uid trong `rankHide` khỏi bảng của người khác; chính người đó vẫn tự thấy mình. Chỉ ẩn bảng xếp hạng, không đổi tiền hay dữ liệu.
+
+## z159 — Chống mất tiến trình khi máy chủ lỗi
+- `supabase-shim.js` `write()`: ghi thất bại thì tự thử lại tới 9 lần (1s→8s), bản ghi cũ không ghi đè bản mới (số phiên bản theo đường dẫn); chỉ bỏ cuộc khi bị từ chối quyền.
+- `window.VMLNet.pending()/failed()`: game hiện cảnh báo đỏ mỗi 20s khi chưa lưu được và hỏi lại khi F5/đóng trang nếu còn dữ liệu chưa gửi (`beforeunload`).
+- Thưởng giết quái lưu ngay (`NET.saveT=0`) thay vì đợi chu kỳ 10s.

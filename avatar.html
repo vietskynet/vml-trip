@@ -4101,7 +4101,7 @@ function hitMonster(){const m=curMon();if(!m||monState(m)!=='live'||monHitCd>0)r
  if(vehGunCur())vehBullet(p);else fxImpact({k:'melee',x1:p.x+rnd(-12,12),y1:p.y-26+rnd(-6,6),sd:Math.random()*999});monHitCd=vehGunC();if(!P.mh||P.mh.id!==m.id)P.mh={id:m.id,n:0};const mx=vehMonX(m);P.mh.n+=lmDmg()*vehGunD()*mx;beep(180+Math.random()*80,.06,'square',.05,-60);monFx.push({x:p.x+rnd(-16,16),y:p.y-60,t:.8,txt:mx>1?'x'+mx+'!':'-1'});monShake=.12;if(monHits(m).tot>=m.hp)monCheck()}
 function monCheck(){const m=curMon();if(!m||!P)return;const st=monState(m);
  if(P.monSeen!==m.id&&st==='live'){P.monSeen=m.id;const mm=MON_BY[m.kind];toast('⚠ QUÁI VẬT XUẤT HIỆN: '+mm.n+'! Cùng nhau đánh bại để chia '+VND(m.reward)+'.',false,7000);sysLog('Quái vật '+mm.n+' xuất hiện! Mũi tên đỏ chỉ đường.');[220,180,140].forEach((h,i)=>setTimeout(()=>beep(h,.2,'sawtooth',.06),i*180))}
- if(st==='dead'&&P.monDone!==m.id){P.monDone=m.id;const h=monHits(m),mm=MON_BY[m.kind];let share=0;if(h.mine>0&&P.monPaid!==m.id){share=Math.round(m.reward*h.mine/Math.max(h.tot,1)/1000)*1000;P.monPaid=m.id;P.money+=share;coin();setTimeout(coin,200)}
+ if(st==='dead'&&P.monDone!==m.id){P.monDone=m.id;NET.saveT=0;const h=monHits(m),mm=MON_BY[m.kind];let share=0;if(h.mine>0&&P.monPaid!==m.id){share=Math.round(m.reward*h.mine/Math.max(h.tot,1)/1000)*1000;P.monPaid=m.id;P.money+=share;coin();setTimeout(coin,200)}
   toast(mm.n+' đã bị hạ gục!'+(share?' Bạn đánh '+h.mine+' đòn, nhận '+VND(share)+'.':' Lần sau nhớ tham gia nhé!'),false,7000);sysLog(mm.n+' bị hạ gục'+(share?', bạn nhận '+VND(share):''));alog('mini','mon',{w:share||0,x:mm.n});for(let k=0;k<26;k++)monFx.push({x:0,y:0,t:1.2,burst:k,ox:monPos(m)});if(NET.on)saveState()}
  if(st==='gone'&&P.monDone!==m.id&&P.monSeen===m.id){P.monDone=m.id;toast(MON_BY[m.kind].n+' đã bỏ chạy khỏi resort!',false,5000)}}
 function updMonster(dt){if(monFlash>0)monFlash-=dt;if(monKick>0)monKick-=dt;if(monHitCd>0)monHitCd-=dt;if(monBumpCd>0)monBumpCd-=dt;if(monShake>0)monShake-=dt;monFx.forEach(f=>{f.t-=dt;if(f.pr&&f.t<=0&&!f.hit){f.hit=1;fxImpact(f.pr)}});monFx=monFx.filter(f=>f.t>0);
@@ -8557,7 +8557,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z158';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z159';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -8852,6 +8852,7 @@ function applyGifts(){const all=NET.day&&NET.day.gifts,g=all&&all[NET.uid];if(!N
  for(const id in g){if(P.giftIds.includes(id))continue;P.giftIds.push(id);const a=+(g[id]&&g[id].amount)||0;if(a>0){P.money+=a;got+=a}}
  if(got){coin();setTimeout(coin,200);toast('Admin vừa tặng riêng bạn '+VND(got)+'!',false,6000);sysLog('Bạn nhận quà '+VND(got)+' từ admin');alog('soc','admin',{w:got})}saveState()}
 function netTick(dt){if(!NET.started)return;mlogT-=dt;if(mlogT<=0){mlogT=8;mlogFlush()}NET.posT-=dt;if(NET.posT<=0){NET.posT=.25;sendPos()}NET.saveT-=dt;if(NET.saveT<=0){NET.saveT=10;actTick();saveState()}
+ NET.wfT=(NET.wfT||0)-dt;if(NET.wfT<=0&&window.VMLNet&&VMLNet.failed()){NET.wfT=20;toast('⚠️ Máy chủ đang lỗi, tiến trình CHƯA được lưu. Đừng F5 hay đóng trang, game sẽ tự lưu lại khi máy chủ ổn.',true,6000)}
  NET.tbT=(NET.tbT||0)-dt;if(NET.tbT<=0){NET.tbT=1;tbSync();try{limSync();limAnnounce()}catch(e){console.warn(e)}}
  if(NET.invite){NET.invite.t-=dt;$('#inviteCd').textContent=Math.ceil(NET.invite.t)+'s';if(NET.invite.t<=0)inviteAnswer(false)}}
 async function resetPlayer(){try{if(NET.on){if(SB()&&NET.acct){try{await SB().rpc('acc_delete')}catch(e){}}clrTok();const jobs=[];if(S)['villa','room','tent'].forEach(t=>LIST(t).forEach((r,i)=>r.forEach((o,k)=>{if(o===P)jobs.push(NET.db.ref('beds/'+t+'/'+i+'/'+k).remove())})));
@@ -9277,6 +9278,7 @@ function mlogAdd(d){const now=Date.now()+((NET.on&&NET.offset)||0);let r=perform
  const L=MLOG[MLOG.length-1];if(L&&(L.d>0)===(d>0)&&L.r===r&&now-L.t<3000){L.d+=d;L.b=Math.round(P.money);L.t=now}else MLOG.push({t:now,d:Math.round(d),b:Math.round(P.money),r});if(MLOG.length>300)MLOG.splice(0,MLOG.length-300)}
 async function mlogFlush(){if(mlogBusy||!MLOG.length||!NET.on||!NET.started||!SB())return;mlogBusy=true;const batch=MLOG.slice(0,60);try{const {error}=await SB().rpc('rt_mlog',{entries:batch});if(!error)MLOG.splice(0,batch.length);else if(/rt_mlog|schema|function/i.test(error.message||''))MLOG.length=0}catch(e){}mlogBusy=false}
 addEventListener('pagehide',()=>{mlogFlush();try{saveState()}catch(e){}});
+addEventListener('beforeunload',e=>{const N=window.VMLNet;if(N&&(N.pending()>0||N.failed())){e.preventDefault();e.returnValue='Tiến trình chưa được lưu lên máy chủ.';return e.returnValue}});
 let slHid=0;
 /* đang ngủ mà tắt/chuyển tab: game tạm dừng nên cộng bù năng lượng theo thời gian thực khi quay lại (và lưu mốc để cộng bù cả khi thoát app) */
 document.addEventListener('visibilitychange',()=>{if(document.hidden){slHid=P&&P.slr>0&&mode==='room'&&ROOM&&ROOM.sleep?Date.now():0;try{mlogFlush();saveState()}catch(e){}}
