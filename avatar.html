@@ -8557,7 +8557,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z159';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z160';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -8796,7 +8796,7 @@ function actRender(){if(!P)return;const st=P.stat||{},T=ACTUI.tab;document.query
 function actOpen(){if(!S||modalOpen())return;ACTUI.tab='sum';actRender();$('#actOv').hidden=false;keys={}}
 function track(k){if(!P||!k)return;try{stkTrack(k)}catch(e){}P.buys=P.buys||{};k=String(k).replace(/[.\/#$\[\]]/g,'_');P.buys[k]=(P.buys[k]||0)+1}
 function saveState(){if(!NET.on||!NET.started||!P||NET.moved||window.TABX)return;const st={skc:P.skyC|0,nd:P.need?{ty:P.need.type,cd:Math.round(P.need.cd*10)/10,at:serverNow()}:null,ac:P.accident>0?{ty:P.accType||'pee',f:(SEC&&SEC.fined)||P.acFined?1:0}:null,av:avPack(),stk:P.stk||null,monPaid:P.monPaid||0,monDone:P.monDone||0,monSeen:P.monSeen||0,dayId:'loop',pets:petList(P),money:Math.round(P.money),bf:bufNorm(P.buf),xg:P.xg||null,energy:Math.round(P.energy*10)/10,sl:P.slr>0&&P.energy<100?{t:serverNow(),r:Math.round(P.slr*1000)/1000}:null,cd:P.cd,peeNext:Math.round(P.peeNext),pooNext:Math.round(P.pooNext),acc:P.accCount,ate:P.ateMeal,x:Math.round(P.x),y:Math.round(P.y),fainted:!!P.fainted,bonusId:P.bonusId||0,giftIds:(P.giftIds||[]).slice(-50),giftAt:P.giftAt||0,lg:(P.lg||[]).slice(-40),hp:P.hp==null?null:hpPack(),fit:fitPack(),cr:P.cr||null,an:P.an||null,bu:P.buys||{},sx:P.stat||{},ax:(P.acts||[]).slice(-80),ts:TS()};
- NET.db.ref('players/'+NET.uid+'/state').set(st);if(NET.me)NET.me.state=st}
+ NET.lastM=Math.round(P.money);NET.db.ref('players/'+NET.uid+'/state').set(st);if(NET.me)NET.me.state=st}
 function applyBeds(){if(!S||!NET.on)return;const B=NET.beds||{};[P,...Object.values(NET.chars)].forEach(c=>{c.lodge=null});
  ['villa','room','tent'].forEach(t=>{LIST(t).forEach((r,i)=>{const bi=B[t]&&B[t][i];for(let k=0;k<CFG.BEDS;k++){const u=bi&&bi[k];const c=u?charFor(u):null;r[k]=c;if(c){const pref=c===P&&P.lodgePref&&P.lodgePref.type===t&&P.lodgePref.i===i;if(!c.lodge||pref||(c!==P&&LRANK[t]>LRANK[c.lodge.type]))c.lodge={type:t,i}}}})});
  if(ROOM&&ROOM.type!=='castle'&&ROOM.type!=='vh'&&!LIST(ROOM.type)[ROOM.i].includes(P)){exitRoom();toast('Bạn không còn ở chỗ này nữa.')}else if(ROOM&&ROOM.type!=='castle'&&ROOM.type!=='vh')P.lodge={type:ROOM.type,i:ROOM.i}}
@@ -8851,7 +8851,8 @@ function applyGifts(){const all=NET.day&&NET.day.gifts,g=all&&all[NET.uid];if(!N
  if(g)
  for(const id in g){if(P.giftIds.includes(id))continue;P.giftIds.push(id);const a=+(g[id]&&g[id].amount)||0;if(a>0){P.money+=a;got+=a}}
  if(got){coin();setTimeout(coin,200);toast('Admin vừa tặng riêng bạn '+VND(got)+'!',false,6000);sysLog('Bạn nhận quà '+VND(got)+' từ admin');alog('soc','admin',{w:got})}saveState()}
-function netTick(dt){if(!NET.started)return;mlogT-=dt;if(mlogT<=0){mlogT=8;mlogFlush()}NET.posT-=dt;if(NET.posT<=0){NET.posT=.25;sendPos()}NET.saveT-=dt;if(NET.saveT<=0){NET.saveT=10;actTick();saveState()}
+function netTick(dt){if(!NET.started)return;mlogT-=dt;if(mlogT<=0){mlogT=8;mlogFlush()}NET.posT-=dt;if(NET.posT<=0){NET.posT=.25;sendPos()}NET.saveT-=dt;NET.mT=(NET.mT||0)-dt;const mnow=Math.round(P.money);if(NET.lastM==null)NET.lastM=mnow;if(mnow!==NET.lastM&&NET.mT<=0){NET.mT=1;NET.saveT=0}
+ if(NET.saveT<=0){NET.saveT=4;actTick();saveState()}
  NET.wfT=(NET.wfT||0)-dt;if(NET.wfT<=0&&window.VMLNet&&VMLNet.failed()){NET.wfT=20;toast('⚠️ Máy chủ đang lỗi, tiến trình CHƯA được lưu. Đừng F5 hay đóng trang, game sẽ tự lưu lại khi máy chủ ổn.',true,6000)}
  NET.tbT=(NET.tbT||0)-dt;if(NET.tbT<=0){NET.tbT=1;tbSync();try{limSync();limAnnounce()}catch(e){console.warn(e)}}
  if(NET.invite){NET.invite.t-=dt;$('#inviteCd').textContent=Math.ceil(NET.invite.t)+'s';if(NET.invite.t<=0)inviteAnswer(false)}}

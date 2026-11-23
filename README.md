@@ -1312,3 +1312,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - `supabase-shim.js` `write()`: ghi thất bại thì tự thử lại tới 9 lần (1s→8s), bản ghi cũ không ghi đè bản mới (số phiên bản theo đường dẫn); chỉ bỏ cuộc khi bị từ chối quyền.
 - `window.VMLNet.pending()/failed()`: game hiện cảnh báo đỏ mỗi 20s khi chưa lưu được và hỏi lại khi F5/đóng trang nếu còn dữ liệu chưa gửi (`beforeunload`).
 - Thưởng giết quái lưu ngay (`NET.saveT=0`) thay vì đợi chu kỳ 10s.
+
+## z160 — Lưu nhanh hơn
+- Chu kỳ lưu tự động 10s → **4s**.
+- Tiền thay đổi (kiếm hoặc tiêu) thì lưu ngay trong tối đa ~1s (giới hạn 1 lần/giây để không dồn tải khi tiền nhảy liên tục).
