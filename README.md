@@ -1319,3 +1319,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z161 — Ẩn BXH: ẩn luôn trong bảng của chính người đó
 - `rankList()`: nhân vật nằm trong `config/rankHide` cũng không tự xuất hiện trong bảng của mình; `poorF()` trả 0,5 khi không có trong bảng.
+
+## z162 — Cổ phiếu 10 ngày tăng + chống lệch ví/biệt thự khi máy chủ lỗi
+- `STK_UP10`: 10 phiên liên tiếp từ 17:00 UTC 23/11/2026 (00:00 giờ VN 24/11), mỗi mã tăng 9–11% mỗi phiên, không có phiên đỏ (cộng dồn ≈ ×2,6). Đổi mức: `g`; tắt: `n:0`. Phiên đang chạy không đổi.
+- Báo lỗi: nếu việc ghi bị máy chủ từ chối hoặc lỗi mạng, game hiện cả nội dung lỗi và gửi `errlog` (admin xem ở tab Lỗi). `VMLNet.err()`.
+- Mua đất/xây/nâng tầng Villa: **trừ tiền → lưu ví (đợi xác nhận) → rồi mới ghi lô đất**. Không lưu được ví thì hủy giao dịch, tránh tình trạng có nhà mà ví không bị trừ.
+- Lưu theo thay đổi tiền: giới hạn 1 lần / 2,5s (giảm tải).

@@ -45,18 +45,18 @@ window.VMLSupabaseShim=function(cfg){
   setInterval(()=>{if(!uid||posPending==null)return;const s=JSON.stringify(posPending),now=Date.now();if(s!==posLast||now-posSentAt>8000){posLast=s;posSentAt=now;sb.rpc('pos_set',{v:posPending}).then(r=>{if(r.error)console.warn(r.error.message)})}},1000);
   addEventListener('pagehide',()=>{if(uid)sb.rpc('pos_leave')});
   // Ghi dữ liệu: nếu máy chủ lỗi thì thử lại (1s, 2s, 4s, 8s…). Mỗi đường dẫn có số phiên bản: bản cũ không bao giờ ghi đè bản mới hơn.
-  let pend=0,wfail=false;const ver={},wsleep=ms=>new Promise(r=>setTimeout(r,ms));
+  let pend=0,wfail=false,lastE='';const ver={},wsleep=ms=>new Promise(r=>setTimeout(r,ms));
   async function write(ops){ops=ops.filter(o=>!/^pos(\/|$)/.test(o.p));if(!ops.length)return;ops.forEach(o=>{o.__v=ver[o.p]=(ver[o.p]||0)+1});pend++;
     try{for(let a=0;a<9;a++){const cur=ops.filter(o=>ver[o.p]===o.__v);if(!cur.length)return;
       try{const r=await sb.rpc('rt_write',{ops:cur.map(o=>({p:o.p,v:o.v}))});
         if(!r.error){wfail=false;kick(120);return}
-        const m=String(r.error.message||'');console.warn('Ghi dữ liệu lỗi:',m);
-        if(/Không có quyền/.test(m)){since=0;kick(0);return}}
-      catch(e){console.warn('Ghi dữ liệu lỗi mạng:',e&&e.message)}
+        const m=String(r.error.message||'');lastE=m;console.warn('Ghi dữ liệu lỗi:',m);
+        if(/Không có quyền/.test(m)){wfail=true;since=0;kick(0);return}}
+      catch(e){lastE=String(e&&e.message||e);console.warn('Ghi dữ liệu lỗi mạng:',lastE)}
       wfail=true;await wsleep(Math.min(8000,1000*2**a))}
       since=0;kick(0)}
     finally{pend--}}
-  window.VMLNet={pending:()=>pend,failed:()=>wfail};
+  window.VMLNet={pending:()=>pend,failed:()=>wfail,err:()=>lastE};
   function ref(path){const p=parts(path).join('/');
     const r={key:parts(p).pop()||null,path:p,
       child:c=>ref(p+'/'+c),
