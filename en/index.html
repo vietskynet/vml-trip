@@ -7670,7 +7670,7 @@ const JOB_CAP={poop:2,roach:2,elder:1,wallet:1},JOB_W=[['poop',3],['roach',3],['
 let POOPI=null,jobFx=[],jobTipShown=false;try{jobTipShown=!!localStorage.getItem('vmlJobTip')}catch(e){}
 const kfmt=v=>v>=1e6?(Math.round(v/1e5)/10+'TR').replace('.0',''):Math.round(v/1000)+'K';
 function jobsS(){if(!S.jobs)S.jobs={list:[],next:S.time+6,wNext:S.time+rnd(60,150),id:1,work:null};return S.jobs}
-function poorF(){try{const r=rankList();if(r.length<2)return .5;return clamp(r.indexOf(P)/(r.length-1),0,1)}catch(e){return .5}}
+function poorF(){try{const r=rankList();if(r.length<2||r.indexOf(P)<0)return .5;return clamp(r.indexOf(P)/(r.length-1),0,1)}catch(e){return .5}}
 function jobSpot(k){const J=jobsS(),near=(k==='roach'||k==='elder')?Math.random()<.3+.6*poorF():true;let fp=0;for(let n=0;n<90&&fp<6;n++){const p=wanderPt(),d=dist(P,p);if(d<140||d>(near?(n<55?720:1500):6000)||inPool(p.x,p.y))continue;if(J.list.some(j=>dist(j,p)<70))continue;fp++;if(!findPath(P.x,P.y,p.x,p.y))continue;return p}return null}
 function elderDest(o){const c=[];VILLA_X.forEach((_,i)=>{const d=villaDoor(i);c.push({x:d.x,y:d.y,n:'Villa V'+(i+1)})});TENTS.forEach((_,i)=>{const d=tentDoor(i);c.push({x:d.x,y:d.y,n:'Bungalow B'+String(i+1).padStart(2,'0')})});c.push({x:HOTEL_DOOR.x,y:HOTEL_DOOR.y,n:'Khách sạn'});
  const ok=c.filter(d=>{const k=dist(o,d);return k>280&&k<1100});return pick(ok.length?ok:c)}
@@ -8560,7 +8560,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z160';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z161';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -8835,8 +8835,8 @@ function onInvite(s){const v=s.val();s.ref.remove();if(!v||!(v.tb||v.lm||v.vh||v
  NET.invite={d:v,t:20};$('#inviteText').innerHTML='<b>'+esc(cleanName(v.hn))+'</b> mời bạn vào Team Building (Level '+(v.l||1)+'). Cần tối thiểu 3 người; cả đội thắng thì mỗi người nhận thưởng cao hơn chơi một mình.';$('#inviteOv').hidden=false;keys={};bell()}
 function inviteAnswer(yes){const iv=NET.invite;if(!iv)return;NET.invite=null;$('#inviteOv').hidden=true;if(!yes||mode!=='world'||!running)return;if(iv.d.vh){vhVisit(iv.d.n,iv.d.h);return}if(iv.d.lm){openLm(iv.d.n);return}tbJoin(iv.d.h)}
 $('#inviteYes').onclick=()=>inviteAnswer(true);$('#inviteNo').onclick=()=>inviteAnswer(false);
-function rankList(){if(!NET.on)return[...S.chars].sort((a,b2)=>b2.money-a.money);const did=NET.day?NET.day.id:0,arr=[P];
- const hid=(NET.config&&NET.config.rankHide)||{};Object.entries(NET.players).forEach(([u,p])=>{if(u===NET.uid||!p.state||hid[u])return;const c=charFor(u);c.money=p.state.money||0;arr.push(c)});return arr.sort((a,b2)=>b2.money-a.money)}
+function rankList(){if(!NET.on)return[...S.chars].sort((a,b2)=>b2.money-a.money);const did=NET.day?NET.day.id:0,hid=(NET.config&&NET.config.rankHide)||{},arr=hid[NET.uid]?[]:[P];
+ Object.entries(NET.players).forEach(([u,p])=>{if(u===NET.uid||!p.state||hid[u])return;const c=charFor(u);c.money=p.state.money||0;arr.push(c)});return arr.sort((a,b2)=>b2.money-a.money)}
 function netStart(){NET.started=true;const nm=cleanName($('#nameIn').value.trim()||'Bạn');const look={};CROWS.forEach(r=>{look[r.k]=CR[r.k]});const up={name:nm,look};if(!NET.me||!NET.me.created)up.created=TS();
  NET.db.ref('players/'+NET.uid).update(up);NET.me=Object.assign(NET.me||{},up);NET.db.ref('pos/'+NET.uid).onDisconnect().remove();NET.lastPos=''}
 function netAfterNewGame(){P.uid=NET.uid;Object.values(NET.chars).forEach(c=>{if(c.online&&!S.chars.includes(c))S.chars.push(c)});

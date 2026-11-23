@@ -1306,7 +1306,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z158 — Admin: ẩn nhân vật khỏi bảng xếp hạng
 - Admin → tab THỬ NGHIỆM → thẻ "ẨN KHỎI BẢNG XẾP HẠNG": chọn nhân vật, bấm ẨN (ghi `config/rankHide/<uid>=1`), có nút BỎ ẨN. Không cần SQL.
-- `rankList()` bỏ các uid trong `rankHide` khỏi bảng của người khác; chính người đó vẫn tự thấy mình. Chỉ ẩn bảng xếp hạng, không đổi tiền hay dữ liệu.
+- `rankList()` bỏ các uid trong `rankHide` khỏi bảng của người khác; chính người đó cũng không thấy mình trong bảng (z161). Chỉ ẩn bảng xếp hạng, không đổi tiền hay dữ liệu.
 
 ## z159 — Chống mất tiến trình khi máy chủ lỗi
 - `supabase-shim.js` `write()`: ghi thất bại thì tự thử lại tới 9 lần (1s→8s), bản ghi cũ không ghi đè bản mới (số phiên bản theo đường dẫn); chỉ bỏ cuộc khi bị từ chối quyền.
@@ -1316,3 +1316,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z160 — Lưu nhanh hơn
 - Chu kỳ lưu tự động 10s → **4s**.
 - Tiền thay đổi (kiếm hoặc tiêu) thì lưu ngay trong tối đa ~1s (giới hạn 1 lần/giây để không dồn tải khi tiền nhảy liên tục).
+
+## z161 — Ẩn BXH: ẩn luôn trong bảng của chính người đó
+- `rankList()`: nhân vật nằm trong `config/rankHide` cũng không tự xuất hiện trong bảng của mình; `poorF()` trả 0,5 khi không có trong bảng.
