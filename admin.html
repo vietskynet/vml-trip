@@ -375,6 +375,12 @@ th{font-family:"Bungee",sans-serif;font-size:10px;color:var(--muted);position:st
     <div class="row"><select id="tstSel"></select><button class="ok" id="tstSave">ĐẶT LÀM NGƯỜI THỬ NGHIỆM</button><button class="ghost" id="tstClr">GỠ</button></div>
     <p id="tstCur" style="margin:8px 0 0"></p><p class="msg" id="tstMsg"></p>
    </div>
+   <div class="card">
+    <h2>ẨN KHỎI BẢNG XẾP HẠNG</h2>
+    <p style="margin:0 0 8px">Nhân vật được ẩn sẽ <b>không hiện trong bảng xếp hạng của người khác</b> (tiền, thể lực, sức khoẻ). Họ vẫn chơi bình thường và vẫn tự thấy mình. Có hiệu lực ngay, không cần SQL.</p>
+    <div class="row"><select id="rhSel"></select><button class="ok" id="rhAdd">ẨN KHỎI BXH</button></div>
+    <p id="rhCur" style="margin:8px 0 0"></p><p class="msg" id="rhMsg"></p>
+   </div>
   </section>
   <section data-p="sys" hidden>
    <div class="card">
@@ -430,8 +436,12 @@ $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const sb=
 $('#logout').onclick=async()=>{try{await SB().rpc('admin_logout')}catch(e){}sessionStorage.removeItem(SKEY);showApp(false);say('#lmsg','Đã đăng xuất.')};
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(b)tab(b.dataset.t)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)tab(b.dataset.go)});
-function renderTst(){const sel=$('#tstSel');if(!sel)return;const t=config.tester||null;const rows=Object.entries(players).filter(([u,p])=>p&&p.name!=null).map(([u,p])=>({u,n:String(p.name||'?'),user:accs[u]||''})).sort((a,b)=>a.n.localeCompare(b.n));if(sel.dataset.n!==String(rows.length)||!sel.value){const v=sel.value;sel.innerHTML=rows.map(r=>`<option value="${esc(r.u)}">${esc(r.n)}${r.user?' ('+esc(r.user)+')':''}</option>`).join('');sel.dataset.n=String(rows.length);if(v)sel.value=v}$('#tstCur').textContent=t&&t.u?'Hiện tại: '+(t.name||t.u):'Chưa đặt người thử nghiệm.'}
+function renderTst(){try{renderRh()}catch(e){}const sel=$('#tstSel');if(!sel)return;const t=config.tester||null;const rows=Object.entries(players).filter(([u,p])=>p&&p.name!=null).map(([u,p])=>({u,n:String(p.name||'?'),user:accs[u]||''})).sort((a,b)=>a.n.localeCompare(b.n));if(sel.dataset.n!==String(rows.length)||!sel.value){const v=sel.value;sel.innerHTML=rows.map(r=>`<option value="${esc(r.u)}">${esc(r.n)}${r.user?' ('+esc(r.user)+')':''}</option>`).join('');sel.dataset.n=String(rows.length);if(v)sel.value=v}$('#tstCur').textContent=t&&t.u?'Hiện tại: '+(t.name||t.u):'Chưa đặt người thử nghiệm.'}
 $('#tstSave').onclick=()=>{const u=$('#tstSel').value;if(!u){say('#tstMsg','Chưa chọn nhân vật.',1);return}const p=players[u]||{};db.ref('config/tester').set({u,name:String(p.name||'')}).then(()=>say('#tstMsg','Đã đặt. Người này vào lại game sẽ thấy nút THỬ NGHIỆM trong menu.')).catch(e=>say('#tstMsg','Lỗi: '+e.message,1))};
+function renderRh(){const sel=$('#rhSel');if(!sel)return;const h=config.rankHide||{};const rows=Object.entries(players).filter(([u,p])=>p&&p.name!=null&&!h[u]).map(([u,p])=>({u,n:String(p.name||'?'),user:accs[u]||''})).sort((a,b)=>a.n.localeCompare(b.n));if(sel.dataset.n!==String(rows.length)||!sel.value){const v=sel.value;sel.innerHTML=rows.map(r=>`<option value="${esc(r.u)}">${esc(r.n)}${r.user?' ('+esc(r.user)+')':''}</option>`).join('');sel.dataset.n=String(rows.length);if(v)sel.value=v}
+ const hs=Object.keys(h).filter(u=>h[u]);$('#rhCur').innerHTML=hs.length?'Đang ẩn: '+hs.map(u=>`<b>${esc((players[u]&&players[u].name)||u.slice(0,8))}</b> <button class="ghost" data-rh="${esc(u)}">BỎ ẨN</button>`).join(' · '):'Chưa ẩn ai.'}
+$('#rhAdd').onclick=()=>{const u=$('#rhSel').value;if(!u){say('#rhMsg','Chưa chọn nhân vật.',1);return}db.ref('config/rankHide/'+u).set(1).then(()=>say('#rhMsg','Đã ẩn khỏi bảng xếp hạng.')).catch(e=>say('#rhMsg','Lỗi: '+e.message,1))};
+$('#rhCur').onclick=e=>{const b=e.target.closest('[data-rh]');if(!b)return;db.ref('config/rankHide/'+b.dataset.rh).remove().then(()=>say('#rhMsg','Đã bỏ ẩn.')).catch(er=>say('#rhMsg','Lỗi: '+er.message,1))};
 $('#tstClr').onclick=()=>{db.ref('config/tester').remove().then(()=>say('#tstMsg','Đã gỡ.')).catch(e=>say('#tstMsg','Lỗi: '+e.message,1))};
 let errs={};
 /* ===== KINH TẾ ===== */

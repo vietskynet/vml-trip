@@ -1303,3 +1303,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 
 ## z157 — Chứng khoán: báo rõ giờ chốt sổ
 - Khi phiên còn <10% (6 phút cuối) các nút đặt lệnh bị khóa; thêm dòng đỏ trong phiếu lệnh (`.stkhalt`) báo "ĐANG CHỐT SỔ" kèm đồng hồ đếm ngược đến phiên mới.
+
+## z158 — Admin: ẩn nhân vật khỏi bảng xếp hạng
+- Admin → tab THỬ NGHIỆM → thẻ "ẨN KHỎI BẢNG XẾP HẠNG": chọn nhân vật, bấm ẨN (ghi `config/rankHide/<uid>=1`), có nút BỎ ẨN. Không cần SQL.
+- `rankList()` bỏ các uid trong `rankHide` khỏi bảng của người khác; chính người đó vẫn tự thấy mình. Chỉ ẩn bảng xếp hạng, không đổi tiền hay dữ liệu.
