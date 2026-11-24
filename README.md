@@ -1325,3 +1325,7 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Báo lỗi: nếu việc ghi bị máy chủ từ chối hoặc lỗi mạng, game hiện cả nội dung lỗi và gửi `errlog` (admin xem ở tab Lỗi). `VMLNet.err()`.
 - Mua đất/xây/nâng tầng Villa: **trừ tiền → lưu ví (đợi xác nhận) → rồi mới ghi lô đất**. Không lưu được ví thì hủy giao dịch, tránh tình trạng có nhà mà ví không bị trừ.
 - Lưu theo thay đổi tiền: giới hạn 1 lần / 2,5s (giảm tải).
+
+## z163 — Sửa: đăng nhập máy khác mất quyền chủ Villa
+- Nguyên nhân: `rt_move_player` (đăng nhập tài khoản / nhập mã đồng bộ) chỉ chuyển beds, duels, castle, lm nên `vh/*` (Villa), vhlog, market, offers, invites, tb, deco vẫn giữ uid cũ → trên máy mới game coi chủ nhà là "khách" (không có nút quản lý).
+- `sql-cu/supabase-update-move-vh.sql`: (1) thay `rt_move_player` chuyển đủ các mục trên; (2) sửa các Villa "mồ côi" (chủ là uid không còn nhân vật) sang nhân vật cùng tên khi khớp đúng 1 người. Chạy 1 lần; không đụng rt_can.
