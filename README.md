@@ -1335,3 +1335,6 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 - Hiện ở khung "🎄 NOEL GIỚI HẠN" **đầu danh sách** tiệm tóc (viền vàng + nhãn NOEL). Hạn dùng `ms = 7 * 86400000` (7 ngày THẬT, không theo ngày game): `P.hair.e = w + st.ms`.
 - `drawHairdo` hỗ trợ màu cố định (phần tử thứ 5 là chuỗi màu), `hdTw` vẽ hiệu ứng lấp lánh / đèn nháy / tuyết rơi / nốt nhạc quanh tóc.
 - Giá sửa được trong admin (Cửa hàng → Salon tóc → "Kiểu NOEL"). Nhuộm màu và phụ kiện dùng bình thường (nhuộm đổi màu phần tóc/hộp quà/cây, phần trang trí giữ màu cố định).
+
+## z165 — Tóc Noel giảm 50%
+- Giá 8 kiểu tóc Noel giảm một nửa (1,5tr–4tr). Sửa trong `XMS` (`p`) và bảng giá admin.

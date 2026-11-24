@@ -8563,7 +8563,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z164';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z165';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -10107,14 +10107,14 @@ const xCar={nat:'#3a2417',
  u:[...xCapU,[2,3,14,6,0],...xStaff,...xNotes,[4,1,10,1,XR],[2,4,3,4,XR],[14,4,3,4,XR]],
  s:[...xCapS,[3,4,2,6,0],...xStaff.map(([x,y,w,h,k])=>[x+1,y,w-4,h,k]),[4,-5,3,2,xNN],[6,-11,1,7,xNN],[6,-11,3,1,xNN],[9,-8,3,2,xNN],[11,-14,1,7,xNN],[5,1,8,1,XR],[4,4,3,4,XR],[4,4,3,1,XW]]};
 const XMS=[
- {id:'x1',n:'Cây Thông Đèn Lung Linh',p:6000000,sec:90,nat:'#1f8a3e',ac:'#ffd23f',ex:25,tw:'tree',d:xT1d,u:xT1u,s:xT1s},
- {id:'x2',n:'Tóc Kèm Nón Noel',p:3500000,sec:60,nat:xHat.nat,ac:'#ffd23f',ex:13,tw:'spark',d:xHat.d,u:xHat.u,s:xHat.s},
- {id:'x3',n:'Sừng Tuần Lộc Chuông Vàng',p:4500000,sec:80,nat:xAnt.nat,ac:'#ffd23f',ex:15,tw:'spark',d:xAnt.d,u:xAnt.u,s:xAnt.s},
- {id:'x4',n:'Món Quà Diệu Kỳ',p:5500000,sec:80,nat:xGift.nat,ac:'#ffd23f',ex:12,tw:'spark',d:xGift.d,u:xGift.u,s:xGift.s},
- {id:'x5',n:'Cây Thông Cao To',p:8000000,sec:120,nat:'#1a7a38',ac:'#ffd23f',ex:34,tw:'tree',d:xT5d,u:xT5u,s:xT5s},
- {id:'x6',n:'Mây Bồng Bềnh Tuyết Rơi',p:4000000,sec:70,nat:xCld.nat,ac:'#9ad8ff',ex:11,tw:'snow',d:xCld.d,u:xCld.u,s:xCld.s},
- {id:'x7',n:'Xe Santa Chở Quà',p:7000000,sec:100,nat:xSl.nat,ac:'#ffd23f',ex:14,tw:'spark',d:xSl.d,u:xSl.u,s:xSl.s},
- {id:'x8',n:'Tóc Hát Carol',p:5000000,sec:80,nat:xCar.nat,ac:'#ffd23f',ex:15,tw:'note',d:xCar.d,u:xCar.u,s:xCar.s}];
+ {id:'x1',n:'Cây Thông Đèn Lung Linh',p:3000000,sec:90,nat:'#1f8a3e',ac:'#ffd23f',ex:25,tw:'tree',d:xT1d,u:xT1u,s:xT1s},
+ {id:'x2',n:'Tóc Kèm Nón Noel',p:1750000,sec:60,nat:xHat.nat,ac:'#ffd23f',ex:13,tw:'spark',d:xHat.d,u:xHat.u,s:xHat.s},
+ {id:'x3',n:'Sừng Tuần Lộc Chuông Vàng',p:2250000,sec:80,nat:xAnt.nat,ac:'#ffd23f',ex:15,tw:'spark',d:xAnt.d,u:xAnt.u,s:xAnt.s},
+ {id:'x4',n:'Món Quà Diệu Kỳ',p:2750000,sec:80,nat:xGift.nat,ac:'#ffd23f',ex:12,tw:'spark',d:xGift.d,u:xGift.u,s:xGift.s},
+ {id:'x5',n:'Cây Thông Cao To',p:4000000,sec:120,nat:'#1a7a38',ac:'#ffd23f',ex:34,tw:'tree',d:xT5d,u:xT5u,s:xT5s},
+ {id:'x6',n:'Mây Bồng Bềnh Tuyết Rơi',p:2000000,sec:70,nat:xCld.nat,ac:'#9ad8ff',ex:11,tw:'snow',d:xCld.d,u:xCld.u,s:xCld.s},
+ {id:'x7',n:'Xe Santa Chở Quà',p:3500000,sec:100,nat:xSl.nat,ac:'#ffd23f',ex:14,tw:'spark',d:xSl.d,u:xSl.u,s:xSl.s},
+ {id:'x8',n:'Tóc Hát Carol',p:2500000,sec:80,nat:xCar.nat,ac:'#ffd23f',ex:15,tw:'note',d:xCar.d,u:xCar.u,s:xCar.s}];
 XMS.forEach(h=>{h.g='x';h.days=168;h.ms=XM_MS;h.xm=1;h.p0=h.p;HSTY.push(h);HSTY_BY[h.id]=h});
 const durTxt=st=>st.ms?Math.round(st.ms/86400000)+' ngày thật':fmtDays(st.days);
 function hdTw(c,sx,sy,st){const E=st.ex||0,t=performance.now()/1000+(c.x||0)*.013,top=sy-31-E+2,g=ctx;
