@@ -327,6 +327,7 @@ body.m-room .pad{display:none!important}
 @media (max-width:640px){.lvcards{grid-template-columns:1fr}}
 .salst,.salac{display:flex;flex-direction:column;align-items:center;gap:2px;background:#4a1d63;border:3px solid #000;color:#fff;padding:6px;cursor:pointer;font-family:inherit;box-shadow:none;text-align:center}
 .salst.on,.salac.on{border-color:#ffd36a;background:#6a2c8a}.salst img,.salac img{width:64px;height:60px;image-rendering:pixelated;border:2px solid #000}
+.salxm{border:3px solid #ffd23f;background:linear-gradient(180deg,#1d4a31,#3a1d22);padding:6px 8px 8px;margin-bottom:10px;box-shadow:0 0 14px rgba(255,210,63,.45)}.salxm h4{margin:2px 0 6px;color:#ffe9a0}.salxm h4 small{color:#bfe8c8}.salst.xm{border-color:#ff6a5c;background:#2c6a45;position:relative}.salst.xm.on{border-color:#ffd36a;background:#3a8a5a}.salst.xm::after{content:'NOEL';position:absolute;top:2px;right:2px;background:#d62828;color:#fff;font-size:11px;padding:0 4px;border:2px solid #000}
 .salst b,.salac b{font-weight:400;font-size:17px;line-height:1.05}.salst small{color:#d8b8f0;font-size:14px}
 .salcols{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px}.salcol{display:flex;flex-direction:column;align-items:center;gap:2px;background:#4a1d63;border:3px solid #000;padding:4px;color:#fff;cursor:pointer;font-family:inherit;box-shadow:none}.salcol.on{border-color:#ffd36a}.salcol i{display:block;width:46px;height:22px;border:2px solid #000}.salcol small{font-size:13px;line-height:1}
 .salaccs{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:6px}
@@ -8282,7 +8283,7 @@ function updCabinMode(dt){const c=CAB;if(!c)return;if(c.bath){updBath(dt);return
 /* ================= world render ================= */
 function drawChar(c,sx,sy){if(!inPoolSkip&&inWt(c.x,c.y)){drawSwim(c,sx,sy);return}const fi=c.moving?Math.floor(c.anim*8)%4:(c.state==='eat'||(c===P&&(P.busy>0||P.eatT>0)))?(Math.floor(c.anim*3)%2?2:0):0;const d=c.dir==='left'||c.dir==='right'?'side':c.dir;const img=c.fr[d][fi];
  if(!charNoSh){ctx.fillStyle='rgba(20,30,60,.28)';ctx.fillRect(sx-6,sy-1,12,3);ctx.fillRect(sx-4,sy-2,8,5)}
- if(c.dir==='left'){ctx.save();ctx.translate(sx,0);ctx.scale(-1,1);ctx.drawImage(img,-10,sy-31);ctx.restore()}else ctx.drawImage(img,sx-10,sy-31);if(c.look&&c.look.hd&&c.look.hd.a)hdSpark(c,sx,sy);if(c===P&&P.eatT>0)drawEat(sx,sy)}
+ if(c.dir==='left'){ctx.save();ctx.translate(sx,0);ctx.scale(-1,1);ctx.drawImage(img,-10,sy-31);ctx.restore()}else ctx.drawImage(img,sx-10,sy-31);if(c.look&&c.look.hd){const _hs=HSTY_BY[c.look.hd.s];if(_hs&&_hs.tw)hdTw(c,sx,sy,_hs);if(c.look.hd.a)hdSpark(c,sx,sy)}if(c===P&&P.eatT>0)drawEat(sx,sy)}
 function drawSwim(c,sx,sy){const t=c.anim,fi=Math.floor(t*(c.moving?6:2))%4,d=c.dir==='left'||c.dir==='right'?'side':c.dir,img=c.fr[d][fi],bob=Math.round(Math.sin(t*3+c.x*.1)),wl=sy-12+bob;const fl=floatOf(c);if(fl)drawFloatPart(c,sx,wl,t,false);
  for(let k=0;k<2;k++){const ph=((t*(c.moving?1.6:.8))+k*.5)%1,rx=Math.round(6+ph*12),a=(1-ph)*.55;ctx.fillStyle=`rgba(235,255,255,${a})`;ctx.fillRect(sx-rx,wl+1,rx*2,1);ctx.fillRect(sx-rx+2,wl+3,rx*2-4,1)}
  ctx.save();ctx.beginPath();ctx.rect(sx-14,sy-60,28,wl-(sy-60));ctx.clip();if(c.dir==='left'){ctx.translate(sx,0);ctx.scale(-1,1);ctx.drawImage(img,-10,sy-25+bob)}else ctx.drawImage(img,sx-10,sy-25+bob);ctx.restore();if(fl)drawFloatPart(c,sx,wl,t,true);
@@ -8565,7 +8566,7 @@ function openLmStory(){if(!S||mode!=='world'||modalOpen())return;$('#lmsBody').i
 <div><b>THUẾ THƯỞNG</b>Gốc Chủ đặt thuế 3% (mặc định), 6% (khi cây Lv15), 10% (Lv30) trên thưởng chơi game và Team Building của thành viên, đổ vào quỹ chung. Không có thuế đất. Dưới 3 thành viên thì buff giảm một nửa.</div>
 <div><b>MẸO</b>Bấm vào từng <strong>lô đất</strong> trong vườn để xem tên liên minh, quỹ, danh sách thành viên và nút góp quỹ. Thành viên có biểu tượng liên minh trên đầu. Mỗi người chỉ thuộc một liên minh, rời đi phải chờ 12 giờ mới vào lại.</div>`;$('#lmsOv').hidden=false;keys={}}
 $('#lmsGo').onclick=()=>{$('#lmsOv').hidden=true;walkNear(P2(GARD.gx,GARD.y0-30))};
-const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z162';let ERRN=0;const ERRS={};
+const TEST={on:false,keep:null,fake:false},APPV='16.11.2026-z164';let ERRN=0;const ERRS={};
 function errReport(k,msg,stack){try{msg=String(msg||'').slice(0,200);if(!NET.on||!NET.uid||TEST.on||ERRN>=8||ERRS[msg])return;ERRS[msg]=1;ERRN++;NET.db.ref('errlog/'+NET.uid.slice(0,8)+'_'+Date.now().toString(36)).set({u:NET.uid,n:String(P&&P.name||'').slice(0,24),t:Date.now(),k,m:msg,s:String(stack||'').slice(0,700),v:APPV,ua:String(navigator.userAgent).slice(0,140),x:P?Math.round(P.x):0,y:P?Math.round(P.y):0,md:String(mode),vw:innerWidth+'x'+innerHeight}).catch(()=>{})}catch(e){}}
 addEventListener('error',e=>errReport('error',e.message+' @'+(e.lineno||''),e.error&&e.error.stack));addEventListener('unhandledrejection',e=>errReport('promise',e.reason&&e.reason.message||e.reason,e.reason&&e.reason.stack));
 function noopDb(){const f=()=>p;const p=new Proxy(f,{get:(t,k)=>k==='then'?undefined:k==='val'?()=>null:k==='exists'?()=>false:k==='key'?'':p,apply:()=>p});return p}
@@ -10045,6 +10046,84 @@ HSTY.push(
   s:[[5,2,9,3,0],[4,3,4,8,0],[11,4,2,2,0],...hdFlame(6,2,14,5,-3),...hdFlame(8,2,17,5,-1),...hdFlame(10,2,15,5,2),[3,5,3,12,0],[1,12,3,8,2],[0,19,3,5,3],[2,22,2,3,3],[4,20,2,4,2]]}
 );
 const HSTY_BY={};HSTY.forEach(h=>{HSTY_BY[h.id]=h;h.days*=3;h.p=Math.round(h.p/2);h.p0=h.p});
+/* ===== KIỂU TÓC NOEL · g:'x' = dùng cho cả nam lẫn nữ · giữ 7 NGÀY THẬT · hiện đầu danh sách trong tiệm tóc ===== */
+const XM_MS=7*86400000,md=(a,n)=>((a%n)+n)%n;
+const XR='#d62828',XR2='#8e1620',XR3='#ff6a5c',XW='#ffffff',XW2='#dfe8f2',XG='#ffd23f',XGr='#2fa84a',XGr2='#14612b',XTn='#c8a060',XTn2='#8a6a30',XTn3='#ecd09a',XBl='#5ad2ff',XPk='#ff7ad9';
+const xl=['#ff4f4f','#ffd23f','#4fe0ff','#ff7ad9','#7dff7a'];
+const xM=(L,w)=>L.map(([x,y,ww,h,k])=>[w-x-ww,y,ww,h,k]);
+const xTree=(cx,top,bot,wT,wB,sd,gl)=>{const o=[],H=Math.max(1,bot-top);for(let y=top;y<=bot;y++){const t=(y-top)/H,w=Math.max(1,Math.round(wT+(wB-wT)*t)),x0=Math.round(cx-w/2);o.push([x0,y,w,1,0]);if(w>=3){o.push([x0,y,1,1,1]);o.push([x0+w-1,y,1,1,1])}
+ if(w>=5&&(y-top)%3===1)o.push([x0+2+md(y*3+sd,w-4),y,1,1,2]);
+ if(w>=5&&(y-top)%3===2)o.push([x0+1+md(y*5+sd,w-2),y,1,1,xl[md(y+sd,5)]]);
+ if(gl&&w>=6&&(y-top)%4===0)o.push([x0+1+md(y*2+sd,w-4),y,2,1,XG]);
+ if(y===bot&&w>=5){o.push([x0,y,2,1,XW]);o.push([x0+w-2,y,2,1,XW])}}return o};
+const xStar=(cx,y)=>[[cx-1,y,2,6,XG],[cx-3,y+2,6,2,XG],[cx-2,y+1,4,4,'#fff3a0'],[cx-1,y+2,1,1,XW]];
+const xOrn=(L)=>L.flatMap(([x,y,c])=>[[x,y,2,2,c],[x,y,1,1,XW]]);
+const xCapD=[[4,2,10,3,0],[3,3,1,3,0],[14,3,1,3,0],[5,5,3,1,0],[10,5,3,1,0]],xCapU=[[4,2,10,9,0],[3,3,12,6,0],[5,11,8,1,1]],xCapS=[[5,2,9,3,0],[4,3,4,8,0],[11,4,2,2,0]];
+/* cây thông đèn lung linh */
+const xT1d=[...xCapD,...xTree(9,-5,1,7,15,1,1),...xTree(9,-10,-4,5,12,2,1),...xTree(9,-15,-9,3,9,3,1),...xTree(9,-19,-14,1,5,4,1),...xOrn([[4,-2,XR],[12,-1,XBl],[7,-7,XPk],[11,-8,XR],[8,-13,XG]]),...xStar(9,-25)];
+const xT1u=[...xCapU,...xTree(9,-5,1,7,15,5,1),...xTree(9,-10,-4,5,12,6,1),...xTree(9,-15,-9,3,9,7,1),...xTree(9,-19,-14,1,5,8,1),...xOrn([[5,-2,XBl],[11,-2,XR],[9,-8,XPk]]),...xStar(9,-25)];
+const xT1s=[...xCapS,...xTree(8,-5,1,5,11,1,1),...xTree(8,-10,-4,4,9,2,1),...xTree(8,-15,-9,3,7,3,1),...xTree(8,-19,-14,1,4,4,1),...xOrn([[4,-2,XR],[9,-7,XBl]]),...xStar(8,-25)];
+/* cây thông cao to */
+const xBig=(cx,w0,g)=>[...xTree(cx,-8,2,w0-8,w0,g,1),...xTree(cx,-14,-6,w0-10,w0-3,g+1,1),...xTree(cx,-19,-12,w0-12,w0-6,g+2,1),...xTree(cx,-23,-17,w0-14,w0-9,g+3,1),...xTree(cx,-27,-21,1,w0-12,g+4,1)];
+const xT5d=[...xCapD,...xBig(9,17,1),...xOrn([[3,-1,XR],[13,0,XG],[5,-8,XBl],[11,-9,XR],[8,-15,XPk],[6,-19,XG],[10,-24,XR]]),...xStar(9,-33)];
+const xT5u=[...xCapU,...xBig(9,17,6),...xOrn([[4,-1,XBl],[12,-1,XR],[7,-9,XG],[10,-15,XPk]]),...xStar(9,-33)];
+const xT5s=[...xCapS,...xBig(8,12,2),...xOrn([[4,-1,XR],[9,-8,XG],[7,-16,XBl]]),...xStar(8,-33)];
+/* nón Noel */
+const xHatBody=[[4,-2,10,2,XR],[5,-5,9,3,XR],[6,-8,8,3,XR],[8,-10,8,2,XR],[12,-11,5,3,XR],[15,-9,3,5,XR],[15,-5,3,5,XR],[4,-2,1,2,XR2],[5,-5,1,3,XR2],[6,-8,1,3,XR2],[7,-4,2,1,XR3],[9,-7,2,1,XR3],[15,-9,1,8,XR2]];
+const xHat={nat:'#7a4a2a',
+ d:[...xCapD,[2,3,2,9,0],[14,3,2,9,0],[3,5,1,7,2],[4,3,2,1,2],...xHatBody,[3,0,12,3,XW],[3,0,12,1,XW2],[5,2,1,1,'#cfd8e6'],[9,2,1,1,'#cfd8e6'],[12,2,1,1,'#cfd8e6'],[15,-1,4,4,XW],[16,-1,2,1,XW2]],
+ u:[...xCapU,[2,3,14,10,0],[3,4,1,8,2],[6,6,1,6,1],[11,6,1,6,1],...xHatBody,[3,0,12,3,XW],[3,0,12,1,XW2],[5,2,1,1,'#cfd8e6'],[9,2,1,1,'#cfd8e6'],[12,2,1,1,'#cfd8e6'],[15,-1,4,4,XW],[16,-1,2,1,XW2]],
+ s:[...xCapS,[3,5,3,8,0],[3,5,1,7,2],[4,0,10,3,XW],[4,0,10,1,XW2],[5,-3,9,3,XR],[3,-6,9,3,XR],[1,-8,8,3,XR],[0,-6,3,5,XR],[0,-2,3,4,XR],[5,-3,1,3,XR2],[3,-6,1,3,XR2],[1,-8,1,3,XR2],[6,-2,2,1,XR3],[4,-5,2,1,XR3],[-1,0,4,4,XW],[0,0,2,1,XW2]]};
+/* sừng tuần lộc */
+const xAnL=[[4,0,2,3,XTn2],[3,-4,2,5,XTn],[2,-9,2,6,XTn],[1,-12,2,4,XTn],[5,-3,3,2,XTn],[7,-5,2,3,XTn],[4,-7,2,1,XTn],[5,-9,2,2,XTn],[3,-4,1,4,XTn3],[2,-9,1,4,XTn3],[1,-1,1,1,XTn2],[1,-14,2,2,XR],[1,-14,1,1,XW],[7,-7,2,2,XR],[7,-7,1,1,XW],[5,-11,2,2,XR],[5,-11,1,1,XW]];
+const xAnR=xM(xAnL,18);
+const xHolly=(x)=>[[x,2,3,2,XGr],[x+1,3,2,2,XGr2],[x+1,2,1,1,XR],[x+2,2,1,1,XR]];
+const xAnt={nat:'#6a3a1a',
+ d:[...xCapD,[2,3,2,6,0],[14,3,2,6,0],[3,4,1,5,2],...xAnL,...xAnR,...xHolly(3),...xM(xHolly(3),18)],
+ u:[...xCapU,[2,3,14,7,0],[6,5,1,5,1],[11,5,1,5,1],...xAnL,...xAnR],
+ s:[...xCapS,[3,4,2,6,0],[4,0,2,3,XTn2],[5,-4,2,5,XTn],[5,-9,2,6,XTn],[4,-12,2,4,XTn],[7,-3,3,2,XTn],[9,-5,2,3,XTn],[6,-7,2,1,XTn],[5,-14,2,2,XR],[9,-7,2,2,XR],[5,-4,1,4,XTn3],[5,-9,1,4,XTn3],...xHolly(5)]};
+/* món quà diệu kỳ */
+const xGiftD=[[3,-6,12,3,1],[3,-6,12,1,2],[4,-3,10,5,0],[4,-3,1,4,2],[13,-3,1,5,1],[4,-1,10,1,3],[8,-6,2,8,3],[5,-10,4,4,3],[10,-10,4,4,3],[6,-9,2,2,1],[11,-9,2,2,1],[8,-9,2,3,3],[9,-11,1,1,XW],[5,-10,1,1,XW]];
+const xGift={nat:'#d62828',
+ d:[...xCapD,...xGiftD],
+ u:[...xCapU,...xGiftD],
+ s:[...xCapS,[4,-6,10,3,1],[4,-6,10,1,2],[5,-3,8,5,0],[5,-3,1,4,2],[5,-1,8,1,3],[8,-6,2,8,3],[6,-10,4,4,3],[10,-10,3,4,3],[7,-9,2,2,1],[8,-9,2,3,3],[7,-10,1,1,XW]]};
+/* mây bồng bềnh */
+const xCloud=(cx,dx)=>[...hdBall(cx-5-dx,-1,3),...hdBall(cx+5+dx,-1,3),...hdBall(cx-2,-4,4),...hdBall(cx+3,-5,4),...hdBall(cx,-8,3,1)];
+const xFlake=[[1,4,1,1,XW],[0,8,3,1,XW],[1,7,1,3,XW],[17,5,1,1,XW],[16,9,3,1,XW],[17,8,1,3,XW],[3,12,1,1,XW],[15,13,1,1,XW]];
+const xCld={nat:'#f0f6ff',
+ d:[...xCapD,...xCloud(9,0),...xFlake,[7,4,1,2,3],[11,5,1,2,3]],
+ u:[...xCapU,...xCloud(9,0),...xFlake,[8,6,1,3,3],[11,5,1,3,3]],
+ s:[...xCapS,...xCloud(8,-1),[1,5,1,1,XW],[0,9,3,1,XW],[1,8,1,3,XW],[3,13,1,1,XW],[7,3,1,2,3]]};
+/* xe Santa */
+const xSlD=[[2,-1,16,1,XG],[17,-3,1,3,XG],[1,-3,1,3,XG],[3,-6,14,5,0],[3,-6,14,1,3],[4,-5,12,1,1],[3,-6,1,5,2],[16,-6,1,5,1],[8,-12,4,4,XR],[9,-13,3,2,XW],[5,-9,4,3,XGr],[5,-9,4,1,XG],[10,-10,4,4,XBl],[10,-8,4,1,XR],[13,-8,3,3,XPk],[14,-9,1,1,XW],[6,-3,2,1,XG],[11,-3,2,1,XG]];
+const xSl={nat:'#d62828',
+ d:[...xCapD,...xSlD],
+ u:[...xCapU,...xSlD],
+ s:[...xCapS,[1,-1,14,1,XG],[14,-4,2,4,XG],[2,-4,1,3,XG],[3,-6,11,5,0],[3,-6,11,1,3],[4,-5,9,1,1],[6,-11,3,4,XR],[7,-12,3,2,XW],[5,-9,3,3,XGr],[5,-9,3,1,XG],[9,-10,3,4,XBl],[9,-8,3,1,XR],[11,-8,2,3,XPk],[5,-3,2,1,XG]]};
+/* tóc hát */
+const xStaff=[[1,-9,16,1,'#ffffff'],[1,-6,16,1,'#ffffff'],[1,-3,16,1,'#ffffff'],[1,0,16,1,'#ffffff']];
+const xNN='#1c2a8a';
+const xNotes=[[3,-5,3,2,xNN],[5,-11,1,7,xNN],[5,-11,3,1,xNN],[9,-8,3,2,xNN],[11,-14,1,7,xNN],[14,-5,3,2,xNN],[16,-12,1,8,xNN],[11,-14,6,1,xNN],[11,-13,6,1,xNN]];
+const xCar={nat:'#3a2417',
+ d:[...xCapD,[2,3,2,5,0],[14,3,2,5,0],...xStaff,...xNotes,[4,1,10,1,XR],[2,4,3,4,XR],[2,4,3,1,XW],[14,4,3,4,XR],[14,4,3,1,XW]],
+ u:[...xCapU,[2,3,14,6,0],...xStaff,...xNotes,[4,1,10,1,XR],[2,4,3,4,XR],[14,4,3,4,XR]],
+ s:[...xCapS,[3,4,2,6,0],...xStaff.map(([x,y,w,h,k])=>[x+1,y,w-4,h,k]),[4,-5,3,2,xNN],[6,-11,1,7,xNN],[6,-11,3,1,xNN],[9,-8,3,2,xNN],[11,-14,1,7,xNN],[5,1,8,1,XR],[4,4,3,4,XR],[4,4,3,1,XW]]};
+const XMS=[
+ {id:'x1',n:'Cây Thông Đèn Lung Linh',p:6000000,sec:90,nat:'#1f8a3e',ac:'#ffd23f',ex:25,tw:'tree',d:xT1d,u:xT1u,s:xT1s},
+ {id:'x2',n:'Tóc Kèm Nón Noel',p:3500000,sec:60,nat:xHat.nat,ac:'#ffd23f',ex:13,tw:'spark',d:xHat.d,u:xHat.u,s:xHat.s},
+ {id:'x3',n:'Sừng Tuần Lộc Chuông Vàng',p:4500000,sec:80,nat:xAnt.nat,ac:'#ffd23f',ex:15,tw:'spark',d:xAnt.d,u:xAnt.u,s:xAnt.s},
+ {id:'x4',n:'Món Quà Diệu Kỳ',p:5500000,sec:80,nat:xGift.nat,ac:'#ffd23f',ex:12,tw:'spark',d:xGift.d,u:xGift.u,s:xGift.s},
+ {id:'x5',n:'Cây Thông Cao To',p:8000000,sec:120,nat:'#1a7a38',ac:'#ffd23f',ex:34,tw:'tree',d:xT5d,u:xT5u,s:xT5s},
+ {id:'x6',n:'Mây Bồng Bềnh Tuyết Rơi',p:4000000,sec:70,nat:xCld.nat,ac:'#9ad8ff',ex:11,tw:'snow',d:xCld.d,u:xCld.u,s:xCld.s},
+ {id:'x7',n:'Xe Santa Chở Quà',p:7000000,sec:100,nat:xSl.nat,ac:'#ffd23f',ex:14,tw:'spark',d:xSl.d,u:xSl.u,s:xSl.s},
+ {id:'x8',n:'Tóc Hát Carol',p:5000000,sec:80,nat:xCar.nat,ac:'#ffd23f',ex:15,tw:'note',d:xCar.d,u:xCar.u,s:xCar.s}];
+XMS.forEach(h=>{h.g='x';h.days=168;h.ms=XM_MS;h.xm=1;h.p0=h.p;HSTY.push(h);HSTY_BY[h.id]=h});
+const durTxt=st=>st.ms?Math.round(st.ms/86400000)+' ngày thật':fmtDays(st.days);
+function hdTw(c,sx,sy,st){const E=st.ex||0,t=performance.now()/1000+(c.x||0)*.013,top=sy-31-E+2,g=ctx;
+ if(st.tw==='note'){for(let k=0;k<3;k++){const ph=(t*.45+k/3)%1,px=Math.round(sx-9+k*8+Math.sin(ph*6+k)*2),py=Math.round(top+E+2-ph*(E+8));g.globalAlpha=Math.min(1,(1-ph)*1.6);g.fillStyle=k%2?'#ffd23f':'#ffffff';g.fillRect(px,py,2,2);g.fillRect(px+1,py-4,1,4);g.fillRect(px+1,py-4,2,1)}g.globalAlpha=1;return}
+ if(st.tw==='snow'){for(let k=0;k<7;k++){const ph=(t*.32+k*.14)%1,px=Math.round(sx-11+((k*7)%22)+Math.sin(ph*8+k)*1.5),py=Math.round(top+E-2+ph*(E+16));g.fillStyle='#fff';g.fillRect(px,py,1,1);if(k%2)g.fillRect(px-1,py,3,1)}return}
+ for(let k=0;k<(st.tw==='tree'?7:4);k++){const q=t*1.2+k*.23,ph=q%1;if(ph>.55)continue;const n=Math.floor(q),px=sx-7+md(k*5+n*3,15),py=Math.round(top+2+md(k*7+n*5,E+5));g.fillStyle=st.tw==='tree'?xl[md(k+n,5)]:(k%2?'#ffffff':'#ffd23f');g.fillRect(px,py,1,1);if(ph<.3){g.fillRect(px-1,py,3,1);g.fillRect(px,py-1,1,3)}}}
 const HCOLS=[['nat','Màu gốc','#8a6a50'],['#ff4fa8','Hồng neon','#ff4fa8'],['#9b59ff','Tím mộng mơ','#9b59ff'],['#1fd1c8','Xanh ngọc','#1fd1c8'],['#2f7bff','Xanh dương','#2f7bff'],['#f4e08a','Bạch kim','#f4e08a'],['#cfd8e6','Bạc ánh trăng','#cfd8e6'],['#c8102e','Đỏ rượu','#c8102e'],['#ff8a3d','Cam hoàng hôn','#ff8a3d'],['#4fd36a','Xanh lá','#4fd36a'],['#f6f6f6','Trắng tuyết','#f6f6f6'],['#a8693a','Caramel','#a8693a'],['rainbow','Cầu vồng','rainbow']];
 const DYE_PCT=.3;
 /* phụ kiện: dùng chung nam nữ, lấp lánh */
@@ -10066,7 +10145,7 @@ const HACC_BY={};HACC.forEach(a=>{HACC_BY[a.id]=a;a.p=Math.round(a.p/2);a.p0=a.p
 function hdShade(c,k){return k===1?shade(c,.7):k===2?shade(c,1.45):c}
 function drawHairdo(g,H,dir,f){const st=HSTY_BY[H.s];if(!st)return;const by=f%2,col=H.c&&H.c!=='nat'?H.c:st.nat,rb=col==='rainbow',key=dir==='down'?'d':dir==='up'?'u':'s';
  const put=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(x+1,y+1,w,h)};
- st[key].forEach(([x,y,w,h,k])=>{const yy=y+by;if(k===3){put(x,yy,w,h,st.ac);return}
+ st[key].forEach(([x,y,w,h,k])=>{const yy=y+by;if(typeof k==='string'){put(x,yy,w,h,k);return}if(k===3){put(x,yy,w,h,st.ac);return}
   if(rb){for(let i=0;i<w;i++)for(let j=0;j<h;j++)put(x+i,yy+j,1,1,hdShade(RBW[((x+i+yy+j)%6+6)%6],k));return}
   put(x,yy,w,h,hdShade(col,k))});
  const A=H.a&&HACC_BY[H.a];if(A)A.d((x,y,w,h,c)=>put(x,y+by,w,h,c),'#ffd23f','#4ff0ff','#ff7ad9','#ffffff')}
@@ -10226,18 +10305,20 @@ function salFxDraw(g,t,dt){salFx=salFx.filter(f=>(f.t-=dt)>0);salFx.forEach(f=>{
 function renderSalon(){const S0=P.salon;if(!S0)return;const B=$('#salBody'),sel=S0.sel,cnt=salonSeats().filter(Boolean).length;
  $('#salInfo').innerHTML='Ghế <b>'+(S0.k+1)+'</b> · Salon đang có <b>'+cnt+'/3</b> người · Ví: <span class="price">'+VND(P.money)+'</span>';
  if(S0.ph===1){B.innerHTML='<div class="salwork"><div id="salStage"></div><div class="salbar"><i id="salBar"></i></div><div id="salLeft"></div><p>Trong lúc làm tóc bạn được miễn mắc tiểu và đại tiện. Ngồi thư giãn nhé!</p></div>';return}
- if(S0.ph===2){const st=HSTY_BY[S0.done.s];B.innerHTML='<div class="salwork"><h3>CHÚC MỪNG! BẠN ĐÃ ĐẸP LÊN!</h3><p>'+esc(st.n)+' · giữ được <b>'+fmtDays(st.days)+'</b> (1 ngày game = 60 phút thật).</p><div class="row" style="justify-content:center"><button class="btn ok" id="salOut">RA VỀ</button></div></div>';return}
+ if(S0.ph===2){const st=HSTY_BY[S0.done.s];B.innerHTML='<div class="salwork"><h3>CHÚC MỪNG! BẠN ĐÃ ĐẸP LÊN!</h3><p>'+esc(st.n)+' · giữ được <b>'+durTxt(st)+'</b>'+(st.ms?'.':' (1 ngày game = 60 phút thật).')+'</p><div class="row" style="justify-content:center"><button class="btn ok" id="salOut">RA VỀ</button></div></div>';return}
  const T=salTotal(sel),st=HSTY_BY[sel.s],list=HSTY.filter(h=>h.g===salTab);
- let h='<div class="saltabs"><button class="btn sm '+(salTab==='m'?'':'ghost')+'" data-sg="m">KIỂU NAM</button><button class="btn sm '+(salTab==='f'?'':'ghost')+'" data-sg="f">KIỂU NỮ</button></div><div class="salgrid">';
- h+=list.map(x=>'<button class="salst'+(sel.s===x.id?' on':'')+'" data-ss="'+x.id+'"><img src="'+hairThumb(x.id,sel.c,sel.a)+'" alt=""><b>'+esc(x.n)+'</b><span class="price">'+VND(x.p)+'</span><small>Bền '+fmtDays(x.days)+' · làm '+fmtSec(x.sec)+'</small></button>').join('')+'</div>';
+ const btn=(x,c)=>'<button class="salst'+c+(sel.s===x.id?' on':'')+'" data-ss="'+x.id+'"><img src="'+hairThumb(x.id,sel.c,sel.a)+'" alt=""><b>'+esc(x.n)+'</b><span class="price">'+VND(x.p)+'</span><small>Bền '+durTxt(x)+' · làm '+fmtSec(x.sec)+'</small></button>';
+ let h='<div class="salxm"><h4>🎄 NOEL GIỚI HẠN <small>· cả nam lẫn nữ · giữ '+durTxt(XMS[0])+'</small></h4><div class="salgrid">'+XMS.map(x=>btn(x,' xm')).join('')+'</div></div>';
+ h+='<div class="saltabs"><button class="btn sm '+(salTab==='m'?'':'ghost')+'" data-sg="m">KIỂU NAM</button><button class="btn sm '+(salTab==='f'?'':'ghost')+'" data-sg="f">KIỂU NỮ</button></div><div class="salgrid">';
+ h+=list.map(x=>btn(x,'')).join('')+'</div>';
  h+='<h4>MÀU TÓC <small>(nhuộm +'+Math.round(DYE_PCT*100)+'% giá kiểu)</small></h4><div class="salcols">'+HCOLS.map(c=>'<button class="salcol'+(sel.c===c[0]?' on':'')+'" data-sc="'+c[0]+'" title="'+c[1]+'"><i style="background:'+(c[2]==='rainbow'?'linear-gradient(90deg,#ff4f6d,#ffd23f,#4fd36a,#2fb8e8,#b86bff)':c[0]==='nat'?'repeating-linear-gradient(45deg,#8a6a50,#8a6a50 4px,#5a4030 4px,#5a4030 8px)':c[2])+'"></i><small>'+c[1]+'</small></button>').join('')+'</div>';
  h+='<h4>PHỤ KIỆN LẤP LÁNH <small>(dùng chung nam nữ)</small></h4><div class="salaccs"><button class="salac'+(sel.a===''?' on':'')+'" data-sa=""><img src="'+hairThumb(sel.s,sel.c,'')+'" alt=""><b>Không</b><span class="price">0₫</span></button>'+HACC.map(a=>'<button class="salac'+(sel.a===a.id?' on':'')+'" data-sa="'+a.id+'"><img src="'+hairThumb(sel.s,sel.c,a.id)+'" alt=""><b>'+esc(a.n)+'</b><span class="price">'+VND(a.p)+'</span></button>').join('')+'</div>';
- h+='<div class="salsum"><div>Kiểu <b>'+esc(st.n)+'</b>: '+VND(T.style)+'</div>'+(T.dye?'<div>Nhuộm màu (+30%): '+VND(T.dye)+'</div>':'')+(T.acc?'<div>Phụ kiện: '+VND(T.acc)+'</div>':'')+'<div class="tot">TỔNG: <span class="price">'+VND(T.total)+'</span></div><div>Làm trong <b>'+fmtSec(st.sec)+'</b> · tóc giữ được <b>'+fmtDays(st.days)+'</b></div></div>';
+ h+='<div class="salsum"><div>Kiểu <b>'+esc(st.n)+'</b>: '+VND(T.style)+'</div>'+(T.dye?'<div>Nhuộm màu (+30%): '+VND(T.dye)+'</div>':'')+(T.acc?'<div>Phụ kiện: '+VND(T.acc)+'</div>':'')+'<div class="tot">TỔNG: <span class="price">'+VND(T.total)+'</span></div><div>Làm trong <b>'+fmtSec(st.sec)+'</b> · tóc giữ được <b>'+durTxt(st)+'</b></div></div>';
  h+='<div class="row" style="margin-top:8px"><button class="btn ok" id="salGo" '+(P.money<T.total?'disabled':'')+'>LÀM TÓC · '+VND(T.total)+'</button><button class="btn ghost" id="salOut">RA VỀ</button>'+(P.money<T.total?'<span style="color:var(--coral)">Chưa đủ tiền</span>':'')+'</div>';
  B.innerHTML=h}
 function salonStart(){const S0=P.salon;if(!S0||S0.ph!==0)return;const sel=S0.sel,T=salTotal(sel),st=HSTY_BY[sel.s];if(P.money<T.total){toast('Chưa đủ tiền làm tóc.');return}
  P.money-=T.total;coin();track('hair.'+sel.s);if(sel.c!=='nat')track('dye');if(sel.a)track('hacc.'+sel.a);
- const w=bankNow()+st.sec*1000;P.hair={s:sel.s,c:sel.c,a:sel.a,w,e:w+st.days*dayMs()};saveHair();
+ const w=bankNow()+st.sec*1000;P.hair={s:sel.s,c:sel.c,a:sel.a,w,e:w+(st.ms||st.days*dayMs())};saveHair();
  S0.ph=1;S0.prog=0;S0.dur=st.sec;NET.lastPos='';if(NET.on)saveState();renderSalon();beep(523,.1,'triangle',.05);sysLog('Làm tóc '+st.n+' · '+VND(T.total))}
 function salonDone(){const S0=P.salon;if(!S0||S0.ph!==1)return;S0.ph=2;S0.prog=1;S0.tc=0;S0.done={s:P.hair.s};hairTick(0,true);P.bubble='Tóc mới nè!';P.bubbleT=5;P.sayId=(P.sayId||0)+1;NET.lastPos='';salBurst();renderSalon();[784,988,1175,1568].forEach((f,i)=>setTimeout(()=>beep(f,.14,'triangle',.05),i*110));toast('Hoàn tất! '+HSTY_BY[S0.done.s].n+' đã sẵn sàng.',false,4500);if(NET.on)saveState()}
 function openSalon(){if(!S||!P||P.boat||mode!=='world'||P.salon||modalOpen())return;const occ=salonSeats(),k=occ.findIndex(x=>!x);if(k<0){toast('Salon đang đầy (3/3 ghế). Chờ một chút nhé.',true,3000);return}
@@ -10252,7 +10333,7 @@ function salLoop(ts){if(!P||!P.salon||$('#salOv').hidden){salRaf=0;return}const 
 function renderSalonInfo(){const S0=P.salon,cnt=salonSeats().filter(Boolean).length;$('#salInfo').innerHTML='Ghế <b>'+(S0.k+1)+'</b> · Salon đang có <b>'+cnt+'/3</b> người · Ví: <span class="price">'+VND(P.money)+'</span>'}
 $('#salBody').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!P||!P.salon||b.disabled)return;const S0=P.salon,sel=S0.sel;
  if(b.id==='salOut'){salonLeave();return}if(S0.ph!==0)return;
- if(b.dataset.sg){salTab=b.dataset.sg;if(HSTY_BY[sel.s].g!==salTab)sel.s=HSTY.find(h=>h.g===salTab).id;renderSalon()}
+ if(b.dataset.sg){salTab=b.dataset.sg;if(HSTY_BY[sel.s].g!=='x'&&HSTY_BY[sel.s].g!==salTab)sel.s=HSTY.find(h=>h.g===salTab).id;renderSalon()}
  else if(b.dataset.ss){sel.s=b.dataset.ss;renderSalon()}
  else if(b.dataset.sc!=null){sel.c=b.dataset.sc;renderSalon()}
  else if(b.dataset.sa!=null){sel.a=b.dataset.sa;renderSalon()}

@@ -1329,3 +1329,9 @@ Trước đây phải chờ đủ 90 giây mới kết thúc. Giờ tối đa 40
 ## z163 — Sửa: đăng nhập máy khác mất quyền chủ Villa
 - Nguyên nhân: `rt_move_player` (đăng nhập tài khoản / nhập mã đồng bộ) chỉ chuyển beds, duels, castle, lm nên `vh/*` (Villa), vhlog, market, offers, invites, tb, deco vẫn giữ uid cũ → trên máy mới game coi chủ nhà là "khách" (không có nút quản lý).
 - `sql-cu/supabase-update-move-vh.sql`: (1) thay `rt_move_player` chuyển đủ các mục trên; (2) sửa các Villa "mồ côi" (chủ là uid không còn nhân vật) sang nhân vật cùng tên khi khớp đúng 1 người. Chạy 1 lần; không đụng rt_can.
+
+## z164 — Tiệm tóc: 8 kiểu tóc NOEL (7 ngày thật)
+- `XMS` (index.html, sau `HSTY_BY`): x1 Cây Thông Đèn Lung Linh · x2 Tóc Kèm Nón Noel · x3 Sừng Tuần Lộc Chuông Vàng · x4 Món Quà Diệu Kỳ · x5 Cây Thông Cao To · x6 Mây Bồng Bềnh Tuyết Rơi · x7 Xe Santa Chở Quà · x8 Tóc Hát Carol (nốt nhạc bay). `g:'x'` = dùng cho cả nam lẫn nữ.
+- Hiện ở khung "🎄 NOEL GIỚI HẠN" **đầu danh sách** tiệm tóc (viền vàng + nhãn NOEL). Hạn dùng `ms = 7 * 86400000` (7 ngày THẬT, không theo ngày game): `P.hair.e = w + st.ms`.
+- `drawHairdo` hỗ trợ màu cố định (phần tử thứ 5 là chuỗi màu), `hdTw` vẽ hiệu ứng lấp lánh / đèn nháy / tuyết rơi / nốt nhạc quanh tóc.
+- Giá sửa được trong admin (Cửa hàng → Salon tóc → "Kiểu NOEL"). Nhuộm màu và phụ kiện dùng bình thường (nhuộm đổi màu phần tóc/hộp quà/cây, phần trang trí giữ màu cố định).
